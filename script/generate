@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-APP_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+require File.dirname(__FILE__) + '/../config/environment'
+APP_ROOT = DAEMON_ROOT
 
 begin
   require 'rubigen'
@@ -10,5 +11,5 @@ end
 require 'rubigen/scripts/generate'
 
 ARGV.shift if ['--help', '-h'].include?(ARGV[0])
-RubiGen::Base.use_component_sources! [:daemon_kit, :test_unit]
+RubiGen::Base.use_component_sources! [:daemon]
 RubiGen::Scripts::Generate.new.run(ARGV)
