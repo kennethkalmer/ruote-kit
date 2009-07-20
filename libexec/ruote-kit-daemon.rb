@@ -11,8 +11,7 @@ DaemonKit::Application.running! do |config|
   # config.trap( 'TERM', Proc.new { puts 'Going down' } )
 end
 
-# Sample loop to show process
-loop do
-  DaemonKit.logger.info "I'm running"
-  sleep 60
+# Run ruote-kit
+RuoteKit.run! do
+  # place any additional daemon code in this block
 end

@@ -8,3 +8,17 @@ require 'cucumber/formatter/unicode'
 
 DaemonKit::Application.running!
 require 'ruote-kit'
+
+Before '@delayedboot' do
+  @_noboot = true
+end
+
+Before do
+  RuoteKit.run! unless @_noboot
+  @_noboot = nil
+end
+
+After do |scenario|
+  # Shutdown
+  RuoteKit.shutdown!( true ) if RuoteKit.engine
+end
