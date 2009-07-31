@@ -4,10 +4,17 @@
 module RuoteKit
 
   autoload :Configuration, "ruote-kit/configuration"
+  autoload :Racker,        "ruote-kit/racker"
 
   class << self
     # The instance of ruote
     attr_accessor :engine
+
+    # Instance of rack app
+    attr_accessor :rack
+
+    # Instance of server handler
+    attr_accessor :server
 
     # Configure and run the engine in a RESTful container
     def run!(&block)
@@ -53,6 +60,13 @@ module RuoteKit
     end
 
     def configure_rack
+      self.rack = RuoteKit::Racker.to_app
+
+      return if %w(test cucumber).include? DaemonKit.env
+
+      Thread.new {
+        self.server = configuration.rack_handler_class.run( self.rack, configuration.rack_options )
+      }
     end
 
     def shutdown_rack
