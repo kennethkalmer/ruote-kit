@@ -1,12 +1,13 @@
-Example: ruote-kit is built on rack
+Example: ruote-kit is built on sinatra
 ruote-kit configures its own rack "stack"
 ruote-kit can use custom middleware
 
-Scenario: Default rack setup
+Scenario: Default sinatra setup
 Given ruote-kit has booted
-Then ruote-kit should have a rack
-And ruote-kit should have the "CommonLogger" middleware loaded
-And ruote-kit should have the "Lint" middleware loaded
+Then ruote-kit should have a sinatra app
+And ruote-kit should have the "Rack::CommonLogger" middleware loaded
+And ruote-kit should have the "Rack::Lint" middleware loaded
+And ruote-kit should have the "Rack::MethodOverride" middleware loaded
 
 Scenario: Default rack handler
 Given ruote-kit has booted

@@ -6,6 +6,12 @@ module RuoteKit
 
     attr_accessor :rack_options
 
+    # Path the access log for Rack::CommonLogger
+    attr_accessor :access_log
+
+    # Working directory for the engine
+    attr_accessor :work_directory
+
     class << self
 
       # Default rack handlers to make use of
@@ -21,6 +27,8 @@ module RuoteKit
       self.rack_options = {
         :port => 9292
       }
+
+      self.work_directory = File.join( DaemonKit.root, 'work' )
     end
 
     # Return the selected ruote-kit mode
