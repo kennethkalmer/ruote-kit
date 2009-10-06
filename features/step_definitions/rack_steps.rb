@@ -9,6 +9,8 @@ Then /^ruote\-kit should have the "([^\"]*)" middleware loaded$/ do |klass|
 end
 
 Then /^ruote\-kit should use the "([^\"]*)" rack handler$/ do |klass|
+  pending "Mongrel not supported on 1.9 yet" if klass == "Mongrel" && RUBY_VERSION >= "1.9"
+
   RuoteKit.configuration.rack_handler_class.to_s.should == "Rack::Handler::#{klass}"
 end
 
