@@ -95,7 +95,7 @@ module RuoteKit
         RuoteKit.shutdown!
       end
 
-      self.server_thread.join
+      self.server_thread.join if self.server_thread
     end
 
     def shutdown_sinatra
