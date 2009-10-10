@@ -18,15 +18,25 @@ require File.dirname(__FILE__) + '/../config/environment'
 DaemonKit::Application.running!
 RuoteKit.run!
 
+require 'ruote-kit/spec/ruote_helpers'
+
 Spec::Runner.configure do |config|
   # == Mock Framework
   #
   # RSpec uses it's own mocking framework by default. If you prefer to
   # use mocha, flexmock or RR, uncomment the appropriate line:
   #
-  config.mock_with :mocha
+  # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
+
+  # Include our helpers
+  config.include( RuoteKit::Spec::RuoteHelpers )
+
+  # Purge the engine after every run
+  config.after(:each) do
+    purge_engine
+  end
 end
 
 def app
