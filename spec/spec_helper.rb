@@ -32,3 +32,9 @@ end
 def app
   RuoteKit.sinatra
 end
+
+class Rack::MockResponse
+  def json_body
+    Ruote::Json.decode( body )
+  end
+end

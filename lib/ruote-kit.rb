@@ -3,6 +3,8 @@
 
 module RuoteKit
 
+  VERSION = "0.0.0"
+
   autoload :Configuration, "ruote-kit/configuration"
   autoload :Application,   "ruote-kit/application"
 
@@ -100,6 +102,8 @@ module RuoteKit
 
     def shutdown_sinatra
       DaemonKit.logger.debug "Shutting down Sinatra"
+
+      return if %w( test cucumber ).include? DaemonKit.env
 
       self.server.respond_to?(:stop!) ? self.server.stop! : self.server.stop
       self.server_thread.join

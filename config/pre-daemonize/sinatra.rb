@@ -4,3 +4,4 @@ rescue LoadError
   require 'rubygems'
   require 'sinatra'
 end
+

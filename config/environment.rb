@@ -21,3 +21,10 @@ DaemonKit::Initializer.run do |config|
   # config.safety_net.handler = :mail # (or :hoptoad )
   # config.safety_net.mail.host = 'localhost'
 end
+
+# Additional load paths for our vendored gems
+Dir[ DaemonKit.root + '/vendor/gems/*' ].each do |gemdir|
+  if File.directory?( gemdir + '/lib')
+    $:.unshift( gemdir + '/lib' )
+  end
+end
