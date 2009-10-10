@@ -202,5 +202,5 @@ module Sinatra
 
   # Get around before filter problem for classic applications by registering
   # with the context they are run in explicitly instead of Sinatra::Default
-  Sinatra::Application.register RespondTo
+  Sinatra::Base.register RespondTo
 end
