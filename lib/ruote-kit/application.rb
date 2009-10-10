@@ -1,9 +1,10 @@
 require 'sinatra/respond_to'
 
 module RuoteKit
-  class Application < Sinatra::Application
+  class Application < Sinatra::Base
 
     set :environment, DaemonKit.env
+    set :views, DaemonKit.root + '/lib/ruote-kit/views'
 
     use Rack::CommonLogger, RuoteKit.access_logger
     use Rack::Lint
