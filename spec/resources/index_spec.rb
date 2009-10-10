@@ -15,6 +15,10 @@ describe "GET /" do
 
     last_response.should be_ok
     last_response.content_type.should match("application/json")
-    last_response.json_body.should == { "ruote-kit" => "welcome", "version" => RuoteKit::VERSION.to_s }
+    body = last_response.json_body
+
+    body.should have_key("links")
+
+    body["misc"].should == { "ruote-kit" => "welcome", "version" => RuoteKit::VERSION.to_s }
   end
 end

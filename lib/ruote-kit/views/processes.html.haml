@@ -1,0 +1,6 @@
+%h1 Processes
+
+- if @processes.empty?
+  .warn No processes are currently running
+- else
+  .info Currently running #{@processes.size} processes

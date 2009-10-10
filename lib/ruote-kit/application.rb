@@ -18,7 +18,7 @@ module RuoteKit
     get '/' do
       respond_to do |format|
         format.html { "Hello world!" }
-        format.json { { "ruote-kit" => "welcome", "version" => RuoteKit::VERSION }.to_json }
+        format.json { json :misc, "ruote-kit" => "welcome", "version" => RuoteKit::VERSION }
       end
     end
 

@@ -1,20 +1,31 @@
-#module RuoteKit
-  class RuoteKit::Application
+# Helpers for rendering stuff
 
-    helpers do
+class RuoteKit::Application
 
-#      def respond_to( &block )
-#        Rack::RespondTo.env = env
-#        Rack::RespondTo.media_types = [ 'text/html', 'application/json' ]
-#
-#        require 'ruby-debug'
-#        debugger
-#        body = self.class.respond_to( &block )
-#
-#        content_type Rack::RespondTo.selected_media_type
-#        body
-#      end
+  helpers do
 
+    def json( resource, object )
+      {
+        "links" => links( resource ),
+        resource => object
+      }.to_json
     end
+
+    def rel( fragment )
+      "http://ruote.rubyforge.org/rels.html#{ fragment }"
+    end
+
+    def links( resource )
+      links = [
+        link( '/', rel('#root') ),
+        link( '/processes', rel('#processes') ),
+        link( request.fullpath, 'self' )
+      ]
+    end
+
+    def link( href, rel )
+      { 'href' => href, 'rel' => rel }
+    end
+
   end
-#end
+end
