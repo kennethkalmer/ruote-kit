@@ -35,7 +35,7 @@ Spec::Runner.configure do |config|
 
   # Purge the engine after every run
   config.after(:each) do
-    purge_engine
+    RuoteKit.engine.purge!
   end
 end
 

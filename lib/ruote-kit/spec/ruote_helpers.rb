@@ -15,12 +15,6 @@ module RuoteKit
         wfid
       end
 
-      # Purge the engine of all running processes
-      def purge_engine
-        RuoteKit.engine.context.values.each do |s|
-          s.purge if s.respond_to?( :purge )
-        end
-      end
     end
   end
 end
