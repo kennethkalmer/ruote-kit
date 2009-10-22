@@ -19,6 +19,7 @@ DaemonKit::Application.running!
 RuoteKit.run!
 
 require 'ruote-kit/spec/ruote_helpers'
+require 'ruote/log/test_logger'
 
 Spec::Runner.configure do |config|
   # == Mock Framework
@@ -33,6 +34,12 @@ Spec::Runner.configure do |config|
   # Include our helpers
   config.include( RuoteKit::Spec::RuoteHelpers )
 
+  config.before(:each) do
+    @tracer = Tracer.new
+    RuoteKit.engine.context[:s_tracer] = @tracer
+    RuoteKit.engine.add_service(:s_logger, Ruote::TestLogger)
+  end
+
   # Purge the engine after every run
   config.after(:each) do
     RuoteKit.engine.purge!
@@ -43,8 +50,31 @@ def app
   RuoteKit.sinatra
 end
 
+def noisy( on = true )
+  RuoteKit.engine.context[:noisy] = on
+end
+
 class Rack::MockResponse
   def json_body
     Ruote::Json.decode( body )
+  end
+end
+
+
+class Tracer
+  def initialize
+    @trace = ''
+  end
+  def to_s
+    @trace.to_s.strip
+  end
+  def << s
+    @trace << s
+  end
+  def clear
+    @trace = ''
+  end
+  def puts s
+    @trace << "#{s}\n"
   end
 end
