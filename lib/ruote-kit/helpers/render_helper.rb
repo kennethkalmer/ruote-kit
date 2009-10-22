@@ -19,8 +19,12 @@ class RuoteKit::Application
       links = [
         link( '/', rel('#root') ),
         link( '/processes', rel('#processes') ),
+        link( '/workitems', rel('#workitems') ),
+        link( '/history', rel("#history") ),
         link( request.fullpath, 'self' )
       ]
+
+      links << link("/history/#{params[:wfid]}", rel('#process_history') ) if resource == :process
     end
 
     def link( href, rel )
