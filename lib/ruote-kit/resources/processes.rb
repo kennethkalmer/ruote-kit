@@ -12,9 +12,13 @@ class RuoteKit::Application
   get "/processes/:wfid" do
     @process = RuoteKit.engine.process( params[:wfid] )
 
-    respond_to do |format|
-      format.html { haml :process }
-      format.json { json( :process, @process.to_h ) }
+    if @process
+      respond_to do |format|
+        format.html { haml :process }
+        format.json { json( :process, @process.to_h ) }
+      end
+    else
+      resource_not_found
     end
   end
 

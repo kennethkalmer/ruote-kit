@@ -31,5 +31,14 @@ class RuoteKit::Application
       { 'href' => href, 'rel' => rel }
     end
 
+    # Easy 404
+    def resource_not_found
+      status 404
+      respond_to do |format|
+        format.html { haml :resource_not_found }
+        format.json { { "error" => { "code" => "404", "message" => "Resource not found" } }.to_json }
+      end
+    end
+
   end
 end

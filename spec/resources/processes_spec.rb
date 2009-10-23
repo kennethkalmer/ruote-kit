@@ -56,7 +56,9 @@ describe "GET /processes/X-Y" do
     it "should give process information back (HTML)" do
       get "/processes/#{@wfid}"
 
-      pending
+      last_response.should be_ok
+
+      last_response.should match( @wfid )
     end
 
     it "should give process information back (JSON)" do
@@ -78,16 +80,23 @@ describe "GET /processes/X-Y" do
   end
 
   describe "without a running process" do
-    it "should 404 correctly (HTML)"
+    it "should 404 correctly (HTML)" do
+      get "/processes/foo"
+
+      last_response.should_not be_ok
+      last_response.status.should be(404)
+
+      last_response.should match(/Resource not found/)
+    end
+
     it "should 404 correctly (JSON)" do
-      pending
       get "/processes/foo.json"
 
       last_response.should_not be_ok
       last_response.status.should be(404)
 
       last_response.json_body.keys.should include("error")
-      last_response.json_body['error'].should == "process 'foo' not found"
+      last_response.json_body['error'].should == { "code" => "404", "message" => "Resource not found" }
     end
   end
 end
