@@ -186,6 +186,23 @@ describe "POST /processes" do
 
     @tracer.to_s.should == "bar"
   end
+
+  it "should correct for empty fields sent by browsers" do
+    params = {
+      :process_definition => %q{Ruote.process_definition :name => 'test' do
+        wait '5m'
+      end},
+      :process_fields => ''
+    }
+
+    post '/processes', params
+
+    last_response.should be_redirect
+
+    sleep 0.4
+
+    RuoteKit.engine.processes.should_not be_empty
+  end
 end
 
 describe "DELETE /processes/X-Y" do

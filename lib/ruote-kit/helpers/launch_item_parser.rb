@@ -13,8 +13,11 @@ class RuoteKit::Application
         return launch_item
 
       when "application/x-www-form-urlencoded"
-        launch_item = Ruote::Launchitem.new( params[:process_definition] )
-        launch_item.fields = JSON.parse( params[:process_fields] || "{}" )
+        pdef = params[:process_uri].nil? || params[:process_uri].empty? ? params[:process_definition] : params[:process_uri]
+        launch_item = Ruote::Launchitem.new( pdef )
+        fields = params[:process_fields] || ""
+        fields = "{}" if fields.empty?
+        launch_item.fields = JSON.parse( fields )
         return launch_item
 
       else
