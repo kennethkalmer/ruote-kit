@@ -9,6 +9,10 @@ class RuoteKit::Application
     end
   end
 
+  get "/processes/new" do
+    haml :launch_process
+  end
+
   get "/processes/:wfid" do
     @process = RuoteKit.engine.process( params[:wfid] )
 
@@ -23,7 +27,7 @@ class RuoteKit::Application
   end
 
   post "/processes" do
-    launch_item = launch_parameters
+    launch_item = launch_item_from_post
 
     @wfid = RuoteKit.engine.launch( launch_item )
 

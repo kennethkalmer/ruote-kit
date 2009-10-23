@@ -101,13 +101,23 @@ describe "GET /processes/X-Y" do
   end
 end
 
-describe "POST /processes" do
-  it "should launch a valid process" do
-    pdef = Ruote.process_definition :name => 'test' do
-      _sleep '2s'
-    end
+describe "GET /processes/new" do
+  it "should return a launch form" do
+    get "/processes/new"
 
-    post '/processes.json', pdef.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    last_response.should be_ok
+  end
+end
+
+describe "POST /processes" do
+  it "should launch a valid process definition (JSON)" do
+    params = {
+      :definition => %q{Ruote.process_definition :name => 'test' do
+        _sleep '1m'
+      end}
+    }
+
+    post '/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
     last_response.should be_redirect
     last_response['Location'].should match( /^\/processes\/[0-9a-z\-]+\.json$/ )
@@ -116,9 +126,69 @@ describe "POST /processes" do
 
     RuoteKit.engine.processes.should_not be_empty
   end
+
+  it "should launch a valid process definition with fields (JSON)" do
+    params = {
+      :definition => %q{Ruote.process_definition :name => 'test' do
+        echo '${f:foo}'
+      end},
+      :fields => { :foo => 'bar' }
+    }
+
+    post '/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+
+    last_response.should be_redirect
+    last_response['Location'].should match( /^\/processes\/([0-9a-z\-]+)\.json$/ )
+
+    RuoteKit.engine.context[:s_logger].wait_for([
+      [ :processes, :terminated, { :wfid => $1 } ],
+      [ :errors, nil, { :wfid => $1 } ]
+    ])
+
+    @tracer.to_s.should == "bar"
+  end
+
+  it "should launch a valid process definition (HTML)" do
+    params = {
+      :process_definition => %q{Ruote.process_definition :name => "test" do
+        _sleep '1m'
+      end
+      }
+    }
+
+    post "/processes", params
+
+    last_response.should be_redirect
+    last_response['Location'].should match( /^\/processes\/[0-9a-z\-]+$/ )
+
+    sleep 0.4
+
+    RuoteKit.engine.processes.should_not be_empty
+  end
+
+  it "should launch a process definition with fields (HTML)" do
+    params = {
+      :process_definition => %q{Ruote.process_definition :name => 'test' do
+        echo '${f:foo}'
+      end},
+      :process_fields => %q{ { "foo": "bar" } }
+    }
+
+    post '/processes', params
+
+    last_response.should be_redirect
+    last_response['Location'].should match( /^\/processes\/([0-9a-z\-]+)$/ )
+
+    RuoteKit.engine.context[:s_logger].wait_for([
+      [ :processes, :terminated, { :wfid => $1 } ],
+      [ :errors, nil, { :wfid => $1 } ]
+    ])
+
+    @tracer.to_s.should == "bar"
+  end
 end
 
-describe "DELETE processes" do
+describe "DELETE /processes/X-Y" do
   before(:each) do
     @wfid = launch_test_process do
       Ruote.process_definition :name => 'test' do
