@@ -1,0 +1,36 @@
+!!!
+%html
+  %head
+    %title ruote-kit
+    %link{ :type => "text/css", :href => "/base.css", :rel => "stylesheet" }
+    %link{ :type => "text/css", :href => "/style.css", :rel => "stylesheet" }
+  %body
+    #container
+      #header
+        %h1 ruote-kit
+        #main-navigation
+          %ul
+            %li.first
+              %a{ :href => "/processes" } Processes
+            %li.active
+              %a Workitems
+            %li
+              %a Errors
+            %li
+              %a History
+          .clear
+      #wrapper
+        #main
+          .block
+            .content
+              .inner= yield
+      #footer
+        .block
+          %p
+            &copy; 2009 Kenneth Kalmer
+            |
+            %a{ :href => "http://www.opensourcery.co.za" } Blog
+            |
+            %a{ :href => "http://github.com/kennethkalmer/ruote-kit" } Source
+            |
+            %a{ :href => "http://ruote.rubyforge.org" } Powered by ruote

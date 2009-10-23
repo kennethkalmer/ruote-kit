@@ -5,6 +5,8 @@ module RuoteKit
 
     set :environment, DaemonKit.env
     set :views, DaemonKit.root + '/lib/ruote-kit/views'
+    set :public, DaemonKit.root + '/lib/ruote-kit/public'
+    set :static, true
 
     use Rack::CommonLogger, RuoteKit.access_logger
     use Rack::Lint
@@ -17,7 +19,7 @@ module RuoteKit
 
     get '/' do
       respond_to do |format|
-        format.html { "Hello world!" }
+        format.html { haml :index }
         format.json { json :misc, "ruote-kit" => "welcome", "version" => RuoteKit::VERSION }
       end
     end

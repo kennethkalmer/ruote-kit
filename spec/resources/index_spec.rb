@@ -5,8 +5,10 @@ describe "GET /" do
     get "/"
 
     last_response.should be_ok
-    last_response.should match(/Hello world/)
     last_response.content_type.should match("text/html")
+
+    last_response.should match(/Hello world/)
+    last_response.should match(/<title>/)
   end
 
   it "should return a version string if JSON is requested" do
