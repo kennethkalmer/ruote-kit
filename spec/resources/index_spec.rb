@@ -24,3 +24,14 @@ describe "GET /" do
     body["misc"].should == { "ruote-kit" => "welcome", "version" => RuoteKit::VERSION.to_s }
   end
 end
+
+describe "Generic error handling" do
+  it "should give our own 404 page" do
+    get "/kenneth"
+
+    last_response.should_not be_ok
+    last_response.status.should be(404)
+
+    last_response.should match(/Resource not found/)
+  end
+end

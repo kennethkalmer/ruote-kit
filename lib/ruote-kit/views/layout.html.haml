@@ -8,16 +8,14 @@
     #container
       #header
         %h1 ruote-kit
+        #user-navigation
+          %ul
+            %li
+              %a{ :href => "/processes/new" } Launch a new process
         #main-navigation
           %ul
-            %li.first
-              %a{ :href => "/processes" } Processes
-            %li.active
-              %a Workitems
-            %li
-              %a Errors
-            %li
-              %a History
+            = navigate_to "Processes", "/processes"
+            = navigate_to "Workitems", "/workitems"
           .clear
       #wrapper
         #main

@@ -17,6 +17,10 @@ module RuoteKit
       format :json if env["HTTP_ACCEPT"] && env["HTTP_ACCEPT"] == "application/json"
     end
 
+    not_found do
+      resource_not_found
+    end
+
     get '/' do
       respond_to do |format|
         format.html { haml :index }
