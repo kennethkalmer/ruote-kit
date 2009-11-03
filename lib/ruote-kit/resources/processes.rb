@@ -1,7 +1,7 @@
 class RuoteKit::Application
 
   get "/processes" do
-    @processes = RuoteKit.engine.processes
+    @processes = engine.processes
 
     respond_to do |format|
       format.html { haml :processes }
@@ -14,7 +14,7 @@ class RuoteKit::Application
   end
 
   get "/processes/:wfid" do
-    @process = RuoteKit.engine.process( params[:wfid] )
+    @process = engine.process( params[:wfid] )
 
     if @process
       respond_to do |format|
@@ -29,7 +29,7 @@ class RuoteKit::Application
   post "/processes" do
     launch_item = launch_item_from_post
 
-    @wfid = RuoteKit.engine.launch( launch_item )
+    @wfid = engine.launch( launch_item )
 
     respond_to do |format|
       format.html { redirect "/processes/#{@wfid}" }
@@ -39,9 +39,9 @@ class RuoteKit::Application
 
   delete "/processes/:wfid" do
     if params[:kill] == "1"
-      RuoteKit.engine.kill_process( params[:wfid] )
+      engine.kill_process( params[:wfid] )
     else
-      RuoteKit.engine.cancel_process( params[:wfid] )
+      engine.cancel_process( params[:wfid] )
     end
   end
 end
