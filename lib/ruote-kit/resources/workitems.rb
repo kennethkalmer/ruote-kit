@@ -1,0 +1,3 @@
+class RuoteKit::Application
+
+end
