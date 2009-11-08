@@ -6,8 +6,8 @@ class RuoteKit::Application
       RuoteKit.engine
     end
 
-    def catchall
-      RuoteKit.configuration.catchall_participant
+    def store_participant
+      RuoteKit.engine.plist.lookup('.*')
     end
 
   end

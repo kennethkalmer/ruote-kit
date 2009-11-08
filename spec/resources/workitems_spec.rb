@@ -3,13 +3,10 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe "GET /workitems" do
   describe "without any workitems" do
     it "should report no workitems (HTML)" do
-    pending
       get "/workitems"
 
       last_response.should be_ok
-      last_response.should match(/No workitems are available/)
-
-      assigns[:workitems].should be_empty
+      last_response.should match(/No workitems are currently available/)
     end
 
     it "should report no workitems (JSON)"
