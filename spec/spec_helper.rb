@@ -42,6 +42,7 @@ Spec::Runner.configure do |config|
 
   # Purge the engine after every run
   config.after(:each) do
+    RuoteKit.engine.plist.lookup('.*').purge!
     RuoteKit.engine.purge!
   end
 end
@@ -50,8 +51,10 @@ def app
   RuoteKit.sinatra
 end
 
-def noisy( on = true )
-  RuoteKit.engine.context[:noisy] = on
+# Sets the local variables that will be accessible in the HAML
+# template
+def assigns
+  @assigns ||= { }
 end
 
 class Rack::MockResponse

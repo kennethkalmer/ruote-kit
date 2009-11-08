@@ -8,15 +8,23 @@ module RuoteKit
           yield
         else
           Ruote.process_definition :name => 'test' do
-            nana
+            sequence do
+              nada
+            end
           end
         end
 
         wfid = RuoteKit.engine.launch( pdef )
 
-        sleep 0.1 while RuoteKit.engine.processes.empty?
+        Timeout.timeout 1 do
+          sleep 0.1 while RuoteKit.engine.processes.empty?
+        end
 
         wfid
+      end
+
+      def noisy( on = true )
+        RuoteKit.engine.context[:noisy] = on
       end
 
     end
