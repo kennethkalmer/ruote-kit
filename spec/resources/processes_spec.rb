@@ -110,6 +110,10 @@ describe "GET /processes/new" do
 end
 
 describe "POST /processes" do
+  before(:each) do
+    RuoteKit.engine.processes.should be_empty
+  end
+
   it "should launch a valid process definition (JSON)" do
     params = {
       :definition => %q{Ruote.process_definition :name => 'test' do

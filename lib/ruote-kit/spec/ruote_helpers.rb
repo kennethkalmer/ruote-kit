@@ -16,15 +16,25 @@ module RuoteKit
 
         wfid = RuoteKit.engine.launch( pdef )
 
-        Timeout.timeout 1 do
-          sleep 0.1 while RuoteKit.engine.processes.empty?
-        end
+        # Wait for the process list to populate
+        sleep 0.1 while RuoteKit.engine.processes.empty?
+
+        # Give the process some time to traverse the expression tree
+        sleep 0.4
 
         wfid
       end
 
       def noisy( on = true )
         RuoteKit.engine.context[:noisy] = on
+      end
+
+      def store_participant
+        RuoteKit.engine.plist.lookup('.*')
+      end
+
+      def find_workitem( wfid, expid )
+        store_participant.by_wfid( wfid ).detect { |wi| wi.fei.expid == expid }
       end
 
     end

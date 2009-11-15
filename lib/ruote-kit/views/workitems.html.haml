@@ -1,4 +1,12 @@
-%h1 Workitems
+%h2 Workitems
 
 - if @workitems.empty?
-  %h2 No workitems are currently available
+  .warn No workitems are currently available
+
+- else
+  .info #{ pluralize(@workitems.size, 'workitem') } available
+
+  %ul
+    - @workitems.each do |wi|
+      %li
+        = link_to wi
