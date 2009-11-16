@@ -109,6 +109,7 @@ describe "PUT /workitems/X-Y" do
       Ruote.process_definition :name => 'foo' do
         sequence do
           nada :activity => 'Work your magic'
+          echo "${f:foo}"
         end
       end
     end
@@ -121,31 +122,88 @@ describe "PUT /workitems/X-Y" do
 
   it "should update the workitem fields (HTML)" do
     fields = {
-      "activity" => "Work your magic",
+      "params" => {
+        "activity" => "Work your magic",
+      },
       "foo" => "bar"
-    }.to_json
+    }
 
-    put "/workitems/#{@wfid}/#{@nada_exp_id}", :fields => fields
+    put "/workitems/#{@wfid}/#{@nada_exp_id}", :fields => fields.to_json
 
     last_response.should be_redirect
     last_response['Location'].should == "/workitems/#{@wfid}/#{@nada_exp_id}"
 
     find_workitem( @wfid, @nada_exp_id ).fields.should == fields
+
+    sleep 0.4
+
+    @tracer.to_s.should == ""
   end
 
   it "should update the workitem fields (JSON)" do
-    params = {
-        "fields" => {
+    fields = {
+      "params" => {
         "activity" => "Work your magic",
-        "foo" => "bar"
-      }
+      },
+      "foo" => "bar"
+    }
+    params = {
+      "fields" => fields
     }
 
-    put "/workitems/#{@wfid}/#{@nada_exp_id}", params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    put "/workitems/#{@wfid}/#{@nada_exp_id}.json", params.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
     last_response.should be_ok
+
+    find_workitem( @wfid, @nada_exp_id ).fields.should == fields
+
+    sleep 0.4
+
+    @tracer.to_s.should == ""
   end
 
-  it "should reply to the engine (HTML)"
-  it "should reply to the engine (JSON)"
+  it "should reply to the engine (HTML)" do
+    fields = {
+      "params" => {
+        "activity" => "Work your magic",
+      },
+      "foo" => "bar"
+    }.to_json
+
+    put "/workitems/#{@wfid}/#{@nada_exp_id}", :fields => fields, :_proceed => '1'
+
+    last_response.should be_redirect
+    last_response['Location'].should == "/workitems/#{@wfid}/#{@nada_exp_id}"
+
+    RuoteKit.engine.context[:s_logger].wait_for([
+      [ :processes, :terminated, { :wfid => @wfid } ],
+      [ :errors, nil, { :wfid => @wfid } ]
+    ])
+
+    @tracer.to_s.should == "bar"
+  end
+
+  it "should reply to the engine (JSON)" do
+    fields = {
+      "params" => {
+        "activity" => "Work your magic",
+      },
+      "foo" => "bar"
+    }
+    params = {
+      "fields" => fields,
+      "_proceed" => "1"
+    }
+
+    put "/workitems/#{@wfid}/#{@nada_exp_id}.json", params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+
+    last_response.should be_ok
+
+    RuoteKit.engine.context[:s_logger].wait_for([
+      [ :processes, :terminated, { :wfid => @wfid } ],
+      [ :errors, nil, { :wfid => @wfid } ]
+    ])
+
+    @tracer.to_s.should == "bar"
+  end
 end
