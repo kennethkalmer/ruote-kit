@@ -38,10 +38,15 @@ class RuoteKit::Application
   end
 
   delete "/processes/:wfid" do
-    if params[:kill] == "1"
+    if params[:_kill] == "1"
       engine.kill_process( params[:wfid] )
     else
       engine.cancel_process( params[:wfid] )
+    end
+
+    respond_to do |format|
+      format.html { redirect "/processes" }
+      format.json { json( :status, :ok ) }
     end
   end
 end

@@ -225,7 +225,7 @@ describe "DELETE /processes/X-Y" do
     end
   end
 
-  it "should cancel processes" do
+  it "should cancel processes (JSON)" do
     delete "/processes/#{@wfid}.json"
 
     last_response.should be_ok
@@ -237,10 +237,36 @@ describe "DELETE /processes/X-Y" do
     @tracer.to_s.should == "done.\nbailout."
   end
 
-  it "should kill processes" do
-    delete "/processes/#{@wfid}.json?kill=1"
+  it "should cancel processes (HMTL)" do
+    delete "/processes/#{@wfid}"
+
+    last_response.should be_redirect
+    last_response['Location'].should == "/processes"
+
+    sleep 0.4
+
+    RuoteKit.engine.process( @wfid ).should be_nil
+
+    @tracer.to_s.should == "done.\nbailout."
+  end
+
+  it "should kill processes (JSON)" do
+    delete "/processes/#{@wfid}.json?_kill=1"
 
     last_response.should be_ok
+
+    sleep 0.4
+
+    RuoteKit.engine.process( @wfid ).should be_nil
+
+    @tracer.to_s.should == "done."
+  end
+
+  it "should kill processes (HTML)" do
+    delete "/processes/#{@wfid}?_kill=1"
+
+    last_response.should be_redirect
+    last_response['Location'].should == '/processes'
 
     sleep 0.4
 
