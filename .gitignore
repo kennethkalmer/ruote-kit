@@ -3,3 +3,4 @@ vendor/daemon_kit
 vendor/ruote
 *.swp
 work/
+.DS_Store
