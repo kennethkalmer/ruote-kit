@@ -56,7 +56,60 @@ describe "GET /workitems" do
   end
 end
 
-describe "GET /workitems/X-Y" do
+describe "GET /workitems/wfid" do
+  describe "with workitems" do
+    before(:each) do
+      @wfid = launch_test_process do
+        Ruote.process_definition :name => 'foo' do
+          concurrence do
+            nada :activity => 'This'
+            nada :activity => 'Or that'
+          end
+        end
+      end
+    end
+
+    it "should list the workitems (HTML)" do
+      get "/workitems/#{@wfid}"
+
+      last_response.should be_ok
+      last_response.should match(/2 workitems available for #{@wfid}/)
+    end
+
+    it "should list the workitems (JSON)" do
+      get "/workitems/#{@wfid}.json"
+
+      last_response.should be_ok
+
+      json = last_response.json_body
+
+      json.should have_key('workitems')
+      json['workitems'].should_not be_empty
+    end
+  end
+
+  describe "without workitems" do
+    it "should report no workitems (HTML)" do
+      get "/workitems/foo"
+
+      last_response.should be_ok
+      last_response.should match(/No workitems are currently available for foo/)
+    end
+
+    it "should report an empty list (JSON)" do
+      get "/workitems/foo.json"
+
+      last_response.should be_ok
+
+      json = last_response.json_body
+
+      json.should have_key('workitems')
+      json['workitems'].should be_empty
+    end
+  end
+end
+
+describe "GET /workitems/wfid/expid" do
   describe "with a workitem" do
     before(:each) do
       @wfid = launch_test_process do

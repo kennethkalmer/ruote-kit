@@ -9,6 +9,16 @@ class RuoteKit::Application
     end
   end
 
+  get "/workitems/:wfid" do
+    @wfid = params[:wfid]
+    @workitems = find_workitems( params[:wfid] )
+
+    respond_to do |format|
+      format.html { haml( :workitems ) }
+      format.json { json( :workitems, @workitems.map { |wi| wi.to_h } ) }
+    end
+  end
+
   get "/workitems/:wfid/:expid" do
     @workitem = find_workitem( params[:wfid], params[:expid] )
 

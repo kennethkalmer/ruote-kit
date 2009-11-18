@@ -1,10 +1,11 @@
 %h2 Workitems
 
 - if @workitems.empty?
-  .warn No workitems are currently available
+  .warn
+    No workitems are currently available #{ @wfid ? "for #{@wfid}" : '' }
 
 - else
-  .info #{ pluralize(@workitems.size, 'workitem') } available
+  .info #{ pluralize(@workitems.size, 'workitem') } available #{ @wfid ? "for #{@wfid}" : '' }
 
   %ul
     - @workitems.each do |wi|
