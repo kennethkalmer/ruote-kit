@@ -46,9 +46,10 @@ class RuoteKit::Application
       store_participant.reply( workitem )
     end
 
-    # TODO: This needs to be different dependending on whether we proceed or update
     respond_to do |format|
-      format.html { redirect "/workitems/#{params[:wfid]}/#{params[:expid]}" }
+      format.html {
+        redirect options[:proceed] ? "/workitems/#{params[:wfid]}" : "/workitems/#{params[:wfid]}/#{params[:expid]}"
+      }
       format.json { json( :workitem, workitem.to_h ) }
     end
   end

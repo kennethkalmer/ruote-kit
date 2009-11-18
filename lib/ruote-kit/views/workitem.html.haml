@@ -1,1 +1,28 @@
-%h2 Workitem
+%h2 Workitem #{@workitem.fei.wfid}/#{@workitem.fei.expid}
+
+%ul.nolist
+  %li fei: #{@workitem.fei.to_s}
+  %li participant: #{@workitem.participant_name}
+  %li dispatched:
+  %li last modified:
+  %li process: #{link_to engine.process( @workitem.fei.wfid) }
+  %li expressions:
+  %li workitems of this process: #{link_to "GET /workitems/#{@workitem.fei.wfid}", "/workitems/#{@workitem.fei.wfid}" }
+
+%p &nbsp;
+
+%form.form{ :method => 'post' }
+  %input{ :type => 'hidden', :name => '_method', :value => 'put' }
+  %input{ :type => 'hidden', :name => '_procced', :value => '1' }
+  .group
+    %label.label{ :for => "fields" } Fields
+    %textarea.text_area{ :name => "fields", :cols => 80, :rows => 10 }
+      = @workitem.fields.to_json
+    %span.description The current workitem fields in JSON format
+  .group
+    %input{ :type => 'checkbox', :name => '_proceed', :value => '1' }
+    %label{ :for => '_proceed' } Proceed the workflow (_proceed=1)
+    %br
+    %span.description Check to let the workflow proceed, leave unchecked to just update workitem fields
+  .group.navform
+    %input.submit{ :type => 'submit', :value => "PUT /workitems/#{@workitem.fei.wfid}/#{@workitem.fei.expid}" }

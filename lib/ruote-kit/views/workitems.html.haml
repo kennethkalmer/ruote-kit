@@ -1,13 +1,19 @@
 %h2 Workitems
 
-- if @workitems.empty?
-  .warn
-    No workitems are currently available #{ @wfid ? "for #{@wfid}" : '' }
+.flash
+  .message
+    - if @workitems.empty?
+      .warn
+        %p No workitems are currently available #{ @wfid ? "for #{@wfid}" : '' }
+    - else
+      .notice
+        %p #{ pluralize(@workitems.size, 'workitem') } available #{ @wfid ? "for #{@wfid}" : '' }
 
-- else
-  .info #{ pluralize(@workitems.size, 'workitem') } available #{ @wfid ? "for #{@wfid}" : '' }
-
-  %ul
-    - @workitems.each do |wi|
-      %li
-        = link_to wi
+%ul.nested_list
+  - @workitems.each do |wi|
+    %li
+      = link_to wi
+      %ul.nested_details
+        %li fei: #{wi.fei.to_s}
+        %li participant: #{wi.participant_name}
+        %li dispath time: TODO

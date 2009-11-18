@@ -226,7 +226,7 @@ describe "PUT /workitems/X-Y" do
     put "/workitems/#{@wfid}/#{@nada_exp_id}", :fields => fields, :_proceed => '1'
 
     last_response.should be_redirect
-    last_response['Location'].should == "/workitems/#{@wfid}/#{@nada_exp_id}"
+    last_response['Location'].should == "/workitems/#{@wfid}"
 
     RuoteKit.engine.context[:s_logger].wait_for([
       [ :processes, :terminated, { :wfid => @wfid } ],

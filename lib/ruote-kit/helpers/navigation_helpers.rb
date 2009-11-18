@@ -20,12 +20,14 @@ class RuoteKit::Application
       return [ number, word ].join(' ')
     end
 
-    def link_to( object )
+    def link_to( object, *args )
       case object
       when Ruote::ProcessStatus
         link_to_process( object )
       when Ruote::Workitem
         link_to_workitem( object )
+      when String
+        "<a href=\"#{args.first}\">#{object}</a>"
       end
     end
 
