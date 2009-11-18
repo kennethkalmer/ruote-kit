@@ -2,5 +2,5 @@ log/
 vendor/daemon_kit
 vendor/ruote
 *.swp
-work/
+work*/
 .DS_Store

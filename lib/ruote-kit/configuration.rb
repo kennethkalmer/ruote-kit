@@ -28,7 +28,7 @@ module RuoteKit
         :port => 9292
       }
 
-      self.work_directory = File.join( DaemonKit.root, 'work' )
+      self.work_directory = File.join( DaemonKit.root, "work_#{DaemonKit.env}" )
     end
 
     # Return the selected ruote-kit mode
