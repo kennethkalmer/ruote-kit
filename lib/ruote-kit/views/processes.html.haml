@@ -1,6 +1,27 @@
 %h2 Processes
 
-- if @processes.empty?
-  .warn No processes are currently running
-- else
-  .info Currently running #{@processes.size} processes
+.flash
+  .message
+    - if @processes.empty?
+      .warn
+        %p No processes are currently running
+    - else
+      .notice
+        %p Currently running #{@processes.size} processes
+
+%ul.nested_list
+  - @processes.each do |process|
+    %li
+      = link_to process
+      %ul.nested_details
+        %li wfid: #{process.wfid}
+        %li process: #{process.definition_name} (#{process.definition_revision})
+        %li launched: #{process.launched_time}
+        %li tags: #{process.all_tags.keys.join(', ')}
+        %li
+          expressions:
+          %a{ :href => "/expressions/#{process.wfid}" } GET /expressions/#{process.wfid}
+        %li
+          workitems:
+          %a{ :href => "/workitems/#{process.wfid}" } GET /workitems/#{process.wfid}
+        %li errors: #{process.errors.size}

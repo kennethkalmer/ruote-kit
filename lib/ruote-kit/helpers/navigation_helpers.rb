@@ -22,6 +22,8 @@ class RuoteKit::Application
 
     def link_to( object )
       case object
+      when Ruote::ProcessStatus
+        link_to_process( object )
       when Ruote::Workitem
         link_to_workitem( object )
       end
@@ -29,6 +31,12 @@ class RuoteKit::Application
 
     def link_to_workitem( workitem )
       path = "/workitems/#{workitem.fei.wfid}/#{workitem.fei.expid}"
+
+      "<a href=\"#{path}\">GET #{path}</a>"
+    end
+
+    def link_to_process( status )
+      path = "/processes/#{status.wfid}"
 
       "<a href=\"#{path}\">GET #{path}</a>"
     end

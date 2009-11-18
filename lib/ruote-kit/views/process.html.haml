@@ -1,1 +1,44 @@
-%h2= @process.wfid
+%h2
+  = @process.wfid
+  (#{@process.definition_name})
+
+.options
+  %ul.nolist
+    /
+      %li.b5
+        %form{ :method => 'post' }
+          %input{ :type => 'hidden', :name => '_method', :value => 'put' }
+          = button "Pause", 'force-block'
+          %span.description PUT /processes/#{@process.wfid}?_pause=1
+    %li.b5
+      %form{ :method => 'post' }
+        %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
+        = button "Cancel", "cancel force-block"
+        %span.description DELETE /processes/#{@process.wfid}
+    %li.b5
+      %form{ :method => 'post' }
+        %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
+        %input{ :type => 'hidden', :name => '_kill', :value => '1' }
+        = button "Kill", "cancel force-block"
+        %span.description DELETE /processes/#{@process.wfid}?_kill=1
+
+%ul.nolist
+  %li wfid: #{@process.wfid}
+  %li launch: #{@process.launched_time}
+  %li paused:
+  %li: tags: #{@process.all_tags.keys.join(', ')}
+  %li
+    expressions:
+    %a{ :href => "/expressions/#{@process.wfid}" } GET /expressions/#{@process.wfid}
+  %li
+    workitems:
+    %a{ :href => "/workitems/#{@process.wfid}" } GET /workitems/#{@process.wfid}
+  %li errors: #{@process.errors.size}
+
+%ul
+  %li TODO
+  %li Branches
+  %li Process variables
+  %li Scheduled jobs
+  %li Active expression
+  %li Tree
