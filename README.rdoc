@@ -1,18 +1,57 @@
-= ruote-rest (RESTful BPM)
+= ruote-kit (RESTful BPM)
 
 * http://kit.rubyforge.org/ruote (soon)
 * http://kit.rubyforge.org/ruote/rdoc (soon)
 
-A RESTful wrapper around the ruote[http://openwfe.rubyforge.org]
+A RESTful wrapper around the ruote[http://ruote.rubyforge.org]
 workflow engine, built with
 daemon-kit[http://github.com/kennethkalmer/daemon-kit] and
-rack[http://rack.rubyforge.org].
+sinatra[http://www.sinatrarb.com/].
 
-Keep in touch:
+Follow development:
 
 * #ruote on Freenode
 * http://groups.google.com/group/openwferu-users
 * http://opensourcery.co.za
+* @kennethkalmer
+
+== Alpha Status
+
+ruote-kit is under heavy development and will likely change violently over the
+coming weeks (albeit for the better).
+
+Dependencies you currently need is:
+
+* daemon-kit (gem install daemon-kit)
+* sinatra (gem install sinatra)
+* thin or mongrel
+
+To keep up with the current changes, you can setup an environment similar to
+this:
+
+    $ mkdir ~/ruote-env
+    $ cd ~/ruote-env
+    $ git clone git://github.com/kennethkalmer/ruote-kit.git
+    $ git clone git://github.com/jmettraux/ruote.git
+    $ ln -nfs ruote ruote-kit/vendor/ruote
+
+You can the 'git pull' within the respective repo's to stay current.
+
+== Getting started
+
+Once you have the dependencies installed, get going by running './bin/ruote-kit'
+from inside the ruote-kit project.
+
+If ruote-kit starts up without any issues (ie missing dependencies), you can
+point your browser to 'http://localhost:8080/' to get going.
+
+== Feedback & bug reports
+
+Please bear in mind that the project is still in its alpha days. Keep bug reports
+and suggestions limited to the google group and #ruote channel, at least for the
+time being.
+
+Please do not hesitate to come back with *any* feedback.
 
 == License
 
