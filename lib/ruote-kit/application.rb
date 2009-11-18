@@ -11,6 +11,7 @@ module RuoteKit
     use Rack::CommonLogger, RuoteKit.access_logger
     use Rack::Lint
     use Rack::MethodOverride
+    use Rack::ShowExceptions
 
     before do
       # We allow the Accept header to be set to 'application/json'
