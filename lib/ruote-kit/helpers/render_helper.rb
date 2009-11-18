@@ -40,5 +40,16 @@ class RuoteKit::Application
       end
     end
 
+    # Extract the process tree
+    def process_tree( object )
+      case object
+      when Ruote::Workitem
+        process = engine.process( object.fei.wfid )
+        process.current_tree.to_json
+      when Ruote::ProcessStatus
+        object.current_tree.to_json
+      end
+    end
+
   end
 end

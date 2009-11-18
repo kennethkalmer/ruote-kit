@@ -1,3 +1,5 @@
+- @_uses_fluo = true
+
 %h2
   = @process.wfid
   (#{@process.definition_name})
@@ -42,3 +44,12 @@
   %li Scheduled jobs
   %li Active expression
   %li Tree
+
+%p &nbsp;
+
+%canvas#fluo
+
+:javascript
+  var proc_rep = #{process_tree( @process )};
+  FluoCan.renderFlow( 'fluo', proc_rep );
+  FluoCan.crop('fluo');

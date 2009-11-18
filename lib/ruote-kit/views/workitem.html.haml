@@ -1,3 +1,5 @@
+- @_uses_fluo = true
+
 %h2 Workitem #{@workitem.fei.wfid}/#{@workitem.fei.expid}
 
 %ul.nolist
@@ -26,3 +28,12 @@
     %span.description Check to let the workflow proceed, leave unchecked to just update workitem fields
   .group.navform
     %input.submit{ :type => 'submit', :value => "PUT /workitems/#{@workitem.fei.wfid}/#{@workitem.fei.expid}" }
+
+%p &nbsp;
+
+%canvas#fluo
+
+:javascript
+  var proc_rep = #{process_tree( @workitem )};
+  FluoCan.renderFlow( 'fluo', proc_rep, { 'workitems' : ['#{@workitem.fei.expid}'] } );
+  FluoCan.crop('fluo');

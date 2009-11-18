@@ -7,6 +7,12 @@
     %link{ :type => "text/css", :href => "/stylesheets/SimplyButtons.css", :rel => "stylesheet" }
     %link{ :type => "text/css", :href => "/stylesheets/rk.css", :rel => "stylesheet" }
     %script{ :type => "text/javascript", :src => "/javascripts/SimplyButtons.js" }
+    - if @_uses_fluo
+      %script{ :type => "text/javascript", :src => "/javascripts/fluo-can.js" }
+      %script{ :type => "text/javascript", :src => "/javascripts/fluo-dial.js" }
+      %script{ :type => "text/javascript", :src => "/javascripts/fluo-json.js" }
+      %script{ :type => "text/javascript", :src => "/javascripts/fluo-tred.js" }
+
     :javascript
       window.onload = function() { SimplyButtons.init(); }
   %body
