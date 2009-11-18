@@ -1,1 +1,38 @@
+- @_uses_fluo = true
+
 %h2 Expression #{@expression.fei.wfid}/#{@expression.fei.expid}
+
+.options
+  %ul.nolist
+    %li.b5
+      %form{ :method => 'post' }
+        %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
+        = button "Cancel", "cancel force-block"
+        %span.description DELETE /expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}
+    %li.b5
+      %form{ :method => 'post' }
+        %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
+        %input{ :type => 'hidden', :name => '_kill', :value => '1' }
+        = button "Kill", "cancel force-block"
+        %span.description DELETE /expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}?_kill=1
+
+%ul.nolist
+  %li fei: #{@expression.fei.to_s}
+  %li class: #{@expression.class.name}
+  %li name: #{@expression.respond_to?(:participant_name) ? @expression.participant_name : @expression.name}
+  %li process: #{link_to @process}
+  %li
+    process expressions:
+    %a{ :href => "/expressions/#{@process.wfid}" } GET /expressions/#{@process.wfid}
+  - if @expression.parent_id
+    %li parent expression: #{link_to_expression @expression.parent}
+
+%p &nbsp;
+
+%canvas#fluo
+
+:javascript
+  var proc_rep = #{process_tree( @process )};
+  FluoCan.renderFlow( 'fluo', proc_rep );
+  FluoCan.crop('fluo');
+  FluoCan.highlight('fluo', '#{@expression.fei.expid}');

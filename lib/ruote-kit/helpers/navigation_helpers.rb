@@ -42,6 +42,12 @@ class RuoteKit::Application
 
       "<a href=\"#{path}\">GET #{path}</a>"
     end
+
+    def link_to_expression( expression )
+      path = "/expressions/#{expression.fei.wfid}/#{expression.fei.expid}"
+
+      "<a href=\"#{path}\">GET #{path}</a>"
+    end
   end
 
 end

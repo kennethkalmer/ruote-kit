@@ -1,7 +1,30 @@
-- unless @expressions
+- @_uses_fluo = true
+
+- unless @process
   %h2 Expressions
   .flash
     .message
       .notice
         %p Expressions are atomic pieces of process instances.
         %p Have a look at the <a href="/processes">processes</a> and then follow their links to their set of expressions.
+
+- else
+  %h2 Expressions for #{@process.wfid}
+
+  %ul.nested_list
+    - @process.expressions.each do |expression|
+      %li
+        = link_to_expression expression
+        %ul.nested_details
+          %li fei: #{expression.fei.to_s}
+          %li class: #{expression.class.name}
+          %li name: #{expression.respond_to?(:participant_name) ? expression.participant_name : expression.name}
+
+%p &nbsp;
+
+%canvas#fluo
+
+:javascript
+  var proc_rep = #{process_tree( @process )};
+  FluoCan.renderFlow( 'fluo', proc_rep );
+  FluoCan.crop('fluo');
