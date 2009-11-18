@@ -2,8 +2,13 @@
 %html
   %head
     %title ruote-kit
-    %link{ :type => "text/css", :href => "/base.css", :rel => "stylesheet" }
-    %link{ :type => "text/css", :href => "/style.css", :rel => "stylesheet" }
+    %link{ :type => "text/css", :href => "/stylesheets/base.css", :rel => "stylesheet" }
+    %link{ :type => "text/css", :href => "/stylesheets/style.css", :rel => "stylesheet" }
+    %link{ :type => "text/css", :href => "/stylesheets/SimplyButtons.css", :rel => "stylesheet" }
+    %link{ :type => "text/css", :href => "/stylesheets/rk.css", :rel => "stylesheet" }
+    %script{ :type => "text/javascript", :src => "/javascripts/SimplyButtons.js" }
+    :javascript
+      window.onload = function() { SimplyButtons.init(); }
   %body
     #container
       #header

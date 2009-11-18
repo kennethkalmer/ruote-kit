@@ -1,0 +1,30 @@
+/** Custom styles for rk **/
+
+ul.nolist {
+  list-style-type: none;
+}
+
+ul.nested_list {
+  list-style-type: none;
+}
+ul.nested_list > li {
+  padding: 4px 0;
+}
+ul.nested_list li ul {
+  list-style-type: none;
+  color: #999;
+}
+
+div.options {
+  width: 250px;
+  float: right;
+}
+
+.force-block {
+  display: block;
+  float: none;
+}
+
+.b5 {
+  margin-bottom: 5px;
+}
