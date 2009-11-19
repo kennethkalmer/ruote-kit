@@ -6,7 +6,6 @@ describe "GET /processes" do
       get "/processes"
 
       last_response.should be_ok
-      last_response.should match(/No processes are currently running/)
     end
 
     it "should give an empty array (JSON)" do
