@@ -1,10 +1,11 @@
-class RuoteKit::Application
+module RuoteKit
+  module Helpers
+    module FormHelpers
 
-  helpers do
+      def button( text, css_class = nil )
+        "<button type=\"submit\" class=\"#{css_class}\"><span><span>#{text}</span></span></button>"
+      end
 
-    def button( text, css_class = nil )
-      "<button type=\"submit\" class=\"#{css_class}\"><span><span>#{text}</span></span></button>"
     end
-
   end
 end

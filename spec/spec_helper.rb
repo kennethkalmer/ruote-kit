@@ -37,6 +37,12 @@ Spec::Runner.configure do |config|
   config.include Webrat::Matchers, :type => :views
   config.include RuoteKit::Spec::RuoteHelpers
 
+  RuoteKit::Application.included_modules.each do |klass|
+    if klass.name =~ /RuoteKit::Helpers::\w+Helpers/
+      config.include klass
+    end
+  end
+
   config.before(:each) do
     @tracer = Tracer.new
     RuoteKit.engine.context[:s_tracer] = @tracer

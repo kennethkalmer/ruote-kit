@@ -13,6 +13,14 @@ module RuoteKit
     use Rack::MethodOverride
     use Rack::ShowExceptions
 
+    helpers do
+      include RuoteKit::Helpers::EngineHelpers
+      include RuoteKit::Helpers::FormHelpers
+      include RuoteKit::Helpers::LaunchItemParser
+      include RuoteKit::Helpers::NavigationHelpers
+      include RuoteKit::Helpers::RenderHelpers
+    end
+
     before do
       # We allow the Accept header to be set to 'application/json'
       format :json if env["HTTP_ACCEPT"] && env["HTTP_ACCEPT"] == "application/json"
@@ -29,7 +37,6 @@ module RuoteKit
       end
     end
 
-    Dir[ File.dirname(__FILE__) + '/helpers/*.rb' ].each { |h| load h }
     Dir[ File.dirname(__FILE__) + '/resources/*.rb' ].each { |r| load r }
   end
 end

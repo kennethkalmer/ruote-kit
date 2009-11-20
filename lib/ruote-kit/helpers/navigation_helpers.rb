@@ -1,53 +1,54 @@
-class RuoteKit::Application
+module RuoteKit
+  module Helpers
+    module NavigationHelpers
 
-  helpers do
+      def navigate_to( text, path )
+        css_classes = []
+        css_classes << 'first' if @first.nil?
+        @first = true
 
-    def navigate_to( text, path )
-      css_classes = []
-      css_classes << 'first' if @first.nil?
-      @first = true
+        css_classes << 'active' if path.split('/')[1] == request.path.split('/')[1]
 
-      css_classes << 'active' if path.split('/')[1] == request.path.split('/')[1]
-
-      "<li class=\"#{css_classes.join(' ')}\"><a href=\"#{ path }\">#{text}</a></li>"
-    end
-
-    def pluralize( number, word )
-      if number > 1
-        word << 's'
+        "<li class=\"#{css_classes.join(' ')}\"><a href=\"#{ path }\">#{text}</a></li>"
       end
 
-      return [ number, word ].join(' ')
-    end
+      def pluralize( number, word )
+        if number > 1
+          word << 's'
+        end
 
-    def link_to( object, *args )
-      case object
-      when Ruote::ProcessStatus
-        link_to_process( object )
-      when Ruote::Workitem
-        link_to_workitem( object )
-      when String
-        "<a href=\"#{args.first}\">#{object}</a>"
+        return [ number, word ].join(' ')
       end
-    end
 
-    def link_to_workitem( workitem )
-      path = "/workitems/#{workitem.fei.wfid}/#{workitem.fei.expid}"
+      def link_to( object, *args )
+        case object
+        when Ruote::ProcessStatus
+          link_to_process( object )
+        when Ruote::Workitem
+          link_to_workitem( object )
+        when String
+          "<a href=\"#{args.first}\">#{object}</a>"
+        end
+      end
 
-      "<a href=\"#{path}\">GET #{path}</a>"
-    end
+      def link_to_workitem( workitem )
+        path = "/workitems/#{workitem.fei.wfid}/#{workitem.fei.expid}"
 
-    def link_to_process( status )
-      path = "/processes/#{status.wfid}"
+        "<a href=\"#{path}\">GET #{path}</a>"
+      end
 
-      "<a href=\"#{path}\">GET #{path}</a>"
-    end
+      def link_to_process( status )
+        path = "/processes/#{status.wfid}"
 
-    def link_to_expression( expression )
-      path = "/expressions/#{expression.fei.wfid}/#{expression.fei.expid}"
+        "<a href=\"#{path}\">GET #{path}</a>"
+      end
 
-      "<a href=\"#{path}\">GET #{path}</a>"
+      def link_to_expression( expression )
+        path = "/expressions/#{expression.fei.wfid}/#{expression.fei.expid}"
+
+        "<a href=\"#{path}\">GET #{path}</a>"
+      end
+
     end
   end
-
 end

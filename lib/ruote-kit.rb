@@ -7,6 +7,7 @@ module RuoteKit
 
   autoload :Configuration, "ruote-kit/configuration"
   autoload :Application,   "ruote-kit/application"
+  autoload :Helpers,       "ruote-kit/helpers"
 
   class << self
     # The instance of ruote

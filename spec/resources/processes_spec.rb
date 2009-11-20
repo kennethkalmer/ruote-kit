@@ -30,7 +30,6 @@ describe "GET /processes" do
       get "/processes"
 
       last_response.should be_ok
-      last_response.should match(/Currently running 1 processes/)
     end
 
     it "should give process information back (JSON)" do
