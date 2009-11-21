@@ -55,8 +55,6 @@ describe "GET /processes/X-Y" do
       get "/processes/#{@wfid}"
 
       last_response.should be_ok
-
-      last_response.should match( @wfid )
     end
 
     it "should give process information back (JSON)" do
