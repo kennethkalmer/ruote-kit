@@ -13,7 +13,7 @@ Follow development:
 * #ruote on Freenode
 * http://groups.google.com/group/openwferu-users
 * http://opensourcery.co.za
-* @kennethkalmer
+* @kennethkalmer on Twitter
 
 == Alpha Status
 
@@ -33,7 +33,7 @@ this:
     $ cd ~/ruote-env
     $ git clone git://github.com/kennethkalmer/ruote-kit.git
     $ git clone git://github.com/jmettraux/ruote.git
-    $ ln -nfs ruote ruote-kit/vendor/ruote
+    $ ln -nfs /path/to/ruote /path/to/ruote-kit/vendor/ruote
 
 You can the 'git pull' within the respective repo's to stay current.
 
@@ -43,7 +43,8 @@ Once you have the dependencies installed, get going by running './bin/ruote-kit'
 from inside the ruote-kit project.
 
 If ruote-kit starts up without any issues (ie missing dependencies), you can
-point your browser to 'http://localhost:8080/' to get going.
+point your browser to 'http://localhost:8080/' to get going. By default ruote-kit
+binds to all IP addresses, so this works out the box remotely too.
 
 == Feedback & bug reports
 
