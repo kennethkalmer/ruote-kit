@@ -5,10 +5,26 @@ module RuoteKit
     module RenderHelpers
 
       def json( resource, object )
+        if respond_to?( "json_#{resource}" )
+          object = send( "json_#{resource}", object )
+        end
+
         {
           "links" => links( resource ),
           resource => object
         }.to_json
+      end
+
+      def json_processes( processes )
+        processes.collect do |process|
+          links = {
+            'self' => link( "/processes/#{process.wfid}", rel('#process') ),
+            'expressions' => link( "/expressions/#{process.wfid}", rel('#expressions') ),
+            'workitems' => link( "/workitems/#{process.wfid}", rel('#workitems') )
+          }
+
+          process.to_h.merge( 'links' => links )
+        end
       end
 
       def rel( fragment )
@@ -25,6 +41,8 @@ module RuoteKit
         ]
 
         links << link("/history/#{params[:wfid]}", rel('#process_history') ) if resource == :process
+
+        links
       end
 
       def link( href, rel )

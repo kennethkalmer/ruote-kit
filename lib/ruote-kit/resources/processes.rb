@@ -5,7 +5,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :processes }
-      format.json { json( :processes, @processes.collect { |p| p.to_h } ) }
+      format.json { json( :processes, @processes ) }
     end
   end
 
