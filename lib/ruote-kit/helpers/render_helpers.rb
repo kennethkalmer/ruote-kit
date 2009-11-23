@@ -16,9 +16,7 @@ module RuoteKit
       end
 
       def json_processes( processes )
-        processes.collect do |process|
-          json_process( process )
-        end
+        processes.map { |p| json_process( p ) }
       end
 
       def json_process( process )
@@ -29,6 +27,23 @@ module RuoteKit
         ]
 
         process.to_h.merge( 'links' => links )
+      end
+
+      def json_expression( expression )
+        links = [
+          link( "/processes/#{expression.fei.wfid}", rel('#process') ),
+          link( "/expressions/#{expression.fei.wfid}", rel('#expressions') )
+        ]
+
+        if expression.parent
+          links << link( "/expressions/#{expression.fei.wfid}/#{expression.parent.fei.expid}", 'parent' )
+        end
+
+        expression.to_h.merge( 'links' => links )
+      end
+
+      def json_expressions( expressions )
+        expressions.map { |e| json_expression( e ) }
       end
 
       def rel( fragment )

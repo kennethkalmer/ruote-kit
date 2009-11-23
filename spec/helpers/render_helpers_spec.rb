@@ -109,4 +109,59 @@ describe "json helper" do
       @hash['process']['links'].detect { |l| l['rel'] =~ /#workitems/ && l['href'] == "/workitems/#{@wfid}" }.should_not be_nil
     end
   end
+
+  describe "render a single expression" do
+    before(:each) do
+      @wfid = launch_test_process do
+        Ruote.process_definition :name => 'foo' do
+          sequence do
+            nada :activity => 'work your magic'
+          end
+        end
+      end
+
+      @expid = '0_0_0'
+
+      stub_chain( :request, :fullpath ).and_return("/expressions/#{@wfid}/#{@expid}")
+
+      process = RuoteKit.engine.process( @wfid )
+      expression = process.expressions.detect { |exp| exp.fei.expid == @expid }
+
+      @hash = Ruote::Json.decode( json( :expression, expression ) )
+    end
+
+    it "should contain the expression" do
+      @hash.should have_key('expression')
+    end
+
+    it "should link to the process" do
+      @hash['expression']['links'].detect { |l| l['rel'] =~ /#process/ && l['href'] == "/processes/#{@wfid}" }.should_not be_nil
+    end
+
+    it "should link to the parent expression" do
+      @hash['expression']['links'].detect { |l| l['rel'] == 'parent' && l['href'] == "/expressions/#{@wfid}/0_0" }.should_not be_nil
+    end
+  end
+
+  describe "render an expression tree" do
+    before(:each) do
+      @wfid = launch_test_process do
+        Ruote.process_definition :name => 'foo' do
+          sequence do
+            nada :activity => 'work your magic'
+          end
+        end
+      end
+
+      stub_chain( :request, :fullpath ).and_return("/expressions/#{@wfid}")
+
+      process = RuoteKit.engine.process( @wfid )
+
+      @hash = Ruote::Json.decode( json( :expressions, process.expressions ) )
+    end
+
+    it "should have the list of expressions" do
+      @hash.should have_key('expressions')
+    end
+  end
 end

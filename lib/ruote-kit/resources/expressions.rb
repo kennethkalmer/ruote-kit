@@ -13,7 +13,7 @@ class RuoteKit::Application
     if @process
       respond_to do |format|
         format.html { haml :expressions }
-        format.json { json( :expressions, {} ) }
+        format.json { json( :expressions, @process.expressions ) }
       end
     else
       resource_not_found

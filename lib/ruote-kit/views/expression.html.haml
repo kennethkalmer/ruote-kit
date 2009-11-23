@@ -24,7 +24,7 @@
   %li
     process expressions:
     %a{ :href => "/expressions/#{@process.wfid}" } GET /expressions/#{@process.wfid}
-  - if @expression.parent_id
+  - if @expression.parent
     %li parent expression: #{link_to_expression @expression.parent}
 
 %p &nbsp;
