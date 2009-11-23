@@ -25,6 +25,7 @@ Dependencies you currently need is:
 * daemon-kit (gem install daemon-kit)
 * sinatra (gem install sinatra)
 * thin or mongrel
+* rspec (only to run the specs)
 
 To keep up with the current changes, you can setup an environment similar to
 this:
