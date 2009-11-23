@@ -5,7 +5,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :workitems }
-      format.json { json( :workitems, @workitems.map { |wi| wi.to_h } ) }
+      format.json { json( :workitems, @workitems ) }
     end
   end
 
@@ -15,7 +15,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml( :workitems ) }
-      format.json { json( :workitems, @workitems.map { |wi| wi.to_h } ) }
+      format.json { json( :workitems, @workitems ) }
     end
   end
 
@@ -25,7 +25,7 @@ class RuoteKit::Application
     if @workitem
       respond_to do |format|
         format.html { haml :workitem }
-        format.json { json( :workitem, @workitem.to_h ) }
+        format.json { json( :workitem, @workitem ) }
       end
     else
       resource_not_found
@@ -39,7 +39,7 @@ class RuoteKit::Application
 
     unless options[:fields].empty?
       workitem.fields = options[:fields]
-      store_participant.consume( workitem )
+      store_participant.update( workitem )
     end
 
     if options[:proceed]
@@ -50,7 +50,7 @@ class RuoteKit::Application
       format.html {
         redirect options[:proceed] ? "/workitems/#{params[:wfid]}" : "/workitems/#{params[:wfid]}/#{params[:expid]}"
       }
-      format.json { json( :workitem, workitem.to_h ) }
+      format.json { json( :workitem, workitem ) }
     end
   end
 

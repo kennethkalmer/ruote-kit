@@ -46,6 +46,19 @@ module RuoteKit
         expressions.map { |e| json_expression( e ) }
       end
 
+      def json_workitems( workitems )
+        workitems.map { |w| json_workitem( w ) }
+      end
+
+      def json_workitem( workitem )
+        links = [
+          link( "/processes/#{workitem.fei.wfid}", rel('#process') ),
+          link( "/expressions/#{workitem.fei.wfid}", rel('#expressions') )
+        ]
+
+        workitem.to_h.merge( 'links' => links )
+      end
+
       def rel( fragment )
         "http://ruote.rubyforge.org/rels.html#{ fragment }"
       end

@@ -164,4 +164,48 @@ describe "json helper" do
       @hash.should have_key('expressions')
     end
   end
+
+  describe "rendering a workitem" do
+    before(:each) do
+      @wfid = launch_test_process do
+        Ruote.process_definition :name => 'foo' do
+          sequence do
+            nada :activity => 'work your magic'
+          end
+        end
+      end
+
+      stub_chain( :request, :fullpath ).and_return("/workitems/#{@wfid}/0_0_0")
+
+      workitem = find_workitem( @wfid, '0_0_0' )
+
+      @hash = Ruote::Json.decode( json( :workitem, workitem ) )
+    end
+
+    it "should have the workitem" do
+      @hash.should have_key('workitem')
+    end
+
+  end
+
+  describe "rendering workitems" do
+    before(:each) do
+      @wfid = launch_test_process do
+        Ruote.process_definition :name => 'foo' do
+          sequence do
+            nada :activity => 'work your magic'
+          end
+        end
+      end
+
+      stub_chain( :request, :fullpath ).and_return("/workitems")
+
+      @hash = Ruote::Json.decode( json( :workitems, store_participant.all ) )
+    end
+
+    it "should have the workitems" do
+      @hash.should have_key('workitems')
+    end
+
+  end
 end
