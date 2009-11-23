@@ -14,7 +14,6 @@ describe "GET /processes" do
       last_response.should be_ok
 
       body = last_response.json_body
-      body.should have_key("links")
       body.should have_key("processes")
 
       body["processes"].should be_empty
@@ -40,7 +39,6 @@ describe "GET /processes" do
       body = last_response.json_body
 
       body["processes"].should_not be_empty
-      body["processes"].first['wfid'].should == @wfid
     end
   end
 end
@@ -64,14 +62,7 @@ describe "GET /processes/X-Y" do
 
       body = last_response.json_body
 
-      # We should have more links, including 'self' and history...
-      body['links'].size.should be(6)
-      body['links'].should include({ 'href' => "/processes/#{@wfid}", 'rel' => 'self' })
-      body['links'].should include({
-        'href' => "/history/#{@wfid}", 'rel' => 'http://ruote.rubyforge.org/rels.html#process_history'
-      })
-
-      body['process'].should == RuoteKit.engine.process( @wfid ).to_h
+      body.should have_key('process')
     end
   end
 
