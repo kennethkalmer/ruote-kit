@@ -17,11 +17,11 @@ module RuoteKit
 
       def json_processes( processes )
         processes.collect do |process|
-          links = {
-            'self' => link( "/processes/#{process.wfid}", rel('#process') ),
-            'expressions' => link( "/expressions/#{process.wfid}", rel('#expressions') ),
-            'workitems' => link( "/workitems/#{process.wfid}", rel('#workitems') )
-          }
+          links = [
+            link( "/processes/#{process.wfid}", rel('#process') ),
+            link( "/expressions/#{process.wfid}", rel('#expressions') ),
+            link( "/workitems/#{process.wfid}", rel('#workitems') )
+          ]
 
           process.to_h.merge( 'links' => links )
         end

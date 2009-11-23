@@ -62,24 +62,18 @@ describe "json helper" do
       end
 
       it "should link to the process details" do
-        @process['links'].should have_key('self')
 
-        @process['links']['self']['rel'].should =~ /#process/
-        @process['links']['self']['href'].should == "/processes/#{@wfid}"
+        @process['links'].detect { |l| l['rel'] =~ /#process/ && l['href'] == "/processes/#{@wfid}" }.should_not be_nil
       end
 
       it "should link to the process expressions" do
-        @process['links'].should have_key('expressions')
 
-        @process['links']['expressions']['rel'].should =~ /#expressions/
-        @process['links']['expressions']['href'].should == "/expressions/#{@wfid}"
+        @process['links'].detect { |l| l['rel'] =~ /#expressions/ && l['href'] == "/expressions/#{@wfid}" }.should_not be_nil
       end
 
       it "should link to the process workitems" do
-        @process['links'].should have_key('workitems')
 
-        @process['links']['workitems']['rel'].should =~ /#workitems/
-        @process['links']['workitems']['href'].should == "/workitems/#{@wfid}"
+        @process['links'].detect { |l| l['rel'] =~ /#workitems/ && l['href'] == "/workitems/#{@wfid}" }.should_not be_nil
       end
     end
 
