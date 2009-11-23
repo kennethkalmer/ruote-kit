@@ -98,7 +98,7 @@ end
 
 describe "POST /processes" do
   before(:each) do
-    RuoteKit.engine.processes.should be_empty
+    engine.processes.should be_empty
   end
 
   it "should launch a valid process definition (JSON)" do
@@ -115,7 +115,7 @@ describe "POST /processes" do
 
     sleep 0.4
 
-    RuoteKit.engine.processes.should_not be_empty
+    engine.processes.should_not be_empty
   end
 
   it "should launch a valid process definition with fields (JSON)" do
@@ -131,7 +131,7 @@ describe "POST /processes" do
     last_response.should be_redirect
     last_response['Location'].should match( /^\/processes\/([0-9a-z\-]+)\.json$/ )
 
-    RuoteKit.engine.context[:s_logger].wait_for([
+    engine.context[:s_logger].wait_for([
       [ :processes, :terminated, { :wfid => $1 } ],
       [ :errors, nil, { :wfid => $1 } ]
     ])
@@ -154,7 +154,7 @@ describe "POST /processes" do
 
     sleep 0.4
 
-    RuoteKit.engine.processes.should_not be_empty
+    engine.processes.should_not be_empty
   end
 
   it "should launch a process definition with fields (HTML)" do
@@ -170,7 +170,7 @@ describe "POST /processes" do
     last_response.should be_redirect
     last_response['Location'].should match( /^\/processes\/([0-9a-z\-]+)$/ )
 
-    RuoteKit.engine.context[:s_logger].wait_for([
+    engine.context[:s_logger].wait_for([
       [ :processes, :terminated, { :wfid => $1 } ],
       [ :errors, nil, { :wfid => $1 } ]
     ])
@@ -192,7 +192,7 @@ describe "POST /processes" do
 
     sleep 0.4
 
-    RuoteKit.engine.processes.should_not be_empty
+    engine.processes.should_not be_empty
   end
 end
 
@@ -219,7 +219,7 @@ describe "DELETE /processes/X-Y" do
 
     sleep 0.4
 
-    RuoteKit.engine.process( @wfid ).should be_nil
+    engine.process( @wfid ).should be_nil
 
     @tracer.to_s.should == "done.\nbailout."
   end
@@ -232,7 +232,7 @@ describe "DELETE /processes/X-Y" do
 
     sleep 0.4
 
-    RuoteKit.engine.process( @wfid ).should be_nil
+    engine.process( @wfid ).should be_nil
 
     @tracer.to_s.should == "done.\nbailout."
   end
@@ -244,7 +244,7 @@ describe "DELETE /processes/X-Y" do
 
     sleep 0.4
 
-    RuoteKit.engine.process( @wfid ).should be_nil
+    engine.process( @wfid ).should be_nil
 
     @tracer.to_s.should == "done."
   end
@@ -257,7 +257,7 @@ describe "DELETE /processes/X-Y" do
 
     sleep 0.4
 
-    RuoteKit.engine.process( @wfid ).should be_nil
+    engine.process( @wfid ).should be_nil
 
     @tracer.to_s.should == "done."
   end

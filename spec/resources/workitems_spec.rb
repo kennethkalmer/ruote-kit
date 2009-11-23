@@ -120,7 +120,7 @@ describe "GET /workitems/wfid/expid" do
         end
       end
 
-      process = RuoteKit.engine.process( @wfid )
+      process = engine.process( @wfid )
       @nada_exp_id = process.expressions.last.fei.expid
 
       @nada_exp_id.should_not be_nil
@@ -167,7 +167,7 @@ describe "PUT /workitems/X-Y" do
       end
     end
 
-    process = RuoteKit.engine.process( @wfid )
+    process = engine.process( @wfid )
     @nada_exp_id = process.expressions.last.fei.expid
 
     @nada_exp_id.should_not be_nil
@@ -228,7 +228,7 @@ describe "PUT /workitems/X-Y" do
     last_response.should be_redirect
     last_response['Location'].should == "/workitems/#{@wfid}"
 
-    RuoteKit.engine.context[:s_logger].wait_for([
+    engine.context[:s_logger].wait_for([
       [ :processes, :terminated, { :wfid => @wfid } ],
       [ :errors, nil, { :wfid => @wfid } ]
     ])
@@ -252,7 +252,7 @@ describe "PUT /workitems/X-Y" do
 
     last_response.should be_ok
 
-    RuoteKit.engine.context[:s_logger].wait_for([
+    engine.context[:s_logger].wait_for([
       [ :processes, :terminated, { :wfid => @wfid } ],
       [ :errors, nil, { :wfid => @wfid } ]
     ])

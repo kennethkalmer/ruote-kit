@@ -44,7 +44,7 @@ describe "json helper" do
       stub_chain( :request, :fullpath ).and_return('/processes')
 
       @wfid = launch_test_process
-      process = RuoteKit.engine.process( @wfid )
+      process = engine.process( @wfid )
 
       @hash = Ruote::Json.decode( json( :processes, [process] ) )
     end
@@ -85,7 +85,7 @@ describe "json helper" do
 
       stub_chain( :request, :fullpath ).and_return("/processes/#{@wfid}")
 
-      process = RuoteKit.engine.process( @wfid )
+      process = engine.process( @wfid )
 
       @hash = Ruote::Json.decode( json( :process, process ) )
     end
@@ -124,7 +124,7 @@ describe "json helper" do
 
       stub_chain( :request, :fullpath ).and_return("/expressions/#{@wfid}/#{@expid}")
 
-      process = RuoteKit.engine.process( @wfid )
+      process = engine.process( @wfid )
       expression = process.expressions.detect { |exp| exp.fei.expid == @expid }
 
       @hash = Ruote::Json.decode( json( :expression, expression ) )
@@ -155,7 +155,7 @@ describe "json helper" do
 
       stub_chain( :request, :fullpath ).and_return("/expressions/#{@wfid}")
 
-      process = RuoteKit.engine.process( @wfid )
+      process = engine.process( @wfid )
 
       @hash = Ruote::Json.decode( json( :expressions, process.expressions ) )
     end

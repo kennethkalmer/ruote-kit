@@ -16,7 +16,7 @@ describe "processes.html.haml" do
   describe "with processes" do
     before(:each) do
       @wfid = launch_test_process
-      @process = RuoteKit.engine.process( @wfid )
+      @process = engine.process( @wfid )
 
       assigns[:processes] = [ @process ]
 

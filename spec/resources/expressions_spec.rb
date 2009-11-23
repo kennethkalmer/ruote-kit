@@ -56,7 +56,7 @@ describe "GET /expressions/wfid/expid" do
   describe "with running processes" do
     before(:each) do
       @wfid = launch_test_process
-      process = RuoteKit.engine.process( @wfid )
+      process = engine.process( @wfid )
       @nada_exp_id = process.expressions.last.fei.expid
     end
 
@@ -108,7 +108,7 @@ describe "DELETE /expressions/wfid/expid" do
         end
       end
 
-      wait_exp = RuoteKit.engine.process( @wfid ).expressions.last
+      wait_exp = engine.process( @wfid ).expressions.last
       @expid = wait_exp.fei.expid
     end
 
