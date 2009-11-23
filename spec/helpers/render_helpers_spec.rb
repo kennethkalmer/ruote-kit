@@ -78,4 +78,35 @@ describe "json helper" do
     end
 
   end
+
+  describe "rendering a single process" do
+    before(:each) do
+      @wfid = launch_test_process
+
+      stub_chain( :request, :fullpath ).and_return("/processes/#{@wfid}")
+
+      process = RuoteKit.engine.process( @wfid )
+
+      @hash = Ruote::Json.decode( json( :process, process ) )
+    end
+
+    it "should have the process details" do
+      @hash.should have_key('process')
+    end
+
+    it "should link to the process details" do
+
+      @hash['process']['links'].detect { |l| l['rel'] =~ /#process/ && l['href'] == "/processes/#{@wfid}" }.should_not be_nil
+    end
+
+    it "should link to the process expressions" do
+
+      @hash['process']['links'].detect { |l| l['rel'] =~ /#expressions/ && l['href'] == "/expressions/#{@wfid}" }.should_not be_nil
+    end
+
+    it "should link to the process workitems" do
+
+      @hash['process']['links'].detect { |l| l['rel'] =~ /#workitems/ && l['href'] == "/workitems/#{@wfid}" }.should_not be_nil
+    end
+  end
 end

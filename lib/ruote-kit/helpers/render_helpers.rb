@@ -17,14 +17,18 @@ module RuoteKit
 
       def json_processes( processes )
         processes.collect do |process|
-          links = [
-            link( "/processes/#{process.wfid}", rel('#process') ),
-            link( "/expressions/#{process.wfid}", rel('#expressions') ),
-            link( "/workitems/#{process.wfid}", rel('#workitems') )
-          ]
-
-          process.to_h.merge( 'links' => links )
+          json_process( process )
         end
+      end
+
+      def json_process( process )
+        links = [
+          link( "/processes/#{process.wfid}", rel('#process') ),
+          link( "/expressions/#{process.wfid}", rel('#expressions') ),
+          link( "/workitems/#{process.wfid}", rel('#workitems') )
+        ]
+
+        process.to_h.merge( 'links' => links )
       end
 
       def rel( fragment )
@@ -39,8 +43,6 @@ module RuoteKit
           link( '/history', rel("#history") ),
           link( request.fullpath, 'self' )
         ]
-
-        links << link("/history/#{params[:wfid]}", rel('#process_history') ) if resource == :process
 
         links
       end
