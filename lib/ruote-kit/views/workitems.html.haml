@@ -9,6 +9,10 @@
       .notice
         %p #{ pluralize(@workitems.size, 'workitem') } available #{ @wfid ? "for #{@wfid}" : '' }
 
+    - if @participants
+      .notice
+        %p Filtered for participant(s): #{@participants.join(', ')}
+
 %ul.nested_list
   - @workitems.each do |wi|
     %li

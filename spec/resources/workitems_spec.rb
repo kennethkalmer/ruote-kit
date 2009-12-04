@@ -260,3 +260,47 @@ describe "PUT /workitems/X-Y" do
     @tracer.to_s.should == "bar"
   end
 end
+
+describe "Filtering workitems" do
+  describe "on participants" do
+    before(:each) do
+      @wfid = launch_test_process do
+        Ruote.process_definition :name => 'test' do
+          concurrence do
+            jack :activity => 'Fetch a pale'
+            jill :activity => 'Chase Jack'
+            well :activity => 'Ready water'
+          end
+        end
+      end
+    end
+
+    it "should narrow results down to a single participant (JSON)" do
+      get '/workitems.json', :participant => 'jack'
+
+      last_response.should be_ok
+
+      last_response.json_body['workitems'].size.should be(1)
+    end
+
+    it "should narrow results down to a single participant (HTML)" do
+      get '/workitems', :participant => 'jack'
+
+      last_response.should be_ok
+    end
+
+    it "should narrow results down to multiple participants (JSON)" do
+      get "/workitems.json", :participant => 'jack,jill'
+
+      last_response.should be_ok
+
+      last_response.json_body['workitems'].size.should be(2)
+    end
+
+    it "should narrow results down to multiple participants (HTML)" do
+      get "/workitems", :participant => 'jack,jill'
+
+      last_response.should be_ok
+    end
+  end
+end
