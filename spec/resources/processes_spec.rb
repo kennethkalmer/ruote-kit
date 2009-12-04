@@ -112,6 +112,7 @@ describe "POST /processes" do
 
     last_response.should be_redirect
     last_response['Location'].should match( /^\/processes\/[0-9a-z\-]+\.json$/ )
+    #last_response['Content-Type'].should be_nil
 
     sleep 0.4
 
