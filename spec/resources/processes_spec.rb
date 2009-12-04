@@ -110,9 +110,9 @@ describe "POST /processes" do
 
     post '/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
-    last_response.should be_redirect
-    last_response['Location'].should match( /^\/processes\/[0-9a-z\-]+\.json$/ )
-    #last_response['Content-Type'].should be_nil
+    last_response.should be_ok
+
+    last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
 
     sleep 0.4
 
@@ -129,8 +129,8 @@ describe "POST /processes" do
 
     post '/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
-    last_response.should be_redirect
-    last_response['Location'].should match( /^\/processes\/([0-9a-z\-]+)\.json$/ )
+    last_response.should be_ok
+    last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
 
     engine.context[:s_logger].wait_for([
       [ :processes, :terminated, { :wfid => $1 } ],

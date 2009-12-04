@@ -33,7 +33,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { redirect "/processes/#{@wfid}" }
-      format.json { redirect "/processes/#{@wfid}.json" }
+      format.json { json( :launched, @wfid ) }
     end
   end
 
