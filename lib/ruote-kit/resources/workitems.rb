@@ -6,6 +6,19 @@ class RuoteKit::Application
       @workitems = @participants.inject([]) do |memo, part|
         memo.concat store_participant.by_participant( part )
       end
+
+    elsif params[:fields]
+      # TODO: Optimize this
+      @workitems = store_participant.all.inject([]) do |memo, wi|
+        params[:fields].each do |(f,v)|
+          if wi.fields.keys.include?( f ) && wi.fields[f] == v
+            memo << wi
+          end
+        end
+
+        memo
+      end
+
     else
       @workitems = store_participant.all
     end

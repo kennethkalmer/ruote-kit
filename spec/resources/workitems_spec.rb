@@ -303,4 +303,36 @@ describe "Filtering workitems" do
       last_response.should be_ok
     end
   end
+
+  describe "on fields" do
+    before(:each) do
+      @wfid_1 = launch_test_process do
+        Ruote.process_definition :name => 'one' do
+          set :field => 'foo', :value => 'bar'
+
+          sequence do
+            nada
+          end
+        end
+      end
+      @wfid_2 = launch_test_process do
+        Ruote.process_definition :name => 'one' do
+          set :field => 'foo', :value => 'baz'
+
+          sequence do
+            nada
+          end
+        end
+      end
+    end
+
+    it "should filter accordingly" do
+      get '/workitems.json', :fields => { 'foo' => 'bar' }
+
+      last_response.should be_ok
+
+      last_response.json_body['workitems'].size.should be(1)
+      last_response.json_body['workitems'].first['wfid'].should == @wfid_1
+    end
+  end
 end
