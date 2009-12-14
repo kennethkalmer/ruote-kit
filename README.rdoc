@@ -22,21 +22,16 @@ coming weeks (albeit for the better).
 
 Dependencies you currently need is:
 
-* daemon-kit (gem install daemon-kit)
-* sinatra (gem install sinatra)
-* thin or mongrel
+* bundler (gem install bundler)
 * rspec (only to run the specs)
 
-To keep up with the current changes, you can setup an environment similar to
-this:
+ruote-kit uses bundler to setup and maintain its environment. Before running
+ruote-kit for the first time you need to install bundler and then run:
 
-    $ mkdir ~/ruote-env
-    $ cd ~/ruote-env
-    $ git clone git://github.com/kennethkalmer/ruote-kit.git
-    $ git clone git://github.com/jmettraux/ruote.git
-    $ ln -nfs /path/to/ruote /path/to/ruote-kit/vendor/ruote
+  $ gem bundle
 
-You can the 'git pull' within the respective repo's to stay current.
+Bundler will download all the required gems and unpack them in 'vendor/gems'
+for you.
 
 == Getting started
 

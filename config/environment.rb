@@ -23,7 +23,9 @@ DaemonKit::Initializer.run do |config|
 end
 
 # Additional load paths for our vendored gems
-Dir[ DaemonKit.root + '/vendor/gems/*' ].each do |gemdir|
+Dir[ DaemonKit.root + '/vendor/*' ].each do |gemdir|
+  next if gemdir =~ /\/gems$/
+
   if File.directory?( gemdir + '/lib')
     $:.unshift( gemdir + '/lib' )
   end

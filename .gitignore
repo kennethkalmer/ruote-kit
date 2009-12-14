@@ -4,3 +4,6 @@ vendor/ruote
 *.swp
 work*/
 .DS_Store
+bin/*
+!bin/ruote-kit
+vendor/gems

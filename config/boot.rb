@@ -3,6 +3,23 @@
 
 DAEMON_ROOT = "#{File.expand_path(File.dirname(__FILE__))}/.." unless defined?( DAEMON_ROOT )
 
+begin
+  require File.join( DAEMON_ROOT, 'vendor', 'gems', 'environment' )
+rescue LoadError
+  puts <<EOF
+
+ruote-kit uses bundler to maintain the list of dependencies and the environment
+within which it runs. Please installl bundler (gem install bundler) and then
+run:
+
+  gem bundle
+
+to get obtain the total environment. Also ensure `git` is in your PATH.
+
+EOF
+  exit 1
+end
+
 module DaemonKit
   class << self
     def boot!
