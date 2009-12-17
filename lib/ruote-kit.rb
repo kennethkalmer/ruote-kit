@@ -82,6 +82,8 @@ module RuoteKit
     def configure_sinatra
       DaemonKit.logger.debug "Configuring Sinatra"
 
+      Encoding.default_external = Encoding::ASCII_8BIT if ''.respond_to?(:force_encoding)
+
       self.sinatra = RuoteKit::Application
 
       return if %w(test cucumber).include? DaemonKit.env
