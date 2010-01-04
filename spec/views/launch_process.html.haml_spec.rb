@@ -7,17 +7,15 @@ describe "launch_process.html.haml" do
     response.should have_selector('textarea', :name => 'process_definition')
   end
 
-  it "should have a process URI field if remote processes are allowed" do
-    render 'launch_process.html.haml'
-
-    response.should have_selector('input', :name => 'process_uri')
-  end
-
-  it "should not have a process URI field if remote processes are disabled"
-
   it "should have a workitem fields field" do
     render 'launch_process.html.haml'
 
     response.should have_selector('textarea', :name => 'process_fields')
+  end
+
+  it "should have a workitem variables field" do
+    render 'launch_process.html.haml'
+
+    response.should have_selector('textarea', :name => 'process_variables')
   end
 end
