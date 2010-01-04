@@ -228,10 +228,11 @@ describe "PUT /workitems/X-Y" do
     last_response.should be_redirect
     last_response['Location'].should == "/workitems/#{@wfid}"
 
-    engine.context[:s_logger].wait_for([
-      [ :processes, :terminated, { :wfid => @wfid } ],
-      [ :errors, nil, { :wfid => @wfid } ]
-    ])
+    #engine.context[:s_logger].wait_for([
+    #  [ :processes, :terminated, { :wfid => @wfid } ],
+    #  [ :errors, nil, { :wfid => @wfid } ]
+    #])
+    sleep 0.5
 
     @tracer.to_s.should == "bar"
   end
@@ -252,10 +253,11 @@ describe "PUT /workitems/X-Y" do
 
     last_response.should be_ok
 
-    engine.context[:s_logger].wait_for([
-      [ :processes, :terminated, { :wfid => @wfid } ],
-      [ :errors, nil, { :wfid => @wfid } ]
-    ])
+    #engine.context[:s_logger].wait_for([
+    #  [ :processes, :terminated, { :wfid => @wfid } ],
+    #  [ :errors, nil, { :wfid => @wfid } ]
+    #])
+    sleep 0.5
 
     @tracer.to_s.should == "bar"
   end
