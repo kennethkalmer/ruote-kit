@@ -7,7 +7,7 @@ module RuoteKit
       end
 
       def store_participant
-        RuoteKit.engine.plist.lookup('.*')
+        RuoteKit.engine.context.plist.lookup('.*')
       end
 
       def find_workitems( wfid )

@@ -1,6 +1,8 @@
 # Your starting point for daemon specific classes. This directory is
 # already included in your load path, so no need to specify it.
 
+require 'ruote'
+
 module RuoteKit
 
   VERSION = "0.0.0"
@@ -52,17 +54,17 @@ module RuoteKit
       end
     end
 
-    private
+    def configure_participants
+      self.engine.register_participant('.*', configuration.catchall_participant)
+    end
 
     def configure_engine
       DaemonKit.logger.debug "Configuring engine"
 
-      engine_context = {
-        :work_directory => configuration.work_directory
-      }
-      self.engine = configuration.engine_class.new( engine_context )
+      storage = configuration.storage_instance
+      self.engine = Ruote::Engine.new( storage )
 
-      self.engine.register_participant('.*', configuration.catchall_participant)
+      configure_participants
     end
 
     def shutdown_engine( purge = false )
@@ -71,13 +73,16 @@ module RuoteKit
       self.engine.shutdown
 
       if purge
-        self.engine.context.values.each do |s|
+        self.engine.context.keys.each do |k|
+          s = self.engine.context[k]
           s.purge if s.respond_to?(:purge)
         end
       end
 
       self.engine = nil
     end
+
+    private
 
     def configure_sinatra
       DaemonKit.logger.debug "Configuring Sinatra"

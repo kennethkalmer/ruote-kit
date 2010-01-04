@@ -6,13 +6,13 @@
     %textarea.text_area{ :name => "process_definition", :cols => 80, :rows => 10 }
     %span.description Provide your process definition here in any of the formats supported by ruote
   .group
-    %label.label{ :for => "process_uri" } Process URI (Optional)
-    %input.text_field{ :type => 'text', :name => "process_uri" }
-    %span.description You can provide a URI to a process definition as well, which will be used if present
-  .group
     %label.label{ :for => "process_fields" } Process fields
     %textarea.text_area{ :name => "process_fields", :cols => 80, :rows => 10 }
     %span.description Provide process fields as a JSON string
+  .group
+    %label.label{ :for => "process_variables" } Process variables
+    %textarea.text_area{ :name => "process_variables", :cols => 80, :rows => 10 }
+    %span.description Provide process variables as a JSON string
   .group.navform
     %input.submit{ :type => "submit", "value" => "Launch" }
     or

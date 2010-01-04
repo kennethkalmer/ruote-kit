@@ -9,8 +9,11 @@ module RuoteKit
     # Path the access log for Rack::CommonLogger
     attr_accessor :access_log
 
-    # Working directory for the engine
+    # Working directory for the engine (if using file system persistence)
     attr_accessor :work_directory
+
+    # Number of workers to spawn (1 by default)
+    attr_accessor :workers
 
     class << self
 
@@ -29,6 +32,8 @@ module RuoteKit
       }
 
       self.work_directory = File.join( DaemonKit.root, "work_#{DaemonKit.env}" )
+
+      self.workers = 1
     end
 
     # Return the selected ruote-kit mode
@@ -47,27 +52,21 @@ module RuoteKit
       File.join( DaemonKit.root, 'config', 'ruote.rb' )
     end
 
-    # Return the best suited engine class for the current mode
-    def engine_class
+    # Return the best suited storage class for the current mode
+    def storage_instance
       case mode
       when :transient
-        Ruote::Engine
+        require 'ruote/storage/hash_storage'
+        Ruote::HashStorage.new
       when :file_system
-        require 'ruote/engine/fs_engine'
-        Ruote::FsPersistedEngine
+        require 'ruote/storage/fs_storage'
+        Ruote::FsStorage.new( self.work_directory )
       end
     end
 
-    # Return the best suited 'catchall' participant class for the current mode
     def catchall_participant
-      case mode
-      when :transient
-        require 'ruote/part/hash_participant'
-        Ruote::HashParticipant
-      when :file_system
-        require 'ruote/part/fs_participant'
-        Ruote::FsParticipant
-      end
+      require 'ruote/part/storage_participant'
+      Ruote::StorageParticipant
     end
 
     def rack_handler_class

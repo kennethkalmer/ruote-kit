@@ -132,10 +132,12 @@ describe "POST /processes" do
     last_response.should be_ok
     last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
 
-    engine.context[:s_logger].wait_for([
-      [ :processes, :terminated, { :wfid => $1 } ],
-      [ :errors, nil, { :wfid => $1 } ]
-    ])
+    #engine.context[:s_logger].wait_for([
+    #  [ :processes, :terminated, { :wfid => $1 } ],
+    #  [ :errors, nil, { :wfid => $1 } ]
+    #])
+    #engine.context.logger.wait_for( $1 )
+    sleep 0.5
 
     @tracer.to_s.should == "bar"
   end
@@ -171,10 +173,12 @@ describe "POST /processes" do
     last_response.should be_redirect
     last_response['Location'].should match( /^\/processes\/([0-9a-z\-]+)$/ )
 
-    engine.context[:s_logger].wait_for([
-      [ :processes, :terminated, { :wfid => $1 } ],
-      [ :errors, nil, { :wfid => $1 } ]
-    ])
+    #engine.context[:s_logger].wait_for([
+    #  [ :processes, :terminated, { :wfid => $1 } ],
+    #  [ :errors, nil, { :wfid => $1 } ]
+    #])
+    #
+    sleep 0.5
 
     @tracer.to_s.should == "bar"
   end

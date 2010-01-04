@@ -8,16 +8,20 @@ module RuoteKit
 
         when "application/json" then
           data = JSON.parse( env["rack.input"].read )
-          launch_item = Ruote::Launchitem.new( data["uri"] || data["definition"] )
-          launch_item.fields = data["fields"]
+          launch_item = {}
+          launch_item['pdef'] = data["definition"]
+          launch_item['fields'] = data["fields"] || {}
+          launch_item['variables'] = data["variables"] || {}
           return launch_item
 
         when "application/x-www-form-urlencoded"
-          pdef = params[:process_uri].nil? || params[:process_uri].empty? ? params[:process_definition] : params[:process_uri]
-          launch_item = Ruote::Launchitem.new( pdef )
+          launch_item = { 'pdef' => params[:process_definition] }
           fields = params[:process_fields] || ""
           fields = "{}" if fields.empty?
-          launch_item.fields = JSON.parse( fields )
+          launch_item['fields'] = JSON.parse( fields )
+          vars = params[:process_variables] || ""
+          vars = "{}" if vars.empty?
+          launch_item['variables'] = JSON.parse( vars )
           return launch_item
 
         else

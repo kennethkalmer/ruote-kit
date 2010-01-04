@@ -44,15 +44,25 @@ Spec::Runner.configure do |config|
   end
 
   config.before(:each) do
+    RuoteKit.configure_engine
+
     @tracer = Tracer.new
-    RuoteKit.engine.context[:s_tracer] = @tracer
-    RuoteKit.engine.add_service(:s_logger, Ruote::TestLogger)
+    RuoteKit.engine.add_service( 'tracer', @tracer )
+    RuoteKit.engine.add_service(:s_logger, Ruote::WaitLogger)
+
+    @_spec_worker = Ruote::Worker.new( RuoteKit.engine.storage )
+    @_spec_worker.context.add_service( 'tracer', @tracer )
+    @_spec_worker.run_in_thread
   end
 
   # Purge the engine after every run
   config.after(:each) do
-    RuoteKit.engine.plist.lookup('.*').purge!
-    RuoteKit.engine.purge!
+    @_spec_worker.shutdown
+
+    RuoteKit.engine.context.plist.lookup('.*').purge!
+    RuoteKit.engine.storage.purge! unless RuoteKit.engine.storage.nil?
+
+    RuoteKit.shutdown_engine( true )
   end
 end
 
@@ -97,7 +107,7 @@ end
 
 class Rack::MockResponse
   def json_body
-    Ruote::Json.decode( body )
+    Rufus::Json.decode( body )
   end
 
   def json?

@@ -5,7 +5,7 @@ describe "json helper" do
     before(:each) do
       stub_chain( :request, :fullpath ).and_return('/')
 
-      @hash = Ruote::Json.decode( json( :status, :ok ) )
+      @hash = Rufus::Json.decode( json( :status, :ok ) )
     end
 
     it "should have the key & value" do
@@ -46,7 +46,7 @@ describe "json helper" do
       @wfid = launch_test_process
       process = engine.process( @wfid )
 
-      @hash = Ruote::Json.decode( json( :processes, [process] ) )
+      @hash = Rufus::Json.decode( json( :processes, [process] ) )
     end
 
     it "should have a collection of processes" do
@@ -87,7 +87,7 @@ describe "json helper" do
 
       process = engine.process( @wfid )
 
-      @hash = Ruote::Json.decode( json( :process, process ) )
+      @hash = Rufus::Json.decode( json( :process, process ) )
     end
 
     it "should have the process details" do
@@ -127,7 +127,7 @@ describe "json helper" do
       process = engine.process( @wfid )
       expression = process.expressions.detect { |exp| exp.fei.expid == @expid }
 
-      @hash = Ruote::Json.decode( json( :expression, expression ) )
+      @hash = Rufus::Json.decode( json( :expression, expression ) )
     end
 
     it "should contain the expression" do
@@ -157,7 +157,7 @@ describe "json helper" do
 
       process = engine.process( @wfid )
 
-      @hash = Ruote::Json.decode( json( :expressions, process.expressions ) )
+      @hash = Rufus::Json.decode( json( :expressions, process.expressions ) )
     end
 
     it "should have the list of expressions" do
@@ -179,7 +179,7 @@ describe "json helper" do
 
       workitem = find_workitem( @wfid, '0_0_0' )
 
-      @hash = Ruote::Json.decode( json( :workitem, workitem ) )
+      @hash = Rufus::Json.decode( json( :workitem, workitem ) )
     end
 
     it "should have the workitem" do
@@ -200,7 +200,7 @@ describe "json helper" do
 
       stub_chain( :request, :fullpath ).and_return("/workitems")
 
-      @hash = Ruote::Json.decode( json( :workitems, store_participant.all ) )
+      @hash = Rufus::Json.decode( json( :workitems, store_participant.all ) )
     end
 
     it "should have the workitems" do
