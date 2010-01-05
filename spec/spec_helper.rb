@@ -48,7 +48,7 @@ Spec::Runner.configure do |config|
 
     @tracer = Tracer.new
     RuoteKit.engine.add_service( 'tracer', @tracer )
-    RuoteKit.engine.add_service(:s_logger, Ruote::WaitLogger)
+    RuoteKit.engine.add_service( 's_logger', Ruote::WaitLogger )
 
     @_spec_worker = Ruote::Worker.new( RuoteKit.engine.storage )
     @_spec_worker.context.add_service( 'tracer', @tracer )

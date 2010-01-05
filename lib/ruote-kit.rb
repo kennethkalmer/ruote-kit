@@ -59,12 +59,18 @@ module RuoteKit
     end
 
     def configure_engine
-      DaemonKit.logger.debug "Configuring engine"
+      DaemonKit.logger.debug "Configuring engine & storage"
 
       storage = configuration.storage_instance
       self.engine = Ruote::Engine.new( storage )
 
       configure_participants
+
+      return if %w(test cucumber).include? DaemonKit.env
+
+      DaemonKit.logger.debug "Starting a worker"
+      worker = Ruote::Worker.new( storage )
+      worker.run_in_thread
     end
 
     def shutdown_engine( purge = false )
