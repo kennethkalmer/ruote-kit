@@ -59,10 +59,12 @@ Spec::Runner.configure do |config|
   config.after(:each) do
     @_spec_worker.shutdown
 
-    RuoteKit.engine.context.plist.lookup('.*').purge!
-    RuoteKit.engine.storage.purge! unless RuoteKit.engine.storage.nil?
+    unless RuoteKit.engine.nil?
+      RuoteKit.engine.context.plist.lookup('.*').purge!
+      RuoteKit.engine.storage.purge! unless RuoteKit.engine.storage.nil?
 
-    RuoteKit.shutdown_engine( true )
+      RuoteKit.shutdown_engine( true )
+    end
   end
 end
 
