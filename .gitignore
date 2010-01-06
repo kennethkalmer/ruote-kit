@@ -5,3 +5,4 @@ bin/*
 vendor/gems
 .yardoc
 doc/*
+pkg/*
