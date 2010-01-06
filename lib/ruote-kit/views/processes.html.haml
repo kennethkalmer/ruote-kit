@@ -20,8 +20,8 @@
         %li tags: #{process.all_tags.keys.join(', ')}
         %li
           expressions:
-          %a{ :href => "/expressions/#{process.wfid}" } GET /expressions/#{process.wfid}
+          %a{ :href => "/_ruote/expressions/#{process.wfid}" } GET /_ruote/expressions/#{process.wfid}
         %li
           workitems:
-          %a{ :href => "/workitems/#{process.wfid}" } GET /workitems/#{process.wfid}
+          %a{ :href => "/_ruote/workitems/#{process.wfid}" } GET /_ruote/workitems/#{process.wfid}
         %li errors: #{process.errors.size}

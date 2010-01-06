@@ -1,6 +1,6 @@
 %h2 Launch a new process
 
-%form.form{ :method => "POST", :action => "/processes" }
+%form.form{ :method => "POST", :action => "/_ruote/processes" }
   .group
     %label.label{ :for => "process_definition" } Process definition
     %textarea.text_area{ :name => "process_definition", :cols => 80, :rows => 10 }
@@ -16,4 +16,4 @@
   .group.navform
     %input.submit{ :type => "submit", "value" => "Launch" }
     or
-    %a{ :href => "/processes" } Cancel
+    %a{ :href => "/_ruote/processes" } Cancel

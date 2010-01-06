@@ -8,13 +8,13 @@
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         = button "Cancel", "cancel force-block"
-        %span.description DELETE /expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}
+        %span.description DELETE /_ruote/expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}
     %li.b5
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         %input{ :type => 'hidden', :name => '_kill', :value => '1' }
         = button "Kill", "cancel force-block"
-        %span.description DELETE /expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}?_kill=1
+        %span.description DELETE /_ruote/expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}?_kill=1
 
 %ul.nolist
   %li fei: #{@expression.fei.to_s}
@@ -23,7 +23,7 @@
   %li process: #{link_to @process}
   %li
     process expressions:
-    %a{ :href => "/expressions/#{@process.wfid}" } GET /expressions/#{@process.wfid}
+    %a{ :href => "/_ruote/expressions/#{@process.wfid}" } GET /_ruote/expressions/#{@process.wfid}
   - if @expression.parent
     %li parent expression: #{link_to_expression @expression.parent}
 

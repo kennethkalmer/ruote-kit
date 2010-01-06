@@ -32,19 +32,19 @@ module RuoteKit
       end
 
       def link_to_workitem( workitem )
-        path = "/workitems/#{workitem.fei.wfid}/#{workitem.fei.expid}"
+        path = "/_ruote/workitems/#{workitem.fei.wfid}/#{workitem.fei.expid}"
 
         "<a href=\"#{path}\">GET #{path}</a>"
       end
 
       def link_to_process( status )
-        path = "/processes/#{status.wfid}"
+        path = "/_ruote/processes/#{status.wfid}"
 
         "<a href=\"#{path}\">GET #{path}</a>"
       end
 
       def link_to_expression( expression )
-        path = "/expressions/#{expression.fei.wfid}/#{expression.fei.expid}"
+        path = "/_ruote/expressions/#{expression.fei.wfid}/#{expression.fei.expid}"
 
         "<a href=\"#{path}\">GET #{path}</a>"
       end

@@ -9,7 +9,7 @@
   %li last modified:
   %li process: #{link_to engine.process( @workitem.fei.wfid) }
   %li expressions:
-  %li workitems of this process: #{link_to "GET /workitems/#{@workitem.fei.wfid}", "/workitems/#{@workitem.fei.wfid}" }
+  %li workitems of this process: #{link_to "GET /_ruote/workitems/#{@workitem.fei.wfid}", "/_ruote/workitems/#{@workitem.fei.wfid}" }
 
 %p &nbsp;
 
@@ -27,7 +27,7 @@
     %br
     %span.description Check to let the workflow proceed, leave unchecked to just update workitem fields
   .group.navform
-    %input.submit{ :type => 'submit', :value => "PUT /workitems/#{@workitem.fei.wfid}/#{@workitem.fei.expid}" }
+    %input.submit{ :type => 'submit', :value => "PUT /_ruote/workitems/#{@workitem.fei.wfid}/#{@workitem.fei.expid}" }
 
 %p &nbsp;
 
