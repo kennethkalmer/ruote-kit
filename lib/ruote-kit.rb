@@ -1,6 +1,4 @@
-# Your starting point for daemon specific classes. This directory is
-# already included in your load path, so no need to specify it.
-
+require 'json'
 require 'ruote'
 
 module RuoteKit
@@ -15,66 +13,69 @@ module RuoteKit
     # The instance of ruote
     attr_accessor :engine
 
-    # Instance of our sinatra app
-    attr_accessor :sinatra
+    # The instance of our worker, if used
+    attr_accessor :worker
 
-    # Instance of server handler
-    attr_accessor :server
+    def env
+      @env ||= (
+        if defined?( Rails )
+          Rails.env
+        else
+          ENV['RACK_ENV'] || 'development'
+        end
+      )
+    end
 
-    # Instance of our server thread
-    attr_accessor :server_thread
+    def root
+      Dir.pwd
+    end
+
+    def configure( &block )
+      configuration.instance_eval &block
+
+      run_engine! if configuration.run_engine
+    end
 
     # Configure and run the engine in a RESTful container
     def run!(&block)
       yield if block_given?
 
-      configure_engine
-      configure_sinatra
-      running!
+      run_engine!
     end
 
     def shutdown!( purge_engine = false )
-      shutdown_sinatra
       shutdown_engine( purge_engine )
     end
 
     def configuration
-      unless @configuration
-        @configuration = Configuration.new
-        config = @configuration
-        eval( IO.read( @configuration.user_file ), binding, @configuration.user_file ) if File.exist?( @configuration.user_file )
-      end
 
-      @configuration
-    end
-
-    def access_logger
-      if configuration.access_log
-        return DaemonKit::AbstractLogger.new( configuration.access_log )
-      end
+      @configuration ||= Configuration.new
     end
 
     def configure_participants
       self.engine.register_participant('.*', configuration.catchall_participant)
     end
 
-    def configure_engine
-      DaemonKit.logger.debug "Configuring engine & storage"
+    def ensure_engine!
+      run_engine! if self.engine.nil?
+    end
+
+    def run_engine!
 
       storage = configuration.storage_instance
       self.engine = Ruote::Engine.new( storage )
 
       configure_participants
 
-      return if %w(test cucumber).include? DaemonKit.env
+      return unless configuration.run_worker
 
-      DaemonKit.logger.debug "Starting a worker"
-      worker = Ruote::Worker.new( storage )
-      worker.run_in_thread
+      self.worker = Ruote::Worker.new( storage )
+      self.worker.run_in_thread
     end
 
     def shutdown_engine( purge = false )
-      DaemonKit.logger.debug "Shutting down engine"
+
+      return if self.engine.nil?
 
       self.engine.shutdown
 
@@ -86,41 +87,10 @@ module RuoteKit
       end
 
       self.engine = nil
+
+      self.worker.shutdown if self.worker
+      self.worker = nil
     end
 
-    private
-
-    def configure_sinatra
-      DaemonKit.logger.debug "Configuring Sinatra"
-
-      Encoding.default_external = Encoding::ASCII_8BIT if ''.respond_to?(:force_encoding)
-
-      self.sinatra = RuoteKit::Application
-
-      return if %w(test cucumber).include? DaemonKit.env
-
-      self.server_thread = Thread.new {
-        configuration.rack_handler_class.run( self.sinatra, configuration.rack_options ) do |server|
-          self.server = server
-        end
-      }
-    end
-
-    def running!
-      DaemonKit.at_shutdown do
-        RuoteKit.shutdown!
-      end
-
-      self.server_thread.join if self.server_thread
-    end
-
-    def shutdown_sinatra
-      DaemonKit.logger.debug "Shutting down Sinatra"
-
-      return if %w( test cucumber ).include? DaemonKit.env
-
-      self.server.respond_to?(:stop!) ? self.server.stop! : self.server.stop
-      self.server_thread.join
-    end
   end
 end

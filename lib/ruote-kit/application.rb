@@ -1,17 +1,19 @@
-require 'sinatra/respond_to'
+require 'ruote-kit/vendor/sinatra-respond_to/lib/sinatra/respond_to'
+require 'haml'
 
 module RuoteKit
   class Application < Sinatra::Base
 
-    set :environment, DaemonKit.env
-    set :views, DaemonKit.root + '/lib/ruote-kit/views'
-    set :public, DaemonKit.root + '/lib/ruote-kit/public'
-    set :static, true
+    configure do
+      set :environment, Rails.env if defined?( Rails )
 
-    use Rack::CommonLogger, RuoteKit.access_logger
-    use Rack::Lint
+      RuoteKit.ensure_engine!
+    end
+
+    set :views, File.join( File.dirname( __FILE__), 'views' )
+
+    use Rack::Static, :urls => ['/_ruote/images', '/_ruote/javascripts', '/_ruote/stylesheets'], :root => File.join( File.dirname(__FILE__), 'public' )
     use Rack::MethodOverride
-    use Rack::ShowExceptions
 
     helpers do
       include RuoteKit::Helpers::EngineHelpers
@@ -30,7 +32,7 @@ module RuoteKit
       resource_not_found
     end
 
-    get '/' do
+    get '/_ruote' do
       respond_to do |format|
         format.html { haml :index }
         format.json { json :misc, "ruote-kit" => "welcome", "version" => RuoteKit::VERSION }

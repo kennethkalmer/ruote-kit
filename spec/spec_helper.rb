@@ -1,4 +1,3 @@
-ENV['DAEMON_ENV'] = 'test'
 ENV['RACK_ENV'] = 'test'
 
 begin
@@ -16,9 +15,16 @@ require 'webrat'
 
 Test::Unit::TestCase.send :include, Rack::Test::Methods
 
-require File.dirname(__FILE__) + '/../config/environment'
-DaemonKit::Application.running!
-RuoteKit.run!
+require File.dirname(__FILE__) + '/../vendor/gems/environment' if File.exists?( File.dirname(__FILE__) + '/../vendor/gems/environment.rb' )
+require File.dirname(__FILE__) + '/../lib/ruote-kit'
+
+RuoteKit.configure do
+
+  # In memory is perfect for tests
+  mode = :transient
+
+  p [ :rk_configure ]
+end
 
 require 'ruote-kit/spec/ruote_helpers'
 require 'ruote/log/test_logger'
@@ -44,7 +50,7 @@ Spec::Runner.configure do |config|
   end
 
   config.before(:each) do
-    RuoteKit.configure_engine
+    RuoteKit.run_engine!
 
     @tracer = Tracer.new
     RuoteKit.engine.add_service( 'tracer', @tracer )
@@ -69,7 +75,7 @@ Spec::Runner.configure do |config|
 end
 
 def app
-  RuoteKit.sinatra
+  RuoteKit::Application
 end
 
 # Sets the local variables that will be accessible in the HAML

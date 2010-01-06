@@ -2,16 +2,16 @@
 %html
   %head
     %title ruote-kit
-    %link{ :type => "text/css", :href => "/stylesheets/base.css", :rel => "stylesheet" }
-    %link{ :type => "text/css", :href => "/stylesheets/style.css", :rel => "stylesheet" }
-    %link{ :type => "text/css", :href => "/stylesheets/SimplyButtons.css", :rel => "stylesheet" }
-    %link{ :type => "text/css", :href => "/stylesheets/rk.css", :rel => "stylesheet" }
-    %script{ :type => "text/javascript", :src => "/javascripts/SimplyButtons.js" }
+    %link{ :type => "text/css", :href => "/_ruote/stylesheets/base.css", :rel => "stylesheet" }
+    %link{ :type => "text/css", :href => "/_ruote/stylesheets/style.css", :rel => "stylesheet" }
+    %link{ :type => "text/css", :href => "/_ruote/stylesheets/SimplyButtons.css", :rel => "stylesheet" }
+    %link{ :type => "text/css", :href => "/_ruote/stylesheets/rk.css", :rel => "stylesheet" }
+    %script{ :type => "text/javascript", :src => "/_ruote/javascripts/SimplyButtons.js" }
     - if @_uses_fluo
-      %script{ :type => "text/javascript", :src => "/javascripts/fluo-can.js" }
-      %script{ :type => "text/javascript", :src => "/javascripts/fluo-dial.js" }
-      %script{ :type => "text/javascript", :src => "/javascripts/fluo-json.js" }
-      %script{ :type => "text/javascript", :src => "/javascripts/fluo-tred.js" }
+      %script{ :type => "text/javascript", :src => "/_ruote/javascripts/fluo-can.js" }
+      %script{ :type => "text/javascript", :src => "/_ruote/javascripts/fluo-dial.js" }
+      %script{ :type => "text/javascript", :src => "/_ruote/javascripts/fluo-json.js" }
+      %script{ :type => "text/javascript", :src => "/_ruote/javascripts/fluo-tred.js" }
 
     :javascript
       window.onload = function() { SimplyButtons.init(); }
@@ -22,12 +22,12 @@
         #user-navigation
           %ul
             %li
-              %a{ :href => "/processes/new" } Launch a new process
+              %a{ :href => "/_ruote/processes/new" } Launch a new process
         #main-navigation
           %ul
-            = navigate_to "Processes", "/processes"
-            = navigate_to "Expressions", "/expressions"
-            = navigate_to "Workitems", "/workitems"
+            = navigate_to "Processes", "/_ruote/processes"
+            = navigate_to "Expressions", "/_ruote/expressions"
+            = navigate_to "Workitems", "/_ruote/workitems"
           .clear
       #wrapper
         #main

@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "GET /" do
   it "should return a welcome message in HTML be default" do
-    get "/"
+    get "/_ruote"
 
     last_response.should be_ok
     last_response.content_type.should match("text/html")
@@ -14,7 +14,7 @@ describe "GET /" do
   it "should return a version string if JSON is requested" do
     header "Accept", "application/json"
 
-    get "/"
+    get "/_ruote"
 
     last_response.should be_ok
     last_response.content_type.should match("application/json")
