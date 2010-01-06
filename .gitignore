@@ -3,3 +3,5 @@ work*/
 .DS_Store
 bin/*
 vendor/gems
+.yardoc
+doc/*

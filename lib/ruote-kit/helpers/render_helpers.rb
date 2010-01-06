@@ -1,7 +1,6 @@
-# Helpers for rendering stuff
-
 module RuoteKit
   module Helpers
+    # Helpers for rendering stuff
     module RenderHelpers
 
       def json( resource, object )

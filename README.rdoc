@@ -1,12 +1,10 @@
-= ruote-kit (RESTful BPM)
+= ruote-kit (RESTful BPM & middleware)
 
 * http://kit.rubyforge.org/ruote (soon)
 * http://kit.rubyforge.org/ruote/rdoc (soon)
 
-A RESTful wrapper around the ruote[http://ruote.rubyforge.org]
-workflow engine, built with
-daemon-kit[http://github.com/kennethkalmer/daemon-kit] and
-sinatra[http://www.sinatrarb.com/].
+A RESTful wrapper around the ruote[http://ruote.rubyforge.org] workflow engine,
+built as a modular sinatra[http://www.sinatrarb.com/] application.
 
 Follow development:
 
@@ -23,6 +21,9 @@ coming weeks (albeit for the better).
 Dependencies you currently need is:
 
 * bundler (gem install bundler)
+* sinatra
+* haml
+* json
 * rspec (only to run the specs)
 
 ruote-kit uses bundler to setup and maintain its environment. Before running
@@ -33,14 +34,42 @@ ruote-kit for the first time you need to install bundler and then run:
 Bundler will download all the required gems and unpack them in 'vendor/gems'
 for you.
 
-== Getting started
+== Getting started quickly
 
-Once you have the dependencies installed, get going by running './bin/ruote-kit'
+Once you have the dependencies installed, get going by running 'rackup'
 from inside the ruote-kit project.
 
 If ruote-kit starts up without any issues (ie missing dependencies), you can
-point your browser to 'http://localhost:8080/' to get going. By default ruote-kit
+point your browser to 'http://localhost:9292/_ruote/' to get going. By default ruote-kit
 binds to all IP addresses, so this works out the box remotely too.
+
+== Plugging ruote-kit into your rack-stack
+
+ruote-kit is fully self-sufficient piece of rack, but can be slotted into any
+rack middleware stack without issues.
+
+Example:
+
+  RuoteKit.configure do |config|
+    # make changes if needed
+  end
+
+  # Register participants if needed
+  RuoteKit.engine.register_participant :toto do |wi|
+    # 
+  end
+
+  # Slot into the stack
+  use RuoteKit::Application
+
+== Configuring ruote-kit & ruote
+
+ruote-kit can be configured using RuoteKit#configure, after which it will start
+the engine. From that point the engine is accessible through RuoteKit.engine.
+
+Without any configuration ruote-kit will use file system persistence, and save
+the work in a sub-folder of the current working directory named +work_<env>+,
+where +env+ is the RACK_ENV or RAILS_ENV.
 
 == Feedback & bug reports
 
