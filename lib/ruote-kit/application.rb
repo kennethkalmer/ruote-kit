@@ -4,8 +4,13 @@ require 'haml'
 module RuoteKit
   class Application < Sinatra::Base
 
+    # Delay these a bit
     configure do
-      set :environment, Rails.env if defined?( Rails )
+      # We want to support Rails
+      if defined?( Rails )
+        set :environment, Rails.env
+        disable :raise_errors
+      end
 
       RuoteKit.ensure_engine!
     end
