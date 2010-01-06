@@ -24,7 +24,6 @@ RuoteKit.configure do |config|
   config.mode = :transient
 
 end
-debugger
 
 require 'ruote-kit/spec/ruote_helpers'
 require 'ruote/log/test_logger'

@@ -3,7 +3,7 @@ require 'ruote'
 
 module RuoteKit
 
-  VERSION = "0.0.0"
+  VERSION = "2.1.3pre"
 
   autoload :Configuration, "ruote-kit/configuration"
   autoload :Application,   "ruote-kit/application"
