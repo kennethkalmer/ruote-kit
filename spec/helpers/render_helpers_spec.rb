@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe "json helper" do
   describe "rendering defaults" do
     before(:each) do
-      stub_chain( :request, :fullpath ).and_return('/')
+      stub_chain( :request, :fullpath ).and_return('/_ruote')
 
       @hash = Rufus::Json.decode( json( :status, :ok ) )
     end
@@ -19,29 +19,29 @@ describe "json helper" do
     end
 
     it "should link to 'self'" do
-      @hash['links'].detect { |l| l['rel'] == 'self' && l['href'] == '/' }.should_not be_nil
+      @hash['links'].detect { |l| l['rel'] == 'self' && l['href'] == '/_ruote' }.should_not be_nil
     end
 
     it "should link to the root" do
-      @hash['links'].detect { |l| l['rel'] =~ /#root$/ && l['href'] == '/' }.should_not be_nil
+      @hash['links'].detect { |l| l['rel'] =~ /#root$/ && l['href'] == '/_ruote' }.should_not be_nil
     end
 
     it "should link to the processes" do
-      @hash['links'].detect { |l| l['rel'] =~ /#processes$/ && l['href'] == '/processes' }.should_not be_nil
+      @hash['links'].detect { |l| l['rel'] =~ /#processes$/ && l['href'] == '/_ruote/processes' }.should_not be_nil
     end
 
     it "should not link to the expressions by default" do
-      @hash['links'].detect { |l| l['rel'] =~ /#expressions$/ && l['href'] == '/expressions' }.should be_nil
+      @hash['links'].detect { |l| l['rel'] =~ /#expressions$/ && l['href'] == '/_ruote/expressions' }.should be_nil
     end
 
     it "should link to the workitems" do
-      @hash['links'].detect { |l| l['rel'] =~ /#workitems$/ && l['href'] == '/workitems' }.should_not be_nil
+      @hash['links'].detect { |l| l['rel'] =~ /#workitems$/ && l['href'] == '/_ruote/workitems' }.should_not be_nil
     end
   end
 
   describe "rendering processes" do
     before(:each) do
-      stub_chain( :request, :fullpath ).and_return('/processes')
+      stub_chain( :request, :fullpath ).and_return('/_ruote/processes')
 
       @wfid = launch_test_process
       process = engine.process( @wfid )
@@ -63,17 +63,17 @@ describe "json helper" do
 
       it "should link to the process details" do
 
-        @process['links'].detect { |l| l['rel'] =~ /#process/ && l['href'] == "/processes/#{@wfid}" }.should_not be_nil
+        @process['links'].detect { |l| l['rel'] =~ /#process/ && l['href'] == "/_ruote/processes/#{@wfid}" }.should_not be_nil
       end
 
       it "should link to the process expressions" do
 
-        @process['links'].detect { |l| l['rel'] =~ /#expressions/ && l['href'] == "/expressions/#{@wfid}" }.should_not be_nil
+        @process['links'].detect { |l| l['rel'] =~ /#expressions/ && l['href'] == "/_ruote/expressions/#{@wfid}" }.should_not be_nil
       end
 
       it "should link to the process workitems" do
 
-        @process['links'].detect { |l| l['rel'] =~ /#workitems/ && l['href'] == "/workitems/#{@wfid}" }.should_not be_nil
+        @process['links'].detect { |l| l['rel'] =~ /#workitems/ && l['href'] == "/_ruote/workitems/#{@wfid}" }.should_not be_nil
       end
     end
 
@@ -83,7 +83,7 @@ describe "json helper" do
     before(:each) do
       @wfid = launch_test_process
 
-      stub_chain( :request, :fullpath ).and_return("/processes/#{@wfid}")
+      stub_chain( :request, :fullpath ).and_return("/_ruote/processes/#{@wfid}")
 
       process = engine.process( @wfid )
 
@@ -96,17 +96,17 @@ describe "json helper" do
 
     it "should link to the process details" do
 
-      @hash['process']['links'].detect { |l| l['rel'] =~ /#process/ && l['href'] == "/processes/#{@wfid}" }.should_not be_nil
+      @hash['process']['links'].detect { |l| l['rel'] =~ /#process/ && l['href'] == "/_ruote/processes/#{@wfid}" }.should_not be_nil
     end
 
     it "should link to the process expressions" do
 
-      @hash['process']['links'].detect { |l| l['rel'] =~ /#expressions/ && l['href'] == "/expressions/#{@wfid}" }.should_not be_nil
+      @hash['process']['links'].detect { |l| l['rel'] =~ /#expressions/ && l['href'] == "/_ruote/expressions/#{@wfid}" }.should_not be_nil
     end
 
     it "should link to the process workitems" do
 
-      @hash['process']['links'].detect { |l| l['rel'] =~ /#workitems/ && l['href'] == "/workitems/#{@wfid}" }.should_not be_nil
+      @hash['process']['links'].detect { |l| l['rel'] =~ /#workitems/ && l['href'] == "/_ruote/workitems/#{@wfid}" }.should_not be_nil
     end
   end
 
@@ -122,7 +122,7 @@ describe "json helper" do
 
       @expid = '0_0_0'
 
-      stub_chain( :request, :fullpath ).and_return("/expressions/#{@wfid}/#{@expid}")
+      stub_chain( :request, :fullpath ).and_return("/_ruote/expressions/#{@wfid}/#{@expid}")
 
       process = engine.process( @wfid )
       expression = process.expressions.detect { |exp| exp.fei.expid == @expid }
@@ -135,11 +135,11 @@ describe "json helper" do
     end
 
     it "should link to the process" do
-      @hash['expression']['links'].detect { |l| l['rel'] =~ /#process/ && l['href'] == "/processes/#{@wfid}" }.should_not be_nil
+      @hash['expression']['links'].detect { |l| l['rel'] =~ /#process/ && l['href'] == "/_ruote/processes/#{@wfid}" }.should_not be_nil
     end
 
     it "should link to the parent expression" do
-      @hash['expression']['links'].detect { |l| l['rel'] == 'parent' && l['href'] == "/expressions/#{@wfid}/0_0" }.should_not be_nil
+      @hash['expression']['links'].detect { |l| l['rel'] == 'parent' && l['href'] == "/_ruote/expressions/#{@wfid}/0_0" }.should_not be_nil
     end
   end
 
@@ -153,7 +153,7 @@ describe "json helper" do
         end
       end
 
-      stub_chain( :request, :fullpath ).and_return("/expressions/#{@wfid}")
+      stub_chain( :request, :fullpath ).and_return("/_ruote/expressions/#{@wfid}")
 
       process = engine.process( @wfid )
 
@@ -175,7 +175,7 @@ describe "json helper" do
         end
       end
 
-      stub_chain( :request, :fullpath ).and_return("/workitems/#{@wfid}/0_0_0")
+      stub_chain( :request, :fullpath ).and_return("/_ruote/workitems/#{@wfid}/0_0_0")
 
       workitem = find_workitem( @wfid, '0_0_0' )
 
@@ -198,7 +198,7 @@ describe "json helper" do
         end
       end
 
-      stub_chain( :request, :fullpath ).and_return("/workitems")
+      stub_chain( :request, :fullpath ).and_return("/_ruote/workitems")
 
       @hash = Rufus::Json.decode( json( :workitems, store_participant.all ) )
     end

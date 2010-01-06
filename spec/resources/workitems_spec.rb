@@ -1,16 +1,16 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "GET /workitems" do
+describe "GET /_ruote/workitems" do
   describe "without any workitems" do
     it "should report no workitems (HTML)" do
-      get "/workitems"
+      get "/_ruote/workitems"
 
       last_response.should be_ok
       last_response.should match(/No workitems are currently available/)
     end
 
     it "should report no workitems (JSON)" do
-      get "/workitems.json"
+      get "/_ruote/workitems.json"
 
       last_response.should be_ok
       json = last_response.json_body
@@ -32,14 +32,14 @@ describe "GET /workitems" do
     end
 
     it "should have a list of workitems (HTML)" do
-      get "/workitems"
+      get "/_ruote/workitems"
 
       last_response.should be_ok
       last_response.should match(/1 workitem available/)
     end
 
     it "should have a list of workitems (JSON)" do
-      get "/workitems.json"
+      get "/_ruote/workitems.json"
 
       last_response.should be_ok
       json = last_response.json_body
@@ -56,7 +56,7 @@ describe "GET /workitems" do
   end
 end
 
-describe "GET /workitems/wfid" do
+describe "GET /_ruote/workitems/wfid" do
   describe "with workitems" do
     before(:each) do
       @wfid = launch_test_process do
@@ -70,14 +70,14 @@ describe "GET /workitems/wfid" do
     end
 
     it "should list the workitems (HTML)" do
-      get "/workitems/#{@wfid}"
+      get "/_ruote/workitems/#{@wfid}"
 
       last_response.should be_ok
       last_response.should match(/2 workitems available for #{@wfid}/)
     end
 
     it "should list the workitems (JSON)" do
-      get "/workitems/#{@wfid}.json"
+      get "/_ruote/workitems/#{@wfid}.json"
 
       last_response.should be_ok
 
@@ -90,14 +90,14 @@ describe "GET /workitems/wfid" do
 
   describe "without workitems" do
     it "should report no workitems (HTML)" do
-      get "/workitems/foo"
+      get "/_ruote/workitems/foo"
 
       last_response.should be_ok
       last_response.should match(/No workitems are currently available for foo/)
     end
 
     it "should report an empty list (JSON)" do
-      get "/workitems/foo.json"
+      get "/_ruote/workitems/foo.json"
 
       last_response.should be_ok
 
@@ -109,7 +109,7 @@ describe "GET /workitems/wfid" do
   end
 end
 
-describe "GET /workitems/wfid/expid" do
+describe "GET /_ruote/workitems/wfid/expid" do
   describe "with a workitem" do
     before(:each) do
       @wfid = launch_test_process do
@@ -127,13 +127,13 @@ describe "GET /workitems/wfid/expid" do
     end
 
     it "should return it (HTML)" do
-      get "/workitems/#{@wfid}/#{@nada_exp_id}"
+      get "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}"
 
       last_response.should be_ok
     end
 
     it "should return it (JSON)" do
-      get "/workitems/#{@wfid}/#{@nada_exp_id}.json"
+      get "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}.json"
 
       last_response.should be_ok
     end
@@ -141,14 +141,14 @@ describe "GET /workitems/wfid/expid" do
 
   describe "without a workitem" do
     it "should return a 404 (HTML)" do
-      get "/workitems/foo/bar"
+      get "/_ruote/workitems/foo/bar"
 
       last_response.should_not be_ok
       last_response.status.should be(404)
     end
 
     it "should return a 404 (JSON)" do
-      get "/workitems/foo/bar.json"
+      get "/_ruote/workitems/foo/bar.json"
 
       last_response.should_not be_ok
       last_response.status.should be(404)
@@ -156,7 +156,7 @@ describe "GET /workitems/wfid/expid" do
   end
 end
 
-describe "PUT /workitems/X-Y" do
+describe "PUT /_ruote/workitems/X-Y" do
   before(:each) do
     @wfid = launch_test_process do
       Ruote.process_definition :name => 'foo' do
@@ -181,10 +181,10 @@ describe "PUT /workitems/X-Y" do
       "foo" => "bar"
     }
 
-    put "/workitems/#{@wfid}/#{@nada_exp_id}", :fields => fields.to_json
+    put "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}", :fields => fields.to_json
 
     last_response.should be_redirect
-    last_response['Location'].should == "/workitems/#{@wfid}/#{@nada_exp_id}"
+    last_response['Location'].should == "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}"
 
     find_workitem( @wfid, @nada_exp_id ).fields.should == fields
 
@@ -204,7 +204,7 @@ describe "PUT /workitems/X-Y" do
       "fields" => fields
     }
 
-    put "/workitems/#{@wfid}/#{@nada_exp_id}.json", params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    put "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}.json", params.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
     last_response.should be_ok
 
@@ -223,10 +223,10 @@ describe "PUT /workitems/X-Y" do
       "foo" => "bar"
     }.to_json
 
-    put "/workitems/#{@wfid}/#{@nada_exp_id}", :fields => fields, :_proceed => '1'
+    put "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}", :fields => fields, :_proceed => '1'
 
     last_response.should be_redirect
-    last_response['Location'].should == "/workitems/#{@wfid}"
+    last_response['Location'].should == "/_ruote/workitems/#{@wfid}"
 
     #engine.context[:s_logger].wait_for([
     #  [ :processes, :terminated, { :wfid => @wfid } ],
@@ -249,7 +249,7 @@ describe "PUT /workitems/X-Y" do
       "_proceed" => "1"
     }
 
-    put "/workitems/#{@wfid}/#{@nada_exp_id}.json", params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    put "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}.json", params.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
     last_response.should be_ok
 
@@ -278,7 +278,7 @@ describe "Filtering workitems" do
     end
 
     it "should narrow results down to a single participant (JSON)" do
-      get '/workitems.json', :participant => 'jack'
+      get '/_ruote/workitems.json', :participant => 'jack'
 
       last_response.should be_ok
 
@@ -286,13 +286,13 @@ describe "Filtering workitems" do
     end
 
     it "should narrow results down to a single participant (HTML)" do
-      get '/workitems', :participant => 'jack'
+      get '/_ruote/workitems', :participant => 'jack'
 
       last_response.should be_ok
     end
 
     it "should narrow results down to multiple participants (JSON)" do
-      get "/workitems.json", :participant => 'jack,jill'
+      get "/_ruote/workitems.json", :participant => 'jack,jill'
 
       last_response.should be_ok
 
@@ -300,7 +300,7 @@ describe "Filtering workitems" do
     end
 
     it "should narrow results down to multiple participants (HTML)" do
-      get "/workitems", :participant => 'jack,jill'
+      get "/_ruote/workitems", :participant => 'jack,jill'
 
       last_response.should be_ok
     end

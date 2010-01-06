@@ -7,7 +7,7 @@ module RuoteKit
         css_classes << 'first' if @first.nil?
         @first = true
 
-        css_classes << 'active' if path.split('/')[1] == request.path.split('/')[1]
+        css_classes << 'active' if path.split('/')[2] == request.path.split('/')[2]
 
         "<li class=\"#{css_classes.join(' ')}\"><a href=\"#{ path }\">#{text}</a></li>"
       end

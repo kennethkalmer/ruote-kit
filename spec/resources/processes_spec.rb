@@ -1,15 +1,15 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "GET /processes" do
+describe "GET /_ruote/processes" do
   describe "without any running processes" do
     it "should give no processes back (HTML)" do
-      get "/processes"
+      get "/_ruote/processes"
 
       last_response.should be_ok
     end
 
     it "should give an empty array (JSON)" do
-      get "/processes.json"
+      get "/_ruote/processes.json"
 
       last_response.should be_ok
 
@@ -26,13 +26,13 @@ describe "GET /processes" do
     end
 
     it "should give process information back (HTML)" do
-      get "/processes"
+      get "/_ruote/processes"
 
       last_response.should be_ok
     end
 
     it "should give process information back (JSON)" do
-      get "/processes.json"
+      get "/_ruote/processes.json"
 
       last_response.should be_ok
 
@@ -43,20 +43,20 @@ describe "GET /processes" do
   end
 end
 
-describe "GET /processes/X-Y" do
+describe "GET /_ruote/processes/X-Y" do
   describe "with a running process" do
     before(:each) do
       @wfid = launch_test_process
     end
 
     it "should give process information back (HTML)" do
-      get "/processes/#{@wfid}"
+      get "/_ruote/processes/#{@wfid}"
 
       last_response.should be_ok
     end
 
     it "should give process information back (JSON)" do
-      get "/processes/#{@wfid}.json"
+      get "/_ruote/processes/#{@wfid}.json"
 
       last_response.should be_ok
 
@@ -68,7 +68,7 @@ describe "GET /processes/X-Y" do
 
   describe "without a running process" do
     it "should 404 correctly (HTML)" do
-      get "/processes/foo"
+      get "/_ruote/processes/foo"
 
       last_response.should_not be_ok
       last_response.status.should be(404)
@@ -77,7 +77,7 @@ describe "GET /processes/X-Y" do
     end
 
     it "should 404 correctly (JSON)" do
-      get "/processes/foo.json"
+      get "/_ruote/processes/foo.json"
 
       last_response.should_not be_ok
       last_response.status.should be(404)
@@ -88,15 +88,15 @@ describe "GET /processes/X-Y" do
   end
 end
 
-describe "GET /processes/new" do
+describe "GET /_ruote/processes/new" do
   it "should return a launch form" do
-    get "/processes/new"
+    get "/_ruote/processes/new"
 
     last_response.should be_ok
   end
 end
 
-describe "POST /processes" do
+describe "POST /_ruote/processes" do
   before(:each) do
     engine.processes.should be_empty
   end
@@ -108,7 +108,7 @@ describe "POST /processes" do
       end}
     }
 
-    post '/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    post '/_ruote/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
     last_response.should be_ok
 
@@ -127,7 +127,7 @@ describe "POST /processes" do
       :fields => { :foo => 'bar' }
     }
 
-    post '/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    post '/_ruote/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
 
     last_response.should be_ok
     last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
@@ -150,10 +150,10 @@ describe "POST /processes" do
       }
     }
 
-    post "/processes", params
+    post "/_ruote/processes", params
 
     last_response.should be_redirect
-    last_response['Location'].should match( /^\/processes\/[0-9a-z\-]+$/ )
+    last_response['Location'].should match( /^\/_ruote\/processes\/[0-9a-z\-]+$/ )
 
     sleep 0.4
 
@@ -168,10 +168,10 @@ describe "POST /processes" do
       :process_fields => %q{ { "foo": "bar" } }
     }
 
-    post '/processes', params
+    post '/_ruote/processes', params
 
     last_response.should be_redirect
-    last_response['Location'].should match( /^\/processes\/([0-9a-z\-]+)$/ )
+    last_response['Location'].should match( /^\/_ruote\/processes\/([0-9a-z\-]+)$/ )
 
     #engine.context[:s_logger].wait_for([
     #  [ :processes, :terminated, { :wfid => $1 } ],
@@ -191,7 +191,7 @@ describe "POST /processes" do
       :process_fields => ''
     }
 
-    post '/processes', params
+    post '/_ruote/processes', params
 
     last_response.should be_redirect
 
@@ -201,7 +201,7 @@ describe "POST /processes" do
   end
 end
 
-describe "DELETE /processes/X-Y" do
+describe "DELETE /_ruote/processes/X-Y" do
   before(:each) do
     @wfid = launch_test_process do
       Ruote.process_definition :name => 'test' do
@@ -218,7 +218,7 @@ describe "DELETE /processes/X-Y" do
   end
 
   it "should cancel processes (JSON)" do
-    delete "/processes/#{@wfid}.json"
+    delete "/_ruote/processes/#{@wfid}.json"
 
     last_response.should be_ok
 
@@ -230,10 +230,10 @@ describe "DELETE /processes/X-Y" do
   end
 
   it "should cancel processes (HMTL)" do
-    delete "/processes/#{@wfid}"
+    delete "/_ruote/processes/#{@wfid}"
 
     last_response.should be_redirect
-    last_response['Location'].should == "/processes"
+    last_response['Location'].should == "/_ruote/processes"
 
     sleep 0.4
 
@@ -243,7 +243,7 @@ describe "DELETE /processes/X-Y" do
   end
 
   it "should kill processes (JSON)" do
-    delete "/processes/#{@wfid}.json?_kill=1"
+    delete "/_ruote/processes/#{@wfid}.json?_kill=1"
 
     last_response.should be_ok
 
@@ -255,10 +255,10 @@ describe "DELETE /processes/X-Y" do
   end
 
   it "should kill processes (HTML)" do
-    delete "/processes/#{@wfid}?_kill=1"
+    delete "/_ruote/processes/#{@wfid}?_kill=1"
 
     last_response.should be_redirect
-    last_response['Location'].should == '/processes'
+    last_response['Location'].should == '/_ruote/processes'
 
     sleep 0.4
 

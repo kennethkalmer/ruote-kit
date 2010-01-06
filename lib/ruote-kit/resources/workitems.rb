@@ -1,6 +1,6 @@
 class RuoteKit::Application
 
-  get "/workitems" do
+  get "/_ruote/workitems" do
     if params[:participant]
       @participants = params[:participant].split(',')
       @workitems = @participants.inject([]) do |memo, part|
@@ -16,7 +16,7 @@ class RuoteKit::Application
     end
   end
 
-  get "/workitems/:wfid" do
+  get "/_ruote/workitems/:wfid" do
     @wfid = params[:wfid]
     @workitems = find_workitems( params[:wfid] )
 
@@ -26,7 +26,7 @@ class RuoteKit::Application
     end
   end
 
-  get "/workitems/:wfid/:expid" do
+  get "/_ruote/workitems/:wfid/:expid" do
     @workitem = find_workitem( params[:wfid], params[:expid] )
 
     if @workitem
@@ -39,7 +39,7 @@ class RuoteKit::Application
     end
   end
 
-  put "/workitems/:wfid/:expid" do
+  put "/_ruote/workitems/:wfid/:expid" do
     workitem = find_workitem( params[:wfid], params[:expid] )
 
     options = field_updates_and_proceed_from_put
@@ -55,7 +55,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html {
-        redirect options[:proceed] ? "/workitems/#{params[:wfid]}" : "/workitems/#{params[:wfid]}/#{params[:expid]}"
+        redirect options[:proceed] ? "/_ruote/workitems/#{params[:wfid]}" : "/_ruote/workitems/#{params[:wfid]}/#{params[:expid]}"
       }
       format.json { json( :workitem, workitem ) }
     end

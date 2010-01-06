@@ -1,13 +1,13 @@
 class RuoteKit::Application
 
-  get "/expressions" do
+  get "/_ruote/expressions" do
     respond_to do |format|
       format.html { haml :expressions }
       format.json { json( :status, :ok ) }
     end
   end
 
-  get "/expressions/:wfid" do
+  get "/_ruote/expressions/:wfid" do
     @process = engine.process( params[:wfid] )
 
     if @process
@@ -20,7 +20,7 @@ class RuoteKit::Application
     end
   end
 
-  get "/expressions/:wfid/:expid" do
+  get "/_ruote/expressions/:wfid/:expid" do
     @process = engine.process( params[:wfid] )
 
     if @process && @expression = @process.expressions.detect { |exp| exp.fei.expid == params[:expid] }
@@ -33,7 +33,7 @@ class RuoteKit::Application
     end
   end
 
-  delete "/expressions/:wfid/:expid" do
+  delete "/_ruote/expressions/:wfid/:expid" do
     process = engine.process( params[:wfid] )
 
     if process && expression = process.expressions.detect { |exp| exp.fei.expid == params[:expid] }
@@ -44,7 +44,7 @@ class RuoteKit::Application
       end
 
       respond_to do |format|
-        format.html { redirect "/expressions/#{params[:wfid]}" }
+        format.html { redirect "/_ruote/expressions/#{params[:wfid]}" }
         format.json { json( :status, :ok ) }
       end
     else

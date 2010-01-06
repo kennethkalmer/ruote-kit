@@ -1,14 +1,14 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "GET /expressions" do
+describe "GET /_ruote/expressions" do
   it "should report a friendly message to the user (HTML)" do
-    get "/expressions"
+    get "/_ruote/expressions"
 
     last_response.should be_ok
   end
 
   it "should report a friendly message to the client (JSON)" do
-    get "/expressions.json"
+    get "/_ruote/expressions.json"
 
     last_response.should be_ok
 
@@ -16,20 +16,20 @@ describe "GET /expressions" do
   end
 end
 
-describe "GET /expressions/wfid" do
+describe "GET /_ruote/expressions/wfid" do
   describe "with running processes" do
     before(:each) do
       @wfid = launch_test_process
     end
 
     it "should render the expression tree (HTML)" do
-      get "/expressions/#{@wfid}"
+      get "/_ruote/expressions/#{@wfid}"
 
       last_response.should be_ok
     end
 
     it "should render the expression tree (JSON)" do
-      get "/expressions/#{@wfid}.json"
+      get "/_ruote/expressions/#{@wfid}.json"
 
       last_response.should be_ok
     end
@@ -37,14 +37,14 @@ describe "GET /expressions/wfid" do
 
   describe "without running processes" do
     it "should 404 correctly (HTML)" do
-      get "/expressions/foo"
+      get "/_ruote/expressions/foo"
 
       last_response.should_not be_ok
       last_response.status.should be(404)
     end
 
     it "should 404 correctly (JSON)" do
-      get "/expressions/foo.json"
+      get "/_ruote/expressions/foo.json"
 
       last_response.should_not be_ok
       last_response.status.should be(404)
@@ -52,7 +52,7 @@ describe "GET /expressions/wfid" do
   end
 end
 
-describe "GET /expressions/wfid/expid" do
+describe "GET /_ruote/expressions/wfid/expid" do
   describe "with running processes" do
     before(:each) do
       @wfid = launch_test_process
@@ -61,13 +61,13 @@ describe "GET /expressions/wfid/expid" do
     end
 
     it "should render the expression details (HTML)" do
-      get "/expressions/#{@wfid}/#{@nada_exp_id}"
+      get "/_ruote/expressions/#{@wfid}/#{@nada_exp_id}"
 
       last_response.should be_ok
     end
 
     it "should render the expression details (JSON)" do
-      get "/expressions/#{@wfid}/#{@nada_exp_id}.json"
+      get "/_ruote/expressions/#{@wfid}/#{@nada_exp_id}.json"
 
       last_response.should be_ok
     end
@@ -90,7 +90,7 @@ describe "GET /expressions/wfid/expid" do
   end
 end
 
-describe "DELETE /expressions/wfid/expid" do
+describe "DELETE /_ruote/expressions/wfid/expid" do
   describe "with running processes" do
     before(:each) do
       @wfid = launch_test_process do
@@ -113,10 +113,10 @@ describe "DELETE /expressions/wfid/expid" do
     end
 
     it "should cancel the expressions (HTML)" do
-      delete "/expressions/#{@wfid}/#{@expid}"
+      delete "/_ruote/expressions/#{@wfid}/#{@expid}"
 
       last_response.should be_redirect
-      last_response['Location'].should == "/expressions/#{@wfid}"
+      last_response['Location'].should == "/_ruote/expressions/#{@wfid}"
 
       sleep 0.4
 
@@ -124,7 +124,7 @@ describe "DELETE /expressions/wfid/expid" do
     end
 
     it "should cancel the expressions (JSON)" do
-      delete "/expressions/#{@wfid}/#{@expid}.json"
+      delete "/_ruote/expressions/#{@wfid}/#{@expid}.json"
 
       last_response.should be_ok
       last_response.json_body['status'].should == 'ok'
@@ -135,10 +135,10 @@ describe "DELETE /expressions/wfid/expid" do
     end
 
     it "should kill the expression (HTML)" do
-      delete "/expressions/#{@wfid}/#{@expid}?_kill=1"
+      delete "/_ruote/expressions/#{@wfid}/#{@expid}?_kill=1"
 
       last_response.should be_redirect
-      last_response['Location'].should == "/expressions/#{@wfid}"
+      last_response['Location'].should == "/_ruote/expressions/#{@wfid}"
 
       sleep 0.4
 
@@ -146,7 +146,7 @@ describe "DELETE /expressions/wfid/expid" do
     end
 
     it "should kill the expression (JSON)" do
-      delete "/expressions/#{@wfid}/#{@expid}.json?_kill=1"
+      delete "/_ruote/expressions/#{@wfid}/#{@expid}.json?_kill=1"
 
       last_response.should be_ok
       last_response.json_body['status'].should == 'ok'
@@ -159,14 +159,14 @@ describe "DELETE /expressions/wfid/expid" do
 
   describe "without running processes" do
     it "should 404 correctly (HTML)" do
-      delete "/expressions/foo/bar"
+      delete "/_ruote/expressions/foo/bar"
 
       last_response.should_not be_ok
       last_response.status.should be(404)
     end
 
     it "should 404 correctly (JSON)" do
-      delete "/expressions/foo/bar.json"
+      delete "/_ruote/expressions/foo/bar.json"
 
       last_response.should_not be_ok
       last_response.status.should be(404)

@@ -31,7 +31,7 @@ module RuoteKit
     end
 
     def configure( &block )
-      configuration.instance_eval &block
+      yield configuration
 
       run_engine! if configuration.run_engine
     end

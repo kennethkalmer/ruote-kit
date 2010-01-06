@@ -1,6 +1,6 @@
 class RuoteKit::Application
 
-  get "/processes" do
+  get "/_ruote/processes" do
     @processes = engine.processes
 
     respond_to do |format|
@@ -9,11 +9,11 @@ class RuoteKit::Application
     end
   end
 
-  get "/processes/new" do
+  get "/_ruote/processes/new" do
     haml :launch_process
   end
 
-  get "/processes/:wfid" do
+  get "/_ruote/processes/:wfid" do
     @process = engine.process( params[:wfid] )
 
     if @process
@@ -26,18 +26,18 @@ class RuoteKit::Application
     end
   end
 
-  post "/processes" do
+  post "/_ruote/processes" do
     launch_item = launch_item_from_post
 
     @wfid = engine.launch( launch_item['pdef'], launch_item['fields'], launch_item['variables'] )
 
     respond_to do |format|
-      format.html { redirect "/processes/#{@wfid}" }
+      format.html { redirect "/_ruote/processes/#{@wfid}" }
       format.json { json( :launched, @wfid ) }
     end
   end
 
-  delete "/processes/:wfid" do
+  delete "/_ruote/processes/:wfid" do
     if params[:_kill] == "1"
       engine.kill_process( params[:wfid] )
     else
@@ -45,7 +45,7 @@ class RuoteKit::Application
     end
 
     respond_to do |format|
-      format.html { redirect "/processes" }
+      format.html { redirect "/_ruote/processes" }
       format.json { json( :status, :ok ) }
     end
   end

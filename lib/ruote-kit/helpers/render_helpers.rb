@@ -21,9 +21,9 @@ module RuoteKit
 
       def json_process( process )
         links = [
-          link( "/processes/#{process.wfid}", rel('#process') ),
-          link( "/expressions/#{process.wfid}", rel('#expressions') ),
-          link( "/workitems/#{process.wfid}", rel('#workitems') )
+          link( "/_ruote/processes/#{process.wfid}", rel('#process') ),
+          link( "/_ruote/expressions/#{process.wfid}", rel('#expressions') ),
+          link( "/_ruote/workitems/#{process.wfid}", rel('#workitems') )
         ]
 
         process.to_h.merge( 'links' => links )
@@ -31,12 +31,12 @@ module RuoteKit
 
       def json_expression( expression )
         links = [
-          link( "/processes/#{expression.fei.wfid}", rel('#process') ),
-          link( "/expressions/#{expression.fei.wfid}", rel('#expressions') )
+          link( "/_ruote/processes/#{expression.fei.wfid}", rel('#process') ),
+          link( "/_ruote/expressions/#{expression.fei.wfid}", rel('#expressions') )
         ]
 
         if expression.parent
-          links << link( "/expressions/#{expression.fei.wfid}/#{expression.parent.fei.expid}", 'parent' )
+          links << link( "/_ruote/expressions/#{expression.fei.wfid}/#{expression.parent.fei.expid}", 'parent' )
         end
 
         expression.to_h.merge( 'links' => links )
@@ -52,8 +52,8 @@ module RuoteKit
 
       def json_workitem( workitem )
         links = [
-          link( "/processes/#{workitem.fei.wfid}", rel('#process') ),
-          link( "/expressions/#{workitem.fei.wfid}", rel('#expressions') )
+          link( "/_ruote/processes/#{workitem.fei.wfid}", rel('#process') ),
+          link( "/_ruote/expressions/#{workitem.fei.wfid}", rel('#expressions') )
         ]
 
         workitem.to_h.merge( 'links' => links )
@@ -65,10 +65,10 @@ module RuoteKit
 
       def links( resource )
         links = [
-          link( '/', rel('#root') ),
-          link( '/processes', rel('#processes') ),
-          link( '/workitems', rel('#workitems') ),
-          link( '/history', rel("#history") ),
+          link( '/_ruote', rel('#root') ),
+          link( '/_ruote/processes', rel('#processes') ),
+          link( '/_ruote/workitems', rel('#workitems') ),
+          link( '/_ruote/history', rel("#history") ),
           link( request.fullpath, 'self' )
         ]
 

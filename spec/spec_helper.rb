@@ -18,13 +18,13 @@ Test::Unit::TestCase.send :include, Rack::Test::Methods
 require File.dirname(__FILE__) + '/../vendor/gems/environment' if File.exists?( File.dirname(__FILE__) + '/../vendor/gems/environment.rb' )
 require File.dirname(__FILE__) + '/../lib/ruote-kit'
 
-RuoteKit.configure do
+RuoteKit.configure do |config|
 
   # In memory is perfect for tests
-  mode = :transient
+  config.mode = :transient
 
-  p [ :rk_configure ]
 end
+debugger
 
 require 'ruote-kit/spec/ruote_helpers'
 require 'ruote/log/test_logger'
