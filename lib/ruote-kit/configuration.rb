@@ -15,7 +15,7 @@ module RuoteKit
     attr_accessor :run_worker
 
     def initialize
-      self.work_directory = File.join( RuoteKit.root, "work_#{RuoteKit.env}" )
+      self.work_directory = File.join( Dir.pwd, "work_#{RuoteKit.env}" )
       self.run_engine = true
       self.run_worker = false
     end

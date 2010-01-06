@@ -26,10 +26,6 @@ module RuoteKit
       )
     end
 
-    def root
-      Dir.pwd
-    end
-
     def configure( &block )
       yield configuration
 
