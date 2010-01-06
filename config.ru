@@ -9,6 +9,9 @@ RuoteKit.configure do |config|
   
   # storage mode
   #config.mode = :transient
+
+  # run a worker
+  config.run_worker = true
 end
 
 use Rack::CommonLogger
