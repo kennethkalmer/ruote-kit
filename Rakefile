@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'rake'
 
+require 'vendor/gems/environment' if File.exist?('vendor/gems/environment.rb')
+
 require 'lib/ruote-kit'
 
 begin
@@ -39,7 +41,7 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
   spec.rcov = true
 end
 
-task :spec => :check_dependencies
+task :spec #=> :check_dependencies
 
 task :default => :spec
 
