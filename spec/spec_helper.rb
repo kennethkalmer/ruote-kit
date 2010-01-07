@@ -55,6 +55,7 @@ Spec::Runner.configure do |config|
     RuoteKit.engine.add_service( 'tracer', @tracer )
     RuoteKit.engine.add_service( 's_logger', Ruote::WaitLogger )
 
+    # Specs use their own worker since we need the trace
     @_spec_worker = Ruote::Worker.new( RuoteKit.engine.storage )
     @_spec_worker.context.add_service( 'tracer', @tracer )
     @_spec_worker.run_in_thread
@@ -64,6 +65,7 @@ Spec::Runner.configure do |config|
   config.after(:each) do
     @_spec_worker.shutdown
 
+    # Seems in some rubies this block gets called multiple times
     unless RuoteKit.engine.nil?
       RuoteKit.engine.context.plist.lookup('.*').purge!
       RuoteKit.engine.storage.purge! unless RuoteKit.engine.storage.nil?

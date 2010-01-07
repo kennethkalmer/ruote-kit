@@ -26,6 +26,8 @@ module RuoteKit
       )
     end
 
+    # Yields a RuoteKit::Configuration instance and then immediately starts
+    # the engine (unless configuration prohibits it).
     def configure( &block )
       yield configuration
 
@@ -52,10 +54,13 @@ module RuoteKit
       self.engine.register_participant('.*', configuration.catchall_participant)
     end
 
+    # Ensure the engine is running
     def ensure_engine!
       run_engine! if self.engine.nil?
     end
 
+    # Runs an engine, and starts a threaded workers if #configuration allows
+    # it
     def run_engine!
 
       storage = configuration.storage_instance
@@ -63,10 +68,14 @@ module RuoteKit
 
       configure_participants
 
-      return unless configuration.run_worker
+      run_worker!( true ) unless configuration.run_worker
+    end
 
-      self.worker = Ruote::Worker.new( storage )
-      self.worker.run_in_thread
+    # Run a single worker. By default this method will block indefinitely,
+    # unless +run_in_thread+ is set to true
+    def run_worker!( run_in_thread = false )
+      self.worker = Ruote::Worker.new( configuration.storage_instance )
+      run_in_thread ? self.worker.run_in_thread : self.worker.run
     end
 
     def shutdown_engine( purge = false )
@@ -84,6 +93,10 @@ module RuoteKit
 
       self.engine = nil
 
+      shutdown_worker! if configuration.run_worker
+    end
+
+    def shutdown_worker!
       self.worker.shutdown if self.worker
       self.worker = nil
     end

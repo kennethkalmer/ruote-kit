@@ -71,6 +71,33 @@ Without any configuration ruote-kit will use file system persistence, and save
 the work in a sub-folder of the current working directory named +work_<env>+,
 where +env+ is the RACK_ENV or RAILS_ENV.
 
+== Running workers
+
+If you're using ruote-kit as part of your rack stack you'll need to start at
+least one worker separately or the workflows will be executed. You won't need
+more than one worker unless you are running hundreds of processes at the same
+time.
+
+To run a worker you need to setup a worker scripts similar to the rake example
+below:
+
+  require 'rake'
+  require 'ruote-kit'
+
+  desc "Run a ruote-kit worker"
+  task :ruote_kit_worker do
+
+    RuoteKit.configure do |config|
+      # Setup your configuration
+    end
+
+    RuoteKit.run_worker!
+  end
+
+This will only work correctly if using the default file system persistence.
+Support for ruote-couch[http://github.com/jmettraux/ruote-couch] is coming
+soon.
+
 == Feedback & bug reports
 
 Please bear in mind that the project is still in its alpha days. Keep bug reports
