@@ -109,7 +109,7 @@ describe "DELETE /_ruote/expressions/wfid/expid" do
       end
 
       wait_exp = engine.process( @wfid ).expressions.last
-      @expid = wait_exp.fei.expid
+      @expid = "0_1_0" #wait_exp.fei.expid
     end
 
     it "should cancel the expressions (HTML)" do
