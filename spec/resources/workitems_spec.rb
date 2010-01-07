@@ -121,7 +121,7 @@ describe "GET /_ruote/workitems/wfid/expid" do
       end
 
       process = engine.process( @wfid )
-      @nada_exp_id = process.expressions.last.fei.expid
+      @nada_exp_id = "0_0_0" #process.expressions.last.fei.expid
 
       @nada_exp_id.should_not be_nil
     end
@@ -168,7 +168,7 @@ describe "PUT /_ruote/workitems/X-Y" do
     end
 
     process = engine.process( @wfid )
-    @nada_exp_id = process.expressions.last.fei.expid
+    @nada_exp_id = "0_0_0" #process.expressions.last.fei.expid
 
     @nada_exp_id.should_not be_nil
   end
