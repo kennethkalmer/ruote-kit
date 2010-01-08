@@ -132,11 +132,6 @@ describe "POST /_ruote/processes" do
     last_response.should be_ok
     last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
 
-    #engine.context[:s_logger].wait_for([
-    #  [ :processes, :terminated, { :wfid => $1 } ],
-    #  [ :errors, nil, { :wfid => $1 } ]
-    #])
-    #engine.context.logger.wait_for( $1 )
     sleep 0.5
 
     @tracer.to_s.should == "bar"
@@ -173,11 +168,6 @@ describe "POST /_ruote/processes" do
     last_response.should be_redirect
     last_response['Location'].should match( /^\/_ruote\/processes\/([0-9a-z\-]+)$/ )
 
-    #engine.context[:s_logger].wait_for([
-    #  [ :processes, :terminated, { :wfid => $1 } ],
-    #  [ :errors, nil, { :wfid => $1 } ]
-    #])
-    #
     sleep 0.5
 
     @tracer.to_s.should == "bar"
@@ -222,7 +212,7 @@ describe "DELETE /_ruote/processes/X-Y" do
 
     last_response.should be_ok
 
-    sleep 0.4
+    wait_for( @wfid )
 
     engine.process( @wfid ).should be_nil
 
@@ -235,7 +225,7 @@ describe "DELETE /_ruote/processes/X-Y" do
     last_response.should be_redirect
     last_response['Location'].should == "/_ruote/processes"
 
-    sleep 0.4
+    wait_for( @wfid )
 
     engine.process( @wfid ).should be_nil
 
@@ -247,7 +237,7 @@ describe "DELETE /_ruote/processes/X-Y" do
 
     last_response.should be_ok
 
-    sleep 0.4
+    wait_for( @wfid )
 
     engine.process( @wfid ).should be_nil
 
@@ -260,7 +250,7 @@ describe "DELETE /_ruote/processes/X-Y" do
     last_response.should be_redirect
     last_response['Location'].should == '/_ruote/processes'
 
-    sleep 0.4
+    wait_for( @wfid )
 
     engine.process( @wfid ).should be_nil
 

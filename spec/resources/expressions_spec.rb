@@ -118,7 +118,8 @@ describe "DELETE /_ruote/expressions/wfid/expid" do
       last_response.should be_redirect
       last_response['Location'].should == "/_ruote/expressions/#{@wfid}"
 
-      sleep 0.4
+      #sleep 0.4
+      wait_for( @wfid )
 
       @tracer.to_s.should == "bailed\ndone"
     end
@@ -129,7 +130,8 @@ describe "DELETE /_ruote/expressions/wfid/expid" do
       last_response.should be_ok
       last_response.json_body['status'].should == 'ok'
 
-      sleep 0.4
+      #sleep 0.4
+      wait_for( @wfid )
 
       @tracer.to_s.should == "bailed\ndone"
     end
@@ -140,7 +142,8 @@ describe "DELETE /_ruote/expressions/wfid/expid" do
       last_response.should be_redirect
       last_response['Location'].should == "/_ruote/expressions/#{@wfid}"
 
-      sleep 0.4
+      #sleep 0.4
+      wait_for( @wfid )
 
       @tracer.to_s.should == "done"
     end
@@ -151,7 +154,8 @@ describe "DELETE /_ruote/expressions/wfid/expid" do
       last_response.should be_ok
       last_response.json_body['status'].should == 'ok'
 
-      sleep 0.4
+      #sleep 0.4
+      wait_for( @wfid )
 
       @tracer.to_s.should == "done"
     end
