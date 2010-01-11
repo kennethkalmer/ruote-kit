@@ -21,7 +21,7 @@ begin
     gemspec.add_dependency 'sinatra', '>=0.9.4'
     gemspec.add_dependency 'haml', '>= 2.2.5'
     gemspec.add_dependency 'json'
-    gemspec.add_dependency 'ruote', '>= 2.1.3'
+    gemspec.add_dependency 'ruote', '= 2.1.4'
     gemspec.add_development_dependency 'rspec'
   end
   Jeweler::GemcutterTasks.new

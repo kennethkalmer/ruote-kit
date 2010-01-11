@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruote-kit}
-  s.version = "2.1.3pre"
+  s.version = "2.1.4"
 
-  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["kenneth.kalmer@gmail.com"]
-  s.date = %q{2010-01-06}
+  s.date = %q{2010-01-11}
   s.description = %q{ruote-kit is a RESTful Rack app for the ruote workflow engine}
   s.email = %q{kenneth.kalmer@gmail.com}
   s.executables = ["css2sass", "edit_json.rb", "haml", "html2haml", "prettify_json.rb", "rackup", "ruby_parse", "sass"]
@@ -76,6 +76,7 @@ Gem::Specification.new do |s|
      "lib/ruote-kit/views/resource_not_found.html.haml",
      "lib/ruote-kit/views/workitem.html.haml",
      "lib/ruote-kit/views/workitems.html.haml",
+     "ruote-kit.gemspec",
      "spec/helpers/render_helpers_spec.rb",
      "spec/resources/expressions_spec.rb",
      "spec/resources/index_spec.rb",
@@ -116,20 +117,20 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<sinatra>, [">= 0.9.4"])
       s.add_runtime_dependency(%q<haml>, [">= 2.2.5"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
-      s.add_runtime_dependency(%q<ruote>, [">= 2.1.3"])
+      s.add_runtime_dependency(%q<ruote>, ["= 2.1.4"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
     else
       s.add_dependency(%q<sinatra>, [">= 0.9.4"])
       s.add_dependency(%q<haml>, [">= 2.2.5"])
       s.add_dependency(%q<json>, [">= 0"])
-      s.add_dependency(%q<ruote>, [">= 2.1.3"])
+      s.add_dependency(%q<ruote>, ["= 2.1.4"])
       s.add_dependency(%q<rspec>, [">= 0"])
     end
   else
     s.add_dependency(%q<sinatra>, [">= 0.9.4"])
     s.add_dependency(%q<haml>, [">= 2.2.5"])
     s.add_dependency(%q<json>, [">= 0"])
-    s.add_dependency(%q<ruote>, [">= 2.1.3"])
+    s.add_dependency(%q<ruote>, ["= 2.1.4"])
     s.add_dependency(%q<rspec>, [">= 0"])
   end
 end
