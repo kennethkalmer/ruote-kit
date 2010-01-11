@@ -16,7 +16,9 @@ begin
     gemspec.homepage = 'http://github.com/kennethkalmer/ruote-kit'
     gemspec.authors = ['kenneth.kalmer@gmail.com']
     gemspec.extra_rdoc_files.include '*.txt'
+
     gemspec.files.include 'lib/ruote-kit/public/**/*'
+    gemspec.executables.clear
 
     gemspec.add_dependency 'sinatra', '>=0.9.4'
     gemspec.add_dependency 'haml', '>= 2.2.5'

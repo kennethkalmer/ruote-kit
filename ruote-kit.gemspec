@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.date = %q{2010-01-11}
   s.description = %q{ruote-kit is a RESTful Rack app for the ruote workflow engine}
   s.email = %q{kenneth.kalmer@gmail.com}
-  s.executables = ["css2sass", "edit_json.rb", "haml", "html2haml", "prettify_json.rb", "rackup", "ruby_parse", "sass"]
   s.extra_rdoc_files = [
     "README.rdoc"
   ]
