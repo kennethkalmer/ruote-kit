@@ -3,7 +3,7 @@ require 'ruote'
 
 module RuoteKit
 
-  VERSION = "2.1.4"
+  VERSION = "2.1.4.1"
 
   autoload :Configuration, "ruote-kit/configuration"
   autoload :Application,   "ruote-kit/application"
@@ -68,7 +68,7 @@ module RuoteKit
 
       configure_participants
 
-      run_worker!( true ) unless configuration.run_worker
+      run_worker!( true ) if configuration.run_worker
     end
 
     # Run a single worker. By default this method will block indefinitely,
