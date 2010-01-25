@@ -32,7 +32,7 @@ class RuoteKit::Application
     @wfid = engine.launch( launch_item['pdef'], launch_item['fields'], launch_item['variables'] )
 
     respond_to do |format|
-      format.html { redirect "/_ruote/processes/#{@wfid}" }
+      format.html { haml :process_launched }
       format.json { json( :launched, @wfid ) }
     end
   end

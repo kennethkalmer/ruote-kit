@@ -147,8 +147,7 @@ describe "POST /_ruote/processes" do
 
     post "/_ruote/processes", params
 
-    last_response.should be_redirect
-    last_response['Location'].should match( /^\/_ruote\/processes\/[0-9a-z\-]+$/ )
+    last_response.should be_ok
 
     sleep 0.4
 
@@ -165,8 +164,7 @@ describe "POST /_ruote/processes" do
 
     post '/_ruote/processes', params
 
-    last_response.should be_redirect
-    last_response['Location'].should match( /^\/_ruote\/processes\/([0-9a-z\-]+)$/ )
+    last_response.should be_ok
 
     sleep 0.5
 
@@ -183,7 +181,7 @@ describe "POST /_ruote/processes" do
 
     post '/_ruote/processes', params
 
-    last_response.should be_redirect
+    last_response.should be_ok
 
     sleep 0.4
 
