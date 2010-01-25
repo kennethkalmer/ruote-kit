@@ -33,8 +33,11 @@ module RuoteKit
       format :json if env["HTTP_ACCEPT"] && env["HTTP_ACCEPT"] == "application/json"
     end
 
-    not_found do
-      resource_not_found
+    unless defined?( Rails )
+      # Handle 404's ourselves when not in Rails
+      not_found do
+        resource_not_found
+      end
     end
 
     get '/_ruote' do
