@@ -17,7 +17,7 @@
         %span.description DELETE /_ruote/expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}?_kill=1
 
 %ul.nolist
-  %li fei: #{@expression.fei.to_s}
+  %li id: #{@expression.fei.expid}
   %li class: #{@expression.class.name}
   %li name: #{@expression.respond_to?(:participant_name) ? @expression.participant_name : @expression.name}
   %li process: #{link_to @process}
