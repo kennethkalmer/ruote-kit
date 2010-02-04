@@ -22,7 +22,6 @@ RuoteKit.configure do |config|
 
   # In memory is perfect for tests
   config.mode = :transient
-
 end
 
 require 'ruote-kit/spec/ruote_helpers'
@@ -50,6 +49,7 @@ Spec::Runner.configure do |config|
 
   config.before(:each) do
     RuoteKit.run_engine!
+    RuoteKit.configure_catchall!
 
     @tracer = Tracer.new
     RuoteKit.engine.add_service( 'tracer', @tracer )

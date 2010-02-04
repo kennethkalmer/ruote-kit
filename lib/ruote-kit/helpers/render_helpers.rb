@@ -83,7 +83,16 @@ module RuoteKit
         status 404
         respond_to do |format|
           format.html { haml :resource_not_found }
-          format.json { { "error" => { "code" => "404", "message" => "Resource not found" } }.to_json }
+          format.json { { "error" => { "code" => 404, "message" => "Resource not found" } }.to_json }
+        end
+      end
+
+      # Easy 503
+      def workitems_not_available
+        status 503
+        respond_to do |format|
+          format.html { haml :workitems_not_available }
+          format.json { { "error" => { "code" => 503, "messages" => "Workitems not available" } }.to_json }
         end
       end
 

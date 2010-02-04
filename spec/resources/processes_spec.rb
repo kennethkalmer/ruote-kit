@@ -83,7 +83,7 @@ describe "GET /_ruote/processes/X-Y" do
       last_response.status.should be(404)
 
       last_response.json_body.keys.should include("error")
-      last_response.json_body['error'].should == { "code" => "404", "message" => "Resource not found" }
+      last_response.json_body['error'].should == { "code" => 404, "message" => "Resource not found" }
     end
   end
 end

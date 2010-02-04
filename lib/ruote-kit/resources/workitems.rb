@@ -1,5 +1,11 @@
 class RuoteKit::Application
 
+  before do
+    if request.path =~ /^\/_ruote\/workitems/ && !RuoteKit.catchall_configured?
+      throw :halt, [ 503, workitems_not_available ]
+    end
+  end
+
   get "/_ruote/workitems" do
     if params[:participant]
       @participants = params[:participant].split(',')

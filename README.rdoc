@@ -59,8 +59,43 @@ Example:
     # 
   end
 
+  # Register the catchall participant if needed
+  RuoteKit.configure_catchall!
+
   # Slot into the stack
   use RuoteKit::Application
+
+=== Notes for Rails
+
+Add this line to your +config/environment.rb+ file:
+
+  config.gem 'ruote-kit'
+
+Then register ruote-kit with Rails' middleware stack (also in +config/environment.rb+):
+
+  config.middleware.use 'RuoteKit::Application'
+
+Then install and unpack the gem
+
+  $ rake gems:install
+  $ rake gems:unpack GEM=ruote-kit
+
+Then you can create an initializer to configure and start the engine in
++config/initializers/ruote-kit.rb+:
+
+  RuoteKit.configure do |config|
+    # make changes if needed
+  end
+
+  # Register participants if needed
+  RuoteKit.engine.register_participant :toto do |wi|
+    # 
+  end
+
+  # Register the catchall participant if needed
+  RuoteKit.configure_catchall!
+
+Then run +script/server+ and access RuoteKit through +http://localhost:3000/_ruote+
 
 == Configuring ruote-kit & ruote
 
@@ -70,6 +105,11 @@ the engine. From that point the engine is accessible through RuoteKit.engine.
 Without any configuration ruote-kit will use file system persistence, and save
 the work in a sub-folder of the current working directory named +work_<env>+,
 where +env+ is the RACK_ENV or RAILS_ENV.
+
+You'll also need to register a catchall participant to utilize the +workitems+
+resource. Do this after you've registered your own participants:
+
+  RuoteKit.configure_catchall!
 
 == Running workers
 
