@@ -200,7 +200,7 @@ describe "json helper" do
 
       stub_chain( :request, :fullpath ).and_return("/_ruote/workitems")
 
-      @hash = Rufus::Json.decode( json( :workitems, store_participant.all ) )
+      @hash = Rufus::Json.decode( json( :workitems, storage_participant.all ) )
     end
 
     it "should have the workitems" do

@@ -30,12 +30,12 @@ module RuoteKit
         RuoteKit.engine.context[:noisy] = on
       end
 
-      def store_participant
-        RuoteKit.engine.context.plist.lookup('.*')
+      def storage_participant
+        RuoteKit.storage_participant
       end
 
       def find_workitem( wfid, expid )
-        store_participant.by_wfid( wfid ).detect { |wi| wi.fei.expid == expid }
+        storage_participant.by_wfid( wfid ).detect { |wi| wi.fei.expid == expid }
       end
 
       def wait_for( wfid )
