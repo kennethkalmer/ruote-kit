@@ -9,7 +9,7 @@ module RuoteKit
       # We want to support Rails
       if defined?( Rails )
         set :environment, Rails.env
-        disable :raise_errors
+        disable :raise_errors unless Rails.env == 'development'
       end
 
       RuoteKit.ensure_engine!
