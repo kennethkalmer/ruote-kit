@@ -18,7 +18,7 @@ describe "workitems.html.haml" do
       @wfid1 = launch_test_process
       @wfid2 = launch_test_process
 
-      assigns[:workitems] = store_participant.all
+      assigns[:workitems] = storage_participant.all
 
       render 'workitems.html.haml'
     end

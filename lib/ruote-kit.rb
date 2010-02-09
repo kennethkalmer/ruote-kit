@@ -103,5 +103,10 @@ module RuoteKit
       self.worker = nil
     end
 
+    def storage_participant
+      return nil if self.engine.nil?
+      @storage_participant ||= Ruote::StorageParticipant.new(self.engine)
+    end
+
   end
 end

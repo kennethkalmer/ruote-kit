@@ -10,10 +10,10 @@ class RuoteKit::Application
     if params[:participant]
       @participants = params[:participant].split(',')
       @workitems = @participants.inject([]) do |memo, part|
-        memo.concat store_participant.by_participant( part )
+        memo.concat storage_participant.by_participant( part )
       end
     else
-      @workitems = store_participant.all
+      @workitems = storage_participant.all
     end
 
     respond_to do |format|
@@ -52,11 +52,11 @@ class RuoteKit::Application
 
     unless options[:fields].empty?
       workitem.fields = options[:fields]
-      store_participant.update( workitem )
+      storage_participant.update( workitem )
     end
 
     if options[:proceed]
-      store_participant.reply( workitem )
+      storage_participant.reply( workitem )
     end
 
     respond_to do |format|

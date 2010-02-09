@@ -6,12 +6,12 @@ module RuoteKit
         RuoteKit.engine
       end
 
-      def store_participant
-        RuoteKit.engine.context.plist.lookup('.*')
+      def storage_participant
+        RuoteKit.storage_participant
       end
 
       def find_workitems( wfid )
-        store_participant.by_wfid( wfid )
+        storage_participant.by_wfid( wfid )
       end
 
       def find_workitem( wfid, expid )
