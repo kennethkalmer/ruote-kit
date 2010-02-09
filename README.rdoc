@@ -31,6 +31,12 @@ ruote-kit for the first time you need to install bundler and then run:
 
   $ gem bundle
 
+Note: When using recent bundler versions (0.9.x), you'll have to run
+
+  $ bundle install
+
+instead.
+
 Bundler will download all the required gems and unpack them in 'vendor/gems'
 for you.
 

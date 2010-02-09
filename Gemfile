@@ -1,4 +1,5 @@
 # Dependencies for ruote-kit
+source :gemcutter
 
 # ruote-kit itself
 gem 'sinatra'
