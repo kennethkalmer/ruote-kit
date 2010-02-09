@@ -112,8 +112,20 @@ Without any configuration ruote-kit will use file system persistence, and save
 the work in a sub-folder of the current working directory named +work_<env>+,
 where +env+ is the RACK_ENV or RAILS_ENV.
 
-You'll also need to register a catchall participant to utilize the +workitems+
-resource. Do this after you've registered your own participants:
+== The +workitems+ resource
+
+The +workitems+ resource relies on the Ruote::StorageParticipant. You'll have to
+register at least one Storage Participant if you ever want to see a workitem in
+the resource. Example:
+
+  require 'ruote/part/storage_participant'
+  RuoteKit.engine.register_participant :storage, Ruote::StorageParticipant
+
+You may also use the catchall participant provided by RuoteKit. It's named '.*',
+so it will catch all workitems for any participant mentioned in your workflow
+definitions which are not already caught by another (previously) registered
+participant. So make sure to register the catchall after your own participants.
+The catchall participant may be registered by calling
 
   RuoteKit.configure_catchall!
 

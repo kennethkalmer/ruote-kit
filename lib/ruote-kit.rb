@@ -1,5 +1,6 @@
 require 'json'
 require 'ruote'
+require 'ruote/part/storage_participant'
 
 module RuoteKit
 
