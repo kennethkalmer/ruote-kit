@@ -106,7 +106,7 @@ module RuoteKit
 
     def storage_participant
       return nil if self.engine.nil?
-      @storage_participant ||= Ruote::StorageParticipant.new(self.engine)
+      Ruote::StorageParticipant.new(self.engine) # don't cache instance -- won't work with in-memory storage
     end
 
   end

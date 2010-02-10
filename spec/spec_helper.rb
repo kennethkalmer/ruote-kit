@@ -66,7 +66,7 @@ Spec::Runner.configure do |config|
 
     # Seems in some rubies this block gets called multiple times
     unless RuoteKit.engine.nil?
-      RuoteKit.engine.context.plist.lookup('.*').purge!
+      RuoteKit.storage_participant.purge!
       RuoteKit.engine.storage.purge! unless RuoteKit.engine.storage.nil?
 
       RuoteKit.shutdown_engine( true )
