@@ -71,6 +71,8 @@ module RuoteKit
       storage = configuration.storage_instance
       self.engine = Ruote::Engine.new( storage )
 
+      @storage_participant = nil
+
       run_worker!( true ) if configuration.run_worker
     end
 
@@ -106,7 +108,7 @@ module RuoteKit
 
     def storage_participant
       return nil if self.engine.nil?
-      Ruote::StorageParticipant.new(self.engine) # don't cache instance -- won't work with in-memory storage
+      @storage_participant ||= Ruote::StorageParticipant.new(self.engine)
     end
 
   end
