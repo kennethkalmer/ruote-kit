@@ -15,4 +15,5 @@ gem 'ruote', '>= 2.1.6'
 # Testing environment requirements
 group :test do
   gem 'rspec'
+  gem 'jeweler'
 end
