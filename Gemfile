@@ -4,6 +4,7 @@ source :gemcutter
 # ruote-kit itself
 gem 'bundler'
 gem 'sinatra'
+gem 'sinatra-respond_to'
 gem 'haml'
 gem 'json'
 

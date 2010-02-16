@@ -1,8 +1,10 @@
-require 'ruote-kit/vendor/sinatra-respond_to/lib/sinatra/respond_to'
+require 'sinatra/respond_to'
 require 'haml'
 
+Sinatra::Application.register Sinatra::RespondTo
+
 module RuoteKit
-  class Application < Sinatra::Base
+  class Application < Sinatra::Application
 
     # Delay these a bit
     configure do
