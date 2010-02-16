@@ -187,6 +187,29 @@ describe "POST /_ruote/processes" do
 
     engine.processes.should_not be_empty
   end
+
+  it "should return a 422 unprocessable entity error when launching a process fails (JSON)" do
+    params = { :definition => 'http://invalid.invalid' }
+
+    post '/_ruote/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+
+    last_response.should_not be_ok
+    last_response.status.should be(422)
+
+    last_response.json_body.keys.should include("error")
+  end
+
+  it "should return a nice error page when launching a process fails (HTML)" do
+    params = { :process_definition => %q{http://invalid.invalid} }
+
+    post '/_ruote/processes', params
+
+    last_response.should_not be_ok
+    last_response.status.should be(422)
+
+    last_response.should match(/Process failed to launch/)
+  end
+
 end
 
 describe "DELETE /_ruote/processes/X-Y" do

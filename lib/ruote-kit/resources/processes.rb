@@ -29,11 +29,17 @@ class RuoteKit::Application
   post "/_ruote/processes" do
     launch_item = launch_item_from_post
 
-    @wfid = engine.launch( launch_item['pdef'], launch_item['fields'], launch_item['variables'] )
-
     respond_to do |format|
-      format.html { haml :process_launched }
-      format.json { json( :launched, @wfid ) }
+      begin
+        @wfid = engine.launch( launch_item['pdef'], launch_item['fields'], launch_item['variables'] )
+      rescue ArgumentError => @error
+        status 422
+        format.html { haml :process_failed_to_launch }
+        format.json { { "error" => { "code" => 422, "message" => @error.message } }.to_json }
+      else
+        format.html { haml :process_launched }
+        format.json { json( :launched, @wfid ) }
+      end
     end
   end
 
