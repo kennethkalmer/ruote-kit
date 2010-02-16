@@ -42,6 +42,8 @@ class RuoteKit::Application
   put "/_ruote/workitems/:wfid/:expid" do
     workitem = find_workitem( params[:wfid], params[:expid] )
 
+    (resource_not_found and return) if workitem.nil?
+
     options = field_updates_and_proceed_from_put
 
     unless options[:fields].empty?

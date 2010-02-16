@@ -1,27 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+undef :context
+
 describe "GET /_ruote/workitems" do
-  describe "without a catchall" do
-    before(:each) do
-      RuoteKit.stub!(:catchall_configured?).and_return(false)
-    end
-
-    it "should 503 (HTML)" do
-      get "/_ruote/workitems"
-
-      last_response.should_not be_ok
-      last_response.status.should be(503)
-      last_response.should match(/workitems resource is not available/)
-    end
-
-    it "should 503 (JSON)" do
-      get "/_ruote/workitems.json"
-
-      last_response.should_not be_ok
-      last_response.status.should be(503)
-    end
-  end
-
   describe "without any workitems" do
     it "should report no workitems (HTML)" do
       get "/_ruote/workitems"
