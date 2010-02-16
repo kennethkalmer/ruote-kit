@@ -20,6 +20,7 @@ begin
     gemspec.files.include 'lib/ruote-kit/public/**/*'
     gemspec.executables.clear
 
+    gemspec.add_dependency 'bundler', '>=0.9.5'
     gemspec.add_dependency 'sinatra', '>=0.9.4'
     gemspec.add_dependency 'haml', '>= 2.2.5'
     gemspec.add_dependency 'json'
