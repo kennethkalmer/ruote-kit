@@ -20,7 +20,7 @@ coming weeks (albeit for the better).
 
 Dependencies you currently need is:
 
-* bundler (gem install bundler)
+* bundler 0.9.5 or later (gem install bundler)
 * sinatra
 * haml
 * json
@@ -29,16 +29,11 @@ Dependencies you currently need is:
 ruote-kit uses bundler to setup and maintain its environment. Before running
 ruote-kit for the first time you need to install bundler and then run:
 
-  $ gem bundle
-
-Note: When using recent bundler versions (0.9.x), you'll have to run
-
   $ bundle install
 
-instead.
-
-Bundler will download all the required gems and unpack them in 'vendor/gems'
-for you.
+Bundler will download all the required gems and install them for you. To
+bundle the gems you can simply run 'bundle lock' and all the gems will be
+unpacked in .bundle
 
 == Getting started quickly
 
