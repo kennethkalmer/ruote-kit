@@ -113,5 +113,12 @@ module RuoteKit
       @storage_participant ||= Ruote::StorageParticipant.new(self.engine)
     end
 
+    # resets the configuration
+    #
+    # mainly used in tests
+    def reset_configuration!
+      @configuration = nil
+    end
+
   end
 end

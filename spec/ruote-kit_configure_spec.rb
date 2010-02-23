@@ -36,6 +36,10 @@ describe RuoteKit do
       end
     end
 
+    after(:each) do
+      RuoteKit.reset_configuration!
+    end
+
     it 'should advertise mode as :custom' do
 
       RuoteKit.configuration.mode.should == :custom

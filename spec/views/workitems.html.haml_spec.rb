@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "workitems.html.haml" do
-
-  it_should_behave_like 'an engine powered spec'
+describe "workitems.html.haml", :type => :with_engine do
 
   describe "rendering no workitems" do
     before(:each) do

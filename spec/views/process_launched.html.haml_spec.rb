@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "process_launched.html.haml" do
-
-  it_should_behave_like 'an engine powered spec'
+describe "process_launched.html.haml", :type => :with_engine do
 
   before(:each) do
     @wfid = launch_test_process
