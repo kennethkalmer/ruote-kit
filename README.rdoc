@@ -1,4 +1,4 @@
-= ruote-kit (RESTful BPM & middleware)
+= ruote-kit (RESTful ruote & middleware)
 
 * http://kit.rubyforge.org/ruote (soon)
 * http://kit.rubyforge.org/ruote/rdoc (soon)
