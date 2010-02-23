@@ -1,6 +1,11 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+undef :context if defined?(context)
+
 describe "json helper" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "rendering defaults" do
     before(:each) do
       stub_chain( :request, :fullpath ).and_return('/_ruote')

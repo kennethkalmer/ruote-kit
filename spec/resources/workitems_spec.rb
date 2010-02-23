@@ -1,8 +1,11 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-undef :context
+undef :context if defined?(context)
 
 describe "GET /_ruote/workitems" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "without any workitems" do
     it "should report no workitems (HTML)" do
       get "/_ruote/workitems"
@@ -59,6 +62,9 @@ describe "GET /_ruote/workitems" do
 end
 
 describe "GET /_ruote/workitems/wfid" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "with workitems" do
     before(:each) do
       @wfid = launch_test_process do
@@ -112,6 +118,9 @@ describe "GET /_ruote/workitems/wfid" do
 end
 
 describe "GET /_ruote/workitems/wfid/expid" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "with a workitem" do
     before(:each) do
       @wfid = launch_test_process do
@@ -159,6 +168,9 @@ describe "GET /_ruote/workitems/wfid/expid" do
 end
 
 describe "PUT /_ruote/workitems/X-Y" do
+
+  it_should_behave_like 'an engine powered spec'
+
   before(:each) do
     @wfid = launch_test_process do
       Ruote.process_definition :name => 'foo' do
@@ -266,6 +278,9 @@ describe "PUT /_ruote/workitems/X-Y" do
 end
 
 describe "Filtering workitems" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "on participants" do
     before(:each) do
       @wfid = launch_test_process do

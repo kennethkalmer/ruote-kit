@@ -1,6 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "GET /" do
+
+  it_should_behave_like 'an engine powered spec'
+
   it "should return a welcome message in HTML be default" do
     get "/_ruote"
 
@@ -25,6 +28,9 @@ describe "GET /" do
 end
 
 describe "Generic error handling" do
+
+  it_should_behave_like 'an engine powered spec'
+
   it "should give our own 404 page (HTML)" do
     get "/kenneth"
 

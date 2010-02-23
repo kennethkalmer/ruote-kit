@@ -27,6 +27,35 @@ end
 require 'ruote-kit/spec/ruote_helpers'
 require 'ruote/log/test_logger'
 
+describe 'an engine powered spec', :shared => true do
+
+  before(:each) do
+    RuoteKit.run_engine!
+    RuoteKit.configure_catchall!
+
+    @tracer = Tracer.new
+    RuoteKit.engine.add_service( 'tracer', @tracer )
+
+    # Specs use their own worker since we need the trace
+    @_spec_worker = Ruote::Worker.new( RuoteKit.engine.storage )
+    @_spec_worker.context.add_service( 'tracer', @tracer )
+    @_spec_worker.run_in_thread
+  end
+
+  # Purge the engine after every run
+  after(:each) do
+    @_spec_worker.shutdown
+
+    # Seems in some rubies this block gets called multiple times
+    unless RuoteKit.engine.nil?
+      RuoteKit.storage_participant.purge!
+      RuoteKit.engine.storage.purge! unless RuoteKit.engine.storage.nil?
+
+      RuoteKit.shutdown_engine( true )
+    end
+  end
+end
+
 Spec::Runner.configure do |config|
   # == Mock Framework
   #
@@ -44,32 +73,6 @@ Spec::Runner.configure do |config|
   RuoteKit::Application.included_modules.each do |klass|
     if klass.name =~ /RuoteKit::Helpers::\w+Helpers/
       config.include klass
-    end
-  end
-
-  config.before(:each) do
-    RuoteKit.run_engine!
-    RuoteKit.configure_catchall!
-
-    @tracer = Tracer.new
-    RuoteKit.engine.add_service( 'tracer', @tracer )
-
-    # Specs use their own worker since we need the trace
-    @_spec_worker = Ruote::Worker.new( RuoteKit.engine.storage )
-    @_spec_worker.context.add_service( 'tracer', @tracer )
-    @_spec_worker.run_in_thread
-  end
-
-  # Purge the engine after every run
-  config.after(:each) do
-    @_spec_worker.shutdown
-
-    # Seems in some rubies this block gets called multiple times
-    unless RuoteKit.engine.nil?
-      RuoteKit.storage_participant.purge!
-      RuoteKit.engine.storage.purge! unless RuoteKit.engine.storage.nil?
-
-      RuoteKit.shutdown_engine( true )
     end
   end
 end

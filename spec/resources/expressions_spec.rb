@@ -1,6 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "GET /_ruote/expressions" do
+
+  it_should_behave_like 'an engine powered spec'
+
   it "should report a friendly message to the user (HTML)" do
     get "/_ruote/expressions"
 
@@ -17,6 +20,9 @@ describe "GET /_ruote/expressions" do
 end
 
 describe "GET /_ruote/expressions/wfid" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "with running processes" do
     before(:each) do
       @wfid = launch_test_process
@@ -53,6 +59,9 @@ describe "GET /_ruote/expressions/wfid" do
 end
 
 describe "GET /_ruote/expressions/wfid/expid" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "with running processes" do
     before(:each) do
       @wfid = launch_test_process
@@ -91,6 +100,9 @@ describe "GET /_ruote/expressions/wfid/expid" do
 end
 
 describe "DELETE /_ruote/expressions/wfid/expid" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "with running processes" do
     before(:each) do
       @wfid = launch_test_process do

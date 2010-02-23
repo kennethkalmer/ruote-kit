@@ -31,6 +31,12 @@ module RuoteKit
       @mode = mode
     end
 
+    # Sets a custom storage
+    def set_storage( klass, opts )
+      @storage = [ klass, opts ]
+      @mode = :custom
+    end
+
     # Return the best suited storage class for the current mode
     def storage_instance
       case mode

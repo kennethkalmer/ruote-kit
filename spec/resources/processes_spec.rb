@@ -1,6 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "GET /_ruote/processes" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "without any running processes" do
     it "should give no processes back (HTML)" do
       get "/_ruote/processes"
@@ -44,6 +47,9 @@ describe "GET /_ruote/processes" do
 end
 
 describe "GET /_ruote/processes/X-Y" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "with a running process" do
     before(:each) do
       @wfid = launch_test_process
@@ -89,6 +95,9 @@ describe "GET /_ruote/processes/X-Y" do
 end
 
 describe "GET /_ruote/processes/new" do
+
+  it_should_behave_like 'an engine powered spec'
+
   it "should return a launch form" do
     get "/_ruote/processes/new"
 
@@ -97,6 +106,9 @@ describe "GET /_ruote/processes/new" do
 end
 
 describe "POST /_ruote/processes" do
+
+  it_should_behave_like 'an engine powered spec'
+
   before(:each) do
     engine.processes.should be_empty
   end
@@ -213,6 +225,9 @@ describe "POST /_ruote/processes" do
 end
 
 describe "DELETE /_ruote/processes/X-Y" do
+
+  it_should_behave_like 'an engine powered spec'
+
   before(:each) do
     @wfid = launch_test_process do
       Ruote.process_definition :name => 'test' do
