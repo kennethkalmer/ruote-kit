@@ -39,6 +39,12 @@ module RuoteKit
 
     # Return the best suited storage class for the current mode
     def storage_instance
+
+      if @storage
+        klass, opts = @storage
+        return klass.new(opts)
+      end
+
       case mode
       when :transient
         require 'ruote/storage/hash_storage'
