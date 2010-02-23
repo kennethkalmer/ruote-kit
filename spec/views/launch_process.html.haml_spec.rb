@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "launch_process.html.haml" do
-
-  it_should_behave_like 'an engine powered spec'
+describe "launch_process.html.haml", :type => :with_engine do
 
   it "should have a process definition field" do
     render 'launch_process.html.haml'

@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "GET /" do
-
-  it_should_behave_like 'an engine powered spec'
+describe "GET /", :type => :with_engine do
 
   it "should return a welcome message in HTML be default" do
     get "/_ruote"
@@ -27,9 +25,7 @@ describe "GET /" do
   end
 end
 
-describe "Generic error handling" do
-
-  it_should_behave_like 'an engine powered spec'
+describe "Generic error handling", :type => :with_engine do
 
   it "should give our own 404 page (HTML)" do
     get "/kenneth"

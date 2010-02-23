@@ -2,9 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 undef :context if defined?(context)
 
-describe "GET /_ruote/workitems" do
-
-  it_should_behave_like 'an engine powered spec'
+describe "GET /_ruote/workitems", :type => :with_engine do
 
   describe "without any workitems" do
     it "should report no workitems (HTML)" do
@@ -61,9 +59,7 @@ describe "GET /_ruote/workitems" do
   end
 end
 
-describe "GET /_ruote/workitems/wfid" do
-
-  it_should_behave_like 'an engine powered spec'
+describe "GET /_ruote/workitems/wfid", :type => :with_engine do
 
   describe "with workitems" do
     before(:each) do
@@ -117,9 +113,7 @@ describe "GET /_ruote/workitems/wfid" do
   end
 end
 
-describe "GET /_ruote/workitems/wfid/expid" do
-
-  it_should_behave_like 'an engine powered spec'
+describe "GET /_ruote/workitems/wfid/expid", :type => :with_engine do
 
   describe "with a workitem" do
     before(:each) do
@@ -167,9 +161,7 @@ describe "GET /_ruote/workitems/wfid/expid" do
   end
 end
 
-describe "PUT /_ruote/workitems/X-Y" do
-
-  it_should_behave_like 'an engine powered spec'
+describe "PUT /_ruote/workitems/X-Y", :type => :with_engine do
 
   before(:each) do
     @wfid = launch_test_process do
@@ -277,9 +269,7 @@ describe "PUT /_ruote/workitems/X-Y" do
   end
 end
 
-describe "Filtering workitems" do
-
-  it_should_behave_like 'an engine powered spec'
+describe "Filtering workitems", :type => :with_engine do
 
   describe "on participants" do
     before(:each) do
