@@ -1,6 +1,13 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+
+undef :context if defined?(context)
+
+
 describe "expressions.html.haml" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "without expressions" do
     it "should be helpful" do
       render "expressions.html.haml"

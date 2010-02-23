@@ -1,6 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "workitems.html.haml" do
+
+  it_should_behave_like 'an engine powered spec'
+
   describe "rendering no workitems" do
     before(:each) do
       assigns[:workitems] = []
