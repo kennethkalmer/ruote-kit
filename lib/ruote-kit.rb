@@ -32,11 +32,11 @@ module RuoteKit
     def configure( &block )
       yield configuration
 
-      run_engine! if configuration.run_engine
+      run_engine!
     end
 
     # Configure and run the engine in a RESTful container
-    def run!(&block)
+    def run!( &block )
       yield if block_given?
 
       run_engine!
@@ -67,6 +67,8 @@ module RuoteKit
     # Runs an engine, and starts a threaded workers if #configuration allows
     # it
     def run_engine!
+
+      return unless configuration.run_engine
 
       storage = configuration.storage_instance
       self.engine = Ruote::Engine.new( storage )
