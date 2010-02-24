@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruote-kit}
-  s.version = "2.1.4.1"
+  s.version = "2.1.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["kenneth.kalmer@gmail.com"]
-  s.date = %q{2010-01-12}
+  s.date = %q{2010-02-24}
   s.description = %q{ruote-kit is a RESTful Rack app for the ruote workflow engine}
   s.email = %q{kenneth.kalmer@gmail.com}
   s.extra_rdoc_files = [
@@ -49,28 +49,14 @@ Gem::Specification.new do |s|
      "lib/ruote-kit/resources/processes.rb",
      "lib/ruote-kit/resources/workitems.rb",
      "lib/ruote-kit/spec/ruote_helpers.rb",
-     "lib/ruote-kit/vendor/sinatra-respond_to/LICENSE",
-     "lib/ruote-kit/vendor/sinatra-respond_to/README.markdown",
-     "lib/ruote-kit/vendor/sinatra-respond_to/Rakefile",
-     "lib/ruote-kit/vendor/sinatra-respond_to/VERSION.yml",
-     "lib/ruote-kit/vendor/sinatra-respond_to/lib/sinatra/respond_to.rb",
-     "lib/ruote-kit/vendor/sinatra-respond_to/sinatra-respond_to.gemspec",
-     "lib/ruote-kit/vendor/sinatra-respond_to/spec/app/public/static folder/.keep",
-     "lib/ruote-kit/vendor/sinatra-respond_to/spec/app/public/static.txt",
-     "lib/ruote-kit/vendor/sinatra-respond_to/spec/app/test_app.rb",
-     "lib/ruote-kit/vendor/sinatra-respond_to/spec/app/unreachable_static.txt",
-     "lib/ruote-kit/vendor/sinatra-respond_to/spec/app/views/layout.html.haml",
-     "lib/ruote-kit/vendor/sinatra-respond_to/spec/app/views/resource.html.haml",
-     "lib/ruote-kit/vendor/sinatra-respond_to/spec/app/views/resource.js.erb",
-     "lib/ruote-kit/vendor/sinatra-respond_to/spec/app/views/resource.xml.builder",
-     "lib/ruote-kit/vendor/sinatra-respond_to/spec/extension_spec.rb",
-     "lib/ruote-kit/vendor/sinatra-respond_to/spec/spec_helper.rb",
+     "lib/ruote-kit/version.rb",
      "lib/ruote-kit/views/expression.html.haml",
      "lib/ruote-kit/views/expressions.html.haml",
      "lib/ruote-kit/views/index.html.haml",
      "lib/ruote-kit/views/launch_process.html.haml",
      "lib/ruote-kit/views/layout.html.haml",
      "lib/ruote-kit/views/process.html.haml",
+     "lib/ruote-kit/views/process_launched.html.haml",
      "lib/ruote-kit/views/processes.html.haml",
      "lib/ruote-kit/views/resource_not_found.html.haml",
      "lib/ruote-kit/views/workitem.html.haml",
@@ -81,18 +67,21 @@ Gem::Specification.new do |s|
      "spec/resources/index_spec.rb",
      "spec/resources/processes_spec.rb",
      "spec/resources/workitems_spec.rb",
+     "spec/ruote-kit_configure_spec.rb",
      "spec/ruote-kit_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
+     "spec/views/expressions.html.haml_spec.rb",
      "spec/views/launch_process.html.haml_spec.rb",
      "spec/views/process.html.haml_spec.rb",
+     "spec/views/process_launched.html.haml_spec.rb",
      "spec/views/processes.html.haml_spec.rb",
      "spec/views/workitems.html.haml_spec.rb"
   ]
   s.homepage = %q{http://github.com/kennethkalmer/ruote-kit}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{ruote workflow engine, wrapped in a loving rack embrace}
   s.test_files = [
     "spec/helpers/render_helpers_spec.rb",
@@ -100,10 +89,13 @@ Gem::Specification.new do |s|
      "spec/resources/index_spec.rb",
      "spec/resources/processes_spec.rb",
      "spec/resources/workitems_spec.rb",
+     "spec/ruote-kit_configure_spec.rb",
      "spec/ruote-kit_spec.rb",
      "spec/spec_helper.rb",
+     "spec/views/expressions.html.haml_spec.rb",
      "spec/views/launch_process.html.haml_spec.rb",
      "spec/views/process.html.haml_spec.rb",
+     "spec/views/process_launched.html.haml_spec.rb",
      "spec/views/processes.html.haml_spec.rb",
      "spec/views/workitems.html.haml_spec.rb"
   ]
@@ -113,24 +105,36 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<bundler>, [">= 0.9.5"])
       s.add_runtime_dependency(%q<sinatra>, [">= 0.9.4"])
+      s.add_runtime_dependency(%q<sinatra-respond_to>, [">= 0.4.0"])
       s.add_runtime_dependency(%q<haml>, [">= 2.2.5"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
-      s.add_runtime_dependency(%q<ruote>, ["= 2.1.4"])
+      s.add_runtime_dependency(%q<ruote>, [">= 2.1.7"])
+      s.add_development_dependency(%q<rake>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
     else
+      s.add_dependency(%q<bundler>, [">= 0.9.5"])
       s.add_dependency(%q<sinatra>, [">= 0.9.4"])
+      s.add_dependency(%q<sinatra-respond_to>, [">= 0.4.0"])
       s.add_dependency(%q<haml>, [">= 2.2.5"])
       s.add_dependency(%q<json>, [">= 0"])
-      s.add_dependency(%q<ruote>, ["= 2.1.4"])
+      s.add_dependency(%q<ruote>, [">= 2.1.7"])
+      s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
     end
   else
+    s.add_dependency(%q<bundler>, [">= 0.9.5"])
     s.add_dependency(%q<sinatra>, [">= 0.9.4"])
+    s.add_dependency(%q<sinatra-respond_to>, [">= 0.4.0"])
     s.add_dependency(%q<haml>, [">= 2.2.5"])
     s.add_dependency(%q<json>, [">= 0"])
-    s.add_dependency(%q<ruote>, ["= 2.1.4"])
+    s.add_dependency(%q<ruote>, [">= 2.1.7"])
+    s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
   end
 end
 
