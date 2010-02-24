@@ -32,8 +32,8 @@ module RuoteKit
     end
 
     # Sets a custom storage
-    def set_storage( klass, opts )
-      @storage = [ klass, opts ]
+    def set_storage( klass, *args )
+      @storage = [ klass, args ]
       @mode = :custom
     end
 
@@ -41,8 +41,8 @@ module RuoteKit
     def storage_instance
 
       if @storage
-        klass, opts = @storage
-        return klass.new(opts)
+        klass, args = @storage
+        return klass.new( *args )
       end
 
       case mode
