@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["kenneth.kalmer@gmail.com"]
-  s.date = %q{2010-02-24}
+  s.date = %q{2010-03-03}
   s.description = %q{ruote-kit is a RESTful Rack app for the ruote workflow engine}
   s.email = %q{kenneth.kalmer@gmail.com}
   s.extra_rdoc_files = [
@@ -56,6 +56,7 @@ Gem::Specification.new do |s|
      "lib/ruote-kit/views/launch_process.html.haml",
      "lib/ruote-kit/views/layout.html.haml",
      "lib/ruote-kit/views/process.html.haml",
+     "lib/ruote-kit/views/process_failed_to_launch.html.haml",
      "lib/ruote-kit/views/process_launched.html.haml",
      "lib/ruote-kit/views/processes.html.haml",
      "lib/ruote-kit/views/resource_not_found.html.haml",
@@ -84,20 +85,20 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{ruote workflow engine, wrapped in a loving rack embrace}
   s.test_files = [
-    "spec/helpers/render_helpers_spec.rb",
-     "spec/resources/expressions_spec.rb",
+    "spec/resources/expressions_spec.rb",
+     "spec/resources/workitems_spec.rb",
      "spec/resources/index_spec.rb",
      "spec/resources/processes_spec.rb",
-     "spec/resources/workitems_spec.rb",
      "spec/ruote-kit_configure_spec.rb",
      "spec/ruote-kit_spec.rb",
-     "spec/spec_helper.rb",
-     "spec/views/expressions.html.haml_spec.rb",
-     "spec/views/launch_process.html.haml_spec.rb",
-     "spec/views/process.html.haml_spec.rb",
+     "spec/helpers/render_helpers_spec.rb",
+     "spec/views/workitems.html.haml_spec.rb",
      "spec/views/process_launched.html.haml_spec.rb",
+     "spec/views/launch_process.html.haml_spec.rb",
+     "spec/views/expressions.html.haml_spec.rb",
      "spec/views/processes.html.haml_spec.rb",
-     "spec/views/workitems.html.haml_spec.rb"
+     "spec/views/process.html.haml_spec.rb",
+     "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then

@@ -107,11 +107,12 @@ definitions which are not already caught by another (previously) registered
 participant. So make sure to register the catchall after your own participants.
 The catchall participant may be registered by calling
 
-  catchall ParticipantClass
+  catchall
 
-within the block given to RuoteKit::Configuration#register (you'll have to
-change +ParticipantClass+ to a real Ruote participant implementation,
-Ruote::StorageParticipant being the most common one for storing workitems).
+within the block given to RuoteKit::Configuration#register (this will use
+Ruote::StorageParticipant as participant implementation, you may use any options
+of Ruote::Engine#register_participant to overwrite that default -- see the
+example above).
 
 == Running workers
 

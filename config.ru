@@ -23,8 +23,7 @@ RuoteKit.configure do |config|
 
   register do
     # With this rackup I bundle as catchall, making it easy to experiment
-    require 'ruote/part/storage_participant'
-    catchall Ruote::StorageParticipant
+    catchall
   end
 end
 

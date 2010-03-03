@@ -81,6 +81,18 @@ describe RuoteKit do
       RuoteKit.engine.context.plist.names.should == [ '^.+$' ]
     end
 
+    describe 'catchall participant without any options' do
+      require 'ruote/part/storage_participant'
+
+      RuoteKit.configure do |conf|
+        conf.register do
+          catchall
+        end
+      end
+
+      RuoteKit.engine.context.plist.lookup('.+').instance_of?(Ruote::StorageParticipant).should == true
+    end
+
     after do
       RuoteKit.reset_configuration!
     end
