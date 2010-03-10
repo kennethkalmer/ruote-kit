@@ -2,6 +2,21 @@ module RuoteKit
   # RuoteKit configuration handling
   class Configuration
 
+    class ParticipantRegistrationProxy
+      def self.participant(*args, &block)
+        RuoteKit.engine.register_participant(*args, &block)
+      end
+      
+      def self.catchall(*args, &block)
+        if(args.empty? and not block_given?)
+          require 'ruote/part/storage_participant'
+          participant('.+', Ruote::StorageParticipant)
+        else
+          participant('.+', *args, &block)
+        end
+      end
+    end
+
     # Working directory for the engine (if using file system persistence)
     attr_accessor :work_directory
 
@@ -55,10 +70,14 @@ module RuoteKit
       end
     end
 
-    def catchall_participant
-      require 'ruote/part/storage_participant'
-      Ruote::StorageParticipant
+    def register &block
+      @participant_registration_block = block
+      do_participant_registration
     end
 
+    def do_participant_registration
+      return nil unless @participant_registration_block && RuoteKit.engine
+      ParticipantRegistrationProxy.instance_eval(&@participant_registration_block)
+    end
   end
 end

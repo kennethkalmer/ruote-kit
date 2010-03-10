@@ -18,6 +18,8 @@ Test::Unit::TestCase.send :include, Rack::Test::Methods
 require File.dirname(__FILE__) + '/../vendor/gems/environment' if File.exists?( File.dirname(__FILE__) + '/../vendor/gems/environment.rb' )
 require File.dirname(__FILE__) + '/../lib/ruote-kit'
 
+require 'ruote/part/storage_participant'
+
 RuoteKit.configure do |config|
 
   # In memory is perfect for tests
@@ -42,8 +44,12 @@ Spec::Runner.configure do |config|
   config.include RuoteKit::Spec::RuoteHelpers
 
   config.before(:each, :type => :with_engine) do
+    RuoteKit.configure do |conf|
+      conf.register do
+        catchall Ruote::StorageParticipant
+      end
+    end
     RuoteKit.run_engine!
-    RuoteKit.configure_catchall!
 
     @tracer = Tracer.new
     RuoteKit.engine.add_service( 'tracer', @tracer )

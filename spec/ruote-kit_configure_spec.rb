@@ -10,6 +10,8 @@ class MyCustomStorage
   end
 end
 
+class MyParticipant
+end
 
 describe RuoteKit do
 
@@ -51,6 +53,47 @@ describe RuoteKit do
 
       si.class.should == MyCustomStorage
       si.opts.should == { :a => 'A', :b => 'B' }
+    end
+  end
+
+  describe 'register participants' do
+
+    require 'ruote/participant'
+
+    describe 'custom participant' do
+      RuoteKit.configure do |conf|
+        conf.register do
+          participant 'al', MyParticipant
+        end
+      end
+
+      RuoteKit.engine.context.plist.names.should == ['^al$']
+    end
+
+    describe 'catchall participant' do
+      RuoteKit.configure do |conf|
+        conf.register do
+          catchall MyParticipant
+        end
+      end
+
+      RuoteKit.engine.context.plist.names.should == [ '^.+$' ]
+    end
+
+    describe 'catchall participant without any options' do
+      require 'ruote/part/storage_participant'
+
+      RuoteKit.configure do |conf|
+        conf.register do
+          catchall
+        end
+      end
+
+      RuoteKit.engine.context.plist.lookup('.+').instance_of?(Ruote::StorageParticipant).should == true
+    end
+
+    after do
+      RuoteKit.reset_configuration!
     end
   end
 end

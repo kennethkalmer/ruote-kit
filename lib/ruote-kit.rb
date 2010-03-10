@@ -47,16 +47,7 @@ module RuoteKit
     end
 
     def configuration
-
       @configuration ||= Configuration.new
-    end
-
-    def configure_catchall!
-      self.engine.register_participant('.*', configuration.catchall_participant)
-    end
-
-    def catchall_configured?
-      !self.engine.context.plist.lookup('.*').nil?
     end
 
     # Ensure the engine is running
@@ -72,6 +63,8 @@ module RuoteKit
 
       storage = configuration.storage_instance
       self.engine = Ruote::Engine.new( storage )
+
+      configuration.do_participant_registration
 
       @storage_participant = nil
 

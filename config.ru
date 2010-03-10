@@ -20,10 +20,13 @@ RuoteKit.configure do |config|
 
   # run a worker
   config.run_worker = true
+
+  register do
+    # With this rackup I bundle as catchall, making it easy to experiment
+    catchall
+  end
 end
 
-# With this rackup I bundle as catchall, making it easy to experiment
-RuoteKit.configure_catchall!
 
 use Rack::CommonLogger
 use Rack::Lint
