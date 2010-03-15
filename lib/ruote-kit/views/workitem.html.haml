@@ -6,7 +6,7 @@
   %li fei: #{@workitem.fei.to_s}
   %li participant: #{@workitem.participant_name}
   %li dispatched:
-  %li last modified:
+  %li last modified: #{@workitem.h.put_at}
   %li process: #{link_to engine.process( @workitem.fei.wfid) }
   %li expressions:
   %li workitems of this process: #{link_to "GET /_ruote/workitems/#{@workitem.fei.wfid}", "/_ruote/workitems/#{@workitem.fei.wfid}" }
