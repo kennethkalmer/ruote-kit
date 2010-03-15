@@ -21,7 +21,7 @@ RuoteKit.configure do |config|
   # run a worker
   config.run_worker = true
 
-  register do
+  config.register do
     # With this rackup I bundle as catchall, making it easy to experiment
     catchall
   end
