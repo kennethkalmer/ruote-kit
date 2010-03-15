@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["kenneth.kalmer@gmail.com"]
-  s.date = %q{2010-03-10}
+  s.date = %q{2010-03-15}
   s.description = %q{ruote-kit is a RESTful Rack app for the ruote workflow engine}
   s.email = %q{kenneth.kalmer@gmail.com}
   s.extra_rdoc_files = [
@@ -82,7 +82,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/kennethkalmer/ruote-kit}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{ruote workflow engine, wrapped in a loving rack embrace}
   s.test_files = [
     "spec/resources/expressions_spec.rb",
