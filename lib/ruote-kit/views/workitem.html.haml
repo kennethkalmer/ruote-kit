@@ -35,5 +35,5 @@
 
 :javascript
   var proc_rep = #{process_tree( @workitem )};
-  FluoCan.renderFlow( 'fluo', proc_rep, { 'workitems' : ['#{@workitem.fei.expid}'] } );
-  FluoCan.crop('fluo');
+  Fluo.renderFlow( 'fluo', proc_rep, { 'workitems' : ['#{@workitem.fei.expid}'] } );
+  Fluo.crop('fluo');
