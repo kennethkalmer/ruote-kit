@@ -4,7 +4,7 @@ require 'ruote/part/storage_participant'
 
 module RuoteKit
 
-  VERSION = '2.1.7'
+  VERSION = '2.1.8'
 
   autoload :Configuration, "ruote-kit/configuration"
   autoload :Application,   "ruote-kit/application"
@@ -29,11 +29,12 @@ module RuoteKit
 
     # Yields a RuoteKit::Configuration instance and then immediately starts
     # the engine.
-    def configure( &block )
-      yield configuration
+    def configure
+      yield configuration if block_given?
 
       run_engine!
     end
+    alias run! configure
 
     def shutdown!( purge_engine = false )
       shutdown_engine( purge_engine )
