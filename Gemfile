@@ -10,7 +10,7 @@ gem 'json'
 
 # ruote
 #gem 'ruote', :git => "git://github.com/kennethkalmer/ruote", :branch => "ruote-kit"
-gem 'ruote', '>= 2.1.6'
+gem 'ruote', '>= 2.1.8'
 
 # Testing environment requirements
 group :test do
