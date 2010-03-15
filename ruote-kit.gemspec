@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruote-kit}
-  s.version = "2.1.8.1"
+  s.version = "2.1.8.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["kenneth.kalmer@gmail.com"]
@@ -37,10 +37,8 @@ Gem::Specification.new do |s|
      "lib/ruote-kit/public/_ruote/images/bg_button_left_submit.gif",
      "lib/ruote-kit/public/_ruote/images/bg_button_right.gif",
      "lib/ruote-kit/public/_ruote/javascripts/SimplyButtons.js",
-     "lib/ruote-kit/public/_ruote/javascripts/fluo-can.js",
      "lib/ruote-kit/public/_ruote/javascripts/fluo-dial.js",
-     "lib/ruote-kit/public/_ruote/javascripts/fluo-json.js",
-     "lib/ruote-kit/public/_ruote/javascripts/fluo-tred.js",
+     "lib/ruote-kit/public/_ruote/javascripts/ruote-fluo.js",
      "lib/ruote-kit/public/_ruote/stylesheets/SimplyButtons.css",
      "lib/ruote-kit/public/_ruote/stylesheets/base.css",
      "lib/ruote-kit/public/_ruote/stylesheets/rk.css",

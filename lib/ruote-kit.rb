@@ -4,7 +4,7 @@ require 'ruote/part/storage_participant'
 
 module RuoteKit
 
-  VERSION = '2.1.8'
+  VERSION = '2.1.8.2'
 
   autoload :Configuration, "ruote-kit/configuration"
   autoload :Application,   "ruote-kit/application"
