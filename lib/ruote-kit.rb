@@ -28,16 +28,9 @@ module RuoteKit
     end
 
     # Yields a RuoteKit::Configuration instance and then immediately starts
-    # the engine (unless configuration prohibits it).
+    # the engine.
     def configure( &block )
       yield configuration
-
-      run_engine!
-    end
-
-    # Configure and run the engine in a RESTful container
-    def run!( &block )
-      yield if block_given?
 
       run_engine!
     end
@@ -62,13 +55,12 @@ module RuoteKit
       return unless configuration.run_engine
 
       storage = configuration.storage_instance
-      self.engine = Ruote::Engine.new( storage )
+
+      self.engine = Ruote::Engine.new( configuration.run_worker ? self.worker = Ruote::Worker.new(storage) : storage )
 
       configuration.do_participant_registration
 
       @storage_participant = nil
-
-      run_worker!( true ) if configuration.run_worker
     end
 
     # Run a single worker. By default this method will block indefinitely,
