@@ -18,7 +18,7 @@ Follow development:
 ruote-kit is under heavy development and will likely change violently over the
 coming weeks (albeit for the better).
 
-Dependencies you currently need is:
+Dependencies you currently need are:
 
 * bundler 0.9.5 or later (gem install bundler)
 * sinatra
@@ -38,12 +38,60 @@ unpacked in .bundle
 
 == Getting started quickly
 
-Once you have the dependencies installed, get going by running 'rackup'
-from inside the ruote-kit project.
+=== Using the RubyGem
+
+* Install the gem and its dependencies
+    $ gem install ruote-kit
+* You'll need an empty directory
+    $ mkdir my-ruote-kit && cd my-ruote-kit
+* There are two files needed in that directory: Gemfile and config.ru
+  * Gemfile
+      source :gemcutter
+      gem 'ruote-kit'
+  * config.ru
+      begin
+        # Try to require the preresolved locked set of gems.
+        require ::File.expand_path('.bundle/environment', __FILE__)
+      rescue LoadError
+        # Fall back on doing an unlocked resolve at runtime.
+        require "rubygems"
+        require "bundler"
+        Bundler.setup
+      end
+
+      require 'ruote-kit'
+
+      RuoteKit.configure do |config|
+        config.register { catchall }
+      end
+
+      use Rack::CommonLogger
+      use Rack::Lint
+
+      run RuoteKit::Application
+* Just to make sure every dependency is resolved
+    $ bundle check
+* If there are missing dependencies (there shouldn't be any if the gem
+  installation succeeded)
+    $ bundle install
+* Get going
+    $ rackup
+
+=== Using the source
+
+* Get the source files using git
+    $ git clone http://github.com/kennethkalmer/ruote-kit.git && cd ruote-kit
+* Make sure every dependency is resolved
+    $ bundle install
+* Get going
+    $ rackup
+
+=== Accessing the web interface
 
 If ruote-kit starts up without any issues (ie missing dependencies), you can
-point your browser to 'http://localhost:9292/_ruote/' to get going. By default ruote-kit
-binds to all IP addresses, so this works out the box remotely too.
+point your browser to 'http://localhost:9292/_ruote/' to get going.
+By default ruote-kit binds to all IP addresses, so this works out the box
+remotely too.
 
 == Plugging ruote-kit into your rack-stack
 
@@ -105,11 +153,8 @@ You may also use the catchall participant provided by RuoteKit. It's named '.+',
 so it will catch all workitems for any participant mentioned in your workflow
 definitions which are not already caught by another (previously) registered
 participant. So make sure to register the catchall after your own participants.
-The catchall participant may be registered by calling
-
-  catchall
-
-within the block given to RuoteKit::Configuration#register (this will use
+The catchall participant may be registered by calling +catchall+ within the
+block given to RuoteKit::Configuration#register (this will use
 Ruote::StorageParticipant as participant implementation, you may use any options
 of Ruote::Engine#register_participant to overwrite that default -- see the
 example above).
@@ -117,11 +162,11 @@ example above).
 == Running workers
 
 If you're using ruote-kit as part of your rack stack you'll need to start at
-least one worker separately or the workflows will be executed. You won't need
+least one worker separately or the workflows won't be executed. You won't need
 more than one worker unless you are running hundreds of processes at the same
 time.
 
-To run a worker you need to setup a worker scripts similar to the rake example
+To run a worker you need to setup a worker script similar to the rake example
 below:
 
   require 'rake'
