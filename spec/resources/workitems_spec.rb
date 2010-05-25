@@ -271,18 +271,27 @@ end
 
 describe "Filtering workitems", :type => :with_engine do
 
-  describe "on participants" do
-    before(:each) do
-      @wfid = launch_test_process do
-        Ruote.process_definition :name => 'test' do
-          concurrence do
+  before(:each) do
+    @wfid = launch_test_process do
+      Ruote.process_definition :name => 'test' do
+        set 'foo' => 'bar'
+        concurrence do
+          sequence do
+            set 'wands' => 101
+            set 'hinkypinky' => 'honkytonky'
             jack :activity => 'Fetch a pale'
-            jill :activity => 'Chase Jack'
-            well :activity => 'Ready water'
           end
+          sequence do
+            set 'hinkypinky' => 'honkytonky'
+            jill :activity => 'Chase Jack'
+          end
+          well :activity => 'Ready water'
         end
       end
     end
+  end
+
+  describe "on participants" do
 
     it "should narrow results down to a single participant (JSON)" do
       get '/_ruote/workitems.json', :participant => 'jack'
@@ -298,18 +307,37 @@ describe "Filtering workitems", :type => :with_engine do
       last_response.should be_ok
     end
 
-    it "should narrow results down to multiple participants (JSON)" do
-      get "/_ruote/workitems.json", :participant => 'jack,jill'
+  end
+
+  describe "on field values" do
+
+    it "should find worktitems with fields set to a given value (JSON)" do
+      get '/_ruote/workitems.json', :hinkypinky => 'honkytonky'
 
       last_response.should be_ok
 
       last_response.json_body['workitems'].size.should be(2)
     end
 
-    it "should narrow results down to multiple participants (HTML)" do
-      get "/_ruote/workitems", :participant => 'jack,jill'
+    it "should find worktitems with fields set to a given value (HTML)" do
+      get '/_ruote/workitems', :hinkypinky => 'honkytonky'
 
       last_response.should be_ok
     end
+
+    it "should combine search criteria by 'and' (JSON)" do
+      get '/_ruote/workitems.json', :hinkypinky => 'honkytonky', :wands => 101
+
+      last_response.should be_ok
+
+      last_response.json_body['workitems'].size.should be(1)
+    end
+
+    it "should combine search criteria by 'and' (HMTL)" do
+      get '/_ruote/workitems', :hinkypinky => 'honkytonky', :wands => 101
+
+      last_response.should be_ok
+    end
+
   end
 end

@@ -1,14 +1,8 @@
 class RuoteKit::Application
 
   get "/_ruote/workitems" do
-    if params[:participant]
-      @participants = params[:participant].split(',')
-      @workitems = @participants.inject([]) do |memo, part|
-        memo.concat storage_participant.by_participant( part )
-      end
-    else
-      @workitems = storage_participant.all
-    end
+
+    @workitems = storage_participant.query(params)
 
     respond_to do |format|
       format.html { haml :workitems }
