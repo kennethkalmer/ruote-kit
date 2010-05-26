@@ -8,10 +8,10 @@ module RuoteKit
           object = send( "json_#{resource}", object )
         end
 
-        {
+        Rufus::Json.encode({
           "links" => links( resource ),
           resource => object
-        }.to_json
+        })
       end
 
       def json_processes( processes )
@@ -83,7 +83,7 @@ module RuoteKit
         status 404
         respond_to do |format|
           format.html { haml :resource_not_found }
-          format.json { { "error" => { "code" => 404, "message" => "Resource not found" } }.to_json }
+          format.json { Rufus::Json.encode({ "error" => { "code" => 404, "message" => "Resource not found" } }) }
         end
       end
 
@@ -92,7 +92,7 @@ module RuoteKit
         status 503
         respond_to do |format|
           format.html { haml :workitems_not_available }
-          format.json { { "error" => { "code" => 503, "messages" => "Workitems not available" } }.to_json }
+          format.json { Rufus::Json.encode({ "error" => { "code" => 503, "messages" => "Workitems not available" } }) }
         end
       end
 
@@ -101,9 +101,9 @@ module RuoteKit
         case object
         when Ruote::Workitem
           process = engine.process( object.fei.wfid )
-          process.current_tree.to_json
+          Rufus::Json.encode(process.current_tree)
         when Ruote::ProcessStatus
-          object.current_tree.to_json
+          Rufus::Json.encode(object.current_tree)
         end
       end
 

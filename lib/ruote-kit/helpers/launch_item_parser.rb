@@ -7,7 +7,7 @@ module RuoteKit
         case env["CONTENT_TYPE"]
 
         when "application/json" then
-          data = JSON.parse( env["rack.input"].read )
+          data = Rufus::Json.decode( env["rack.input"].read )
           launch_item = {}
           launch_item['pdef'] = data["definition"]
           launch_item['fields'] = data["fields"] || {}
@@ -18,10 +18,10 @@ module RuoteKit
           launch_item = { 'pdef' => params[:process_definition] }
           fields = params[:process_fields] || ""
           fields = "{}" if fields.empty?
-          launch_item['fields'] = JSON.parse( fields )
+          launch_item['fields'] = Rufus::Json.decode( fields )
           vars = params[:process_variables] || ""
           vars = "{}" if vars.empty?
-          launch_item['variables'] = JSON.parse( vars )
+          launch_item['variables'] = Rufus::Json.decode( vars )
           return launch_item
 
         else
@@ -38,12 +38,12 @@ module RuoteKit
         case env['CONTENT_TYPE']
 
         when "application/json" then
-          data = JSON.parse( env['rack.input'].read )
+          data = Rufus::Json.decode( env['rack.input'].read )
           options[:fields] = data['fields'] unless data['fields'].nil? || data['fields'].empty?
           options[:proceed] = data['_proceed'] unless data['_proceed'].nil? || data['_proceed'].empty?
 
         when "application/x-www-form-urlencoded"
-          options[:fields] = JSON.parse( params[:fields] ) unless params['fields'].nil? || params['fields'].empty?
+          options[:fields] = Rufus::Json.decode( params[:fields] ) unless params['fields'].nil? || params['fields'].empty?
           options[:proceed] = params[:_proceed] unless params[:_proceed].nil? || params[:_proceed].empty?
 
         else

@@ -210,7 +210,7 @@ describe "PUT /_ruote/workitems/X-Y", :type => :with_engine do
       "fields" => fields
     }
 
-    put "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}.json", params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    put "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}.json", Rufus::Json.encode(params), { 'CONTENT_TYPE' => 'application/json' }
 
     last_response.should be_ok
 
@@ -222,12 +222,12 @@ describe "PUT /_ruote/workitems/X-Y", :type => :with_engine do
   end
 
   it "should reply to the engine (HTML)" do
-    fields = {
+    fields = Rufus::Json.encode({
       "params" => {
         "activity" => "Work your magic",
       },
       "foo" => "bar"
-    }.to_json
+    })
 
     put "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}", :fields => fields, :_proceed => '1'
 

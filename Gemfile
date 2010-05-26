@@ -6,14 +6,30 @@ gem 'bundler'
 gem 'sinatra'
 gem 'sinatra-respond_to'
 gem 'haml'
-gem 'json'
+
+# json support
+#
+# you should choose one of the following three or add another backend supported
+# by Rufus::Json (http://github.com/jmettraux/rufus-json/)
+#
+# gem 'json_pure' # safest all-around choice
+# gem 'yajl-ruby' # the fastest, but using c code
+# gem 'json'      # not bad, but using c code and sometimes broken
+#
+# needed, uses one of the above as backend
+gem 'rufus-json'
 
 # ruote
-#gem 'ruote', :git => "git://github.com/kennethkalmer/ruote", :branch => "ruote-kit"
 gem 'ruote', '>= 2.1.8'
 
 # Testing environment requirements
 group :test do
-  gem 'rspec'
+  gem 'rspec', :require => "spec"
+  gem 'rack-test'
+  gem 'webrat'
+  gem 'test-unit', '~> 1.2.3'
+end
+
+group :build do
   gem 'jeweler'
 end

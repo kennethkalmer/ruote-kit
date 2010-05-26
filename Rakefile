@@ -1,15 +1,9 @@
 
 require 'rake/tasklib'
 
-begin
-  # Try to require the preresolved locked set of gems.
-  require ::File.expand_path('.bundle/environment', __FILE__)
-rescue LoadError
-  # Fall back on doing an unlocked resolve at runtime.
-  require "rubygems"
-  require "bundler"
-  Bundler.setup
-end
+require "rubygems"
+require "bundler"
+Bundler.setup(:default, :test, :build)
 
 require 'lib/ruote-kit/version'
 
@@ -32,11 +26,14 @@ begin
     gemspec.add_dependency 'sinatra', '>=0.9.4'
     gemspec.add_dependency 'sinatra-respond_to', '>=0.4.0'
     gemspec.add_dependency 'haml', '>= 2.2.5'
-    gemspec.add_dependency 'json'
+    gemspec.add_dependency 'rufus-json'
     gemspec.add_dependency 'ruote', '>= 2.1.8'
     gemspec.add_development_dependency 'rake'
     gemspec.add_development_dependency 'rspec'
     gemspec.add_development_dependency 'jeweler'
+    gemspec.add_development_dependency 'webrat'
+    gemspec.add_development_dependency 'test-unit', '~> 1.2.3'
+    gemspec.add_development_dependency 'rack-test'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

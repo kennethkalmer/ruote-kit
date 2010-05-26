@@ -1,4 +1,4 @@
-require 'json'
+require 'rufus-json'
 require 'ruote'
 require 'ruote/part/storage_participant'
 

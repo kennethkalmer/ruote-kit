@@ -24,7 +24,7 @@ Dependencies you currently need are:
 * sinatra
 * sinatra-respond_to
 * haml
-* json
+* rufus-json[http://github.com/jmettraux/rufus-json] and a compatible backend
 * rspec (only to run the specs)
 
 ruote-kit uses bundler to setup and maintain its environment. Before running
@@ -56,8 +56,12 @@ unpacked in .bundle
         # Fall back on doing an unlocked resolve at runtime.
         require "rubygems"
         require "bundler"
-        Bundler.setup
+        Bundler.setup(:default)
       end
+
+      # load json backend
+      require 'yajl-ruby'    # best choice as fastest, but uses a c module
+      # require 'json_pure'  # should work everywhere
 
       require 'ruote-kit'
 

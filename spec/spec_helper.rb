@@ -1,17 +1,16 @@
 ENV['RACK_ENV'] = 'test'
 
-begin
-  require 'spec'
-rescue LoadError
-  require 'rubygems'
-  gem 'rspec'
-  require 'spec'
-end
+require 'rubygems'
+require 'bundler'
+Bundler.setup(:default, :test)
 
+require 'spec'
 require 'spec/interop/test'
 require 'rack/test'
 
 require 'webrat'
+
+require 'json'
 
 Test::Unit::TestCase.send :include, Rack::Test::Methods
 

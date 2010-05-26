@@ -112,7 +112,7 @@ describe "POST /_ruote/processes", :type => :with_engine do
       end}
     }
 
-    post '/_ruote/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    post '/_ruote/processes.json', Rufus::Json.encode(params), { 'CONTENT_TYPE' => 'application/json' }
 
     last_response.should be_ok
 
@@ -131,7 +131,7 @@ describe "POST /_ruote/processes", :type => :with_engine do
       :fields => { :foo => 'bar' }
     }
 
-    post '/_ruote/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    post '/_ruote/processes.json', Rufus::Json.encode(params), { 'CONTENT_TYPE' => 'application/json' }
 
     last_response.should be_ok
     last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
@@ -195,7 +195,7 @@ describe "POST /_ruote/processes", :type => :with_engine do
   it "should return a 422 unprocessable entity error when launching a process fails (JSON)" do
     params = { :definition => 'http://invalid.invalid' }
 
-    post '/_ruote/processes.json', params.to_json, { 'CONTENT_TYPE' => 'application/json' }
+    post '/_ruote/processes.json', Rufus::Json.encode(params), { 'CONTENT_TYPE' => 'application/json' }
 
     last_response.should_not be_ok
     last_response.status.should be(422)
