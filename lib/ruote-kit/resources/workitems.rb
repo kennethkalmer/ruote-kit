@@ -2,7 +2,24 @@ class RuoteKit::Application
 
   get "/_ruote/workitems" do
 
-    @workitems = storage_participant.query(params)
+    @workitems = if params.empty?
+      storage_participant.all
+    else
+      parsed_params = Hash.new
+
+      params.each do |k,v|
+        s = v.strip
+        if(s[0] == '{' and s[-1] == '}')
+          begin
+            v = JSON.parse(s)['value']
+          rescue JSON::ParserError
+          end
+        end
+        parsed_params[k] = v
+      end
+
+      storage_participant.query(parsed_params)
+    end
 
     respond_to do |format|
       format.html { haml :workitems }

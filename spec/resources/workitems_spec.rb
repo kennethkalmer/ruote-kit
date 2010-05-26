@@ -325,8 +325,22 @@ describe "Filtering workitems", :type => :with_engine do
       last_response.should be_ok
     end
 
+    it "should respect JSON encoded filter vars (JSON)" do
+      get '/_ruote/workitems.json', :wands => '{"value":101}'
+
+      last_response.should be_ok
+
+      last_response.json_body['workitems'].size.should be(1)
+    end
+
+    it "should respect JSON encoded filter vars (HTML)" do
+      get '/_ruote/workitems', :wands => '{"value":101}'
+
+      last_response.should be_ok
+    end
+
     it "should combine search criteria by 'and' (JSON)" do
-      get '/_ruote/workitems.json', :hinkypinky => 'honkytonky', :wands => 101
+      get '/_ruote/workitems.json', :hinkypinky => 'honkytonky', :wands => '{"value":101}'
 
       last_response.should be_ok
 
@@ -334,7 +348,7 @@ describe "Filtering workitems", :type => :with_engine do
     end
 
     it "should combine search criteria by 'and' (HMTL)" do
-      get '/_ruote/workitems', :hinkypinky => 'honkytonky', :wands => 101
+      get '/_ruote/workitems', :hinkypinky => 'honkytonky', :wands => '{"value":101}'
 
       last_response.should be_ok
     end
