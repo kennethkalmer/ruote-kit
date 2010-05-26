@@ -17,7 +17,7 @@ gem 'haml'
 # gem 'json'      # not bad, but using c code and sometimes broken
 #
 # needed, uses one of the above as backend
-gem 'rufus-json'
+gem 'rufus-json', '>= 0.2.2'
 
 # ruote
 gem 'ruote', '>= 2.1.8'

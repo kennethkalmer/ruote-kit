@@ -12,8 +12,7 @@ class RuoteKit::Application
         if(s[0] == '{' and s[-1] == '}')
           begin
             v = Rufus::Json.decode(s)['value']
-          rescue JSON::ParserError
-          rescue Yajl::ParseError
+          rescue Rufus::Json::ParserError
           end
         end
         parsed_params[k] = v
