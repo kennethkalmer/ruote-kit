@@ -10,7 +10,7 @@ module RuoteKit
 
         Rufus::Json.encode({
           "links" => links( resource ),
-          resource => object
+          resource.to_s => object
         })
       end
 
@@ -50,12 +50,22 @@ module RuoteKit
       end
 
       def json_workitem( workitem )
+
         links = [
           link( "/_ruote/processes/#{workitem.fei.wfid}", rel('#process') ),
-          link( "/_ruote/expressions/#{workitem.fei.wfid}", rel('#expressions') )
+          link( "/_ruote/expressions/#{workitem.fei.wfid}", rel('#expressions') ),
+          link( "/_ruote/errors/#{workitem.fei.wfid}", rel('#errors') )
         ]
 
         workitem.to_h.merge( 'links' => links )
+      end
+
+      def json_errors( errors )
+        errors.collect { |e| json_error( e, false ) }
+      end
+
+      def json_error( error )
+        error.to_h.merge( 'links' => links )
       end
 
       def rel( fragment )
@@ -63,15 +73,14 @@ module RuoteKit
       end
 
       def links( resource )
-        links = [
+        [
           link( '/_ruote', rel('#root') ),
           link( '/_ruote/processes', rel('#processes') ),
           link( '/_ruote/workitems', rel('#workitems') ),
-          link( '/_ruote/history', rel("#history") ),
+          link( '/_ruote/errors', rel('#errors') ),
+          link( '/_ruote/history', rel('#history') ),
           link( request.fullpath, 'self' )
         ]
-
-        links
       end
 
       def link( href, rel )

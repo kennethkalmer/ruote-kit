@@ -1,0 +1,18 @@
+
+- @_uses_fluo = true
+
+%h2 Errors
+
+%ul
+  - @errors.each do |error|
+    %li #{error.fei.to_storage_id}
+
+%p &nbsp;
+
+%canvas#fluo
+
+:javascript
+  //var proc_rep = #{process_tree( @process )};
+  //Fluo.renderFlow( 'fluo', proc_rep );
+  //Fluo.crop('fluo');
+
