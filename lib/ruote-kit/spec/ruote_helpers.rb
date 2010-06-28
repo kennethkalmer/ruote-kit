@@ -39,7 +39,7 @@ module RuoteKit
       end
 
       def wait_for( wfid )
-        @_spec_worker.context.logger.wait_for( wfid )
+        @_spec_worker.context.logger.wait_for( [  wfid ] )
       end
 
     end

@@ -1,10 +1,9 @@
 require 'rufus-json'
 require 'ruote'
 require 'ruote/part/storage_participant'
+require 'ruote-kit/version'
 
 module RuoteKit
-
-  VERSION = '2.1.8.2'
 
   autoload :Configuration, "ruote-kit/configuration"
   autoload :Application,   "ruote-kit/application"

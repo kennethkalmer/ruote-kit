@@ -6,6 +6,6 @@
 
 module RuoteKit
 
-  VERSION = '2.1.8.2'
+  VERSION = '2.1.10'
 end
 
