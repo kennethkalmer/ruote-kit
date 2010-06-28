@@ -20,8 +20,7 @@ gem 'haml'
 gem 'rufus-json', '>= 0.2.2'
 
 # ruote
-#gem 'ruote', '>= 2.1.10'
-gem 'ruote', :git => '/Users/jmettraux/w/ruote', :branch => 'ruote2.1'
+gem 'ruote', '>= 2.1.10'
 
 # Testing environment requirements
 group :test do
