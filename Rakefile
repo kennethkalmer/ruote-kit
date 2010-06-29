@@ -26,7 +26,7 @@ begin
     gemspec.add_dependency 'sinatra', '>=0.9.4'
     gemspec.add_dependency 'sinatra-respond_to', '>=0.4.0'
     gemspec.add_dependency 'haml', '>= 2.2.5'
-    gemspec.add_dependency 'rufus-json', '>= 0.2.2'
+    gemspec.add_dependency 'rufus-json', '>= 0.2.3'
     gemspec.add_dependency 'ruote', '>= 2.1.10'
     gemspec.add_development_dependency 'rake'
     gemspec.add_development_dependency 'rspec'
