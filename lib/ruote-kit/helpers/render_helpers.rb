@@ -20,9 +20,9 @@ module RuoteKit
 
       def json_process( process )
         links = [
-          link( "/_ruote/processes/#{process.wfid}", rel( '#process' ) ),
-          link( "/_ruote/expressions/#{process.wfid}", rel( '#expressions' ) ),
-          link( "/_ruote/workitems/#{process.wfid}", rel( '#workitems' ) )
+          link( "/_ruote/processes/#{process.wfid}", '#process' ),
+          link( "/_ruote/expressions/#{process.wfid}", '#expressions' ),
+          link( "/_ruote/workitems/#{process.wfid}", '#workitems' )
         ]
 
         process.to_h.merge( 'links' => links )
@@ -30,8 +30,8 @@ module RuoteKit
 
       def json_expression( expression )
         links = [
-          link( "/_ruote/processes/#{expression.fei.wfid}", rel( '#process' ) ),
-          link( "/_ruote/expressions/#{expression.fei.wfid}", rel( '#expressions' ) )
+          link( "/_ruote/processes/#{expression.fei.wfid}", '#process' ),
+          link( "/_ruote/expressions/#{expression.fei.wfid}", '#expressions' )
         ]
 
         if expression.parent
@@ -52,9 +52,9 @@ module RuoteKit
       def json_workitem( workitem )
 
         links = [
-          link( "/_ruote/processes/#{workitem.fei.wfid}", rel( '#process' ) ),
-          link( "/_ruote/expressions/#{workitem.fei.wfid}", rel( '#expressions' ) ),
-          link( "/_ruote/errors/#{workitem.fei.wfid}", rel( '#errors' ) )
+          link( "/_ruote/processes/#{workitem.fei.wfid}", '#process' ),
+          link( "/_ruote/expressions/#{workitem.fei.wfid}", '#expressions' ),
+          link( "/_ruote/errors/#{workitem.fei.wfid}", '#errors' )
         ]
 
         workitem.to_h.merge( 'links' => links )
@@ -68,23 +68,22 @@ module RuoteKit
         error.to_h.merge( 'links' => links )
       end
 
-      def rel( fragment )
-        "http://ruote.rubyforge.org/rels.html#{fragment}"
-      end
-
       def links( resource )
         [
-          link( '/_ruote', rel( '#root' ) ),
-          link( '/_ruote/processes', rel( '#processes' ) ),
-          link( '/_ruote/workitems', rel( '#workitems' ) ),
-          link( '/_ruote/errors', rel( '#errors' ) ),
-          link( '/_ruote/history', rel( '#history' ) ),
+          link( '/_ruote', '#root' ),
+          link( '/_ruote/processes', '#processes' ),
+          link( '/_ruote/workitems', '#workitems' ),
+          link( '/_ruote/errors', '#errors' ),
+          link( '/_ruote/history', '#history' ),
           link( request.fullpath, 'self' )
         ]
       end
 
       def link( href, rel )
-        { 'href' => href, 'rel' => rel }
+        {
+          'href' => href,
+          'rel' => rel.match(/^#/) ? "http://ruote.rubyforge.org/rels.html#{rel}" : rel
+        }
       end
 
       # Easy 404
