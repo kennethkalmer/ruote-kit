@@ -8,10 +8,10 @@ module RuoteKit
           object = send( "json_#{resource}", object )
         end
 
-        Rufus::Json.encode({
+        Rufus::Json.encode( {
           "links" => links( resource ),
           resource.to_s => object
-        })
+        } )
       end
 
       def json_processes( processes )
@@ -20,9 +20,9 @@ module RuoteKit
 
       def json_process( process )
         links = [
-          link( "/_ruote/processes/#{process.wfid}", rel('#process') ),
-          link( "/_ruote/expressions/#{process.wfid}", rel('#expressions') ),
-          link( "/_ruote/workitems/#{process.wfid}", rel('#workitems') )
+          link( "/_ruote/processes/#{process.wfid}", rel( '#process' ) ),
+          link( "/_ruote/expressions/#{process.wfid}", rel( '#expressions' ) ),
+          link( "/_ruote/workitems/#{process.wfid}", rel( '#workitems' ) )
         ]
 
         process.to_h.merge( 'links' => links )
@@ -30,8 +30,8 @@ module RuoteKit
 
       def json_expression( expression )
         links = [
-          link( "/_ruote/processes/#{expression.fei.wfid}", rel('#process') ),
-          link( "/_ruote/expressions/#{expression.fei.wfid}", rel('#expressions') )
+          link( "/_ruote/processes/#{expression.fei.wfid}", rel( '#process' ) ),
+          link( "/_ruote/expressions/#{expression.fei.wfid}", rel( '#expressions' ) )
         ]
 
         if expression.parent
@@ -52,9 +52,9 @@ module RuoteKit
       def json_workitem( workitem )
 
         links = [
-          link( "/_ruote/processes/#{workitem.fei.wfid}", rel('#process') ),
-          link( "/_ruote/expressions/#{workitem.fei.wfid}", rel('#expressions') ),
-          link( "/_ruote/errors/#{workitem.fei.wfid}", rel('#errors') )
+          link( "/_ruote/processes/#{workitem.fei.wfid}", rel( '#process' ) ),
+          link( "/_ruote/expressions/#{workitem.fei.wfid}", rel( '#expressions' ) ),
+          link( "/_ruote/errors/#{workitem.fei.wfid}", rel( '#errors' ) )
         ]
 
         workitem.to_h.merge( 'links' => links )
@@ -69,16 +69,16 @@ module RuoteKit
       end
 
       def rel( fragment )
-        "http://ruote.rubyforge.org/rels.html#{ fragment }"
+        "http://ruote.rubyforge.org/rels.html#{fragment}"
       end
 
       def links( resource )
         [
-          link( '/_ruote', rel('#root') ),
-          link( '/_ruote/processes', rel('#processes') ),
-          link( '/_ruote/workitems', rel('#workitems') ),
-          link( '/_ruote/errors', rel('#errors') ),
-          link( '/_ruote/history', rel('#history') ),
+          link( '/_ruote', rel( '#root' ) ),
+          link( '/_ruote/processes', rel( '#processes' ) ),
+          link( '/_ruote/workitems', rel( '#workitems' ) ),
+          link( '/_ruote/errors', rel( '#errors' ) ),
+          link( '/_ruote/history', rel( '#history' ) ),
           link( request.fullpath, 'self' )
         ]
       end
@@ -92,7 +92,7 @@ module RuoteKit
         status 404
         respond_to do |format|
           format.html { haml :resource_not_found }
-          format.json { Rufus::Json.encode({ "error" => { "code" => 404, "message" => "Resource not found" } }) }
+          format.json { Rufus::Json.encode( { "error" => { "code" => 404, "message" => "Resource not found" } } ) }
         end
       end
 
@@ -101,7 +101,7 @@ module RuoteKit
         status 503
         respond_to do |format|
           format.html { haml :workitems_not_available }
-          format.json { Rufus::Json.encode({ "error" => { "code" => 503, "messages" => "Workitems not available" } }) }
+          format.json { Rufus::Json.encode( { "error" => { "code" => 503, "messages" => "Workitems not available" } } ) }
         end
       end
 
@@ -110,9 +110,9 @@ module RuoteKit
         case object
         when Ruote::Workitem
           process = engine.process( object.fei.wfid )
-          Rufus::Json.encode(process.current_tree)
+          Rufus::Json.encode( process.current_tree )
         when Ruote::ProcessStatus
-          Rufus::Json.encode(object.current_tree)
+          Rufus::Json.encode( object.current_tree )
         end
       end
 
