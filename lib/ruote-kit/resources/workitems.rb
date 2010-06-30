@@ -2,24 +2,12 @@ class RuoteKit::Application
 
   get "/_ruote/workitems" do
 
-    @workitems = if params.empty?
-      storage_participant.all
-    else
-      parsed_params = Hash.new
+    query = params.inject({}) { |h, (k, v)|
+      h[k] = (Rufus::Json.decode(v) rescue v)
+      h
+    }
 
-      params.each do |k,v|
-        s = v.strip
-        if(s[0] == '{' and s[-1] == '}')
-          begin
-            v = Rufus::Json.decode(s)['value']
-          rescue Rufus::Json::ParserError
-          end
-        end
-        parsed_params[k] = v
-      end
-
-      storage_participant.query(parsed_params)
-    end
+    @workitems = storage_participant.query(query)
 
     respond_to do |format|
       format.html { haml :workitems }
