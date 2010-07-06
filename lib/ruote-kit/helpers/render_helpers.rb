@@ -87,8 +87,14 @@ module RuoteKit
       end
 
       # Easy 404
+      #
       def resource_not_found
+
         status 404
+
+        @format = @format.to_s.match(/^[^\/]+\/([^;]+)/)[1].to_sym
+          # freaking sinata-respond_to 0.4.0... (or is that it ?)
+
         respond_to do |format|
           format.html { haml :resource_not_found }
           format.json { Rufus::Json.encode( { "error" => { "code" => 404, "message" => "Resource not found" } } ) }
@@ -114,7 +120,6 @@ module RuoteKit
           Rufus::Json.encode( object.current_tree )
         end
       end
-
     end
   end
 end
