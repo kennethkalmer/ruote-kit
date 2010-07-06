@@ -4,20 +4,20 @@ begin
   require ::File.expand_path('.bundle/environment', __FILE__)
 rescue LoadError
   # Fall back on doing an unlocked resolve at runtime.
-  require "rubygems"
-  require "bundler"
+  require 'rubygems'
+  require 'bundler'
   Bundler.setup(:default)
 end
 
 # load json support
 # try yajl-ruby first, and json after that
 begin
-  require 'yajl-ruby'
+  require 'yajl'
 rescue LoadError
   begin
     require 'json'
   rescue LoadError
-    puts "Please install one of the following gems: yajl-ruby, json_pure, json"
+    puts 'Please specify "gem {yajl-ruby|json_pure|json}" in the Gemfile'
     exit
   end
 end
