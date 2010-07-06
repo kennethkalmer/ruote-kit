@@ -1,6 +1,6 @@
 class RuoteKit::Application
 
-  get "/_ruote/expressions" do
+  get "/_ruote/expressions/?" do
     respond_to do |format|
       format.html { haml :expressions }
       format.json { json( :status, :ok ) }

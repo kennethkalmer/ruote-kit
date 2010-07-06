@@ -42,7 +42,7 @@ module RuoteKit
       end
     end
 
-    get '/_ruote' do
+    get '/_ruote/?' do
       respond_to do |format|
         format.html { haml :index }
         format.json { json :misc, "ruote-kit" => "welcome", "version" => RuoteKit::VERSION }

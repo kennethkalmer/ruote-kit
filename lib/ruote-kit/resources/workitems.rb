@@ -1,6 +1,6 @@
 class RuoteKit::Application
 
-  get "/_ruote/workitems" do
+  get "/_ruote/workitems/?" do
 
     query = params.inject({}) { |h, (k, v)|
       h[k] = (Rufus::Json.decode(v) rescue v)

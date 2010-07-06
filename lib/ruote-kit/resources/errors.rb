@@ -1,7 +1,7 @@
 
 class RuoteKit::Application
 
-  get '/_ruote/errors' do
+  get '/_ruote/errors/?' do
 
     @errors = engine.errors
 

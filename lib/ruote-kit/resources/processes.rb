@@ -1,6 +1,6 @@
 class RuoteKit::Application
 
-  get "/_ruote/processes" do
+  get "/_ruote/processes/?" do
     @processes = engine.processes
 
     respond_to do |format|
