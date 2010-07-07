@@ -92,7 +92,11 @@ module RuoteKit
 
         status 404
 
-        @format = @format.to_s.match(/^[^\/]+\/([^;]+)/)[1].to_sym
+        @format = if m = @format.to_s.match(/^[^\/]+\/([^;]+)/)
+          m[1].to_sym
+        else
+          @format
+        end
           # freaking sinata-respond_to 0.4.0... (or is that it ?)
 
         respond_to do |format|

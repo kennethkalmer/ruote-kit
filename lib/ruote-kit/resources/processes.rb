@@ -14,6 +14,7 @@ class RuoteKit::Application
   end
 
   get "/_ruote/processes/:wfid" do
+
     @process = engine.process( params[:wfid] )
 
     if @process

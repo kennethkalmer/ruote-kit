@@ -79,6 +79,7 @@ describe "GET /_ruote/processes/X-Y", :type => :with_engine do
     end
 
     it "should 404 correctly (JSON)" do
+
       get "/_ruote/processes/foo.json"
 
       last_response.should_not be_ok
