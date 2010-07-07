@@ -16,7 +16,7 @@ begin
     gemspec.description = 'ruote-kit is a RESTful Rack app for the ruote workflow engine'
     gemspec.email = 'kenneth.kalmer@gmail.com'
     gemspec.homepage = 'http://github.com/kennethkalmer/ruote-kit'
-    gemspec.authors = ['kenneth.kalmer@gmail.com']
+    gemspec.authors = ['kenneth.kalmer@gmail.com', 'John Mettraux']
     gemspec.extra_rdoc_files.include '*.txt'
 
     gemspec.files.include 'lib/ruote-kit/public/**/*'
