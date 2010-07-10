@@ -5,7 +5,8 @@
 
 %ul
   - @errors.each do |error|
-    %li #{error.fei.to_storage_id}
+    - #%li #{error.fei.to_storage_id}
+    %li #{error.inspect}
 
 %p &nbsp;
 
