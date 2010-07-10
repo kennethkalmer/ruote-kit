@@ -1,3 +1,4 @@
+
 module RuoteKit
   module Spec
     module RuoteHelpers
@@ -16,12 +17,9 @@ module RuoteKit
 
         wfid = RuoteKit.engine.launch( pdef )
 
-        # Wait for the process list to populate
-        sleep 0.1 while RuoteKit.engine.process( wfid ).nil?
-
-        # Give the process some time to traverse the expression tree
-        sleep 0.4
-        #wait_for( 1 )
+        # give the engine some time to run the process
+        # (remember it does it asynchronously)
+        sleep( 0.350 )
 
         wfid
       end
@@ -41,7 +39,6 @@ module RuoteKit
       def wait_for( wfid )
         @_spec_worker.context.logger.wait_for( [  wfid ] )
       end
-
     end
   end
 end
