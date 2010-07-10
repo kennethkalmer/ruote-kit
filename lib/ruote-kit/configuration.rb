@@ -3,16 +3,16 @@ module RuoteKit
   class Configuration
 
     class ParticipantRegistrationProxy
-      def self.participant(*args, &block)
-        RuoteKit.engine.register_participant(*args, &block)
+      def self.participant( *args, &block )
+        RuoteKit.engine.register_participant( *args, &block )
       end
-      
-      def self.catchall(*args, &block)
-        if(args.empty? and not block_given?)
+
+      def self.catchall( *args, &block )
+        if( args.empty? and not block_given? )
           require 'ruote/part/storage_participant'
-          participant('.+', Ruote::StorageParticipant)
+          participant( '.+', Ruote::StorageParticipant )
         else
-          participant('.+', *args, &block)
+          participant( '.+', *args, &block )
         end
       end
     end
@@ -77,7 +77,7 @@ module RuoteKit
 
     def do_participant_registration
       return nil unless @participant_registration_block && RuoteKit.engine
-      ParticipantRegistrationProxy.instance_eval(&@participant_registration_block)
+      ParticipantRegistrationProxy.instance_eval( &@participant_registration_block )
     end
   end
 end

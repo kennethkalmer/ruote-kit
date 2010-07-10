@@ -1,12 +1,12 @@
 
 begin
-  # Try to require the preresolved locked set of gems.
-  require ::File.expand_path('.bundle/environment', __FILE__)
+  # try to require the preresolved locked set of gems.
+  require ::File.expand_path( '.bundle/environment', __FILE__ )
 rescue LoadError
-  # Fall back on doing an unlocked resolve at runtime.
+  # fall back on doing an unlocked resolve at runtime.
   require 'rubygems'
   require 'bundler'
-  Bundler.setup(:default)
+  Bundler.setup( :default )
 end
 
 # load json support
@@ -28,7 +28,7 @@ $:.unshift 'lib'
 
 require 'ruote-kit'
 
-# Chance to configure ruote-kit
+# chance to configure ruote-kit
 RuoteKit.configure do |config|
 
   # storage mode
@@ -38,7 +38,7 @@ RuoteKit.configure do |config|
   config.run_worker = true
 
   config.register do
-    # With this rackup I bundle as catchall, making it easy to experiment
+    # with this rackup I bundle as catchall, making it easy to experiment
     catchall
   end
 end

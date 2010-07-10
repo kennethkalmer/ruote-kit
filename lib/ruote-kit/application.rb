@@ -17,9 +17,9 @@ module RuoteKit
       RuoteKit.ensure_engine!
     end
 
-    set :views, File.join( File.dirname( __FILE__), 'views' )
+    set :views, File.join( File.dirname( __FILE__ ), 'views' )
 
-    use Rack::Static, :urls => ['/_ruote/images', '/_ruote/javascripts', '/_ruote/stylesheets'], :root => File.join( File.dirname(__FILE__), 'public' )
+    use Rack::Static, :urls => ['/_ruote/images', '/_ruote/javascripts', '/_ruote/stylesheets'], :root => File.join( File.dirname( __FILE__ ), 'public' )
     use Rack::MethodOverride
 
     helpers do
@@ -49,7 +49,7 @@ module RuoteKit
       end
     end
 
-    Dir[ File.dirname(__FILE__) + '/resources/*.rb' ].each { |r| load r }
+    Dir[ File.dirname( __FILE__ ) + '/resources/*.rb' ].each { |r| load r }
   end
 end
 
