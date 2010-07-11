@@ -54,12 +54,14 @@ describe 'GET /_ruote/errors', :type => :with_engine do
       last_response.status.should be(200)
       last_response.should match(/broken/)
 
+      p last_response.body
+
       # TODO : continue me
     end
 
     it 'should list errors (JSON)' do
 
-      get '/_ruote/errors'
+      get '/_ruote/errors.json'
 
       last_response.status.should be(200)
 

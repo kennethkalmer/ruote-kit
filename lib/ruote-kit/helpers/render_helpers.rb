@@ -4,12 +4,13 @@ module RuoteKit
     module RenderHelpers
 
       def json( resource, object )
+
         if respond_to?( "json_#{resource}" )
           object = send( "json_#{resource}", object )
         end
 
         Rufus::Json.encode( {
-          "links" => links( resource ),
+          'links' => links( resource ),
           resource.to_s => object
         } )
       end
@@ -61,11 +62,11 @@ module RuoteKit
       end
 
       def json_errors( errors )
-        errors.collect { |e| json_error( e, false ) }
+        errors.collect { |e| json_error( e ) }
       end
 
       def json_error( error )
-        error.to_h.merge( 'links' => links )
+        error.merge( 'links' => links(error) )
       end
 
       def links( resource )
