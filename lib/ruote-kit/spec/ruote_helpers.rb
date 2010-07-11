@@ -25,7 +25,7 @@ module RuoteKit
       end
 
       def noisy( on = true )
-        RuoteKit.engine.context[:noisy] = on
+        RuoteKit.engine.noisy = on
       end
 
       def storage_participant

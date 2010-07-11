@@ -38,6 +38,12 @@ RuoteKit.configure do |config|
   config.run_worker = true
 
   config.register do
+
+    # each file .rb in that dir is supposed to contain a participant
+    # implementation (the name of the participant is the filename (minus
+    # the extension))
+    from_dir './participants'
+
     # with this rackup I bundle as catchall, making it easy to experiment
     catchall
   end

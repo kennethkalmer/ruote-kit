@@ -1,8 +1,10 @@
 module RuoteKit
+
   # RuoteKit configuration handling
   class Configuration
 
     class ParticipantRegistrationProxy
+
       def self.participant( *args, &block )
         RuoteKit.engine.register_participant( *args, &block )
       end
@@ -14,6 +16,11 @@ module RuoteKit
         else
           participant( '.+', *args, &block )
         end
+      end
+
+      # looks at the given dir for .rb files
+      def self.from_dir( dir )
+        RuoteKit.engine.register_from_dir( dir )
       end
     end
 
