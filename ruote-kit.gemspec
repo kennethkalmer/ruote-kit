@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruote-kit}
-  s.version = "2.1.8.2"
+  s.version = "2.1.10"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["kenneth.kalmer@gmail.com"]
-  s.date = %q{2010-05-26}
+  s.authors = ["kenneth.kalmer@gmail.com", "John Mettraux"]
+  s.date = %q{2010-07-07}
   s.description = %q{ruote-kit is a RESTful Rack app for the ruote workflow engine}
   s.email = %q{kenneth.kalmer@gmail.com}
   s.extra_rdoc_files = [
@@ -43,11 +43,13 @@ Gem::Specification.new do |s|
      "lib/ruote-kit/public/_ruote/stylesheets/base.css",
      "lib/ruote-kit/public/_ruote/stylesheets/rk.css",
      "lib/ruote-kit/public/_ruote/stylesheets/style.css",
+     "lib/ruote-kit/resources/errors.rb",
      "lib/ruote-kit/resources/expressions.rb",
      "lib/ruote-kit/resources/processes.rb",
      "lib/ruote-kit/resources/workitems.rb",
      "lib/ruote-kit/spec/ruote_helpers.rb",
      "lib/ruote-kit/version.rb",
+     "lib/ruote-kit/views/errors.html.haml",
      "lib/ruote-kit/views/expression.html.haml",
      "lib/ruote-kit/views/expressions.html.haml",
      "lib/ruote-kit/views/index.html.haml",
@@ -62,6 +64,7 @@ Gem::Specification.new do |s|
      "lib/ruote-kit/views/workitems.html.haml",
      "ruote-kit.gemspec",
      "spec/helpers/render_helpers_spec.rb",
+     "spec/resources/errors_spec.rb",
      "spec/resources/expressions_spec.rb",
      "spec/resources/index_spec.rb",
      "spec/resources/processes_spec.rb",
@@ -86,6 +89,7 @@ Gem::Specification.new do |s|
     "spec/resources/expressions_spec.rb",
      "spec/resources/workitems_spec.rb",
      "spec/resources/index_spec.rb",
+     "spec/resources/errors_spec.rb",
      "spec/resources/processes_spec.rb",
      "spec/ruote-kit_configure_spec.rb",
      "spec/ruote-kit_spec.rb",
@@ -108,8 +112,8 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<sinatra>, [">= 0.9.4"])
       s.add_runtime_dependency(%q<sinatra-respond_to>, [">= 0.4.0"])
       s.add_runtime_dependency(%q<haml>, [">= 2.2.5"])
-      s.add_runtime_dependency(%q<rufus-json>, [">= 0.2.2"])
-      s.add_runtime_dependency(%q<ruote>, [">= 2.1.8"])
+      s.add_runtime_dependency(%q<rufus-json>, [">= 0.2.3"])
+      s.add_runtime_dependency(%q<ruote>, [">= 2.1.10"])
       s.add_development_dependency(%q<rake>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
@@ -121,8 +125,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<sinatra>, [">= 0.9.4"])
       s.add_dependency(%q<sinatra-respond_to>, [">= 0.4.0"])
       s.add_dependency(%q<haml>, [">= 2.2.5"])
-      s.add_dependency(%q<rufus-json>, [">= 0.2.2"])
-      s.add_dependency(%q<ruote>, [">= 2.1.8"])
+      s.add_dependency(%q<rufus-json>, [">= 0.2.3"])
+      s.add_dependency(%q<ruote>, [">= 2.1.10"])
       s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
@@ -135,8 +139,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<sinatra>, [">= 0.9.4"])
     s.add_dependency(%q<sinatra-respond_to>, [">= 0.4.0"])
     s.add_dependency(%q<haml>, [">= 2.2.5"])
-    s.add_dependency(%q<rufus-json>, [">= 0.2.2"])
-    s.add_dependency(%q<ruote>, [">= 2.1.8"])
+    s.add_dependency(%q<rufus-json>, [">= 0.2.3"])
+    s.add_dependency(%q<ruote>, [">= 2.1.10"])
     s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
