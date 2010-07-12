@@ -1,8 +1,9 @@
+
 ENV['RACK_ENV'] = 'test'
 
 require 'rubygems'
 require 'bundler'
-Bundler.setup(:default, :test)
+Bundler.setup( :default, :test )
 
 require 'spec'
 require 'spec/interop/test'
@@ -14,15 +15,18 @@ require 'json'
 
 Test::Unit::TestCase.send :include, Rack::Test::Methods
 
-require File.dirname(__FILE__) + '/../vendor/gems/environment' if File.exists?( File.dirname(__FILE__) + '/../vendor/gems/environment.rb' )
-require File.dirname(__FILE__) + '/../lib/ruote-kit'
+begin
+  require File.join( File.dirname( __FILE__ ), '/../vendor/gems/environment' )
+rescue LoadError
+end
+require File.join( File.dirname( __FILE__ ), '/../lib/ruote-kit' )
 
 require 'ruote/part/storage_participant'
 
 RuoteKit.configure do |config|
 
   # In memory is perfect for tests
-  config.mode = :transient
+  config.storage = :transient
 end
 
 require 'ruote-kit/spec/ruote_helpers'
@@ -42,13 +46,13 @@ Spec::Runner.configure do |config|
   config.include Webrat::Matchers, :type => :views
   config.include RuoteKit::Spec::RuoteHelpers
 
-  config.before(:each, :type => :with_engine) do
+  config.before( :each, :type => :with_engine ) do
+
     RuoteKit.configure do |conf|
       conf.register do
         catchall Ruote::StorageParticipant
       end
     end
-    RuoteKit.run_engine!
 
     @tracer = Tracer.new
     RuoteKit.engine.add_service( 'tracer', @tracer )
@@ -60,11 +64,13 @@ Spec::Runner.configure do |config|
   end
 
   # Purge the engine after every run
-  config.after(:each, :type => :with_engine) do
+  config.after( :each, :type => :with_engine ) do
+
     @_spec_worker.shutdown
 
     # Seems in some rubies this block gets called multiple times
     unless RuoteKit.engine.nil?
+
       RuoteKit.storage_participant.purge!
       RuoteKit.engine.storage.purge! unless RuoteKit.engine.storage.nil?
 
@@ -73,9 +79,7 @@ Spec::Runner.configure do |config|
   end
 
   RuoteKit::Application.included_modules.each do |klass|
-    if klass.name =~ /RuoteKit::Helpers::\w+Helpers/
-      config.include klass
-    end
+    config.include( klass ) if klass.name =~ /RuoteKit::Helpers::\w+Helpers/
   end
 end
 
@@ -92,9 +96,9 @@ end
 # Renders the supplied template with Haml::Engine and assigns the
 # @response instance variable
 def render(template_path)
-  template = File.read("#{app.views}/#{template_path.sub(/^\//, '')}")
-  engine = Haml::Engine.new(template)
-  @response = engine.render(self, assigns_for_template)
+  template = File.read( "#{app.views}/#{template_path.sub( /^\//, '' )}" )
+  engine = Haml::Engine.new( template )
+  @response = engine.render( self, assigns_for_template )
 end
 
 # Convenience method to access the @response instance variable set in
@@ -112,7 +116,7 @@ end
 # Prepends the assigns keywords with an "@" so that they will be
 # instance variables when the template is rendered.
 def assigns_for_template
-  assigns.inject({}) do |memo, kv|
+  assigns.inject( {} ) do |memo, kv|
     memo["@#{kv[0].to_s}".to_sym] = kv[1]
     memo
   end

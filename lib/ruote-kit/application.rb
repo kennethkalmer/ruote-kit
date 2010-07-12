@@ -13,8 +13,6 @@ module RuoteKit
         set :environment, Rails.env
         disable :raise_errors unless Rails.env == 'development'
       end
-
-      RuoteKit.ensure_engine!
     end
 
     set :views, File.join( File.dirname( __FILE__ ), 'views' )

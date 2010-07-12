@@ -1,3 +1,4 @@
+
 require 'rufus-json'
 require 'ruote'
 require 'ruote/part/storage_participant'
@@ -5,11 +6,12 @@ require 'ruote-kit/version'
 
 module RuoteKit
 
-  autoload :Configuration, "ruote-kit/configuration"
-  autoload :Application,   "ruote-kit/application"
-  autoload :Helpers,       "ruote-kit/helpers"
+  autoload :Configuration, 'ruote-kit/configuration'
+  autoload :Application, 'ruote-kit/application'
+  autoload :Helpers, 'ruote-kit/helpers'
 
   class << self
+
     # The instance of ruote
     attr_accessor :engine
 
@@ -17,23 +19,15 @@ module RuoteKit
     attr_accessor :worker
 
     def env
-      @env ||= (
-        if defined?( Rails )
-          Rails.env
-        else
-          ENV['RACK_ENV'] || 'development'
-        end
-      )
+      @env ||= defined?( Rails ) ? Rails.env : ENV['RACK_ENV'] || 'development'
     end
 
     # Yields a RuoteKit::Configuration instance and then immediately starts
     # the engine.
     def configure
-      yield configuration if block_given?
-
-      run_engine!
+      yield( configuration ) if block_given?
+      instantiate_engine
     end
-    alias run! configure
 
     def shutdown!( purge_engine = false )
       shutdown_engine( purge_engine )
@@ -43,32 +37,22 @@ module RuoteKit
       @configuration ||= Configuration.new
     end
 
-    # Ensure the engine is running
-    def ensure_engine!
-      run_engine! if self.engine.nil?
+    def instantiate_engine
+
+      storage = configuration.storage
+
+      self.engine = Ruote::Engine.new(
+        configuration.run_worker ? Ruote::Worker.new(storage) : storage)
+
+      configuration.send(:do_register)
     end
 
-    # Runs an engine, and starts a threaded workers if #configuration allows
-    # it
-    def run_engine!
-
-      return unless configuration.run_engine
-
-      storage = configuration.storage_instance
-
-      self.engine = Ruote::Engine.new( configuration.run_worker ? self.worker = Ruote::Worker.new(storage) : storage )
-
-      configuration.do_participant_registration
-
-      @storage_participant = nil
-    end
-
-    # Run a single worker. By default this method will block indefinitely,
-    # unless +run_in_thread+ is set to true
-    def run_worker!( run_in_thread = false )
-      self.worker = Ruote::Worker.new( configuration.storage_instance )
-      run_in_thread ? self.worker.run_in_thread : self.worker.run
-    end
+    ## Run a single worker. By default this method will block indefinitely,
+    ## unless +run_in_thread+ is set to true
+    #def run_worker!( run_in_thread = false )
+    #  self.worker = Ruote::Worker.new( configuration.storage_instance )
+    #  run_in_thread ? self.worker.run_in_thread : self.worker.run
+    #end
 
     def shutdown_engine( purge = false )
 
@@ -94,16 +78,8 @@ module RuoteKit
     end
 
     def storage_participant
-      return nil if self.engine.nil?
-      @storage_participant ||= Ruote::StorageParticipant.new(self.engine)
+      @storage_participant ||= (engine ? engine.storage_participant : nil)
     end
-
-    # resets the configuration
-    #
-    # mainly used in tests
-    def reset_configuration!
-      @configuration = nil
-    end
-
   end
 end
+

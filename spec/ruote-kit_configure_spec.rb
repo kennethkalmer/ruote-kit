@@ -38,10 +38,6 @@ describe RuoteKit do
       end
     end
 
-    after(:each) do
-      RuoteKit.reset_configuration!
-    end
-
     it 'should advertise mode as :custom' do
 
       RuoteKit.configuration.mode.should == :custom
@@ -67,7 +63,7 @@ describe RuoteKit do
         end
       end
 
-      RuoteKit.engine.context.plist.names.should == ['^al$']
+      RuoteKit.engine.context.plist.names.should == [ '^al$' ]
     end
 
     describe 'catchall participant' do
@@ -89,11 +85,7 @@ describe RuoteKit do
         end
       end
 
-      RuoteKit.engine.context.plist.lookup('.+').instance_of?(Ruote::StorageParticipant).should == true
-    end
-
-    after do
-      RuoteKit.reset_configuration!
+      RuoteKit.engine.context.plist.lookup( '.+' ).instance_of?( Ruote::StorageParticipant ).should == true
     end
   end
 end
