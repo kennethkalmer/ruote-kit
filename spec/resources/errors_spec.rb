@@ -13,7 +13,7 @@ end
 
 describe 'GET /_ruote/errors' do
 
-  it_has_an_engine
+  it_has_an_engine_with_no_participants
 
   describe 'without any running processes' do
 
@@ -50,17 +50,17 @@ describe 'GET /_ruote/errors' do
       end
     end
 
-#    it 'should list errors (HTML)' do
-#
-#      get '/_ruote/errors'
-#
-#      last_response.status.should be( 200 )
-#      last_response.should match( /broken/ )
-#
-#      #p last_response.body
-#
-#      # TODO : continue me
-#    end
+    it 'should list errors (HTML)' do
+
+      get '/_ruote/errors'
+
+      last_response.status.should be( 200 )
+      last_response.should match( /broken/ )
+
+      #p last_response.body
+
+      # TODO : continue me
+    end
 
     it 'should list errors (JSON)' do
 

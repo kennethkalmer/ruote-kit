@@ -35,7 +35,7 @@ module RuoteKit
       end
 
       def find_workitem( wfid, expid )
-        storage_participant.by_wfid( wfid ).detect { |wi| wi.fei.expid == expid }
+        storage_participant.by_wfid( wfid ).first { |wi| wi.fei.expid == expid }
       end
 
       def wait_for( wfid )

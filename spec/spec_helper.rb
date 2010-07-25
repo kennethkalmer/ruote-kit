@@ -21,17 +21,11 @@ rescue LoadError
 end
 require File.join( File.dirname( __FILE__ ), '/../lib/ruote-kit' )
 
-require 'ruote/part/storage_participant'
-
-#RuoteKit.configure do |config|
-#  # In memory is perfect for tests
-#  config.storage = :transient
-#end
-
 require 'ruote-kit/spec/ruote_helpers'
 require 'spec/it_has_an_engine'
 
 require 'ruote/log/test_logger'
+
 
 Spec::Runner.configure do |config|
 
@@ -50,6 +44,9 @@ Spec::Runner.configure do |config|
 
   def it_has_an_engine
     it_should_behave_like 'it has an engine'
+  end
+  def it_has_an_engine_with_no_participants
+    it_should_behave_like 'it has an engine with no participants'
   end
 
   RuoteKit::Application.included_modules.each do |klass|
