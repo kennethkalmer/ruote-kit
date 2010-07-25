@@ -1,3 +1,4 @@
+
 = ruote-kit (RESTful ruote & middleware)
 
 * http://kit.rubyforge.org/ruote (soon)
@@ -13,10 +14,7 @@ Follow development:
 * http://opensourcery.co.za
 * @kennethkalmer on Twitter
 
-== Alpha Status
-
-ruote-kit is under heavy development and will likely change violently over the
-coming weeks (albeit for the better).
+== Dependencies
 
 Dependencies you currently need are:
 
@@ -25,6 +23,7 @@ Dependencies you currently need are:
 * sinatra-respond_to
 * haml
 * rufus-json[http://github.com/jmettraux/rufus-json] and a compatible backend
+  (preferably yajl-ruby)
 * rspec (only to run the specs)
 
 ruote-kit uses bundler to setup and maintain its environment. Before running
@@ -60,13 +59,17 @@ unpacked in .bundle
       end
 
       # load json backend
-      require 'yajl-ruby'    # best choice as fastest, but uses a c module
+      require 'yajl-ruby'    # fastest, but uses a c module
       # require 'json_pure'  # should work everywhere
 
       require 'ruote-kit'
 
-      RuoteKit.configure do |config|
-        config.register { catchall }
+      RuoteKit.engine = Ruote::Engine.new(
+        Ruote::Worker.new(
+          Ruote::FsStorage.new('ruote_work')))
+
+      RuoteKit.engine.register do
+        catchall
       end
 
       use Rack::CommonLogger
@@ -104,17 +107,12 @@ rack middleware stack without issues.
 
 Example:
 
-  RuoteKit.configure do |config|
-    # make changes if needed
-    # Register participants if needed
-    config.register do
-      participant :toto do |wi|
-        # ...
-      end
-      # register the catchall participant if needed
-      require 'ruote/part/storage_participant'
-      catchall Ruote::StorageParticipant
-    end
+  RuoteKit.engine = Ruote::Engine.new(
+    Ruote::Worker.new(
+      Ruote::FsStorage.new('ruote_work')))
+
+  RuoteKit.engine.register do
+    catchall
   end
 
 
@@ -179,11 +177,7 @@ below:
   desc "Run a ruote-kit worker"
   task :ruote_kit_worker do
 
-    RuoteKit.configure do |config|
-      # Setup your configuration
-    end
-
-    RuoteKit.run_worker!
+    RuoteKit.run_worker(Ruote::FsStorage.new('ruote_work'))
   end
 
 This will only work correctly if using the default file system persistence.
@@ -192,9 +186,7 @@ soon.
 
 == Feedback & bug reports
 
-Please bear in mind that the project is still in its alpha days. Keep bug reports
-and suggestions limited to the google group and #ruote channel, at least for the
-time being.
+Feedback and bug reports are welcome on the mailing-list[http://groups.google.com/group/openwferu-users], or on the #ruote IRC channel at Freenode.net.
 
 Please do not hesitate to come back with *any* feedback.
 
@@ -222,3 +214,4 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
