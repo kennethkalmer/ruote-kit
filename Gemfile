@@ -21,6 +21,7 @@ gem 'haml'
 #
 # needed, uses one of the above as backend
 
+gem 'yajl-ruby'
 gem 'rufus-json', '>= 0.2.3'
 
 # ruote
