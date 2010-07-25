@@ -1,7 +1,10 @@
+
 # Dependencies for ruote-kit
+
 source :gemcutter
 
 # ruote-kit itself
+
 gem 'bundler'
 gem 'sinatra'
 gem 'sinatra-respond_to'
@@ -17,13 +20,16 @@ gem 'haml'
 # gem 'json'      # not bad, but using c code and sometimes broken
 #
 # needed, uses one of the above as backend
+
 gem 'rufus-json', '>= 0.2.3'
 
 # ruote
+
 #gem 'ruote', '>= 2.1.10'
 gem 'ruote', :git => 'git://github.com/jmettraux/ruote.git', :branch => 'ruote2.1'
 
 # Testing environment requirements
+
 group :test do
   gem 'rspec', :require => "spec"
   gem 'rack-test'
@@ -34,3 +40,4 @@ end
 group :build do
   gem 'jeweler'
 end
+

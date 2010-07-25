@@ -1,19 +1,16 @@
 
-- @_uses_fluo = true
-
 %h2 Errors
+
+.flash
+  .message
+    - if @errors.empty?
+      .warn
+        %p There are currently no errors for the processes in the engine
+    - else
+      .notice
+        %p Currently #{@errors.size} errors for the processes in the engine
 
 %ul
   - @errors.each do |error|
-    - #%li #{error.fei.to_storage_id}
     %li #{error.inspect}
-
-%p &nbsp;
-
-%canvas#fluo
-
-:javascript
-  //var proc_rep = #{process_tree( @process )};
-  //Fluo.renderFlow( 'fluo', proc_rep );
-  //Fluo.crop('fluo');
 

@@ -11,6 +11,7 @@ end
 
 # load json support
 # try yajl-ruby first, and json after that
+
 begin
   require 'yajl'
 rescue LoadError
@@ -28,27 +29,20 @@ $:.unshift 'lib'
 
 require 'ruote-kit'
 
-# chance to configure ruote-kit
-RuoteKit.configure do |config|
+# configuring the ruote engine
 
-  # storage mode
-  #config.mode = :transient
+require 'ruote/storage/fs_storage'
 
-  # run a worker
-  config.run_worker = true
+RuoteKit.engine = Ruote::Engine.new(
+  Ruote::Worker.new(
+    Ruote::FsStorage.new(
+      "ruote_work_#{RuoteKit.env}" ) ) )
 
-  config.register do
-
-    # each file .rb in that dir is supposed to contain a participant
-    # implementation (the name of the participant is the filename (minus
-    # the extension))
-    from_dir './participants'
-
-    # with this rackup I bundle as catchall, making it easy to experiment
-    catchall
-  end
+RuoteKit.engine.register do
+  catchall
 end
 
+# rack middlewares, business as usual...
 
 use Rack::CommonLogger
 use Rack::Lint
