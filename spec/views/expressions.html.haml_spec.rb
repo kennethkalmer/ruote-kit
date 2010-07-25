@@ -1,7 +1,7 @@
 
 require File.dirname( __FILE__ ) + '/../spec_helper'
 
-undef :context if defined?(context)
+undef :context if defined?( context )
 
 
 describe 'expressions.html.haml' do

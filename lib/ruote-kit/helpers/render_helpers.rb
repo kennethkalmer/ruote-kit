@@ -26,13 +26,12 @@ module RuoteKit
 
       def json_process( process )
 
-        links = [
-          link( "/_ruote/processes/#{process.wfid}", '#process' ),
-          link( "/_ruote/expressions/#{process.wfid}", '#expressions' ),
-          link( "/_ruote/workitems/#{process.wfid}", '#workitems' )
-        ]
-
-        process.to_h.merge( 'links' => links )
+        process.to_h.merge( 'links' => [
+          link( "/_ruote/processes/#{process.wfid}", 'self' ),
+          link( "/_ruote/expressions/#{process.wfid}", '#process_expressions' ),
+          link( "/_ruote/workitems/#{process.wfid}", '#process_workitems' ),
+          link( "/_ruote/errors/#{process.wfid}", '#process_errors' )
+        ] )
       end
 
       def json_expression( expression )

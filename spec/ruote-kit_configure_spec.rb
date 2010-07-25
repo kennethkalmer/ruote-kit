@@ -1,7 +1,7 @@
 
 require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 
-undef :context if defined?(context)
+undef :context if defined?( context )
 
 
 describe RuoteKit do

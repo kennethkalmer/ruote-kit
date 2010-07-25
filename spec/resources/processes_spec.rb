@@ -9,12 +9,14 @@ describe 'GET /_ruote/processes' do
   describe 'without any running processes' do
 
     it 'should give no processes back (HTML)' do
+
       get '/_ruote/processes'
 
       last_response.should be_ok
     end
 
     it 'should give an empty array (JSON)' do
+
       get '/_ruote/processes.json'
 
       last_response.should be_ok
@@ -33,12 +35,14 @@ describe 'GET /_ruote/processes' do
     end
 
     it 'should give process information back (HTML)' do
+
       get '/_ruote/processes'
 
       last_response.should be_ok
     end
 
     it 'should give process information back (JSON)' do
+
       get '/_ruote/processes.json'
 
       last_response.should be_ok
@@ -46,6 +50,19 @@ describe 'GET /_ruote/processes' do
       body = last_response.json_body
 
       body['processes'].should_not be_empty
+
+      body['links'].should == root_links( '/_ruote/processes' )
+
+      body['processes'].first['links'].should == [
+        { 'href' => "/_ruote/processes/#{@wfid}",
+          'rel' => 'self' },
+        { 'href' => "/_ruote/expressions/#{@wfid}",
+          'rel' => 'http://ruote.rubyforge.org/rels.html#process_expressions' },
+        { 'href' => "/_ruote/workitems/#{@wfid}",
+          'rel' => 'http://ruote.rubyforge.org/rels.html#process_workitems' },
+        { 'href' => "/_ruote/errors/#{@wfid}",
+          'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' }
+      ]
     end
   end
 end
@@ -61,12 +78,14 @@ describe 'GET /_ruote/processes/X-Y' do
     end
 
     it 'should give process information back (HTML)' do
+
       get "/_ruote/processes/#{@wfid}"
 
       last_response.should be_ok
     end
 
     it 'should give process information back (JSON)' do
+
       get "/_ruote/processes/#{@wfid}.json"
 
       last_response.should be_ok
@@ -74,6 +93,17 @@ describe 'GET /_ruote/processes/X-Y' do
       body = last_response.json_body
 
       body.should have_key( 'process' )
+
+      body['process']['links'].should == [
+        { 'href' => "/_ruote/processes/#{@wfid}",
+          'rel' => 'self' },
+        { 'href' => "/_ruote/expressions/#{@wfid}",
+          'rel' => 'http://ruote.rubyforge.org/rels.html#process_expressions' },
+        { 'href' => "/_ruote/workitems/#{@wfid}",
+          'rel' => 'http://ruote.rubyforge.org/rels.html#process_workitems' },
+        { 'href' => "/_ruote/errors/#{@wfid}",
+          'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' }
+      ]
     end
   end
 
