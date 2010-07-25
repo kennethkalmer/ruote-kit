@@ -1,15 +1,18 @@
+
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "GET /_ruote/expressions", :type => :with_engine do
+describe 'GET /_ruote/expressions' do
 
-  it "should report a friendly message to the user (HTML)" do
-    get "/_ruote/expressions"
+  it_has_an_engine
+
+  it 'should report a friendly message to the user (HTML)' do
+    get '/_ruote/expressions'
 
     last_response.should be_ok
   end
 
-  it "should report a friendly message to the client (JSON)" do
-    get "/_ruote/expressions.json"
+  it 'should report a friendly message to the client (JSON)' do
+    get '/_ruote/expressions.json'
 
     last_response.should be_ok
 
@@ -17,86 +20,98 @@ describe "GET /_ruote/expressions", :type => :with_engine do
   end
 end
 
-describe "GET /_ruote/expressions/wfid", :type => :with_engine do
+describe 'GET /_ruote/expressions/wfid' do
 
-  describe "with running processes" do
+  it_has_an_engine
+
+  describe 'with running processes' do
+
     before(:each) do
       @wfid = launch_test_process
     end
 
-    it "should render the expression tree (HTML)" do
+    it 'should render the expression tree (HTML)' do
       get "/_ruote/expressions/#{@wfid}"
 
       last_response.should be_ok
     end
 
-    it "should render the expression tree (JSON)" do
+    it 'should render the expression tree (JSON)' do
       get "/_ruote/expressions/#{@wfid}.json"
 
       last_response.should be_ok
     end
   end
 
-  describe "without running processes" do
-    it "should 404 correctly (HTML)" do
+  describe 'without running processes' do
+
+    it 'should 404 correctly (HTML)' do
       get "/_ruote/expressions/foo"
 
       last_response.should_not be_ok
-      last_response.status.should be(404)
+      last_response.status.should be( 404 )
     end
 
-    it "should 404 correctly (JSON)" do
-      get "/_ruote/expressions/foo.json"
+    it 'should 404 correctly (JSON)' do
+      get '/_ruote/expressions/foo.json'
 
       last_response.should_not be_ok
-      last_response.status.should be(404)
+      last_response.status.should be( 404 )
     end
   end
 end
 
-describe "GET /_ruote/expressions/wfid/expid", :type => :with_engine do
+describe 'GET /_ruote/expressions/wfid/expid' do
 
-  describe "with running processes" do
-    before(:each) do
+  it_has_an_engine
+
+  describe 'with running processes' do
+
+    before( :each ) do
       @wfid = launch_test_process
       process = engine.process( @wfid )
       @nada_exp_id = process.expressions.last.fei.expid
     end
 
-    it "should render the expression details (HTML)" do
+    it 'should render the expression details (HTML)' do
       get "/_ruote/expressions/#{@wfid}/#{@nada_exp_id}"
 
       last_response.should be_ok
     end
 
-    it "should render the expression details (JSON)" do
+    it 'should render the expression details (JSON)' do
       get "/_ruote/expressions/#{@wfid}/#{@nada_exp_id}.json"
 
       last_response.should be_ok
     end
   end
 
-  describe "without running processes" do
-    it "should 404 correctly (HTML)" do
-      get "/workitems/foo/bar"
+  describe 'without running processes' do
+
+    it 'should 404 correctly (HTML)' do
+      get '/workitems/foo/bar'
 
       last_response.should_not be_ok
-      last_response.status.should be(404)
+      last_response.status.should be( 404 )
     end
 
-    it "should 404 correctly (JSON)" do
-      get "/workitems/foo/bar.json"
+    it 'should 404 correctly (JSON)' do
+      get '/workitems/foo/bar.json'
 
       last_response.should_not be_ok
-      last_response.status.should be(404)
+      last_response.status.should be( 404 )
     end
   end
 end
 
-describe "DELETE /_ruote/expressions/wfid/expid", :type => :with_engine do
+describe 'DELETE /_ruote/expressions/wfid/expid' do
 
-  describe "with running processes" do
-    before(:each) do
+  it_has_an_engine
+
+  describe 'with running processes' do
+
+    before( :each ) do
+
       @wfid = launch_test_process do
         Ruote.process_definition :name => 'delete' do
           sequence do
@@ -116,7 +131,7 @@ describe "DELETE /_ruote/expressions/wfid/expid", :type => :with_engine do
       @expid = "0_1_0" #wait_exp.fei.expid
     end
 
-    it "should cancel the expressions (HTML)" do
+    it 'should cancel the expressions (HTML)' do
       delete "/_ruote/expressions/#{@wfid}/#{@expid}"
 
       last_response.should be_redirect
@@ -128,7 +143,7 @@ describe "DELETE /_ruote/expressions/wfid/expid", :type => :with_engine do
       @tracer.to_s.should == "bailed\ndone"
     end
 
-    it "should cancel the expressions (JSON)" do
+    it 'should cancel the expressions (JSON)' do
       delete "/_ruote/expressions/#{@wfid}/#{@expid}.json"
 
       last_response.should be_ok
@@ -140,7 +155,7 @@ describe "DELETE /_ruote/expressions/wfid/expid", :type => :with_engine do
       @tracer.to_s.should == "bailed\ndone"
     end
 
-    it "should kill the expression (HTML)" do
+    it 'should kill the expression (HTML)' do
       delete "/_ruote/expressions/#{@wfid}/#{@expid}?_kill=1"
 
       last_response.should be_redirect
@@ -149,10 +164,10 @@ describe "DELETE /_ruote/expressions/wfid/expid", :type => :with_engine do
       #sleep 0.4
       wait_for( @wfid )
 
-      @tracer.to_s.should == "done"
+      @tracer.to_s.should == 'done'
     end
 
-    it "should kill the expression (JSON)" do
+    it 'should kill the expression (JSON)' do
       delete "/_ruote/expressions/#{@wfid}/#{@expid}.json?_kill=1"
 
       last_response.should be_ok
@@ -161,23 +176,24 @@ describe "DELETE /_ruote/expressions/wfid/expid", :type => :with_engine do
       #sleep 0.4
       wait_for( @wfid )
 
-      @tracer.to_s.should == "done"
+      @tracer.to_s.should == 'done'
     end
   end
 
-  describe "without running processes" do
-    it "should 404 correctly (HTML)" do
-      delete "/_ruote/expressions/foo/bar"
+  describe 'without running processes' do
+    it 'should 404 correctly (HTML)' do
+      delete '/_ruote/expressions/foo/bar'
 
       last_response.should_not be_ok
-      last_response.status.should be(404)
+      last_response.status.should be( 404 )
     end
 
-    it "should 404 correctly (JSON)" do
-      delete "/_ruote/expressions/foo/bar.json"
+    it 'should 404 correctly (JSON)' do
+      delete '/_ruote/expressions/foo/bar.json'
 
       last_response.should_not be_ok
-      last_response.status.should be(404)
+      last_response.status.should be( 404 )
     end
   end
 end
+

@@ -1,21 +1,30 @@
-require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "workitems.html.haml", :type => :with_engine do
+require File.dirname( __FILE__ ) + '/../spec_helper'
 
-  describe "rendering no workitems" do
-    before(:each) do
+
+describe 'workitems.html.haml' do
+
+  it_has_an_engine
+
+  describe 'rendering no workitems' do
+
+    before( :each ) do
+
       assigns[:workitems] = []
-
       render 'workitems.html.haml'
     end
 
-    it "should note so" do
-      response.should have_selector('div.warn p', :content => "No workitems are currently available")
+    it 'should note so' do
+
+      response.should have_selector(
+        'div.warn p', :content => 'No workitems are currently available' )
     end
   end
 
-  describe "rendering all workitems" do
-    before(:each) do
+  describe 'rendering all workitems' do
+
+    before( :each ) do
+
       @wfid1 = launch_test_process
       @wfid2 = launch_test_process
 
@@ -24,46 +33,59 @@ describe "workitems.html.haml", :type => :with_engine do
       render 'workitems.html.haml'
     end
 
-    it "should have a notice" do
-      response.should have_selector('div.notice p', :content => "2 workitems available")
+    it 'should have a notice' do
+
+      response.should have_selector(
+        'div.notice p', :content => '2 workitems available' )
     end
 
-    it "should show the processes" do
-      response.should include(@wfid1)
-      response.should include(@wfid2)
+    it 'should show the processes' do
+
+      response.should include( @wfid1 )
+      response.should include( @wfid2 )
     end
   end
 
-  describe "rendering process workitems" do
-    before(:each) do
+  describe 'rendering process workitems' do
+
+    before( :each ) do
+
       @wfid = launch_test_process
 
       assigns[:wfid] = @wfid
       assigns[:workitems] = find_workitems( @wfid )
 
-      render "workitems.html.haml"
+      render 'workitems.html.haml'
     end
 
-    it "should have a notice" do
-      response.should have_selector('div.notice p', :content => "1 workitem available for #{@wfid}")
+    it 'should have a notice' do
+
+      response.should have_selector(
+        'div.notice p', :content => "1 workitem available for #{@wfid}" )
     end
 
-    it "should show the process" do
-      response.should include(@wfid)
+    it 'should show the process' do
+
+      response.should include( @wfid )
     end
   end
 
-  describe "rendering filtered workitems" do
-    before(:each) do
+  describe 'rendering filtered workitems' do
+
+    before( :each ) do
+
       assigns[:workitems] = []
     end
 
-    it "should show the participants used" do
-      assigns[:participants] = ['jack']
+    it 'should show the participants used' do
+
+      assigns[:participants] = [ 'jack' ]
 
       render 'workitems.html.haml'
 
-      response.should have_selector('div.notice p', :content => "Filtered for participant(s): jack")
+      response.should have_selector(
+        'div.notice p', :content => 'Filtered for participant(s): jack' )
     end
   end
 end
+

@@ -1,8 +1,11 @@
+
 require File.dirname(__FILE__) + '/../spec_helper'
 
 undef :context if defined?(context)
 
-describe "json helper", :type => :with_engine do
+describe 'json helper' do
+
+  it_has_an_engine
 
   describe "rendering defaults" do
     before(:each) do

@@ -1,8 +1,13 @@
-require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "process.html.haml", :type => :with_engine do
+require File.dirname( __FILE__ ) + '/../spec_helper'
 
-  before(:each) do
+
+describe 'process.html.haml' do
+
+  it_has_an_engine
+
+  before( :each ) do
+
     @wfid = launch_test_process
     @process = engine.process( @wfid )
 
@@ -11,7 +16,9 @@ describe "process.html.haml", :type => :with_engine do
     render 'process.html.haml'
   end
 
-  it "should have the process name" do
-    response.should include(@wfid)
+  it 'should have the process name' do
+
+    response.should include( @wfid )
   end
 end
+

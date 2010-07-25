@@ -4,7 +4,9 @@ module RuoteKit
     module RuoteHelpers
 
       # Launch a dummy process and return the wfid
+      #
       def launch_test_process( &block )
+
         pdef = if block_given?
           yield
         else
@@ -37,8 +39,10 @@ module RuoteKit
       end
 
       def wait_for( wfid )
-        @_spec_worker.context.logger.wait_for( [  wfid ] )
+        #@_spec_worker.context.logger.wait_for( [  wfid ] )
+        RuoteKit.engine.wait_for( wfid )
       end
     end
   end
 end
+

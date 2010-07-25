@@ -3,89 +3,54 @@ require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 
 undef :context if defined?(context)
 
-class MyCustomStorage
-  attr_reader :opts
-  def initialize (opts)
-    @opts = opts
-  end
-end
-
-class MyParticipant
-end
 
 describe RuoteKit do
 
-  describe 'configure' do
+  describe 'run_worker' do
 
     before(:each) do
-      # nothing
+      RuoteKit.run_worker( Ruote::HashStorage.new )
     end
 
-    it 'should default to :transient' do
+    it 'should instantiate an engine' do
+      RuoteKit.engine.should_not == nil
+    end
 
-      RuoteKit.configuration.mode.should == :transient
+    it 'should instantiate an engine with a worker' do
+      RuoteKit.engine.worker.should_not == nil
+    end
+
+    it 'should instantiate an engine bound to a storage' do
+      RuoteKit.engine.storage.class.should == Ruote::HashStorage
     end
   end
 
-  describe 'configure with a custom storage' do
+  describe 'bind_engine' do
 
     before(:each) do
-
-      RuoteKit.configure do |conf|
-        #require 'path/to/my_custom_storage'
-        conf.set_storage( MyCustomStorage, :a => 'A', :b => 'B' )
-        conf.run_engine = false
-      end
+      RuoteKit.bind_engine( Ruote::HashStorage.new )
     end
 
-    it 'should advertise mode as :custom' do
-
-      RuoteKit.configuration.mode.should == :custom
+    it 'should instantiate an engine' do
+      RuoteKit.engine.should_not == nil
     end
 
-    it 'should return an instance of the customer storage' do
+    it 'should instantiate an engine without a worker' do
+      RuoteKit.engine.worker.should == nil
+    end
 
-      si = RuoteKit.configuration.storage_instance
-
-      si.class.should == MyCustomStorage
-      si.opts.should == { :a => 'A', :b => 'B' }
+    it 'should instantiate an engine bound to a storage' do
+      RuoteKit.engine.storage.class.should == Ruote::HashStorage
     end
   end
 
-  describe 'register participants' do
+  describe 'direct engine setting' do
 
-    require 'ruote/participant'
+    # stupid illustrative spec
 
-    describe 'custom participant' do
-      RuoteKit.configure do |conf|
-        conf.register do
-          participant 'al', MyParticipant
-        end
-      end
-
-      RuoteKit.engine.context.plist.names.should == [ '^al$' ]
-    end
-
-    describe 'catchall participant' do
-      RuoteKit.configure do |conf|
-        conf.register do
-          catchall MyParticipant
-        end
-      end
-
-      RuoteKit.engine.context.plist.names.should == [ '^.+$' ]
-    end
-
-    describe 'catchall participant without any options' do
-      require 'ruote/part/storage_participant'
-
-      RuoteKit.configure do |conf|
-        conf.register do
-          catchall
-        end
-      end
-
-      RuoteKit.engine.context.plist.lookup( '.+' ).instance_of?( Ruote::StorageParticipant ).should == true
+    it 'should comply' do
+      RuoteKit.engine = Ruote::Engine.new( Ruote::HashStorage.new )
+      RuoteKit.engine.should_not == nil
     end
   end
 end

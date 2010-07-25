@@ -23,16 +23,18 @@ require File.join( File.dirname( __FILE__ ), '/../lib/ruote-kit' )
 
 require 'ruote/part/storage_participant'
 
-RuoteKit.configure do |config|
-
-  # In memory is perfect for tests
-  config.storage = :transient
-end
+#RuoteKit.configure do |config|
+#  # In memory is perfect for tests
+#  config.storage = :transient
+#end
 
 require 'ruote-kit/spec/ruote_helpers'
+require 'spec/it_has_an_engine'
+
 require 'ruote/log/test_logger'
 
 Spec::Runner.configure do |config|
+
   # == Mock Framework
   #
   # RSpec uses it's own mocking framework by default. If you prefer to
@@ -46,36 +48,8 @@ Spec::Runner.configure do |config|
   config.include Webrat::Matchers, :type => :views
   config.include RuoteKit::Spec::RuoteHelpers
 
-  config.before( :each, :type => :with_engine ) do
-
-    RuoteKit.configure do |conf|
-      conf.register do
-        catchall Ruote::StorageParticipant
-      end
-    end
-
-    @tracer = Tracer.new
-    RuoteKit.engine.add_service( 'tracer', @tracer )
-
-    # Specs use their own worker since we need the trace
-    @_spec_worker = Ruote::Worker.new( RuoteKit.engine.storage )
-    @_spec_worker.context.add_service( 'tracer', @tracer )
-    @_spec_worker.run_in_thread
-  end
-
-  # Purge the engine after every run
-  config.after( :each, :type => :with_engine ) do
-
-    @_spec_worker.shutdown
-
-    # Seems in some rubies this block gets called multiple times
-    unless RuoteKit.engine.nil?
-
-      RuoteKit.storage_participant.purge!
-      RuoteKit.engine.storage.purge! unless RuoteKit.engine.storage.nil?
-
-      RuoteKit.shutdown_engine( true )
-    end
+  def it_has_an_engine
+    it_should_behave_like 'it has an engine'
   end
 
   RuoteKit::Application.included_modules.each do |klass|
@@ -137,10 +111,9 @@ class Rack::MockResponse
   end
 
   def html?
-    !json?
+    ! json?
   end
 end
-
 
 class Tracer
   def initialize
@@ -159,3 +132,4 @@ class Tracer
     @trace << "#{s}\n"
   end
 end
+

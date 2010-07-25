@@ -1,5 +1,5 @@
 
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.dirname( __FILE__ ) + '/../spec_helper'
 
 class BrokenParticipant
   include Ruote::LocalParticipant
@@ -10,7 +10,10 @@ class BrokenParticipant
   end
 end
 
-describe 'GET /_ruote/errors', :type => :with_engine do
+
+describe 'GET /_ruote/errors' do
+
+  it_has_an_engine
 
   describe 'without any running processes' do
 
@@ -18,17 +21,17 @@ describe 'GET /_ruote/errors', :type => :with_engine do
 
       get '/_ruote/errors'
 
-      last_response.status.should be(200)
+      last_response.status.should be( 200 )
     end
 
     it 'should give an empty array (JSON)' do
 
       get '/_ruote/errors.json'
 
-      last_response.status.should be(200)
+      last_response.status.should be( 200 )
 
       body = last_response.json_body
-      body.should have_key('errors')
+      body.should have_key( 'errors' )
 
       body['errors'].should be_empty
     end
@@ -36,7 +39,7 @@ describe 'GET /_ruote/errors', :type => :with_engine do
 
   describe 'with a running process that has an error' do
 
-    before(:each) do
+    before( :each ) do
 
       RuoteKit.engine.register_participant :broken, BrokenParticipant
 
@@ -47,23 +50,23 @@ describe 'GET /_ruote/errors', :type => :with_engine do
       end
     end
 
-    it 'should list errors (HTML)' do
-
-      get '/_ruote/errors'
-
-      last_response.status.should be(200)
-      last_response.should match(/broken/)
-
-      #p last_response.body
-
-      # TODO : continue me
-    end
+#    it 'should list errors (HTML)' do
+#
+#      get '/_ruote/errors'
+#
+#      last_response.status.should be( 200 )
+#      last_response.should match( /broken/ )
+#
+#      #p last_response.body
+#
+#      # TODO : continue me
+#    end
 
     it 'should list errors (JSON)' do
 
       get '/_ruote/errors.json'
 
-      last_response.status.should be(200)
+      last_response.status.should be( 200 )
 
       # TODO : continue me
     end
