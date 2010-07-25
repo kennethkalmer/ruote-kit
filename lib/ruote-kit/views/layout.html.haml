@@ -13,14 +13,20 @@
 
       #header
 
-        %h1 ruote-kit
+        %h1
+          %img{ :src => '/_ruote/images/ruote.png' }
+          ruote-kit
 
         #main-navigation
-          %ul
-            = navigate_to "processes", "/_ruote/processes"
-            = navigate_to "expressions", "/_ruote/expressions"
-            = navigate_to "workitems", "/_ruote/workitems"
-            = navigate_to "errors", "/_ruote/errors"
+          = link_to "processes", "/_ruote/processes"
+          |
+          = link_to "workitems", "/_ruote/workitems"
+          |
+          = link_to "errors", "/_ruote/errors"
+          |
+          = link_to "expressions", "/_ruote/expressions"
+          |
+          = link_to "participants", "/_ruote/participants"
 
       #wrapper
         #main
