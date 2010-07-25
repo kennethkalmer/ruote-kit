@@ -1,6 +1,10 @@
+
 module RuoteKit
+
   module Helpers
+
     # Helpers for rendering stuff
+    #
     module RenderHelpers
 
       def json( resource, object )
@@ -16,10 +20,12 @@ module RuoteKit
       end
 
       def json_processes( processes )
+
         processes.map { |p| json_process( p ) }
       end
 
       def json_process( process )
+
         links = [
           link( "/_ruote/processes/#{process.wfid}", '#process' ),
           link( "/_ruote/expressions/#{process.wfid}", '#expressions' ),
@@ -30,23 +36,26 @@ module RuoteKit
       end
 
       def json_expression( expression )
+
         links = [
           link( "/_ruote/processes/#{expression.fei.wfid}", '#process' ),
           link( "/_ruote/expressions/#{expression.fei.wfid}", '#expressions' )
         ]
 
-        if expression.parent
-          links << link( "/_ruote/expressions/#{expression.fei.wfid}/#{expression.parent.fei.expid}", 'parent' )
-        end
+        links << link(
+          "/_ruote/expressions/#{expression.fei.wfid}/#{expression.parent.fei.expid}",
+          'parent' ) if expression.parent
 
         expression.to_h.merge( 'links' => links )
       end
 
       def json_expressions( expressions )
+
         expressions.map { |e| json_expression( e ) }
       end
 
       def json_workitems( workitems )
+
         workitems.map { |w| json_workitem( w ) }
       end
 
@@ -62,11 +71,21 @@ module RuoteKit
       end
 
       def json_errors( errors )
+
         errors.collect { |e| json_error( e ) }
       end
 
       def json_error( error )
-        error.merge( 'links' => links(error) )
+
+        fei = error.fei
+        wfid = fei.wfid
+        expid = fei.expid
+
+        error.to_h.merge( 'links' => [
+          link( "/_ruote/errors/#{wfid}/#{expid}", 'self' ),
+          link( "/_ruote/errors/#{wfid}", '#process_errors' ),
+          link( "/_ruote/processes/#{wfid}", '#process' )
+        ] )
       end
 
       def links( resource )
@@ -83,7 +102,8 @@ module RuoteKit
       def link( href, rel )
         {
           'href' => href,
-          'rel' => rel.match(/^#/) ? "http://ruote.rubyforge.org/rels.html#{rel}" : rel
+          'rel' => rel.match(/^#/) ?
+            "http://ruote.rubyforge.org/rels.html#{rel}" : rel
         }
       end
 
@@ -107,16 +127,23 @@ module RuoteKit
       end
 
       # Easy 503
+      #
       def workitems_not_available
+
         status 503
+
         respond_to do |format|
           format.html { haml :workitems_not_available }
-          format.json { Rufus::Json.encode( { "error" => { "code" => 503, "messages" => "Workitems not available" } } ) }
+          format.json { Rufus::Json.encode(
+            { 'error' => {
+              'code' => 503, 'messages' => 'Workitems not available' } } ) }
         end
       end
 
       # Extract the process tree
+      #
       def process_tree( object )
+
         case object
         when Ruote::Workitem
           process = engine.process( object.fei.wfid )

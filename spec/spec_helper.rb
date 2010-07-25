@@ -26,6 +26,29 @@ require 'spec/it_has_an_engine'
 
 require 'ruote/log/test_logger'
 
+ROOT_LINKS = [
+  {
+    'href' => '/_ruote',
+    'rel' => 'http://ruote.rubyforge.org/rels.html#root'
+  },
+  {
+    'href' => '/_ruote/processes',
+    'rel' => 'http://ruote.rubyforge.org/rels.html#processes'
+  },
+  {
+    'href' => '/_ruote/workitems',
+    'rel' => 'http://ruote.rubyforge.org/rels.html#workitems'
+  },
+  {
+    'href' => '/_ruote/errors',
+    'rel' => 'http://ruote.rubyforge.org/rels.html#errors'
+  },
+  {
+    'href' => '/_ruote/history',
+    'rel' => 'http://ruote.rubyforge.org/rels.html#history'
+  }
+]
+
 
 Spec::Runner.configure do |config|
 
@@ -47,6 +70,11 @@ Spec::Runner.configure do |config|
   end
   def it_has_an_engine_with_no_participants
     it_should_behave_like 'it has an engine with no participants'
+  end
+
+  def root_links( self_href )
+
+    ROOT_LINKS + [ { 'href' => self_href, 'rel' => 'self' } ]
   end
 
   RuoteKit::Application.included_modules.each do |klass|
