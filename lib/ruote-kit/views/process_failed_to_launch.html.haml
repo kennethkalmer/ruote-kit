@@ -3,7 +3,25 @@
 
 .flash
   .message.error
-    %p
-      &= @error.message
-      %a{ :href => "javascript:history.go(-1)" } Go back to the previous page
+
+    %div
+      %pre
+        = @exception.message
+
+    %div
+      definition : 
+      = Rufus::Json.encode(@info.definition)
+    %div
+      fields : 
+      = Rufus::Json.encode(@info.fields)
+    %div
+      variables : 
+      = Rufus::Json.encode(@info.variables)
+
+    %div.trace
+      (trace)
+    %pre.trace #{@exception.backtrace.join("\n")}
+
+    %div
+      %a{ :href => "javascript:history.go(-1)" } back
 

@@ -17,6 +17,7 @@ body {
 h1 {
   font-size: 170%;
   font-weight: normal;
+  margin-bottom: 21px;
 }
 h2 {
   font-size: 110%;
@@ -44,6 +45,11 @@ a:hover {
   color: gray;
 }
 
+label {
+  display: block;
+  font-weight: normal;
+}
+
 /* header */
 
 #logo {
@@ -58,7 +64,6 @@ a:hover {
 /* flash */
 
 .flash {
-  margin-top: 14px;
 }
 
 /* footer */

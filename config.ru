@@ -1,4 +1,6 @@
 
+# bundler
+
 begin
   # try to require the preresolved locked set of gems.
   require ::File.expand_path( '.bundle/environment', __FILE__ )
@@ -9,7 +11,9 @@ rescue LoadError
   Bundler.setup( :default )
 end
 
-# load json support
+
+# json
+#
 # try yajl-ruby first, and json after that
 
 begin
@@ -25,11 +29,14 @@ end
 
 require 'rufus-json'
 
-$:.unshift 'lib'
 
+# ruote-kit
+
+$:.unshift 'lib'
 require 'ruote-kit'
 
-# configuring the ruote engine
+
+# ruote
 
 require 'ruote/storage/fs_storage'
 
@@ -41,6 +48,7 @@ RuoteKit.engine = Ruote::Engine.new(
 RuoteKit.engine.register do
   catchall
 end
+
 
 # rack middlewares, business as usual...
 

@@ -1,0 +1,29 @@
+
+%h1 launch process
+
+%form{ :method => 'POST', :action => '/_ruote/processes' }
+
+  %div
+    %label
+      process definition
+    %textarea{ :name => 'definition', :cols => 80, :rows => 10 } #{sample_process}
+
+  %div
+    %label
+      workitem fields
+    %textarea{ :name => 'fields', :cols => 80, :rows => 3 }
+
+  %div
+    %label.variables{ :onclick => 'RK.toggleParen(this, $("textarea.variables")[0]);' }
+      (process variables)
+    %textarea.variables{ :name => 'variables', :cols => 80, :rows => 3 }
+
+  %div
+    %input{ :type => 'submit', 'value' => 'launch' }
+    or
+    %a{ :href => '/_ruote/processes' } Cancel
+
+:javascript
+
+  $('textarea.variables').hide();
+

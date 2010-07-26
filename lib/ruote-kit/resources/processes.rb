@@ -1,4 +1,7 @@
 
+require 'ostruct'
+
+
 class RuoteKit::Application
 
   get '/_ruote/processes/?' do
@@ -13,7 +16,7 @@ class RuoteKit::Application
 
   get '/_ruote/processes/new' do
 
-    haml :launch_process
+    haml :process_new
   end
 
   get '/_ruote/processes/:wfid' do
@@ -32,17 +35,14 @@ class RuoteKit::Application
 
   post '/_ruote/processes' do
 
-    launch_item = launch_item_from_post
-
     respond_to do |format|
       begin
 
-        @wfid = engine.launch(
-          launch_item['pdef'],
-          launch_item['fields'],
-          launch_item['variables'] )
+        @info = fetch_launch_info
 
-      rescue ArgumentError => @error
+        @wfid = engine.launch(info.definition, info.fields, info.variables)
+
+      rescue Exception => @exception
 
         status 422
 
@@ -51,7 +51,7 @@ class RuoteKit::Application
         }
         format.json {
           Rufus::Json.encode(
-            { 'error' => { 'code' => 422, 'message' => @error.message } } )
+            { 'error' => { 'code' => 422, 'message' => @exception.message } } )
         }
       else
 
@@ -79,34 +79,33 @@ class RuoteKit::Application
 
   protected
 
-  def launch_item_from_post
+  def fetch_launch_info
 
     case env['CONTENT_TYPE']
 
       when 'application/json' then
 
-        data = Rufus::Json.decode( env['rack.input'].read )
+        OpenStruct.new( Rufus::Json.decode( env['rack.input'].read ) )
 
-        launch_item = {}
-        launch_item['pdef'] = data['definition']
-        launch_item['fields'] = data['fields'] || {}
-        launch_item['variables'] = data['variables'] || {}
+      when 'multipart/form-data'
 
-        launch_item
+        # TODO
+
+        OpenStruct.new()
 
       when 'application/x-www-form-urlencoded'
 
-        launch_item = { 'pdef' => params[:process_definition] }
+        info = OpenStruct.new( 'pdef' => params[:definition] )
 
-        fields = params[:process_fields] || ''
+        fields = params[:fields] || ''
         fields = '{}' if fields.empty?
-        launch_item['fields'] = Rufus::Json.decode( fields )
+        info.fields = Rufus::Json.decode( fields )
 
-        vars = params[:process_variables] || ''
+        vars = params[:variables] || ''
         vars = '{}' if vars.empty?
-        launch_item['variables'] = Rufus::Json.decode( vars )
+        info.variables = Rufus::Json.decode( vars )
 
-        launch_item
+        info
 
       else
 
