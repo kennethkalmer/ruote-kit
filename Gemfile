@@ -10,6 +10,10 @@ gem 'sinatra'
 gem 'sinatra-respond_to'
 gem 'haml'
 
+# more servers
+
+gem 'thin'
+
 # json support
 #
 # you should choose one of the following three or add another backend supported

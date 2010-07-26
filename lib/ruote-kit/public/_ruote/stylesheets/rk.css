@@ -17,4 +17,46 @@ body {
 h1 {
   font-size: 210%;
 }
+h2 {
+  font-size: 140%;
+  font-weight: normal;
+}
 
+#container {
+  width: auto;
+  padding-top: 14px;
+  padding-left: 28px;
+  padding-right: 28px;
+}
+#main {
+  padding-top: 14px;
+}
+
+a {
+}
+a:visited {
+  color: blue;
+}
+a:hover {
+  color: gray;
+}
+
+/* header */
+
+#logo {
+  float: left;
+  padding-top: 4px;
+  padding-right: 7px;
+}
+#ruote_kit {
+  font-size: 210%;
+}
+
+/* footer */
+
+#footer {
+  padding-top: 14px;
+}
+#footer > div {
+  font-size: 80%;
+}

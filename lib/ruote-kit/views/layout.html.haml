@@ -13,10 +13,10 @@
 
       #header
 
-        %h1
+        #logo
           %img{ :src => '/_ruote/images/ruote.png' }
+        #ruote_kit
           ruote-kit
-
         #main-navigation
           = link_to "processes", "/_ruote/processes"
           |
@@ -24,20 +24,18 @@
           |
           = link_to "errors", "/_ruote/errors"
           |
-          = link_to "expressions", "/_ruote/expressions"
-          |
           = link_to "participants", "/_ruote/participants"
 
-      #wrapper
-        #main
-          = yield
+      #main
+        = yield
 
       #footer
-        &copy; 2009-2010 Kenneth Kalmer
-        |
-        %a{ :href => "http://www.opensourcery.co.za" } blog
-        |
-        %a{ :href => "http://github.com/kennethkalmer/ruote-kit" } source
-        |
-        %a{ :href => "http://ruote.rubyforge.org" } powered by ruote
+        %div
+          &copy; 2009-2010 Kenneth Kalmer
+          |
+          %a{ :href => "http://www.opensourcery.co.za" } blog
+          |
+          %a{ :href => "http://github.com/kennethkalmer/ruote-kit" } source
+          |
+          %a{ :href => "http://ruote.rubyforge.org" } powered by ruote
 
