@@ -1,30 +1,31 @@
+
 - @_uses_fluo = true
 
-%h2
+%h1
   = @process.wfid
   (#{@process.definition_name})
 
 .options
-  %ul.nolist
+  %ul
     /
-      %li.b5
+      %li
         %form{ :method => 'post' }
           %input{ :type => 'hidden', :name => '_method', :value => 'put' }
           = button "Pause", 'force-block'
           %span.description PUT /_ruote/processes/#{@process.wfid}?_pause=1
-    %li.b5
+    %li
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         = button "Cancel", "cancel force-block"
         %span.description DELETE /_ruote/processes/#{@process.wfid}
-    %li.b5
+    %li
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         %input{ :type => 'hidden', :name => '_kill', :value => '1' }
         = button "Kill", "cancel force-block"
         %span.description DELETE /_ruote/processes/#{@process.wfid}?_kill=1
 
-%ul.nolist
+%ul
   %li wfid: #{@process.wfid}
   %li launch: #{@process.launched_time}
   /%li paused:

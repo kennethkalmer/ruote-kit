@@ -1,8 +1,9 @@
+
 - @_uses_fluo = true
 
-%h2 Workitem #{@workitem.fei.wfid}/#{@workitem.fei.expid}
+%h1 Workitem #{@workitem.fei.wfid}/#{@workitem.fei.expid}
 
-%ul.nolist
+%ul
   %li fei: #{@workitem.fei.to_s}
   %li participant: #{@workitem.participant_name}
   %li dispatched: #{@workitem.dispatch_at}
@@ -13,21 +14,20 @@
 
 %p &nbsp;
 
-%form.form{ :method => 'post' }
+%form{ :method => 'post' }
   %input{ :type => 'hidden', :name => '_method', :value => 'put' }
   %input{ :type => 'hidden', :name => '_procced', :value => '1' }
-  .group
-    %label.label{ :for => "fields" } Fields
-    %textarea.text_area{ :name => "fields", :cols => 80, :rows => 10 }
+  %div
+    %label{ :for => "fields" } Fields
+    %textarea{ :name => "fields", :cols => 80, :rows => 10 }
       = Rufus::Json.encode(@workitem.fields)
     %span.description The current workitem fields in JSON format
-  .group
+  %div
     %input{ :type => 'checkbox', :name => '_proceed', :value => '1' }
     %label{ :for => '_proceed' } Proceed the workflow (_proceed=1)
-    %br
     %span.description Check to let the workflow proceed, leave unchecked to just update workitem fields
-  .group.navform
-    %input.submit{ :type => 'submit', :value => "PUT /_ruote/workitems/#{@workitem.fei.wfid}/#{@workitem.fei.expid}" }
+  %div
+    %input{ :type => 'submit', :value => "PUT /_ruote/workitems/#{@workitem.fei.wfid}/#{@workitem.fei.expid}" }
 
 %canvas#fluo
 
@@ -35,3 +35,4 @@
   var proc_rep = #{process_tree( @workitem )};
   Fluo.renderFlow( 'fluo', proc_rep, { 'workitems' : ['#{@workitem.fei.expid}'] } );
   Fluo.crop('fluo');
+

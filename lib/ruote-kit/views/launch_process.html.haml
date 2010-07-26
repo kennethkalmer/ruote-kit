@@ -1,19 +1,21 @@
-%h2 Launch a new process
 
-%form.form{ :method => "POST", :action => "/_ruote/processes" }
-  .group
-    %label.label{ :for => "process_definition" } Process definition
-    %textarea.text_area{ :name => "process_definition", :cols => 80, :rows => 10 }
+%h1 Launch a new process
+
+%form{ :method => "POST", :action => "/_ruote/processes" }
+  %div
+    %label{ :for => "process_definition" } Process definition
+    %textarea{ :name => "process_definition", :cols => 80, :rows => 10 }
     %span.description Provide your process definition here in any of the formats supported by ruote
-  .group
-    %label.label{ :for => "process_fields" } Process fields
-    %textarea.text_area{ :name => "process_fields", :cols => 80, :rows => 10 }
+  %div
+    %label{ :for => "process_fields" } Process fields
+    %textarea{ :name => "process_fields", :cols => 80, :rows => 10 }
     %span.description Provide process fields as a JSON string
-  .group
-    %label.label{ :for => "process_variables" } Process variables
-    %textarea.text_area{ :name => "process_variables", :cols => 80, :rows => 10 }
+  %div
+    %label{ :for => "process_variables" } Process variables
+    %textarea{ :name => "process_variables", :cols => 80, :rows => 10 }
     %span.description Provide process variables as a JSON string
-  .group.navform
-    %input.submit{ :type => "submit", "value" => "Launch" }
+  %div
+    %input{ :type => "submit", "value" => "Launch" }
     or
     %a{ :href => "/_ruote/processes" } Cancel
+

@@ -2,7 +2,7 @@
 - @_uses_fluo = true
 
 - unless @process
-  %h2 Expressions
+  %h1 Expressions
   .flash
     .message
       .notice
@@ -10,13 +10,13 @@
         %p Have a look at the <a href="/_ruote/processes">processes</a> and then follow their links to their set of expressions.
 
 - else
-  %h2 Expressions for #{@process.wfid}
+  %h1 Expressions for #{@process.wfid}
 
-  %ul.nested_list
+  %ul
     - @process.expressions.each do |expression|
       %li
         = link_to_expression expression
-        %ul.nested_details
+        %ul
           %li id: #{expression.fei.expid}
           %li class: #{expression.class.name}
           %li name: #{expression.respond_to?(:participant_name) ? expression.participant_name : expression.name}

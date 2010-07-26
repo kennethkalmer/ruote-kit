@@ -1,22 +1,23 @@
+
 - @_uses_fluo = true
 
-%h2 Expression #{@expression.fei.wfid}/#{@expression.fei.expid}
+%h1 Expression #{@expression.fei.wfid}/#{@expression.fei.expid}
 
 .options
-  %ul.nolist
-    %li.b5
+  %ul
+    %li
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         = button "Cancel", "cancel force-block"
         %span.description DELETE /_ruote/expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}
-    %li.b5
+    %li
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         %input{ :type => 'hidden', :name => '_kill', :value => '1' }
         = button "Kill", "cancel force-block"
         %span.description DELETE /_ruote/expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}?_kill=1
 
-%ul.nolist
+%ul
   %li id: #{@expression.fei.expid}
   %li class: #{@expression.class.name}
   %li name: #{@expression.respond_to?(:participant_name) ? @expression.participant_name : @expression.name}
@@ -34,3 +35,4 @@
   Fluo.renderFlow( 'fluo', proc_rep );
   Fluo.crop('fluo');
   Fluo.highlight('fluo', '#{@expression.fei.expid}');
+

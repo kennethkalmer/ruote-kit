@@ -1,4 +1,5 @@
-%h2 Workitems
+
+%h1 Workitems
 
 .flash
   .message
@@ -13,11 +14,12 @@
       .notice
         %p Filtered for participant(s): #{@participants.join(', ')}
 
-%ul.nested_list
+%ul
   - @workitems.each do |wi|
     %li
       = link_to wi
-      %ul.nested_details
+      %ul
         %li fei: #{wi.fei.to_s}
         %li participant: #{wi.participant_name}
         %li dispath time: TODO
+

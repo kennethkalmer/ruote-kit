@@ -1,4 +1,5 @@
-%h2 Processes
+
+%h1 Processes
 
 .flash
   .message
@@ -9,11 +10,11 @@
       .notice
         %p Currently running #{@processes.size} processes
 
-%ul.nested_list
+%ul
   - @processes.each do |process|
     %li
       = link_to process
-      %ul.nested_details
+      %ul
         %li wfid: #{process.wfid}
         %li process: #{process.definition_name} (#{process.definition_revision})
         %li launched: #{process.launched_time}
@@ -25,3 +26,4 @@
           workitems:
           %a{ :href => "/_ruote/workitems/#{process.wfid}" } GET /_ruote/workitems/#{process.wfid}
         %li errors: #{process.errors.size}
+
