@@ -1,6 +1,19 @@
 
 require File.dirname( __FILE__ ) + '/../spec_helper'
 
+def process_links( wfid )
+  [
+    { 'href' => "/_ruote/processes/#{wfid}",
+      'rel' => 'self' },
+    { 'href' => "/_ruote/expressions/#{wfid}",
+      'rel' => 'http://ruote.rubyforge.org/rels.html#process_expressions' },
+    { 'href' => "/_ruote/workitems/#{wfid}",
+      'rel' => 'http://ruote.rubyforge.org/rels.html#process_workitems' },
+    { 'href' => "/_ruote/errors/#{wfid}",
+      'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' }
+  ]
+end
+
 
 describe 'GET /_ruote/processes' do
 
@@ -52,17 +65,7 @@ describe 'GET /_ruote/processes' do
       body['processes'].should_not be_empty
 
       body['links'].should == root_links( '/_ruote/processes' )
-
-      body['processes'].first['links'].should == [
-        { 'href' => "/_ruote/processes/#{@wfid}",
-          'rel' => 'self' },
-        { 'href' => "/_ruote/expressions/#{@wfid}",
-          'rel' => 'http://ruote.rubyforge.org/rels.html#process_expressions' },
-        { 'href' => "/_ruote/workitems/#{@wfid}",
-          'rel' => 'http://ruote.rubyforge.org/rels.html#process_workitems' },
-        { 'href' => "/_ruote/errors/#{@wfid}",
-          'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' }
-      ]
+      body['processes'].first['links'].should == process_links( @wfid )
     end
   end
 end
@@ -94,16 +97,7 @@ describe 'GET /_ruote/processes/X-Y' do
 
       body.should have_key( 'process' )
 
-      body['process']['links'].should == [
-        { 'href' => "/_ruote/processes/#{@wfid}",
-          'rel' => 'self' },
-        { 'href' => "/_ruote/expressions/#{@wfid}",
-          'rel' => 'http://ruote.rubyforge.org/rels.html#process_expressions' },
-        { 'href' => "/_ruote/workitems/#{@wfid}",
-          'rel' => 'http://ruote.rubyforge.org/rels.html#process_workitems' },
-        { 'href' => "/_ruote/errors/#{@wfid}",
-          'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' }
-      ]
+      body['process']['links'].should == process_links( @wfid )
     end
   end
 

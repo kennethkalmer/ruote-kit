@@ -1,6 +1,7 @@
+
 class RuoteKit::Application
 
-  get "/_ruote/workitems/?" do
+  get '/_ruote/workitems/?' do
 
     query = params.inject({}) { |h, (k, v)|
       h[k] = (Rufus::Json.decode(v) rescue v)
@@ -15,7 +16,8 @@ class RuoteKit::Application
     end
   end
 
-  get "/_ruote/workitems/:wfid" do
+  get '/_ruote/workitems/:wfid' do
+
     @wfid = params[:wfid]
     @workitems = find_workitems( params[:wfid] )
 
@@ -25,7 +27,8 @@ class RuoteKit::Application
     end
   end
 
-  get "/_ruote/workitems/:wfid/:expid" do
+  get '/_ruote/workitems/:wfid/:expid' do
+
     @workitem = find_workitem( params[:wfid], params[:expid] )
 
     if @workitem
@@ -38,10 +41,11 @@ class RuoteKit::Application
     end
   end
 
-  put "/_ruote/workitems/:wfid/:expid" do
+  put '/_ruote/workitems/:wfid/:expid' do
+
     workitem = find_workitem( params[:wfid], params[:expid] )
 
-    (resource_not_found and return) if workitem.nil?
+    ( resource_not_found and return ) if workitem.nil?
 
     options = field_updates_and_proceed_from_put
 
@@ -55,11 +59,16 @@ class RuoteKit::Application
     end
 
     respond_to do |format|
+
       format.html {
-        redirect options[:proceed] ? "/_ruote/workitems/#{params[:wfid]}" : "/_ruote/workitems/#{params[:wfid]}/#{params[:expid]}"
+        redirect( options[:proceed] ?
+          "/_ruote/workitems/#{params[:wfid]}" :
+          "/_ruote/workitems/#{params[:wfid]}/#{params[:expid]}" )
       }
-      format.json { json( :workitem, workitem ) }
+      format.json {
+        json( :workitem, workitem )
+      }
     end
   end
-
 end
+

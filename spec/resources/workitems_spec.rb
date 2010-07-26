@@ -11,13 +11,17 @@ describe 'GET /_ruote/workitems' do
   describe 'without any workitems' do
 
     it 'should report no workitems (HTML)' do
+
       get '/_ruote/workitems'
 
       last_response.should be_ok
-      last_response.should match( /No workitems are currently available/ )
+
+      last_response.should have_selector(
+        'div.warn p', :content => 'No workitems are currently available' )
     end
 
     it 'should report no workitems (JSON)' do
+
       get '/_ruote/workitems.json'
 
       last_response.should be_ok
@@ -31,6 +35,7 @@ describe 'GET /_ruote/workitems' do
   describe 'with workitems' do
 
     before( :each ) do
+
       @wfid = launch_test_process do
         Ruote.process_definition :name => 'test' do
           sequence do
@@ -41,6 +46,7 @@ describe 'GET /_ruote/workitems' do
     end
 
     it 'should have a list of workitems (HTML)' do
+
       get '/_ruote/workitems'
 
       last_response.should be_ok
@@ -48,6 +54,7 @@ describe 'GET /_ruote/workitems' do
     end
 
     it 'should have a list of workitems (JSON)' do
+
       get '/_ruote/workitems.json'
 
       last_response.should be_ok
@@ -149,12 +156,14 @@ describe 'GET /_ruote/workitems/wfid/expid' do
     end
 
     it 'should return it (HTML)' do
+
       get "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}"
 
       last_response.should be_ok
     end
 
     it 'should return it (JSON)' do
+
       get "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}.json"
 
       last_response.should be_ok
@@ -317,9 +326,15 @@ describe 'Filtering workitems' do
     end
 
     it 'should narrow results down to a single participant (HTML)' do
+
       get '/_ruote/workitems', :participant => 'jack'
 
       last_response.should be_ok
+
+      last_response.should have_selector(
+        'div.notice p', :content => '1 workitem available' )
+      #last_response.should have_selector(
+      #  'div.notice p', :content => 'Filtered for participant(s): jack' )
     end
 
   end

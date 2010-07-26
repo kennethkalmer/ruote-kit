@@ -47,7 +47,7 @@ ROOT_LINKS = [
     'href' => '/_ruote/history',
     'rel' => 'http://ruote.rubyforge.org/rels.html#history'
   }
-]
+] unless defined?( ROOT_LINKS ) # :-(
 
 
 Spec::Runner.configure do |config|
@@ -94,7 +94,7 @@ end
 
 # Renders the supplied template with Haml::Engine and assigns the
 # @response instance variable
-def render(template_path)
+def render( template_path )
   template = File.read( "#{app.views}/#{template_path.sub( /^\//, '' )}" )
   engine = Haml::Engine.new( template )
   @response = engine.render( self, assigns_for_template )
@@ -122,6 +122,7 @@ def assigns_for_template
 end
 
 class Rack::MockResponse
+
   def json_body
     Rufus::Json.decode( body )
   end
