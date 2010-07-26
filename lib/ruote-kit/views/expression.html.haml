@@ -1,20 +1,20 @@
 
 - @_uses_fluo = true
 
-%h1 Expression #{@expression.fei.wfid}/#{@expression.fei.expid}
+%h1 expression #{@expression.fei.wfid}/#{@expression.fei.expid}
 
 .options
   %ul
     %li
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
-        = button "Cancel", "cancel force-block"
+        %input{ :type => 'submit', :value => 'cancel' }
         %span.description DELETE /_ruote/expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}
     %li
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         %input{ :type => 'hidden', :name => '_kill', :value => '1' }
-        = button "Kill", "cancel force-block"
+        %input{ :type => 'submit', :value => 'kill' }
         %span.description DELETE /_ruote/expressions/#{@expression.fei.wfid}/#{@expression.fei.expid}?_kill=1
 
 %ul

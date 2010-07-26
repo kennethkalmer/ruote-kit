@@ -1,7 +1,7 @@
 
 - @_uses_fluo = true
 
-%h1 Workitem #{@workitem.fei.wfid}/#{@workitem.fei.expid}
+%h1 workitem #{@workitem.fei.wfid}/#{@workitem.fei.expid}
 
 %ul
   %li fei: #{@workitem.fei.to_s}
@@ -11,8 +11,6 @@
   %li process: #{link_to engine.process( @workitem.fei.wfid) }
   %li expressions:
   %li workitems of this process: #{link_to "GET /_ruote/workitems/#{@workitem.fei.wfid}", "/_ruote/workitems/#{@workitem.fei.wfid}" }
-
-%p &nbsp;
 
 %form{ :method => 'post' }
   %input{ :type => 'hidden', :name => '_method', :value => 'put' }

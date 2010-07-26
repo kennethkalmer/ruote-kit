@@ -2,6 +2,7 @@
 - @_uses_fluo = true
 
 %h1
+  process
   = @process.wfid
   (#{@process.definition_name})
 
@@ -11,25 +12,25 @@
       %li
         %form{ :method => 'post' }
           %input{ :type => 'hidden', :name => '_method', :value => 'put' }
-          = button "Pause", 'force-block'
+          %input{ :type => 'submit', :value => 'pause' }
           %span.description PUT /_ruote/processes/#{@process.wfid}?_pause=1
     %li
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
-        = button "Cancel", "cancel force-block"
+        %input{ :type => 'submit', :value => 'cancel' }
         %span.description DELETE /_ruote/processes/#{@process.wfid}
     %li
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         %input{ :type => 'hidden', :name => '_kill', :value => '1' }
-        = button "Kill", "cancel force-block"
+        %input{ :type => 'submit', :value => 'kill' }
         %span.description DELETE /_ruote/processes/#{@process.wfid}?_kill=1
 
 %ul
   %li wfid: #{@process.wfid}
   %li launch: #{@process.launched_time}
   /%li paused:
-  %li: tags: #{@process.all_tags.keys.join(', ')}
+  %li: tags: #{@process.all_tags.keys.join( ', ' )}
   %li
     expressions:
     %a{ :href => "/_ruote/expressions/#{@process.wfid}" } GET /_ruote/expressions/#{@process.wfid}

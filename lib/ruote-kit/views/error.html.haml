@@ -1,12 +1,12 @@
 
-%h1 Error #{@error.fei.wfid}/#{@error.fei.expid}
+%h1 error #{@error.fei.wfid}/#{@error.fei.expid}
 
 .options
   %ul
     %li
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
-        = button "Replay", "replay at this error"
+        %input{ :type => 'submit', :value => 'replay' }
         %span.description DELETE /_ruote/errors/#{@error.fei.wfid}/#{@error.fei.expid}
 
 %ul

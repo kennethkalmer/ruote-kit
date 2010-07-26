@@ -2,7 +2,7 @@
 - @_uses_fluo = true
 
 - unless @process
-  %h1 Expressions
+  %h1 expressions
   .flash
     .message
       .notice
@@ -10,7 +10,7 @@
         %p Have a look at the <a href="/_ruote/processes">processes</a> and then follow their links to their set of expressions.
 
 - else
-  %h1 Expressions for #{@process.wfid}
+  %h1 expressions for #{@process.wfid}
 
   %ul
     - @process.expressions.each do |expression|
