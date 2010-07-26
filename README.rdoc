@@ -215,3 +215,14 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+== libraries used
+
+- rack, http://rack.rubyforge.org/
+- sinatra, http://www.sinatrarb.com/
+- sinatra-respond_to, http://github.com/cehoffman/sinatra-respond_to
+- haml, http://haml-lang.com/
+- yajl-ruby, http://github.com/brianmario/yajl-ruby
+- jquery, http://jquery.com/
+
+many thanks to the authors and contributors
+
