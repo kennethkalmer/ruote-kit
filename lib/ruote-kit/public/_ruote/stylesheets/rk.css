@@ -37,6 +37,7 @@ h2 {
 }
 
 a {
+  cursor: pointer;
 }
 a:visited {
   color: blue;
@@ -48,6 +49,13 @@ a:hover {
 label {
   display: block;
   font-weight: normal;
+}
+
+.togglable {
+  cursor: pointer;
+}
+.togglable:hover {
+  color: gray;
 }
 
 /* header */
@@ -75,3 +83,10 @@ label {
   font-size: 80%;
 }
 
+/* processes */
+
+pre.trace {
+  font-family: "Menlo Regular", "Monaco", courier, monospace;
+  font-size: 90%;
+  line-height: 11px;
+}

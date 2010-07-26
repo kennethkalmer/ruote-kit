@@ -40,19 +40,15 @@ class RuoteKit::Application
 
         @info = fetch_launch_info
 
-        @wfid = engine.launch(info.definition, info.fields, info.variables)
+        @wfid = engine.launch(
+          @info.definition, @info.fields || {}, @info.variables || {})
 
       rescue Exception => @exception
 
         status 422
 
-        format.html {
-          haml :process_failed_to_launch
-        }
-        format.json {
-          Rufus::Json.encode(
-            { 'error' => { 'code' => 422, 'message' => @exception.message } } )
-        }
+        format.html { haml :process_failed_to_launch }
+        format.json { json( :exception, 422, @exception ) }
       else
 
         # status 200
@@ -95,7 +91,7 @@ class RuoteKit::Application
 
       when 'application/x-www-form-urlencoded'
 
-        info = OpenStruct.new( 'pdef' => params[:definition] )
+        info = OpenStruct.new( 'definition' => params[:definition] )
 
         fields = params[:fields] || ''
         fields = '{}' if fields.empty?

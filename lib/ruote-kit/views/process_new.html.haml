@@ -14,14 +14,14 @@
     %textarea{ :name => 'fields', :cols => 80, :rows => 3 }
 
   %div
-    %label.variables{ :onclick => 'RK.toggleParen(this, $("textarea.variables")[0]);' }
+    %label.togglable{ :onclick => 'Rk.toggle(this, $("textarea.variables")[0], "(process variables)", "process variables");' }
       (process variables)
     %textarea.variables{ :name => 'variables', :cols => 80, :rows => 3 }
 
   %div
     %input{ :type => 'submit', 'value' => 'launch' }
     or
-    %a{ :href => '/_ruote/processes' } Cancel
+    %a{ :href => '/_ruote/processes' } cancel
 
 :javascript
 

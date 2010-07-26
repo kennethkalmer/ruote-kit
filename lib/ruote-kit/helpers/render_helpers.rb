@@ -1,22 +1,26 @@
 
 module RuoteKit
-
   module Helpers
 
     # Helpers for rendering stuff
     #
     module RenderHelpers
 
-      def json( resource, object )
+      def json( resource, *args )
 
         if respond_to?( "json_#{resource}" )
-          object = send( "json_#{resource}", object )
+          object = send( "json_#{resource}", *args )
         end
 
         Rufus::Json.encode( {
           'links' => links( resource ),
-          resource.to_s => object
+          resource.to_s => object || args.first
         } )
+      end
+
+      def json_exception( code, exception )
+
+        { 'code' => code, 'exception' => { 'message' => exception.message } }
       end
 
       def json_processes( processes )
@@ -112,7 +116,7 @@ module RuoteKit
 
         status 404
 
-        @format = if m = @format.to_s.match(/^[^\/]+\/([^;]+)/)
+        @format = if m = @format.to_s.match( /^[^\/]+\/([^;]+)/ )
           m[1].to_sym
         else
           @format
@@ -120,8 +124,15 @@ module RuoteKit
           # freaking sinata-respond_to 0.4.0... (or is that it ?)
 
         respond_to do |format|
-          format.html { haml :resource_not_found }
-          format.json { Rufus::Json.encode( { "error" => { "code" => 404, "message" => "Resource not found" } } ) }
+
+          format.html {
+            haml :resource_not_found
+          }
+          format.json {
+            Rufus::Json.encode(
+              { 'error' => {
+                'code' => 404, 'message' => 'resource not found' } } )
+          }
         end
       end
 
@@ -132,10 +143,14 @@ module RuoteKit
         status 503
 
         respond_to do |format|
-          format.html { haml :workitems_not_available }
+
+          format.html {
+            haml :workitems_not_available
+          }
           format.json { Rufus::Json.encode(
             { 'error' => {
-              'code' => 503, 'messages' => 'Workitems not available' } } ) }
+              'code' => 503, 'messages' => 'Workitems not available' } } )
+          }
         end
       end
 
@@ -154,3 +169,4 @@ module RuoteKit
     end
   end
 end
+

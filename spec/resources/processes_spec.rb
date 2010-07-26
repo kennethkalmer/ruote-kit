@@ -110,7 +110,7 @@ describe 'GET /_ruote/processes/X-Y' do
       last_response.should_not be_ok
       last_response.status.should be( 404 )
 
-      last_response.should match( /Resource not found/ )
+      last_response.should match( /resource not found/ )
     end
 
     it 'should 404 correctly (JSON)' do
@@ -123,7 +123,7 @@ describe 'GET /_ruote/processes/X-Y' do
       last_response.json_body.keys.should include('error')
 
       last_response.json_body['error'].should == {
-        'code' => 404, 'message' => 'Resource not found' }
+        'code' => 404, 'message' => 'resource not found' }
     end
   end
 end
@@ -159,7 +159,7 @@ describe 'POST /_ruote/processes' do
 
     post(
       '/_ruote/processes.json',
-      Rufus::Json.encode(params),
+      Rufus::Json.encode( params ),
       { 'CONTENT_TYPE' => 'application/json' } )
 
     last_response.should be_ok
@@ -198,7 +198,7 @@ describe 'POST /_ruote/processes' do
   it 'should launch a valid process definition (HTML)' do
 
     params = {
-      :process_definition => %q{
+      :definition => %q{
         Ruote.process_definition :name => 'test' do
           wait '1m'
         end
@@ -217,12 +217,12 @@ describe 'POST /_ruote/processes' do
   it 'should launch a process definition with fields (HTML)' do
 
     params = {
-      :process_definition => %{
+      :definition => %{
         Ruote.process_definition :name => 'test' do
           echo '${f:foo}'
         end
       },
-      :process_fields => '{ "foo": "bar" }'
+      :fields => '{ "foo": "bar" }'
     }
 
     post '/_ruote/processes', params
@@ -237,12 +237,12 @@ describe 'POST /_ruote/processes' do
   it 'should correct for empty fields sent by browsers' do
 
     params = {
-      :process_definition => %q{
+      :definition => %q{
         Ruote.process_definition :name => 'test' do
           wait '5m'
         end
       },
-      :process_fields => ''
+      :fields => ''
     }
 
     post '/_ruote/processes', params
@@ -266,19 +266,19 @@ describe 'POST /_ruote/processes' do
     last_response.should_not be_ok
     last_response.status.should be( 422 )
 
-    last_response.json_body.keys.should include('error')
+    last_response.json_body.keys.should include('exception')
   end
 
   it 'should return a nice error page when launching a process fails (HTML)' do
 
-    params = { :process_definition => %q{http://invalid.invalid} }
+    params = { :definition => %q{http://invalid.invalid} }
 
     post '/_ruote/processes', params
 
     last_response.should_not be_ok
     last_response.status.should be( 422 )
 
-    last_response.should match( /Process failed to launch/ )
+    last_response.should match( /failed to launch process/ )
   end
 
 end

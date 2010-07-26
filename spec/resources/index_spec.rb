@@ -1,6 +1,7 @@
 
 require File.dirname( __FILE__ ) + '/../spec_helper'
 
+
 describe 'GET /' do
 
   it_has_an_engine
@@ -40,7 +41,7 @@ describe 'Generic error handling' do
     last_response.status.should be( 404 )
 
     last_response.should be_html
-    last_response.should match(/Resource not found/)
+    last_response.should match(/resource not found/)
   end
 
   it 'should give our own 404 data (JSON)' do
