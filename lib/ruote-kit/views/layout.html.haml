@@ -18,13 +18,15 @@
         #ruote_kit
           ruote-kit
         #main_navigation
-          = link_to "processes", "/_ruote/processes"
+          = link_to 'processes', '/_ruote/processes'
           |
-          = link_to "workitems", "/_ruote/workitems"
+          = link_to 'workitems', '/_ruote/workitems'
           |
-          = link_to "errors", "/_ruote/errors"
+          = link_to 'errors', '/_ruote/errors'
           |
-          = link_to "participants", "/_ruote/participants"
+          = link_to 'participants', '/_ruote/participants'
+          ||
+          = link_to 'launch process', '/_ruote/processes/new'
 
       #main
         = yield
