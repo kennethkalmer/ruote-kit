@@ -25,13 +25,14 @@ module RuoteKit
 
       def json_processes( processes )
 
-        processes.map { |p| json_process( p ) }
+        processes.map { |p| json_process( p, false ) }
       end
 
-      def json_process( process )
+      def json_process( process, detailed = true )
 
-        process.to_h.merge( 'links' => [
+        process.to_h( detailed ).merge( 'links' => [
           link( "/_ruote/processes/#{process.wfid}", 'self' ),
+          link( "/_ruote/processes/#{process.wfid}", '#process' ),
           link( "/_ruote/expressions/#{process.wfid}", '#process_expressions' ),
           link( "/_ruote/workitems/#{process.wfid}", '#process_workitems' ),
           link( "/_ruote/errors/#{process.wfid}", '#process_errors' )
@@ -82,10 +83,9 @@ module RuoteKit
 
         fei = error.fei
         wfid = fei.wfid
-        expid = fei.expid
 
         error.to_h.merge( 'links' => [
-          link( "/_ruote/errors/#{wfid}/#{expid}", 'self' ),
+          link( "/_ruote/errors/#{fei.sid}", 'self' ),
           link( "/_ruote/errors/#{wfid}", '#process_errors' ),
           link( "/_ruote/processes/#{wfid}", '#process' )
         ] )
@@ -109,6 +109,49 @@ module RuoteKit
             "http://ruote.rubyforge.org/rels.html#{rel}" : rel
         }
       end
+    end
+  end
+end
+
+module Ruote
+
+  # Re-opening process status to overwrite to_h
+  #
+  class ProcessStatus
+
+    def to_h( detailed = false )
+
+      h = {}
+
+      #h['expressions'] = @expressions.collect { |e| e.fei.to_h }
+      #h['errors'] = @errors.collect { |e| e.to_h }
+
+      h['type'] = 'process'
+      h['detailed'] = detailed
+      h['expressions'] = @expressions.size
+      h['errors'] = @errors.size
+      h['stored_workitems'] = @stored_workitems.size
+      h['workitems'] = workitems.size
+
+      properties = %w[
+        wfid
+        definition_name definition_revision
+        current_tree
+        launched_time
+        last_active
+        tags
+      ]
+
+      properties += %w[
+        original_tree
+        variables
+      ] if detailed
+
+      properties.each { |m|
+        h[m] = self.send( m )
+      }
+
+      h
     end
   end
 end
