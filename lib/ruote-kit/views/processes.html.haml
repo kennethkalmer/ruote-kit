@@ -28,6 +28,8 @@
       exps
     %td
       errs
+    %td
+      wis
 
   - @processes.each do |process|
     %tr
@@ -45,8 +47,10 @@
         = Time.parse(process.launched_time).to_s
       %td
         = Time.parse(process.last_active).to_s
-      %td.right
+      %td.right{ :title => 'expressions' }
         = alink(:expressions, process.wfid, :text => process.expressions.size)
-      %td.right
+      %td.right{ :title => 'errors' }
         = alink(:errors, process.wfid, :text => process.errors.size)
+      %td.right{ :title => 'workitems' }
+        = alink(:workitems, process.wfid, :text => process.position.size)
 
