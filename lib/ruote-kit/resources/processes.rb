@@ -6,7 +6,9 @@ class RuoteKit::Application
 
   get '/_ruote/processes/?' do
 
-    @processes = RuoteKit.engine.processes.sort_by { |pr| pr.wfid }.reverse
+    @processes = RuoteKit.engine.processes.sort_by { |pr|
+      pr.launched_time
+    }.reverse
 
     respond_to do |format|
       format.html { haml :processes }

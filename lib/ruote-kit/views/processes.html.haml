@@ -37,7 +37,7 @@
         = alink(:processes, process.wfid, :text => process.wfid)
       %td
         &= process.definition_name
-        &= process.definition_revision ? "(#{process.definition_revision})" : ''
+        &= process.definition_revision
       %td
         - process.position.each do |pos|
           - stored_wi = process.stored_workitems.find { |wi| wi.fei.sid == pos[0] }
@@ -47,15 +47,17 @@
           - else
             &= text
       %td
-        &= process.tags.join(', ')
+        &= process.tags.collect { |ta| ta.first }.join(', ')
       %td
-        = Time.parse(process.launched_time).to_s
+        = Time.parse(process.launched_time).localtime.strftime('%Y/%m/%d %H:%M:%S')
       %td
-        = Time.parse(process.last_active).to_s
+        = Time.parse(process.last_active).localtime.strftime('%Y/%m/%d %H:%M:%S')
       %td.right{ :title => 'expressions' }
         = alink(:expressions, process.wfid, :text => process.expressions.size)
       %td.right{ :title => 'errors' }
-        = alink(:errors, process.wfid, :text => process.errors.size)
+        - if process.errors.size > 0
+          = alink(:errors, process.wfid, :text => process.errors.size)
       %td.right{ :title => 'workitems' }
-        = alink(:workitems, process.wfid, :text => process.stored_workitems.size)
+        - if process.stored_workitems.size > 0
+          = alink(:workitems, process.wfid, :text => process.stored_workitems.size)
 
