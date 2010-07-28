@@ -39,8 +39,9 @@
         &= process.definition_name
         &= process.definition_revision ? "(#{process.definition_revision})" : ''
       %td
-        - process.position(:task).each do |pos|
-          &= pos.join(' ')
+        - process.position.each do |pos|
+          &= pos[1]
+          &= pos[2]['task']
       %td
         &= process.tags.join(', ')
       %td

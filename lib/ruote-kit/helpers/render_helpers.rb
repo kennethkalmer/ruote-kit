@@ -15,12 +15,15 @@ module RuoteKit
         resource = args.first
         path = args.join('/')
         href = "/_ruote/#{path}"
+
         rel = if resource == 'process'
           '#process'
         elsif resource == 'expressions'
           args.length == 2 ? '#process_expressions' : '#expression'
         elsif resource == 'errors'
           args.length == 2 ? '#process_errors' : '#errors'
+        elsif resource == 'workitems'
+          args.length == 2 ? '#process_workitems' : '#workitems'
         else
           ''
         end
