@@ -40,8 +40,12 @@
         &= process.definition_revision ? "(#{process.definition_revision})" : ''
       %td
         - process.position.each do |pos|
-          &= pos[1]
-          &= pos[2]['task']
+          - stored_wi = process.stored_workitems.find { |wi| wi.fei.sid == pos[0] }
+          - text = "#{pos[1]} #{pos[2]['task']}"
+          - if stored_wi
+            = alink(:workitems, stored_wi.fei.sid, :text => text)
+          - else
+            &= text
       %td
         &= process.tags.join(', ')
       %td
@@ -53,5 +57,5 @@
       %td.right{ :title => 'errors' }
         = alink(:errors, process.wfid, :text => process.errors.size)
       %td.right{ :title => 'workitems' }
-        = alink(:workitems, process.wfid, :text => process.position.size)
+        = alink(:workitems, process.wfid, :text => process.stored_workitems.size)
 
