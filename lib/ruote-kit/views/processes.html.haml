@@ -23,9 +23,11 @@
     %td
       launched
     %td
-      expressions
+      last active
     %td
-      errors
+      exps
+    %td
+      errs
 
   - @processes.each do |process|
     %tr
@@ -41,6 +43,8 @@
         &= process.tags.join(', ')
       %td
         = Time.parse(process.launched_time).to_s
+      %td
+        = Time.parse(process.last_active).to_s
       %td.right
         = alink(:expressions, process.wfid, :text => process.expressions.size)
       %td.right
