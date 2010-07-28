@@ -2,6 +2,7 @@
 - @_uses_fluo = true
 
 - unless @process
+
   %h1 expressions
   .flash
     .message
@@ -10,7 +11,10 @@
         %p Have a look at the <a href="/_ruote/processes">processes</a> and then follow their links to their set of expressions.
 
 - else
+
   %h1 expressions for #{@process.wfid}
+
+  %canvas#fluo
 
   %ul
     - @process.expressions.each do |expression|
@@ -20,8 +24,6 @@
           %li id: #{expression.fei.expid}
           %li class: #{expression.class.name}
           %li name: #{expression.respond_to?(:participant_name) ? expression.participant_name : expression.name}
-
-%canvas#fluo
 
 :javascript
   var proc_rep = #{process_tree( @process )};

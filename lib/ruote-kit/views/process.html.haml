@@ -4,50 +4,58 @@
 %h1
   process
   = @process.wfid
-  (#{@process.definition_name})
-
-.options
-  %ul
-    /
-      %li
-        %form{ :method => 'post' }
-          %input{ :type => 'hidden', :name => '_method', :value => 'put' }
-          %input{ :type => 'submit', :value => 'pause' }
-          %span.description PUT /_ruote/processes/#{@process.wfid}?_pause=1
-    %li
-      %form{ :method => 'post' }
-        %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
-        %input{ :type => 'submit', :value => 'cancel' }
-        %span.description DELETE /_ruote/processes/#{@process.wfid}
-    %li
-      %form{ :method => 'post' }
-        %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
-        %input{ :type => 'hidden', :name => '_kill', :value => '1' }
-        %input{ :type => 'submit', :value => 'kill' }
-        %span.description DELETE /_ruote/processes/#{@process.wfid}?_kill=1
-
-%ul
-  %li wfid: #{@process.wfid}
-  %li launch: #{@process.launched_time}
-  /%li paused:
-  %li: tags: #{@process.all_tags.keys.join( ', ' )}
-  %li
-    expressions:
-    %a{ :href => "/_ruote/expressions/#{@process.wfid}" } GET /_ruote/expressions/#{@process.wfid}
-  %li
-    workitems:
-    %a{ :href => "/_ruote/workitems/#{@process.wfid}" } GET /_ruote/workitems/#{@process.wfid}
-  %li errors: #{@process.errors.size}
-
-%ul
-  %li TODO
-  %li Branches
-  %li Process variables
-  %li Scheduled jobs
-  %li Active expression
-  %li Tree
 
 %canvas#fluo
+
+%ul.description
+  %li
+    name :
+    &= @process.definition_name
+    &= @process.definition_revision
+  %li
+    position :
+    &= @process.position.collect { |pos| "#{pos[1]} #{pos[2]['task']}" }.join( ', ' )
+  %li
+    expressions :
+    = @process.expressions.size
+  %li
+    workitems :
+    #{@process.workitems.size} out,
+    #{@process.stored_workitems.size} in storage participant
+  %li
+    errors :
+    = @process.errors.size
+  %li
+    launch time :
+    = Time.parse( @process.launched_time ).localtime.strftime( '%Y/%m/%d %H:%M:%S' )
+  %li
+    last active :
+    = Time.parse( @process.last_active ).localtime.strftime( '%Y/%m/%d %H:%M:%S' )
+  %li
+    tags :
+    &= @process.tags.collect { |ta| ta.first }.join( ', ' )
+
+%ul.links
+  %li
+    %form{ :method => 'post' }
+      %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
+      %input{ :type => 'submit', :value => 'cancel' }
+      %span.description DELETE /_ruote/processes/#{@process.wfid}
+  %li
+    %form{ :method => 'post' }
+      %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
+      %input{ :type => 'hidden', :name => '_kill', :value => '1' }
+      %input{ :type => 'submit', :value => 'kill' }
+      %span.description DELETE /_ruote/processes/#{@process.wfid}?_kill=1
+  %li
+    expressions :
+    %a{ :href => "/_ruote/expressions/#{@process.wfid}" } GET /_ruote/expressions/#{@process.wfid}
+  %li
+    workitems :
+    %a{ :href => "/_ruote/workitems/#{@process.wfid}" } GET /_ruote/workitems/#{@process.wfid}
+  %li
+    errors :
+    %a{ :href => "/_ruote/errors/#{@process.wfid}" } GET /_ruote/errors/#{@process.wfid}
 
 :javascript
   var proc_rep = #{process_tree( @process )};

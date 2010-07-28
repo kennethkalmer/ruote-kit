@@ -99,6 +99,10 @@ table.list tr:hover {
 }
 */
 
+#fluo {
+  float: right;
+}
+
 /* header */
 
 #logo {
