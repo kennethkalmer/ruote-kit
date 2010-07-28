@@ -6,7 +6,7 @@ class RuoteKit::Application
 
   get '/_ruote/processes/?' do
 
-    @processes = engine.processes.sort_by { |pr| pr.wfid }.reverse
+    @processes = RuoteKit.engine.processes.sort_by { |pr| pr.wfid }.reverse
 
     respond_to do |format|
       format.html { haml :processes }
@@ -21,7 +21,7 @@ class RuoteKit::Application
 
   get '/_ruote/processes/:wfid' do
 
-    @process = engine.process( params[:wfid] )
+    @process = RuoteKit.engine.process( params[:wfid] )
 
     if @process
       respond_to do |format|
@@ -40,7 +40,7 @@ class RuoteKit::Application
 
         @info = fetch_launch_info
 
-        @wfid = engine.launch(
+        @wfid = RuoteKit.engine.launch(
           @info.definition, @info.fields || {}, @info.variables || {})
 
       rescue Exception => @exception
@@ -62,9 +62,9 @@ class RuoteKit::Application
   delete '/_ruote/processes/:wfid' do
 
     if params[:_kill] == '1'
-      engine.kill_process( params[:wfid] )
+      RuoteKit.engine.kill_process( params[:wfid] )
     else
-      engine.cancel_process( params[:wfid] )
+      RuoteKit.engine.cancel_process( params[:wfid] )
     end
 
     respond_to do |format|

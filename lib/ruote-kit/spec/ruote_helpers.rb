@@ -1,6 +1,7 @@
 
 module RuoteKit
   module Spec
+
     module RuoteHelpers
 
       # Launch a dummy process and return the wfid
@@ -30,16 +31,21 @@ module RuoteKit
         RuoteKit.engine.noisy = on
       end
 
+      def engine
+        RuoteKit.engine
+      end
+
       def storage_participant
-        RuoteKit.storage_participant
+        RuoteKit.engine.storage_participant
       end
 
       def find_workitem( wfid, expid )
-        storage_participant.by_wfid( wfid ).first { |wi| wi.fei.expid == expid }
+        RuoteKit.engine.storage_participant.by_wfid( wfid ).first { |wi|
+          wi.fei.expid == expid
+        }
       end
 
       def wait_for( wfid )
-        #@_spec_worker.context.logger.wait_for( [  wfid ] )
         RuoteKit.engine.wait_for( wfid )
       end
     end

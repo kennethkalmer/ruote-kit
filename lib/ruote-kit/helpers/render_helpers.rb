@@ -80,7 +80,7 @@ module RuoteKit
 
         case object
         when Ruote::Workitem
-          process = engine.process( object.fei.wfid )
+          process = RuoteKit.engine.process( object.fei.wfid )
           Rufus::Json.encode( process.current_tree )
         when Ruote::ProcessStatus
           Rufus::Json.encode( object.current_tree )

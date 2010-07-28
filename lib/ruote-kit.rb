@@ -18,9 +18,9 @@ module RuoteKit
       @env ||= defined?( Rails ) ? Rails.env : ENV['RACK_ENV'] || 'development'
     end
 
-    def storage_participant
-      engine.storage_participant
-    end
+    #def storage_participant
+    #  engine.storage_participant
+    #end
 
     def run_worker ( storage )
       RuoteKit.engine = Ruote::Engine.new( Ruote::Worker.new( storage ) )

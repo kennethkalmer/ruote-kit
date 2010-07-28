@@ -8,7 +8,7 @@ class RuoteKit::Application
       h
     }
 
-    @workitems = storage_participant.query(query)
+    @workitems = RuoteKit.engine.storage_participant.query(query)
 
     respond_to do |format|
       format.html { haml :workitems }
@@ -48,11 +48,11 @@ class RuoteKit::Application
 
     unless options[:fields].empty?
       workitem.fields = options[:fields]
-      storage_participant.update( workitem )
+      RuoteKit.engine.storage_participant.update( workitem )
     end
 
     if options[:proceed]
-      storage_participant.reply( workitem )
+      RuoteKit.engine.storage_participant.reply( workitem )
     end
 
     respond_to do |format|

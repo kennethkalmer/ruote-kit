@@ -1,7 +1,7 @@
 
 class RuoteKit::Application
 
-  get "/_ruote/expressions/?" do
+  get '/_ruote/expressions/?' do
 
     respond_to do |format|
       format.html { haml :expressions }
@@ -39,9 +39,9 @@ class RuoteKit::Application
     return resource_not_found unless expression
 
     if params[:_kill]
-      engine.kill_expression( expression.fei )
+      RuoteKit.engine.kill_expression( expression.fei )
     else
-      engine.cancel_expression( expression.fei )
+      RuoteKit.engine.cancel_expression( expression.fei )
     end
 
     respond_to do |format|
@@ -57,7 +57,7 @@ class RuoteKit::Application
     fei = params[:id].split( '!' )
     wfid = fei.last
 
-    process = engine.process( wfid )
+    process = RuoteKit.engine.process( wfid )
 
     expression = process ?
       process.expressions.detect { |exp| exp.fei.sid == params[:id] } :

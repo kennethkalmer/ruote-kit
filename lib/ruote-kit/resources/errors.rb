@@ -3,7 +3,7 @@ class RuoteKit::Application
 
   get '/_ruote/errors/?' do
 
-    @errors = engine.errors
+    @errors = RuoteKit.engine.errors
 
     respond_to do |format|
       format.html { haml :errors }
@@ -13,7 +13,7 @@ class RuoteKit::Application
 
   get '/_ruote/errors/:wfid' do
 
-    process = engine.process( params[:wfid] )
+    process = RuoteKit.engine.process( params[:wfid] )
     @errors = process ? process.errors : nil
 
     if @errors
@@ -28,7 +28,7 @@ class RuoteKit::Application
 
   get '/_ruote/errors/:wfid/:expid' do
 
-    process = engine.process( params[:wfid] )
+    process = RuoteKit.engine.process( params[:wfid] )
     errors = process ? process.errors : nil
     @error = errors ? errors.find { |e| e.fei.expid == params[:expid] } : nil
 

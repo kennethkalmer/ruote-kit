@@ -134,7 +134,7 @@ describe 'GET /_ruote/workitems/wfid' do
   end
 end
 
-describe 'GET /_ruote/workitems/wfid/expid' do
+describe 'GET /_ruote/workitems/expid!!wfid' do
 
   it_has_an_engine
 

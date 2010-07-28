@@ -120,7 +120,7 @@ describe 'GET /_ruote/processes/X-Y' do
       last_response.should_not be_ok
       last_response.status.should be( 404 )
 
-      last_response.json_body.keys.should include('error')
+      last_response.json_body.keys.should include( 'error' )
 
       last_response.json_body['error'].should == {
         'code' => 404, 'message' => 'resource not found' }
@@ -184,7 +184,7 @@ describe 'POST /_ruote/processes' do
 
     post(
       '/_ruote/processes.json',
-      Rufus::Json.encode(params),
+      Rufus::Json.encode( params ),
       { 'CONTENT_TYPE' => 'application/json' } )
 
     last_response.status.should be( 201 )

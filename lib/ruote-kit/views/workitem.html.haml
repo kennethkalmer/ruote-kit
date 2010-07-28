@@ -8,7 +8,6 @@
   %li participant: #{@workitem.participant_name}
   %li dispatched: #{@workitem.dispatch_at}
   %li last modified: #{@workitem.h.put_at}
-  %li process: #{link_to engine.process( @workitem.fei.wfid) }
   %li expressions:
   %li workitems of this process: #{link_to "GET /_ruote/workitems/#{@workitem.fei.wfid}", "/_ruote/workitems/#{@workitem.fei.wfid}" }
 
@@ -18,7 +17,7 @@
   %div
     %label{ :for => "fields" } Fields
     %textarea{ :name => "fields", :cols => 80, :rows => 10 }
-      = Rufus::Json.encode(@workitem.fields)
+      = Rufus::Json.encode( @workitem.fields )
     %span.description The current workitem fields in JSON format
   %div
     %input{ :type => 'checkbox', :name => '_proceed', :value => '1' }
