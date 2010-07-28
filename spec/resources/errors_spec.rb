@@ -82,7 +82,7 @@ describe 'GET /_ruote/errors' do
       # the links for the error itself
 
       json['errors'].first['links'].should == [
-        { 'href' => "/_ruote/errors/#{@wfid}/0_0_0",
+        { 'href' => "/_ruote/errors/0_0_0!!#{@wfid}",
           'rel' => 'self' },
         { 'href' => "/_ruote/errors/#{@wfid}",
           'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },
