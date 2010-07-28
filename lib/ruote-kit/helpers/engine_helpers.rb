@@ -1,5 +1,7 @@
+
 module RuoteKit
   module Helpers
+
     module EngineHelpers
 
       def engine
@@ -17,7 +19,6 @@ module RuoteKit
       def find_workitem( wfid, expid )
         find_workitems( wfid ).detect { |wi| wi.fei.expid == expid }
       end
-
     end
   end
 end

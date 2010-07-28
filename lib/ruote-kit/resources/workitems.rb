@@ -16,36 +16,33 @@ class RuoteKit::Application
     end
   end
 
-  get '/_ruote/workitems/:wfid' do
+  get '/_ruote/workitems/:id' do
 
-    @wfid = params[:wfid]
-    @workitems = find_workitems( params[:wfid] )
+    @workitem, @workitems, @wfid = fetch_wi
 
-    respond_to do |format|
-      format.html { haml( :workitems ) }
-      format.json { json( :workitems, @workitems ) }
-    end
-  end
-
-  get '/_ruote/workitems/:wfid/:expid' do
-
-    @workitem = find_workitem( params[:wfid], params[:expid] )
+    return resource_not_found if @workitem.nil? && @workitems.nil?
 
     if @workitem
+
       respond_to do |format|
         format.html { haml :workitem }
         format.json { json( :workitem, @workitem ) }
       end
+
     else
-      resource_not_found
+
+      respond_to do |format|
+        format.html { haml( :workitems ) }
+        format.json { json( :workitems, @workitems ) }
+      end
     end
   end
 
-  put '/_ruote/workitems/:wfid/:expid' do
+  put '/_ruote/workitems/:id' do
 
-    workitem = find_workitem( params[:wfid], params[:expid] )
+    workitem, _, _ = fetch_wi
 
-    ( resource_not_found and return ) if workitem.nil?
+    return resource_not_found unless workitem
 
     options = field_updates_and_proceed_from_put
 
@@ -62,8 +59,8 @@ class RuoteKit::Application
 
       format.html {
         redirect( options[:proceed] ?
-          "/_ruote/workitems/#{params[:wfid]}" :
-          "/_ruote/workitems/#{params[:wfid]}/#{params[:expid]}" )
+          "/_ruote/workitems/#{workitem.fei.wfid}" :
+          "/_ruote/workitems/#{workitem.fei.sid}" )
       }
       format.json {
         json( :workitem, workitem )
@@ -72,6 +69,25 @@ class RuoteKit::Application
   end
 
   protected
+
+  def fetch_wi
+
+    fei = params[:id].split( '!' )
+    wfid = fei.last
+
+    workitem = nil
+    workitems = nil
+
+    wis = RuoteKit.engine.storage_participant.by_wfid( wfid )
+
+    if fei.length > 1
+      workitem = wis.find { |wi| wi.fei.sid == params[:id] }
+    else
+      workitems = wis
+    end
+
+    [ workitem, workitems, wfid ]
+  end
 
   def field_updates_and_proceed_from_put
 
@@ -101,7 +117,7 @@ class RuoteKit::Application
 
       else
 
-        raise "#{evn['CONTENT_TYPE']} is not supported for workitem fields"
+        raise "#{env['CONTENT_TYPE']} is not supported for workitem fields"
     end
 
     options

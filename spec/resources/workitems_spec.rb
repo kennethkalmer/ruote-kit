@@ -1,5 +1,5 @@
 
-require File.dirname( __FILE__ ) + '/../spec_helper'
+require File.join( File.dirname( __FILE__ ), '/../spec_helper' )
 
 undef :context if defined?( context )
 
@@ -157,14 +157,14 @@ describe 'GET /_ruote/workitems/wfid/expid' do
 
     it 'should return it (HTML)' do
 
-      get "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}"
+      get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}"
 
       last_response.should be_ok
     end
 
     it 'should return it (JSON)' do
 
-      get "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}.json"
+      get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json"
 
       last_response.should be_ok
     end
@@ -216,11 +216,13 @@ describe 'PUT /_ruote/workitems/X-Y' do
   it 'should update the workitem fields (HTML)' do
 
     put(
-      "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}",
+      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}",
       :fields => Rufus::Json.encode( @fields ) )
 
     last_response.should be_redirect
-    last_response['Location'].should == "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}"
+
+    last_response['Location'].should ==
+      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}"
 
     find_workitem( @wfid, @nada_exp_id ).fields.should == @fields
 
@@ -234,7 +236,7 @@ describe 'PUT /_ruote/workitems/X-Y' do
     params = { 'fields' => @fields }
 
     put(
-      "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}.json",
+      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
       Rufus::Json.encode( params ),
       { 'CONTENT_TYPE' => 'application/json' } )
 
@@ -252,7 +254,7 @@ describe 'PUT /_ruote/workitems/X-Y' do
     fields = Rufus::Json.encode( @fields )
 
     put(
-      "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}",
+      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}",
       :fields => fields,
       :_proceed => '1' )
 
@@ -273,7 +275,7 @@ describe 'PUT /_ruote/workitems/X-Y' do
     params = { 'fields' => @fields, '_proceed' => '1' }
 
     put(
-      "/_ruote/workitems/#{@wfid}/#{@nada_exp_id}.json",
+      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
       Rufus::Json.encode( params ),
       { 'CONTENT_TYPE' => 'application/json' } )
 
