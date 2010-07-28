@@ -7,6 +7,7 @@ describe 'GET /' do
   it_has_an_engine
 
   it 'should return a welcome message in HTML be default' do
+
     get '/_ruote'
 
     last_response.should be_ok
@@ -17,6 +18,7 @@ describe 'GET /' do
   end
 
   it 'should return a version string if JSON is requested' do
+
     header 'Accept', 'application/json'
 
     get '/_ruote'
@@ -35,6 +37,7 @@ describe 'Generic error handling' do
   it_has_an_engine
 
   it 'should give our own 404 page (HTML)' do
+
     get '/kenneth'
 
     last_response.should_not be_ok
@@ -45,6 +48,7 @@ describe 'Generic error handling' do
   end
 
   it 'should give our own 404 data (JSON)' do
+
     get '/kenneth.json'
 
     last_response.should_not be_ok
@@ -53,3 +57,4 @@ describe 'Generic error handling' do
     last_response.should be_json
   end
 end
+
