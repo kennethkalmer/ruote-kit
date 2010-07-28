@@ -6,7 +6,7 @@ class RuoteKit::Application
 
   get '/_ruote/processes/?' do
 
-    @processes = engine.processes
+    @processes = engine.processes.sort_by { |pr| pr.wfid }.reverse
 
     respond_to do |format|
       format.html { haml :processes }
@@ -45,13 +45,13 @@ class RuoteKit::Application
 
       rescue Exception => @exception
 
-        status 422
+        status 400
 
         format.html { haml :process_failed_to_launch }
-        format.json { json( :exception, 422, @exception ) }
+        format.json { json( :exception, 400, @exception ) }
       else
 
-        # status 200
+        status 201 # created
 
         format.html { haml :process_launched }
         format.json { json( :launched, @wfid ) }

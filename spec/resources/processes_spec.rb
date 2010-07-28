@@ -162,7 +162,7 @@ describe 'POST /_ruote/processes' do
       Rufus::Json.encode( params ),
       { 'CONTENT_TYPE' => 'application/json' } )
 
-    last_response.should be_ok
+    last_response.status.should be( 201 )
 
     last_response.json_body['launched'].should match( /[0-9a-z\-]+/ )
 
@@ -187,7 +187,7 @@ describe 'POST /_ruote/processes' do
       Rufus::Json.encode(params),
       { 'CONTENT_TYPE' => 'application/json' } )
 
-    last_response.should be_ok
+    last_response.status.should be( 201 )
     last_response.json_body['launched'].should match( /[0-9a-z\-]+/ )
 
     sleep 0.5
@@ -207,7 +207,7 @@ describe 'POST /_ruote/processes' do
 
     post '/_ruote/processes', params
 
-    last_response.should be_ok
+    last_response.status.should == 201
 
     sleep 0.4
 
@@ -227,7 +227,7 @@ describe 'POST /_ruote/processes' do
 
     post '/_ruote/processes', params
 
-    last_response.should be_ok
+    last_response.status.should == 201
 
     sleep 0.5
 
@@ -247,14 +247,14 @@ describe 'POST /_ruote/processes' do
 
     post '/_ruote/processes', params
 
-    last_response.should be_ok
+    last_response.status.should == 201
 
     sleep 0.4
 
     engine.processes.should_not be_empty
   end
 
-  it 'should return a 422 unprocessable entity error when launching a process fails (JSON)' do
+  it 'should return a 400 code when it fails to determine what to launch (JSON)' do
 
     params = { :definition => 'http://invalid.invalid' }
 
@@ -263,20 +263,18 @@ describe 'POST /_ruote/processes' do
       Rufus::Json.encode( params ),
       { 'CONTENT_TYPE' => 'application/json' } )
 
-    last_response.should_not be_ok
-    last_response.status.should be( 422 )
+    last_response.status.should be( 400 )
 
     last_response.json_body.keys.should include('exception')
   end
 
-  it 'should return a nice error page when launching a process fails (HTML)' do
+  it 'should return a 400 code page when it fails to determine what to launch (HTML)' do
 
     params = { :definition => %q{http://invalid.invalid} }
 
     post '/_ruote/processes', params
 
-    last_response.should_not be_ok
-    last_response.status.should be( 422 )
+    last_response.status.should be( 400 )
 
     last_response.should match( /failed to launch process/ )
   end

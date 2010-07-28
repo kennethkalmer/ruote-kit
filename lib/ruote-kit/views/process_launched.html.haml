@@ -4,5 +4,5 @@
 .flash
   .message
     .notice
-      %p Your process has been launched. #{ link_to "GET /_ruote/processes/#{@wfid}", "/_ruote/processes/#{@wfid}" }
+      %p process #{link_to(  @wfid, "/_ruote/processes/#{@wfid}" )} has been launched.
 
