@@ -1,55 +1,71 @@
+
 class RuoteKit::Application
 
   get "/_ruote/expressions/?" do
+
     respond_to do |format|
       format.html { haml :expressions }
       format.json { json( :status, :ok ) }
     end
   end
 
-  get "/_ruote/expressions/:wfid" do
-    @process = engine.process( params[:wfid] )
+  get '/_ruote/expressions/:id' do
 
-    if @process
-      respond_to do |format|
-        format.html { haml :expressions }
-        format.json { json( :expressions, @process.expressions ) }
-      end
-    else
-      resource_not_found
-    end
-  end
+    @process, @expression, fei = fetch_pe
 
-  get "/_ruote/expressions/:wfid/:expid" do
-    @process = engine.process( params[:wfid] )
+    return resource_not_found unless @process
 
-    if @process && @expression = @process.expressions.detect { |exp| exp.fei.expid == params[:expid] }
+    if fei
+
+      return resource_not_found unless @expression
+
       respond_to do |format|
         format.html { haml :expression }
         format.json { json( :expression, @expression ) }
       end
     else
-      resource_not_found
-    end
-  end
-
-  delete "/_ruote/expressions/:wfid/:expid" do
-    process = engine.process( params[:wfid] )
-
-    if process && expression = process.expressions.detect { |exp| exp.fei.expid == params[:expid] }
-      if params[:_kill]
-        engine.kill_expression( expression.fei )
-      else
-        engine.cancel_expression( expression.fei )
-      end
 
       respond_to do |format|
-        format.html { redirect "/_ruote/expressions/#{params[:wfid]}" }
-        format.json { json( :status, :ok ) }
+        format.html { haml :expressions }
+        format.json { json( :expressions, @process.expressions ) }
       end
-    else
-      resource_not_found
     end
   end
 
+  delete '/_ruote/expressions/:id' do
+
+    process, expression, fei = fetch_pe
+
+    return resource_not_found unless expression
+
+    if params[:_kill]
+      engine.kill_expression( expression.fei )
+    else
+      engine.cancel_expression( expression.fei )
+    end
+
+    respond_to do |format|
+      format.html { redirect "/_ruote/expressions/#{expression.fei.wfid}" }
+      format.json { json( :status, :ok ) } # TODO : really 200 ?
+    end
+  end
+
+  protected
+
+  def fetch_pe
+
+    fei = params[:id].split( '!' )
+    wfid = fei.last
+
+    process = engine.process( wfid )
+
+    expression = process ?
+      process.expressions.detect { |exp| exp.fei.sid == params[:id] } :
+      nil
+
+    fei = (fei.length > 1)
+
+    [ process, expression, fei ]
+  end
 end
+

@@ -6,24 +6,20 @@ module RuoteKit
     #
     module RenderHelpers
 
-      def alink( *args )
+      def alink( resource, id, opts = {} )
 
-        opts = args.last.is_a?(Hash) ? args.pop : {}
-
-        args = args.collect { |a| a.to_s }
-
-        resource = args.first
-        path = args.join('/')
+        fei = id.index('!')
+        path = "#{resource}/#{id}"
         href = "/_ruote/#{path}"
 
-        rel = if resource == 'process'
+        rel = if resource == 'processes'
           '#process'
         elsif resource == 'expressions'
-          args.length == 2 ? '#process_expressions' : '#expression'
+          fei ? '#expression' : '#process_expression'
         elsif resource == 'errors'
-          args.length == 2 ? '#process_errors' : '#errors'
+          fei ? '#error' : '#process_errors'
         elsif resource == 'workitems'
-          args.length == 2 ? '#process_workitems' : '#workitems'
+          fei ? '#workitem' : '#process_workitems'
         else
           ''
         end
