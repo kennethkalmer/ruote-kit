@@ -58,6 +58,47 @@ label {
   color: gray;
 }
 
+table.list {
+  width: 100%;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+table.list td {
+  border: 1px solid #d0d1d3;
+  padding: 3px;
+}
+table.list thead td {
+  text-align: center;
+  color #d0d1d3;
+  border: 1px solid #d0d1d3;
+}
+/*
+table.list tr:nth-child(even) td {
+  background: #f4f6f6;
+}
+*/
+table.list tr td.right {
+  text-align: right;
+}
+table.list tr:hover {
+  background: #f4f6f6;
+}
+
+/*
+.group {
+  margin: 6px 0;
+  padding: 12px;
+  background: #fff;
+  border: 1px dashed #ccd0d4;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+}
+.group:hover {
+  border-style: solid;
+}
+*/
+
 /* header */
 
 #logo {
@@ -90,3 +131,4 @@ pre.trace {
   font-size: 90%;
   line-height: 11px;
 }
+

@@ -105,9 +105,34 @@ module RuoteKit
       def link( href, rel )
         {
           'href' => href,
-          'rel' => rel.match(/^#/) ?
+          'rel' => rel.match( /^#/ ) ?
             "http://ruote.rubyforge.org/rels.html#{rel}" : rel
         }
+      end
+
+      def alink( *args )
+
+        opts = args.last.is_a?(Hash) ? args.pop : {}
+
+        args = args.collect { |a| a.to_s }
+
+        resource = args.first
+        path = args.join('/')
+        href = "/_ruote/#{path}"
+        rel = if resource == 'process'
+          '#process'
+        elsif resource == 'expressions'
+          args.length == 2 ? '#process_expressions' : '#expression'
+        elsif resource == 'errors'
+          args.length == 2 ? '#process_errors' : '#errors'
+        else
+          ''
+        end
+        rel = "http://ruote.rubyforge.org/rels.html#{rel}" if rel.length > 0
+        text = opts[:text] || href
+        title = href
+
+        "<a href=\"#{href}\" title=\"#{title}\" rel=\"#{rel}\">#{text}</a>"
       end
 
       # Easy 404

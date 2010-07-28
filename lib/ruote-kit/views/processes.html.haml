@@ -10,20 +10,39 @@
       .notice
         %p Currently running #{@processes.size} processes
 
-%ul
+%table.list
+  %thead
+    %td
+      wfid
+    %td
+      name
+    %td
+      position
+    %td
+      tags
+    %td
+      launched
+    %td
+      expressions
+    %td
+      errors
+
   - @processes.each do |process|
-    %li
-      = link_to process
-      %ul
-        %li wfid: #{process.wfid}
-        %li process: #{process.definition_name} (#{process.definition_revision})
-        %li launched: #{process.launched_time}
-        %li tags: #{process.all_tags.keys.join(', ')}
-        %li
-          expressions:
-          %a{ :href => "/_ruote/expressions/#{process.wfid}" } GET /_ruote/expressions/#{process.wfid}
-        %li
-          workitems:
-          %a{ :href => "/_ruote/workitems/#{process.wfid}" } GET /_ruote/workitems/#{process.wfid}
-        %li errors: #{process.errors.size}
+    %tr
+      %td
+        = alink(:processes, process.wfid, :text => process.wfid)
+      %td
+        &= process.definition_name
+        &= process.definition_revision ? "(#{process.definition_revision})" : ''
+      %td
+        - process.position(:task).each do |pos|
+          &= pos.join(' ')
+      %td
+        &= process.tags.join(', ')
+      %td
+        = Time.parse(process.launched_time).to_s
+      %td.right
+        = alink(:expressions, process.wfid, :text => process.expressions.size)
+      %td.right
+        = alink(:errors, process.wfid, :text => process.errors.size)
 
