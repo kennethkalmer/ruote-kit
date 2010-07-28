@@ -116,7 +116,7 @@ describe 'GET /_ruote/errors' do
 
     it 'should show the error (HTML)' do
 
-      get "/_ruote/errors/#{@wfid}/0_0_0"
+      get "/_ruote/errors/0_0_0!!#{@wfid}"
 
       last_response.status.should be( 200 )
       last_response.should match( /broken/ )
@@ -124,7 +124,7 @@ describe 'GET /_ruote/errors' do
 
     it 'should show the error (JSON)' do
 
-      get "/_ruote/errors/#{@wfid}/0_0_0.json"
+      get "/_ruote/errors/0_0_0!!#{@wfid}.json"
 
       last_response.status.should be( 200 )
 

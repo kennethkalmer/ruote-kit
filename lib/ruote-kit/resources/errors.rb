@@ -11,34 +11,25 @@ class RuoteKit::Application
     end
   end
 
-  get '/_ruote/errors/:wfid' do
+  get '/_ruote/errors/:id' do
 
-    process = RuoteKit.engine.process( params[:wfid] )
-    @errors = process ? process.errors : nil
+    @error, @errors = fetch_e
 
-    if @errors
-      respond_to do |format|
-        format.html { haml :errors }
-        format.json { json( :errors, @errors ) }
-      end
-    else
-      resource_not_found
-    end
-  end
-
-  get '/_ruote/errors/:wfid/:expid' do
-
-    process = RuoteKit.engine.process( params[:wfid] )
-    errors = process ? process.errors : nil
-    @error = errors ? errors.find { |e| e.fei.expid == params[:expid] } : nil
+    return resource_not_found if @error.nil? && @errors.nil?
 
     if @error
+
       respond_to do |format|
         format.html { haml :error }
         format.json { json( :error, @error ) }
       end
+
     else
-      resource_not_found
+
+      respond_to do |format|
+        format.html { haml :errors }
+        format.json { json( :errors, @errors ) }
+      end
     end
   end
 
@@ -60,6 +51,24 @@ class RuoteKit::Application
     #else
     #  resource_not_found
     #end
+  end
+
+  protected
+
+  def fetch_e
+
+    fei = params[:id].split( '!' )
+    wfid = fei.last
+
+    error = nil
+    process = RuoteKit.engine.process( wfid )
+    errors = process ? process.errors : nil
+
+    if errors && fei.length > 1
+      error = errors.find { |er| er.fei.sid == params[:id] }
+    end
+
+    [ error, errors ]
   end
 end
 
