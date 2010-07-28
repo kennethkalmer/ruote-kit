@@ -39,6 +39,10 @@
       #main
         = yield
 
+      #as_json
+        %a{ :href => request.fullpath + '.json', :title => 'same page, but as JSON' }
+          as JSON
+
       #footer
         %div
           &copy; 2009-2010 Kenneth Kalmer

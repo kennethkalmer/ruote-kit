@@ -117,6 +117,10 @@ table.list tr:hover {
 
 /* footer */
 
+#as_json {
+  font-size: 80%;
+}
+
 #footer {
   margin-top: 14px;
 }
