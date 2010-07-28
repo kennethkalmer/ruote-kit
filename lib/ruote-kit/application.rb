@@ -30,6 +30,7 @@ module RuoteKit
       Rack::MethodOverride)
 
     helpers do
+      include RuoteKit::Helpers::JsonHelpers
       include RuoteKit::Helpers::MiscHelpers
       include RuoteKit::Helpers::EngineHelpers
       include RuoteKit::Helpers::NavigationHelpers
