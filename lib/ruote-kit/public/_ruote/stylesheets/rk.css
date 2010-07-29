@@ -12,12 +12,38 @@ html, body {
 
 body {
   font: 14px/1.75em "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
-  background: #white;
+  background: white;
 }
+
+#header {
+  margin-top: 14px;
+}
+#hlogo {
+  float: left;
+  margin-top: 33px;
+  margin-right: 7px;
+}
+#htext {
+  float: left;
+}
+#hclear {
+  clear: both;
+}
+#ruote_kit {
+  font: 83px Helvetica, Arial, Geneva, sans-serif;
+  font-weight: bold;
+  color: #f3f3f3;
+}
+#main_navigation {
+  position: relative;
+  top: -38px;
+  left: 4px;
+  z-index: 99;
+}
+
 h1 {
   font-size: 170%;
   font-weight: normal;
-  margin-top: 21px;
   margin-bottom: 21px;
 }
 h2 {
@@ -27,14 +53,11 @@ h2 {
 
 #container {
   width: auto;
-  margin-top: 14px;
+  margin-top: 7px;
   margin-left: 28px;
   margin-right: 28px;
 }
-#header {
-}
 #main {
-  margin-top: 14px;
 }
 
 a {
@@ -129,17 +152,6 @@ table.details td.no_border:hover {
   margin-top: 14px;
   border-left: 2px solid #ccd0d4;
   padding-left: 7px;
-}
-
-/* header */
-
-#logo {
-  float: left;
-  margin-top: 4px;
-  margin-right: 7px;
-}
-#ruote_kit {
-  font-size: 210%;
 }
 
 /* flash */
