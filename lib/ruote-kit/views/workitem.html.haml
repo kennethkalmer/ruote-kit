@@ -8,7 +8,7 @@
 %ul
   %li fei: #{@workitem.fei.to_s}
   %li participant: #{@workitem.participant_name}
-  %li dispatched: #{@workitem.dispatch_at}
+  %li dispatched: #{@workitem.dispatched_at}
   %li last modified: #{@workitem.h.put_at}
   %li expressions:
   %li workitems of this process: #{link_to "GET /_ruote/workitems/#{@workitem.fei.wfid}", "/_ruote/workitems/#{@workitem.fei.wfid}" }

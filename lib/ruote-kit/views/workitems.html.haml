@@ -1,25 +1,57 @@
 
-%h1 workitems
+%h1
+  workitems
+  = @wfid ? "for #{@wfid}" : ''
 
 .flash
   .message
     - if @workitems.empty?
       .warn
-        %p No workitems are currently available #{ @wfid ? "for #{@wfid}" : '' }
+        %p no workitems
     - else
       .notice
-        %p #{ pluralize(@workitems.size, 'workitem') } available #{ @wfid ? "for #{@wfid}" : '' }
+        %p
+          = pluralize( @workitems.size, 'workitem' )
+          available
 
     - if @participants
       .notice
-        %p Filtered for participant(s): #{@participants.join( ', ' )}
+        %p for participant(s): #{@participants.join( ', ' )}
 
-%ul
+%table.list
+
+  %thead
+    %td
+      id
+    %td
+      process
+    %td
+      participant
+    %td
+      params
+    %td
+      dispatched at
+    %td
+      fields
+
   - @workitems.each do |wi|
-    %li
-      = link_to wi
-      %ul
-        %li fei: #{wi.fei.to_s}
-        %li participant: #{wi.participant_name}
-        %li dispath time: TODO
+    %tr
+      %td
+        = alink( :workitems, wi.fei.sid, :text => wi.fei.sid )
+      %td
+        = alink( :processes, wi.wfid, :text => wi.wfid )
+      %td
+        &= wi.participant_name
+      %td
+        - params = wi.fields['params'].dup
+        - params.delete( 'ref' )
+        &= Rufus::Json.encode( params )[1..-2]
+      %td
+        = Time.parse( wi.dispatched_at ).localtime.strftime( '%Y/%m/%d %H:%M:%S' )
+      %td
+        - fields = wi.fields.dup
+        - fields.delete( 'params' )
+        - fields.delete( 'dispatched_at' )
+        - fields = Rufus::Json.encode( fields )[1, 28]
+        = fields == '}' ? '' : fields
 
