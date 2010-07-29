@@ -113,6 +113,7 @@ table.details {
 table.details td {
   border: 1px solid #d0d1d3;
   padding: 0px 7px;
+  vertical-align: top;
 }
 table.details > tbody > tr > td:first-child {
   color: #8b8f91;
