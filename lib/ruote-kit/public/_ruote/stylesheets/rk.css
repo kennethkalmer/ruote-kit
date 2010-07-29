@@ -17,6 +17,7 @@ body {
 h1 {
   font-size: 170%;
   font-weight: normal;
+  margin-top: 21px;
   margin-bottom: 21px;
 }
 h2 {
@@ -61,7 +62,6 @@ label {
 table.list {
   width: 100%;
   margin-top: 14px;
-  margin-bottom: 14px;
 }
 table.list td {
   border: 1px solid #d0d1d3;
@@ -84,6 +84,29 @@ table.list tr:hover {
   background: #f4f6f6;
 }
 
+table.details {
+  margin-top: 14px;
+}
+table.details td {
+  border: 1px solid #d0d1d3;
+  padding: 0px 7px;
+}
+table.details > tbody > tr > td:first-child {
+  color: #8b8f91;
+  text-align: right;
+  margin: 0;
+}
+table.details tr:hover {
+  background: #f4f6f6;
+}
+table.details td.no_border {
+  border-left: 0px;
+  border-right: 0px;
+}
+table.details td.no_border:hover {
+  background: white;
+}
+
 /*
 .group {
   margin: 6px 0;
@@ -96,11 +119,16 @@ table.list tr:hover {
 }
 .group:hover {
   border-style: solid;
-}
-*/
+}*/
 
 #fluo {
   float: right;
+}
+
+.links {
+  margin-top: 14px;
+  border-left: 2px solid #ccd0d4;
+  padding-left: 7px;
 }
 
 /* header */
@@ -122,6 +150,7 @@ table.list tr:hover {
 /* footer */
 
 #as_json {
+  margin-top: 28px;
   font-size: 80%;
 }
 

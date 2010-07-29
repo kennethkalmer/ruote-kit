@@ -15,6 +15,8 @@ module RuoteKit
 
       def alink( resource, id, opts = {} )
 
+        resource = resource.to_s
+
         fei = id.index('!')
         path = "#{resource}/#{id}"
         href = "/_ruote/#{path}"
@@ -22,7 +24,7 @@ module RuoteKit
         rel = if resource == 'processes'
           '#process'
         elsif resource == 'expressions'
-          fei ? '#expression' : '#process_expression'
+          fei ? '#expression' : '#process_expressions'
         elsif resource == 'errors'
           fei ? '#error' : '#process_errors'
         elsif resource == 'workitems'

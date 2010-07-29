@@ -3,6 +3,8 @@
 
 %h1 workitem #{@workitem.fei.wfid}/#{@workitem.fei.expid}
 
+%canvas#fluo
+
 %ul
   %li fei: #{@workitem.fei.to_s}
   %li participant: #{@workitem.participant_name}
@@ -25,8 +27,6 @@
     %span.description Check to let the workflow proceed, leave unchecked to just update workitem fields
   %div
     %input{ :type => 'submit', :value => "PUT /_ruote/workitems/#{@workitem.fei.wfid}/#{@workitem.fei.expid}" }
-
-%canvas#fluo
 
 :javascript
   var proc_rep = #{process_tree( @workitem )};
