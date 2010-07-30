@@ -11,8 +11,7 @@
     - else
       .notice
         %p
-          = pluralize( @workitems.size, 'workitem' )
-          available
+          #{pluralize( @workitems.size, 'workitem' )} available
 
     - if @participants
       .notice

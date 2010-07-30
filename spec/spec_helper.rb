@@ -44,6 +44,10 @@ ROOT_LINKS = [
     'rel' => 'http://ruote.rubyforge.org/rels.html#errors'
   },
   {
+    'href' => '/_ruote/participants',
+    'rel' => 'http://ruote.rubyforge.org/rels.html#participants'
+  },
+  {
     'href' => '/_ruote/history',
     'rel' => 'http://ruote.rubyforge.org/rels.html#history'
   }

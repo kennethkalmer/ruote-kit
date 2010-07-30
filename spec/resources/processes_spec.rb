@@ -5,6 +5,8 @@ def process_links( wfid )
   [
     { 'href' => "/_ruote/processes/#{wfid}",
       'rel' => 'self' },
+    { 'href' => "/_ruote/processes/#{wfid}",
+      'rel' => 'http://ruote.rubyforge.org/rels.html#process' },
     { 'href' => "/_ruote/expressions/#{wfid}",
       'rel' => 'http://ruote.rubyforge.org/rels.html#process_expressions' },
     { 'href' => "/_ruote/workitems/#{wfid}",

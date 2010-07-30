@@ -17,7 +17,7 @@ describe 'GET /_ruote/workitems' do
       last_response.should be_ok
 
       last_response.should have_selector(
-        'div.warn p', :content => 'No workitems are currently available' )
+        'div.warn p', :content => 'no workitems' )
     end
 
     it 'should report no workitems (JSON)' do
@@ -94,7 +94,7 @@ describe 'GET /_ruote/workitems/wfid' do
       get "/_ruote/workitems/#{@wfid}"
 
       last_response.should be_ok
-      last_response.should match( /2 workitems available for #{@wfid}/ )
+      last_response.should match( /2 workitems available/ )
     end
 
     it 'should list the workitems (JSON)' do
@@ -117,7 +117,7 @@ describe 'GET /_ruote/workitems/wfid' do
       get '/_ruote/workitems/foo'
 
       last_response.should be_ok
-      last_response.should match( /No workitems are currently available for foo/ )
+      last_response.should match( /no workitems/ )
     end
 
     it 'should report an empty list (JSON)' do

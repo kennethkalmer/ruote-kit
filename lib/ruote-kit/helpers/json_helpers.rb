@@ -97,6 +97,7 @@ module RuoteKit
           link( '/_ruote/processes', '#processes' ),
           link( '/_ruote/workitems', '#workitems' ),
           link( '/_ruote/errors', '#errors' ),
+          link( '/_ruote/participants', '#participants' ),
           link( '/_ruote/history', '#history' ),
           link( request.fullpath, 'self' )
         ]
