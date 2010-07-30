@@ -67,8 +67,8 @@ module RuoteKit
 
         links = [
           link( "/_ruote/processes/#{workitem.fei.wfid}", '#process' ),
-          link( "/_ruote/expressions/#{workitem.fei.wfid}", '#expressions' ),
-          link( "/_ruote/errors/#{workitem.fei.wfid}", '#errors' )
+          link( "/_ruote/expressions/#{workitem.fei.wfid}", '#process_expressions' ),
+          link( "/_ruote/errors/#{workitem.fei.wfid}", '#process_errors' )
         ]
 
         workitem.as_h( detailed ).merge( 'links' => links )

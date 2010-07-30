@@ -49,13 +49,6 @@ describe 'GET /_ruote/workitems' do
 
       get '/_ruote/workitems'
 
-      #puts "=" * 80
-      #p RuoteKit.engine.processes.size
-      #p RuoteKit.engine.process(@wfid).errors.first.message
-      #puts RuoteKit.engine.process(@wfid).errors.first.trace
-      #p RuoteKit.engine.storage_participant.size
-      #puts "=" * 80
-
       last_response.should have_selector(
         'div.notice p', :content => '1 workitem available' )
     end
@@ -176,6 +169,21 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
       get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json"
 
       last_response.should be_ok
+    end
+
+    it 'should provide a workitem with the correct links (JSON)' do
+
+      get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json"
+
+      json = last_response.json_body
+
+      assert_equal(
+        %w[
+          http://ruote.rubyforge.org/rels.html#process
+          http://ruote.rubyforge.org/rels.html#process_expressions
+          http://ruote.rubyforge.org/rels.html#process_errors
+        ],
+        json['workitem']['links'].collect { |li| li['rel'] })
     end
   end
 
