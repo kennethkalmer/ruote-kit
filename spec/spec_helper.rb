@@ -11,7 +11,16 @@ require 'rack/test'
 
 require 'webrat'
 
-require 'json'
+begin
+  require 'yajl'
+rescue LoadError
+  begin
+    require 'json'
+  rescue LoadError
+    puts 'Please specify "gem {yajl-ruby|json_pure|json}" in the Gemfile'
+    exit
+  end
+end
 
 Test::Unit::TestCase.send :include, Rack::Test::Methods
 
