@@ -51,14 +51,15 @@ describe "GET /_ruote/participants/:name", :type => :with_engine do
   describe "without registered participants" do
 
     it_has_an_engine_with_no_participants
-    
+
     it "should 404 correctly (HTML)" do
       get "/_ruote/participants/foo"
 
       last_response.should_not be_ok
       last_response.status.should be(404)
 
-      last_response.should match(/Resource not found/)
+      last_response.should have_selector(
+        'div.error p', :content => 'could not be found')
     end
 
     it "should 404 correctly (JSON)" do
