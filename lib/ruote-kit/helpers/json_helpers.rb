@@ -30,7 +30,7 @@ module RuoteKit
 
       def json_process( process, detailed = true )
 
-        process.to_h( detailed ).merge( 'links' => [
+        process.as_h( detailed ).merge( 'links' => [
           link( "/_ruote/processes/#{process.wfid}", 'self' ),
           link( "/_ruote/processes/#{process.wfid}", '#process' ),
           link( "/_ruote/expressions/#{process.wfid}", '#process_expressions' ),
@@ -60,10 +60,10 @@ module RuoteKit
 
       def json_workitems( workitems )
 
-        workitems.map { |w| json_workitem( w ) }
+        workitems.map { |w| json_workitem( w, false ) }
       end
 
-      def json_workitem( workitem )
+      def json_workitem( workitem, detailed = true )
 
         links = [
           link( "/_ruote/processes/#{workitem.fei.wfid}", '#process' ),
@@ -71,7 +71,7 @@ module RuoteKit
           link( "/_ruote/errors/#{workitem.fei.wfid}", '#errors' )
         ]
 
-        workitem.to_h.merge( 'links' => links )
+        workitem.as_h( detailed ).merge( 'links' => links )
       end
 
       def json_errors( errors )
@@ -116,11 +116,12 @@ end
 
 module Ruote
 
-  # Re-opening process status to overwrite to_h
+  #
+  # Re-opening to provide an as_h method
   #
   class ProcessStatus
 
-    def to_h( detailed = false )
+    def as_h( detailed = true )
 
       h = {}
 
@@ -153,6 +154,29 @@ module Ruote
       }
 
       h
+    end
+  end
+
+  #
+  # Re-opening to provide an as_h method
+  #
+  class Workitem
+
+    def as_h( detailed = true )
+
+      r = {}
+
+      r['id'] = fei.sid
+      r['fei'] = fei.sid
+      r['wfid'] = fei.wfid
+      r['type'] = 'workitem'
+      r['participant_name'] = participant_name
+
+      r['fields'] = h.fields
+
+      r['put_at'] = h.put_at
+
+      r
     end
   end
 end

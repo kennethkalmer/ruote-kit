@@ -49,8 +49,15 @@ describe 'GET /_ruote/workitems' do
 
       get '/_ruote/workitems'
 
-      last_response.should be_ok
-      last_response.should match( /1 workitem available/ )
+      #puts "=" * 80
+      #p RuoteKit.engine.processes.size
+      #p RuoteKit.engine.process(@wfid).errors.first.message
+      #puts RuoteKit.engine.process(@wfid).errors.first.trace
+      #p RuoteKit.engine.storage_participant.size
+      #puts "=" * 80
+
+      last_response.should have_selector(
+        'div.notice p', :content => '1 workitem available' )
     end
 
     it 'should have a list of workitems (JSON)' do
@@ -65,7 +72,7 @@ describe 'GET /_ruote/workitems' do
       wi = json['workitems'][0]
 
       wi.keys.should include( 'fei', 'participant_name', 'fields' )
-      wi['fei']['wfid'].should == @wfid
+      wi['wfid'].should == @wfid
       wi['participant_name'].should == 'nada'
       wi['fields']['params']['activity'].should == 'Work your magic'
     end
@@ -94,7 +101,9 @@ describe 'GET /_ruote/workitems/wfid' do
       get "/_ruote/workitems/#{@wfid}"
 
       last_response.should be_ok
-      last_response.should match( /2 workitems available/ )
+
+      last_response.should have_selector(
+        'div.notice p', :content => '2 workitems available' )
     end
 
     it 'should list the workitems (JSON)' do
@@ -343,7 +352,7 @@ describe 'Filtering workitems' do
 
   describe 'on field values' do
 
-    it 'should find worktitems with fields set to a given value (JSON)' do
+    it 'should find workitems with fields set to a given value (JSON)' do
 
       get '/_ruote/workitems.json', :hinkypinky => 'honkytonky'
 
@@ -352,7 +361,7 @@ describe 'Filtering workitems' do
       last_response.json_body['workitems'].size.should be( 2 )
     end
 
-    it 'should find worktitems with fields set to a given value (HTML)' do
+    it 'should find workitems with fields set to a given value (HTML)' do
 
       get '/_ruote/workitems', :hinkypinky => 'honkytonky'
 
