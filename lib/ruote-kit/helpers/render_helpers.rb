@@ -8,6 +8,13 @@ module RuoteKit
     #
     module RenderHelpers
 
+      def pluralize(number, word)
+
+        word << 's' if number > 1
+
+        return [ number, word ].join(' ')
+      end
+
       # Escaping HTML, rack style.
       #
       def h(s)
@@ -15,13 +22,24 @@ module RuoteKit
         RackUtils.escape_html(s)
       end
 
-      def alink(resource, id, opts = {})
+      def alink(resource, id=nil, opts={})
 
+        fei = nil
+        href = nil
         resource = resource.to_s
 
-        fei = id.index('!')
-        path = "#{resource}/#{id}"
-        href = "/_ruote/#{path}"
+        if id.is_a?(Hash)
+          opts = id
+          id = nil
+        end
+
+        if id
+          fei = id.index('!')
+          path = "#{resource}/#{id}"
+          href = "/_ruote/#{path}"
+        else
+          href = "/_ruote/#{resource}"
+        end
 
         rel = if resource == 'processes'
           '#process'

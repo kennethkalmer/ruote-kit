@@ -5,20 +5,25 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruote-kit}
-  s.version = "2.1.10"
+  s.version = "2.1.11"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["kenneth.kalmer@gmail.com", "Torsten Schoenebaum", "John Mettraux"]
-  s.date = %q{2010-07-30}
+  s.date = %q{2010-08-02}
   s.description = %q{ruote-kit is a RESTful Rack app for the ruote workflow engine}
   s.email = %q{kenneth.kalmer@gmail.com}
   s.extra_rdoc_files = [
-    "README.rdoc"
+    "CHANGELOG.txt",
+     "LICENSE.txt",
+     "README.rdoc",
+     "TODO.txt"
   ]
   s.files = [
     ".document",
      ".gitignore",
+     "CHANGELOG.txt",
      "Gemfile",
+     "LICENSE.txt",
      "README.rdoc",
      "Rakefile",
      "config.ru",
@@ -27,10 +32,10 @@ Gem::Specification.new do |s|
      "lib/ruote-kit/helpers.rb",
      "lib/ruote-kit/helpers/json_helpers.rb",
      "lib/ruote-kit/helpers/misc_helpers.rb",
-     "lib/ruote-kit/helpers/navigation_helpers.rb",
      "lib/ruote-kit/helpers/render_helpers.rb",
      "lib/ruote-kit/public/_ruote/images/favicon.ico",
      "lib/ruote-kit/public/_ruote/images/ruote.png",
+     "lib/ruote-kit/public/_ruote/images/ruote_buttons.png",
      "lib/ruote-kit/public/_ruote/javascripts/jquery-1.4.2.min.js",
      "lib/ruote-kit/public/_ruote/javascripts/rk.js",
      "lib/ruote-kit/public/_ruote/javascripts/ruote-fluo.js",
@@ -38,6 +43,7 @@ Gem::Specification.new do |s|
      "lib/ruote-kit/public/_ruote/stylesheets/rk.css",
      "lib/ruote-kit/resources/errors.rb",
      "lib/ruote-kit/resources/expressions.rb",
+     "lib/ruote-kit/resources/participants.rb",
      "lib/ruote-kit/resources/processes.rb",
      "lib/ruote-kit/resources/workitems.rb",
      "lib/ruote-kit/spec/ruote_helpers.rb",
@@ -48,6 +54,7 @@ Gem::Specification.new do |s|
      "lib/ruote-kit/views/expressions.html.haml",
      "lib/ruote-kit/views/index.html.haml",
      "lib/ruote-kit/views/layout.html.haml",
+     "lib/ruote-kit/views/participants.html.haml",
      "lib/ruote-kit/views/process.html.haml",
      "lib/ruote-kit/views/process_failed_to_launch.html.haml",
      "lib/ruote-kit/views/process_launched.html.haml",
@@ -61,6 +68,7 @@ Gem::Specification.new do |s|
      "spec/resources/errors_spec.rb",
      "spec/resources/expressions_spec.rb",
      "spec/resources/index_spec.rb",
+     "spec/resources/participants_spec.rb",
      "spec/resources/processes_spec.rb",
      "spec/resources/workitems_spec.rb",
      "spec/ruote-kit_configure_spec.rb",
@@ -70,15 +78,16 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/kennethkalmer/ruote-kit}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{ruote workflow engine, wrapped in a loving rack embrace}
   s.test_files = [
     "spec/it_has_an_engine.rb",
-     "spec/resources/expressions_spec.rb",
-     "spec/resources/workitems_spec.rb",
-     "spec/resources/index_spec.rb",
      "spec/resources/errors_spec.rb",
+     "spec/resources/expressions_spec.rb",
+     "spec/resources/index_spec.rb",
+     "spec/resources/participants_spec.rb",
      "spec/resources/processes_spec.rb",
+     "spec/resources/workitems_spec.rb",
      "spec/ruote-kit_configure_spec.rb",
      "spec/spec_helper.rb"
   ]
@@ -87,7 +96,7 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<bundler>, [">= 0"])
       s.add_runtime_dependency(%q<sinatra>, [">= 0"])
       s.add_runtime_dependency(%q<sinatra-respond_to>, [">= 0"])

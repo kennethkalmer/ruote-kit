@@ -34,7 +34,6 @@ module RuoteKit
     helpers do
       include RuoteKit::Helpers::JsonHelpers
       include RuoteKit::Helpers::MiscHelpers
-      include RuoteKit::Helpers::NavigationHelpers
       include RuoteKit::Helpers::RenderHelpers
     end
 

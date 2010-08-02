@@ -24,12 +24,12 @@
       %td
         dispatched at
       %td
-        = Time.parse( @workitem.dispatched_at ).localtime.strftime( '%Y/%m/%d %H:%M:%S' )
+        = Time.parse(@workitem.dispatched_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
     %tr
       %td
         last modified
       %td
-        = Time.parse( @workitem.h.put_at ).localtime.strftime( '%Y/%m/%d %H:%M:%S' )
+        = Time.parse(@workitem.h.put_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
 
     %tr
       %td.no_border{ :colspan => 2 }
@@ -40,13 +40,13 @@
         process
       %td
         GET
-        = alink( :processes, @workitem.fei.wfid)
+        = alink(:processes, @workitem.fei.wfid)
     %tr
       %td
         other workitems
       %td
         GET
-        = alink( :workitems, @workitem.fei.wfid)
+        = alink(:workitems, @workitem.fei.wfid)
 
     %tr
       %td.no_border{ :colspan => 2 }
@@ -57,15 +57,15 @@
         params
       %td
         - fields = @workitem.fields.dup
-        - params = fields.delete( 'params' )
-        - params.delete( 'ref' )
-        - fields.delete( 'dispatched_at' )
-        &= Rufus::Json.encode( params )[1..-2]
+        - params = fields.delete('params')
+        - params.delete('ref')
+        - fields.delete('dispatched_at')
+        &= Rufus::Json.encode(params)[1..-2]
     %tr
       %td
         fields
       %td.no_padding
-        %textarea{ :name => "fields", :cols => 80, :rows => 10 } #{Rufus::Json.pretty_encode( fields )}
+        %textarea{ :name => "fields", :cols => 80, :rows => 10 } #{Rufus::Json.pretty_encode(fields)}
     %tr
       %td
         proceed ?
@@ -78,8 +78,8 @@
 
 :javascript
 
-  var proc_rep = #{process_tree( @workitem )};
+  var proc_rep = #{process_tree(@workitem)};
 
-  Fluo.renderFlow( 'fluo', proc_rep, { 'workitems' : ['#{@workitem.fei.expid}'] } );
+  Fluo.renderFlow('fluo', proc_rep, { 'workitems' : ['#{@workitem.fei.expid}'] });
   Fluo.crop('fluo');
 

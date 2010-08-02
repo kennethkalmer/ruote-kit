@@ -6,7 +6,7 @@
 .flash
   .message
     .notice
-      %p #{pluralize( @participants.size, 'participant' )} registered
+      %p #{pluralize(@participants.size, 'participant')} registered
 
 %form{ :method => 'POST', :enctype => 'multipart/form-data', :accept_charset => 'UTF-8' }
 
@@ -58,12 +58,12 @@
     var tr = elt.parentNode.parentNode;
     if (direction == 'up') {
       var ps = tr.previousSibling;
-      if ( ! ps) return;
+      if (! ps) return;
       tr.parentNode.insertBefore(tr, ps);
     }
     else {
       var ns = tr.nextSibling;
-      if ( ! ns) return;
+      if (! ns) return;
       tr.parentNode.insertBefore(ns, tr);
     }
   }

@@ -12,13 +12,13 @@
 
     %div
       definition : 
-      = Rufus::Json.encode( [ @info.definition ] )
+      = Rufus::Json.encode([ @info.definition ])
     %div
       fields : 
-      = Rufus::Json.encode( [ @info.fields ] )
+      = Rufus::Json.encode([ @info.fields ])
     %div
       variables : 
-      = Rufus::Json.encode( [ @info.variables ] )
+      = Rufus::Json.encode([ @info.variables ])
 
     %div.togglable{ :onclick => "Rk.toggle(this, $('pre.trace'), 'show trace', 'hide trace', true);" }
       show trace

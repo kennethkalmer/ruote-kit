@@ -29,15 +29,15 @@
           #ruote_kit
             ruote-kit
           #main_navigation
-            = link_to 'processes', '/_ruote/processes'
+            = alink(:processes, :text => 'processes')
             |
-            = link_to 'workitems', '/_ruote/workitems'
+            = alink(:workitems, :text => 'workitems')
             |
-            = link_to 'errors', '/_ruote/errors'
+            = alink(:errors, :text => 'errors')
             |
-            = link_to 'participants', '/_ruote/participants'
+            = alink(:participants, :text => 'participants')
             ||
-            = link_to 'launch process', '/_ruote/processes/new'
+            %a{ :href => '/_ruote/processes/new'} launch process
         #hclear
 
       #main

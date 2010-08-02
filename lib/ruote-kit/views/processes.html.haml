@@ -51,9 +51,9 @@
       %td
         &= process.tags.collect { |ta| ta.first }.join(', ')
       %td
-        = Time.parse( process.launched_time ).localtime.strftime( '%Y/%m/%d %H:%M:%S' )
+        = Time.parse(process.launched_time).localtime.strftime('%Y/%m/%d %H:%M:%S')
       %td
-        = Time.parse( process.last_active ).localtime.strftime( '%Y/%m/%d %H:%M:%S' )
+        = Time.parse(process.last_active).localtime.strftime('%Y/%m/%d %H:%M:%S')
       %td.right{ :title => 'expressions' }
         = alink(:expressions, process.wfid, :text => process.expressions.size)
       %td.right{ :title => 'errors' }

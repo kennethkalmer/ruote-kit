@@ -23,14 +23,14 @@
       - @process.position.each do |pos|
         - text = "#{pos[1]} #{pos[2]['task']}"
         - if @process.stored_workitems.find { |wi| wi.fei.sid == pos.first }
-          = alink( :workitems, pos.first, :text => text )
+          = alink(:workitems, pos.first, :text => text)
         - else
           = text
   %tr
     %td
       expressions
     %td
-      = alink( :expressions, @process.wfid, :text => @process.expressions.size )
+      = alink(:expressions, @process.wfid, :text => @process.expressions.size)
   %tr
     %td
       workitems
@@ -38,7 +38,7 @@
       #{@process.workitems.size} out,
       - text = "#{@process.stored_workitems.size} in storage participant"
       - if @process.stored_workitems.size > 0
-        = alink( :workitems, @process.wfid, :text => text )
+        = alink(:workitems, @process.wfid, :text => text)
       - else
         = text
   %tr
@@ -46,24 +46,24 @@
       errors
     %td
       - if @process.errors.size > 0
-        = alink( :errors, @process.wfid, :text => @process.errors.size )
+        = alink(:errors, @process.wfid, :text => @process.errors.size)
       - else
         0
   %tr
     %td
       launch time
     %td
-      = Time.parse( @process.launched_time ).localtime.strftime( '%Y/%m/%d %H:%M:%S' )
+      = Time.parse(@process.launched_time).localtime.strftime('%Y/%m/%d %H:%M:%S')
   %tr
     %td
       last active
     %td
-      = Time.parse( @process.last_active ).localtime.strftime( '%Y/%m/%d %H:%M:%S' )
+      = Time.parse(@process.last_active).localtime.strftime('%Y/%m/%d %H:%M:%S')
   %tr
     %td
       tags
     %td
-      &= @process.tags.collect { |ta| ta.first }.join( ', ' )
+      &= @process.tags.collect { |ta| ta.first }.join(', ')
   
   %tr
     %td.no_border{ :colspan => 2 }
@@ -91,22 +91,22 @@
       expressions
     %td
       GET
-      = alink( :expressions, @process.wfid )
+      = alink(:expressions, @process.wfid)
   %tr
     %td
       workitems
     %td
       GET
-      = alink( :workitems, @process.wfid )
+      = alink(:workitems, @process.wfid)
   %tr
     %td
       errors
     %td
       GET
-      = alink( :errors, @process.wfid )
+      = alink(:errors, @process.wfid)
 
 :javascript
-  var proc_rep = #{process_tree( @process )};
-  Fluo.renderFlow( 'fluo', proc_rep );
+  var proc_rep = #{process_tree(@process)};
+  Fluo.renderFlow('fluo', proc_rep);
   Fluo.crop('fluo');
 

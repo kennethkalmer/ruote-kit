@@ -13,11 +13,11 @@
     - else
       .notice
         %p
-          #{pluralize( @workitems.size, 'workitem' )} available
+          #{pluralize(@workitems.size, 'workitem')} available
 
     - if @participants
       .notice
-        %p for participant(s): #{@participants.join( ', ' )}
+        %p for participant(s): #{@participants.join(', ')}
 
 %table.list
 
@@ -38,21 +38,21 @@
   - @workitems.each do |wi|
     %tr
       %td
-        = alink( :workitems, wi.fei.sid, :text => wi.fei.sid )
+        = alink(:workitems, wi.fei.sid, :text => wi.fei.sid)
       %td
-        = alink( :processes, wi.wfid, :text => wi.wfid )
+        = alink(:processes, wi.wfid, :text => wi.wfid)
       %td
         &= wi.participant_name
       %td
         - params = wi.fields['params'].dup
-        - params.delete( 'ref' )
-        &= Rufus::Json.encode( params )[1..-2]
+        - params.delete('ref')
+        &= Rufus::Json.encode(params)[1..-2]
       %td
-        = Time.parse( wi.dispatched_at ).localtime.strftime( '%Y/%m/%d %H:%M:%S' )
+        = Time.parse(wi.dispatched_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
       %td
         - fields = wi.fields.dup
-        - fields.delete( 'params' )
-        - fields.delete( 'dispatched_at' )
-        - fields = Rufus::Json.encode( fields )[1, 28]
+        - fields.delete('params')
+        - fields.delete('dispatched_at')
+        - fields = Rufus::Json.encode(fields)[1, 28]
         = fields == '}' ? '' : fields
 

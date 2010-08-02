@@ -1,7 +1,7 @@
 
 - # under the MIT license, see LICENSE.txt
 
-%h1 error #{@error.fei.wfid}/#{@error.fei.expid}
+%h1 error #{@error.fei.sid}
 
 .options
   %ul
@@ -9,10 +9,10 @@
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         %input{ :type => 'submit', :value => 'replay' }
-        %span.description DELETE /_ruote/errors/#{@error.fei.wfid}/#{@error.fei.expid}
+        %span.description DELETE /_ruote/errors/#{@error.fei.sid}
 
 %ul
   %li id: #{@error.fei.inspect}
-  %li process: #{link_to @process}
+  %li process: #{alink(:processes, @error.fei.wfid)}
   %li message: #{@error.message}
 
