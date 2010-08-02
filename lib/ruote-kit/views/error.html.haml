@@ -3,16 +3,66 @@
 
 %h1 error #{@error.fei.sid}
 
-.options
-  %ul
-    %li
-      %form{ :method => 'post' }
-        %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
-        %input{ :type => 'submit', :value => 'replay' }
-        %span.description DELETE /_ruote/errors/#{@error.fei.sid}
+%table.details
 
-%ul
-  %li id: #{@error.fei.inspect}
-  %li process: #{alink(:processes, @error.fei.wfid)}
-  %li message: #{@error.message}
+  %tr
+    %td
+      id
+    %td
+      = @error.fei.sid
+
+  %tr
+    %td
+      action / direction
+    %td
+      &= @error.action
+
+  %tr
+    %td
+      message
+    %td
+      &= @error.message
+
+  %tr
+    %td{ :onclick => 'toggleTrace()' }
+      trace
+    %td
+      %pre#trace_summary{ :onclick => 'toggleTrace()' } #{h(@error.trace[0, 80] + '...')}
+      %pre#trace #{h(@error.trace)}
+
+  %tr
+    %td.no_border{ :colspan => 2 }
+      &nbsp;
+
+  %tr
+    %td
+      process
+    %td
+      GET
+      = alink(:processes, @error.wfid)
+  %tr
+    %td
+      errors of this process
+    %td
+      GET
+      = alink(:errors, @error.wfid)
+
+  %tr
+    %td.no_border{ :colspan => 2 }
+      &nbsp;
+  %tr
+    %td
+    %td
+      %form{ :method => 'POST' }
+        %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
+        %input{ :type => 'submit', :value => "DELETE /_ruote/errors/#{@error.fei.sid}", :title => 'replay at this error' }
+
+:javascript
+
+  $('#trace').hide();
+
+  function toggleTrace () {
+    $('#trace').toggle();
+    $('#trace_summary').toggle();
+  }
 

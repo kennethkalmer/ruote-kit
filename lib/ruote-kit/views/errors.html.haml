@@ -7,12 +7,36 @@
   .message
     - if @errors.empty?
       .warn
-        %p There are currently no errors for the processes in the engine
+        %p there are currently no errors for the processes in the engine
     - else
       .notice
-        %p Currently #{@errors.size} errors for the processes in the engine
+        %p currently #{@errors.size} errors for the processes in the engine
 
-%ul
+%table.list
+ 
+  %thead
+    %td
+      error
+    %td
+      process
+    %td
+      message
+    %td
+      at
+    %td
+      action
+
   - @errors.each do |error|
-    %li #{error.inspect}
+    %tr
+      %td
+        = alink(:errors, error.fei.sid)
+      %td
+        = alink(:errors, error.wfid)
+      %td
+        &= error.message
+      %td
+        = Time.parse(error.at).localtime.strftime('%Y/%m/%d %H:%M:%S')
+      %td
+        &= error.action
+
 

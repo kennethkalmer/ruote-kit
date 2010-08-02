@@ -220,6 +220,13 @@ table.participants tr:hover {
   background: #f4f6f6;
 }
 
+/* errors */
+
+#trace {
+  font-size: 10px;
+  line-height: 11px;
+}
+
 /* buttons +-^vx... */
 
 a.ruote_button {

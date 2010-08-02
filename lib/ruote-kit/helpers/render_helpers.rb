@@ -19,7 +19,7 @@ module RuoteKit
       #
       def h(s)
 
-        RackUtils.escape_html(s)
+        Rack::Utils.escape_html(s)
       end
 
       def alink(resource, id=nil, opts={})
