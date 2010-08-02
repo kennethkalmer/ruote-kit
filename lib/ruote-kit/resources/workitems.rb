@@ -95,31 +95,25 @@ class RuoteKit::Application
 
     options = { :fields => {}, :proceed => false }
 
-    case env['CONTENT_TYPE']
+    if request.content_type == 'application/json'
 
-      when 'application/json' then
+      data = Rufus::Json.decode(env['rack.input'].read)
 
-        data = Rufus::Json.decode(env['rack.input'].read)
+      unless data['fields'].nil? || data['fields'].empty?
+        options[:fields] = data['fields']
+      end
+      unless data['_proceed'].nil? || data['_proceed'].empty?
+        options[:proceed] = data['_proceed']
+      end
 
-        unless data['fields'].nil? || data['fields'].empty?
-          options[:fields] = data['fields']
-        end
-        unless data['_proceed'].nil? || data['_proceed'].empty?
-          options[:proceed] = data['_proceed']
-        end
+    else
 
-      when 'application/x-www-form-urlencoded'
-
-        unless params['fields'].nil? || params['fields'].empty?
-          options[:fields] = Rufus::Json.decode(params[:fields])
-        end
-        unless params[:_proceed].nil? || params[:_proceed].empty?
-          options[:proceed] = params[:_proceed]
-        end
-
-      else
-
-        raise "#{env['CONTENT_TYPE']} is not supported for workitem fields"
+      unless params['fields'].nil? || params['fields'].empty?
+        options[:fields] = Rufus::Json.decode(params[:fields])
+      end
+      unless params[:_proceed].nil? || params[:_proceed].empty?
+        options[:proceed] = params[:_proceed]
+      end
     end
 
     options

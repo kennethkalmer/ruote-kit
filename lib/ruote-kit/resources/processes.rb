@@ -81,35 +81,23 @@ class RuoteKit::Application
 
   def fetch_launch_info
 
-    case env['CONTENT_TYPE']
+    if request.content_type == 'application/json' then
 
-      when 'application/json' then
+      OpenStruct.new(Rufus::Json.decode(request.body.read))
 
-        OpenStruct.new(Rufus::Json.decode(env['rack.input'].read))
+    else
 
-      when 'multipart/form-data'
+      info = OpenStruct.new('definition' => params[:definition])
 
-        # TODO
+      fields = params[:fields] || ''
+      fields = '{}' if fields.empty?
+      info.fields = Rufus::Json.decode(fields)
 
-        OpenStruct.new()
+      vars = params[:variables] || ''
+      vars = '{}' if vars.empty?
+      info.variables = Rufus::Json.decode(vars)
 
-      when 'application/x-www-form-urlencoded'
-
-        info = OpenStruct.new('definition' => params[:definition])
-
-        fields = params[:fields] || ''
-        fields = '{}' if fields.empty?
-        info.fields = Rufus::Json.decode(fields)
-
-        vars = params[:variables] || ''
-        vars = '{}' if vars.empty?
-        info.variables = Rufus::Json.decode(vars)
-
-        info
-
-      else
-
-        raise "#{env['CONTENT_TYPE']} not supported as a launch mechanism"
+      info
     end
   end
 end

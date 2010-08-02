@@ -9,9 +9,10 @@
 
 %canvas#fluo
 
-%form{ :method => 'post' }
+%form{ :method => 'POST', :enctype => 'multipart/form-data', :accept_charset => 'UTF-8' }
 
   %input{ :type => 'hidden', :name => '_method', :value => 'put' }
+  %input{ :type => 'hidden', :name => '_snowman', :value => '&#9731;' }
 
   %table.details
     %tr

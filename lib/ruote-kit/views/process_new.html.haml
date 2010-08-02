@@ -3,7 +3,9 @@
 
 %h1 launch process
 
-%form{ :method => 'POST', :action => '/_ruote/processes' }
+%form{ :method => 'POST', :action => '/_ruote/processes', :enctype => 'multipart/form-data', :accept_charset => 'UTF-8' }
+
+  %input{ :type => 'hidden', :name => '_snowman', :value => '&#9731;' }
 
   %div
     %label
