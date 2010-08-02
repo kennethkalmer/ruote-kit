@@ -8,12 +8,12 @@ module RuoteKit
 
       # Escaping HTML, rack style.
       #
-      def h( s )
+      def h(s)
 
-        RackUtils.escape_html( s )
+        RackUtils.escape_html(s)
       end
 
-      def alink( resource, id, opts = {} )
+      def alink(resource, id, opts = {})
 
         resource = resource.to_s
 
@@ -45,7 +45,7 @@ module RuoteKit
 
         status 404
 
-        @format = if m = @format.to_s.match( /^[^\/]+\/([^;]+)/ )
+        @format = if m = @format.to_s.match(/^[^\/]+\/([^;]+)/)
           m[1].to_sym
         else
           @format
@@ -60,7 +60,7 @@ module RuoteKit
           format.json {
             Rufus::Json.encode(
               { 'error' => {
-                'code' => 404, 'message' => 'resource not found' } } )
+                'code' => 404, 'message' => 'resource not found' } })
           }
         end
       end
@@ -78,21 +78,21 @@ module RuoteKit
           }
           format.json { Rufus::Json.encode(
             { 'error' => {
-              'code' => 503, 'messages' => 'Workitems not available' } } )
+              'code' => 503, 'messages' => 'Workitems not available' } })
           }
         end
       end
 
       # Extract the process tree
       #
-      def process_tree( object )
+      def process_tree(object)
 
         case object
         when Ruote::Workitem
-          process = RuoteKit.engine.process( object.fei.wfid )
-          Rufus::Json.encode( process.current_tree )
+          process = RuoteKit.engine.process(object.fei.wfid)
+          Rufus::Json.encode(process.current_tree)
         when Ruote::ProcessStatus
-          Rufus::Json.encode( object.current_tree )
+          Rufus::Json.encode(object.current_tree)
         end
       end
     end

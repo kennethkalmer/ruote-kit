@@ -14,18 +14,18 @@ module RuoteKit
 
       # we want to support Rails
 
-      if defined?( Rails )
+      if defined?(Rails)
         set :environment, Rails.env
         disable :raise_errors unless Rails.env == 'development'
       end
     end
 
-    set :views, File.join( File.dirname( __FILE__ ), 'views' )
+    set :views, File.join(File.dirname(__FILE__), 'views')
 
     use(
       Rack::Static,
       :urls => %w[ /_ruote/images /_ruote/javascripts /_ruote/stylesheets ],
-      :root => File.join( File.dirname( __FILE__ ), 'public' ))
+      :root => File.join(File.dirname(__FILE__), 'public'))
     use(
       Rack::MethodOverride)
 
@@ -45,7 +45,7 @@ module RuoteKit
       end
     end
 
-    unless defined?( Rails )
+    unless defined?(Rails)
 
       # handle 404s ourselves when not in Rails
 
@@ -67,7 +67,7 @@ module RuoteKit
       end
     end
 
-    Dir[ File.join( File.dirname( __FILE__ ), '/resources/*.rb') ].each { |r|
+    Dir[ File.join(File.dirname(__FILE__), '/resources/*.rb') ].each { |r|
       load r
     }
   end

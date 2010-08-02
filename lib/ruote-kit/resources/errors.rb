@@ -7,7 +7,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :errors }
-      format.json { json( :errors, @errors ) }
+      format.json { json(:errors, @errors) }
     end
   end
 
@@ -21,14 +21,14 @@ class RuoteKit::Application
 
       respond_to do |format|
         format.html { haml :error }
-        format.json { json( :error, @error ) }
+        format.json { json(:error, @error) }
       end
 
     else
 
       respond_to do |format|
         format.html { haml :errors }
-        format.json { json( :errors, @errors ) }
+        format.json { json(:errors, @errors) }
       end
     end
   end
@@ -37,16 +37,16 @@ class RuoteKit::Application
   #
   delete '/_ruote/errors/:wfid/:expid' do
 
-    #process = engine.process( params[:wfid] )
+    #process = engine.process(params[:wfid])
     #if process && expression = process.expressions.detect { |exp| exp.fei.expid == params[:expid] }
     #  if params[:_kill]
-    #    engine.kill_expression( expression.fei )
+    #    engine.kill_expression(expression.fei)
     #  else
-    #    engine.cancel_expression( expression.fei )
+    #    engine.cancel_expression(expression.fei)
     #  end
     #  respond_to do |format|
     #    format.html { redirect "/_ruote/expressions/#{params[:wfid]}" }
-    #    format.json { json( :status, :ok ) }
+    #    format.json { json(:status, :ok) }
     #  end
     #else
     #  resource_not_found
@@ -57,11 +57,11 @@ class RuoteKit::Application
 
   def fetch_e
 
-    fei = params[:id].split( '!' )
+    fei = params[:id].split('!')
     wfid = fei.last
 
     error = nil
-    process = RuoteKit.engine.process( wfid )
+    process = RuoteKit.engine.process(wfid)
     errors = process ? process.errors : nil
 
     if errors && fei.length > 1

@@ -12,7 +12,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :workitems }
-      format.json { json( :workitems, @workitems ) }
+      format.json { json(:workitems, @workitems) }
     end
   end
 
@@ -26,14 +26,14 @@ class RuoteKit::Application
 
       respond_to do |format|
         format.html { haml :workitem }
-        format.json { json( :workitem, @workitem ) }
+        format.json { json(:workitem, @workitem) }
       end
 
     else
 
       respond_to do |format|
-        format.html { haml( :workitems ) }
-        format.json { json( :workitems, @workitems ) }
+        format.html { haml(:workitems) }
+        format.json { json(:workitems, @workitems) }
       end
     end
   end
@@ -48,22 +48,22 @@ class RuoteKit::Application
 
     unless options[:fields].empty?
       workitem.fields = options[:fields]
-      RuoteKit.engine.storage_participant.update( workitem )
+      RuoteKit.engine.storage_participant.update(workitem)
     end
 
     if options[:proceed]
-      RuoteKit.engine.storage_participant.reply( workitem )
+      RuoteKit.engine.storage_participant.reply(workitem)
     end
 
     respond_to do |format|
 
       format.html {
-        redirect( options[:proceed] ?
+        redirect(options[:proceed] ?
           "/_ruote/workitems/#{workitem.fei.wfid}" :
-          "/_ruote/workitems/#{workitem.fei.sid}" )
+          "/_ruote/workitems/#{workitem.fei.sid}")
       }
       format.json {
-        json( :workitem, workitem )
+        json(:workitem, workitem)
       }
     end
   end
@@ -72,13 +72,13 @@ class RuoteKit::Application
 
   def fetch_wi
 
-    fei = params[:id].split( '!' )
+    fei = params[:id].split('!')
     wfid = fei.last
 
     workitem = nil
     workitems = nil
 
-    wis = RuoteKit.engine.storage_participant.by_wfid( wfid )
+    wis = RuoteKit.engine.storage_participant.by_wfid(wfid)
 
     if fei.length > 1
       workitem = wis.find { |wi| wi.fei.sid == params[:id] }
@@ -97,7 +97,7 @@ class RuoteKit::Application
 
       when 'application/json' then
 
-        data = Rufus::Json.decode( env['rack.input'].read )
+        data = Rufus::Json.decode(env['rack.input'].read)
 
         unless data['fields'].nil? || data['fields'].empty?
           options[:fields] = data['fields']
@@ -109,7 +109,7 @@ class RuoteKit::Application
       when 'application/x-www-form-urlencoded'
 
         unless params['fields'].nil? || params['fields'].empty?
-          options[:fields] = Rufus::Json.decode( params[:fields])
+          options[:fields] = Rufus::Json.decode(params[:fields])
         end
         unless params[:_proceed].nil? || params[:_proceed].empty?
           options[:proceed] = params[:_proceed]

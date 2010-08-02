@@ -1,11 +1,11 @@
 
-require File.dirname( __FILE__ ) + '/../spec_helper'
+require File.dirname(__FILE__) + '/../spec_helper'
 
 class BrokenParticipant
   include Ruote::LocalParticipant
-  def initialize( opts )
+  def initialize(opts)
   end
-  def consume ( workitem )
+  def consume (workitem)
     raise 'broken'
   end
 end
@@ -21,17 +21,17 @@ describe 'GET /_ruote/errors' do
 
       get '/_ruote/errors'
 
-      last_response.status.should be( 200 )
+      last_response.status.should be(200)
     end
 
     it 'should give an empty array (JSON)' do
 
       get '/_ruote/errors.json'
 
-      last_response.status.should be( 200 )
+      last_response.status.should be(200)
 
       body = last_response.json_body
-      body.should have_key( 'errors' )
+      body.should have_key('errors')
 
       body['errors'].should be_empty
     end
@@ -39,7 +39,7 @@ describe 'GET /_ruote/errors' do
 
   describe 'with a running process that has an error' do
 
-    before( :each ) do
+    before(:each) do
 
       RuoteKit.engine.register_participant :broken, BrokenParticipant
       RuoteKit.engine.register_participant :alice, Ruote::StorageParticipant
@@ -58,21 +58,21 @@ describe 'GET /_ruote/errors' do
 
       get '/_ruote/errors'
 
-      last_response.status.should be( 200 )
-      last_response.should match( /broken/ )
+      last_response.status.should be(200)
+      last_response.should match(/broken/)
     end
 
     it 'should list errors (JSON)' do
 
       get '/_ruote/errors.json'
 
-      last_response.status.should be( 200 )
+      last_response.status.should be(200)
 
       json = last_response.json_body
 
       # global links
 
-      json['links'].should == root_links( '/_ruote/errors' )
+      json['links'].should == root_links('/_ruote/errors')
 
       # the error itself
 
@@ -90,26 +90,26 @@ describe 'GET /_ruote/errors' do
           'rel' => 'http://ruote.rubyforge.org/rels.html#process' }
       ]
 
-      #puts Rufus::Json.pretty_encode( json )
+      #puts Rufus::Json.pretty_encode(json)
     end
 
     it 'should list process errors (HTML)' do
 
       get "/_ruote/errors/#{@wfid}"
 
-      last_response.status.should be( 200 )
-      last_response.should match( /broken/ )
+      last_response.status.should be(200)
+      last_response.should match(/broken/)
     end
 
     it 'should list process errors (JSON)' do
 
       get "/_ruote/errors/#{@wfid}.json"
 
-      last_response.status.should be( 200 )
+      last_response.status.should be(200)
 
       json = last_response.json_body
 
-      json['links'].should == root_links( "/_ruote/errors/#{@wfid}" )
+      json['links'].should == root_links("/_ruote/errors/#{@wfid}")
       json['errors'].size.should == 1
       json['errors'].first['message'].should == '#<RuntimeError: broken>'
     end
@@ -118,19 +118,19 @@ describe 'GET /_ruote/errors' do
 
       get "/_ruote/errors/0_0_0!!#{@wfid}"
 
-      last_response.status.should be( 200 )
-      last_response.should match( /broken/ )
+      last_response.status.should be(200)
+      last_response.should match(/broken/)
     end
 
     it 'should show the error (JSON)' do
 
       get "/_ruote/errors/0_0_0!!#{@wfid}.json"
 
-      last_response.status.should be( 200 )
+      last_response.status.should be(200)
 
       json = last_response.json_body
 
-      #puts Rufus::Json.pretty_encode( json )
+      #puts Rufus::Json.pretty_encode(json)
     end
 
     it 'should replay errors (HTML)' do

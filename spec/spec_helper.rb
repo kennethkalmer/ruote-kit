@@ -3,7 +3,7 @@ ENV['RACK_ENV'] = 'test'
 
 require 'rubygems'
 require 'bundler'
-Bundler.setup( :default, :test )
+Bundler.setup(:default, :test)
 
 require 'spec'
 require 'spec/interop/test'
@@ -25,10 +25,10 @@ end
 Test::Unit::TestCase.send :include, Rack::Test::Methods
 
 begin
-  require File.join( File.dirname( __FILE__ ), '/../vendor/gems/environment' )
+  require File.join(File.dirname(__FILE__), '/../vendor/gems/environment')
 rescue LoadError
 end
-require File.join( File.dirname( __FILE__ ), '/../lib/ruote-kit' )
+require File.join(File.dirname(__FILE__), '/../lib/ruote-kit')
 
 require 'ruote-kit/spec/ruote_helpers'
 require 'spec/it_has_an_engine'
@@ -60,7 +60,7 @@ ROOT_LINKS = [
     'href' => '/_ruote/history',
     'rel' => 'http://ruote.rubyforge.org/rels.html#history'
   }
-] unless defined?( ROOT_LINKS ) # :-(
+] unless defined?(ROOT_LINKS) # :-(
 
 
 Spec::Runner.configure do |config|
@@ -85,13 +85,13 @@ Spec::Runner.configure do |config|
     it_should_behave_like 'it has an engine with no participants'
   end
 
-  def root_links( self_href )
+  def root_links(self_href)
 
     ROOT_LINKS + [ { 'href' => self_href, 'rel' => 'self' } ]
   end
 
   RuoteKit::Application.included_modules.each do |klass|
-    config.include( klass ) if klass.name =~ /RuoteKit::Helpers::\w+Helpers/
+    config.include(klass) if klass.name =~ /RuoteKit::Helpers::\w+Helpers/
   end
 end
 
@@ -107,10 +107,10 @@ end
 
 # Renders the supplied template with Haml::Engine and assigns the
 # @response instance variable
-def render( template_path )
-  template = File.read( "#{app.views}/#{template_path.sub( /^\//, '' )}" )
-  engine = Haml::Engine.new( template )
-  @response = engine.render( self, assigns_for_template )
+def render(template_path)
+  template = File.read("#{app.views}/#{template_path.sub(/^\//, '')}")
+  engine = Haml::Engine.new(template)
+  @response = engine.render(self, assigns_for_template)
 end
 
 # Convenience method to access the @response instance variable set in
@@ -128,7 +128,7 @@ end
 # Prepends the assigns keywords with an "@" so that they will be
 # instance variables when the template is rendered.
 def assigns_for_template
-  assigns.inject( {} ) do |memo, kv|
+  assigns.inject({}) do |memo, kv|
     memo["@#{kv[0].to_s}".to_sym] = kv[1]
     memo
   end
@@ -137,7 +137,7 @@ end
 class Rack::MockResponse
 
   def json_body
-    Rufus::Json.decode( body )
+    Rufus::Json.decode(body)
   end
 
   def json?

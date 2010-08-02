@@ -12,7 +12,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :processes }
-      format.json { json( :processes, @processes ) }
+      format.json { json(:processes, @processes) }
     end
   end
 
@@ -23,12 +23,12 @@ class RuoteKit::Application
 
   get '/_ruote/processes/:wfid' do
 
-    @process = RuoteKit.engine.process( params[:wfid] )
+    @process = RuoteKit.engine.process(params[:wfid])
 
     if @process
       respond_to do |format|
         format.html { haml :process }
-        format.json { json( :process, @process ) }
+        format.json { json(:process, @process) }
       end
     else
       resource_not_found
@@ -50,13 +50,13 @@ class RuoteKit::Application
         status 400
 
         format.html { haml :process_failed_to_launch }
-        format.json { json( :exception, 400, @exception ) }
+        format.json { json(:exception, 400, @exception) }
       else
 
         status 201 # created
 
         format.html { haml :process_launched }
-        format.json { json( :launched, @wfid ) }
+        format.json { json(:launched, @wfid) }
       end
     end
   end
@@ -64,14 +64,14 @@ class RuoteKit::Application
   delete '/_ruote/processes/:wfid' do
 
     if params[:_kill] == '1'
-      RuoteKit.engine.kill_process( params[:wfid] )
+      RuoteKit.engine.kill_process(params[:wfid])
     else
-      RuoteKit.engine.cancel_process( params[:wfid] )
+      RuoteKit.engine.cancel_process(params[:wfid])
     end
 
     respond_to do |format|
       format.html { redirect '/_ruote/processes' }
-      format.json { json( :status, :ok ) }
+      format.json { json(:status, :ok) }
     end
   end
 
@@ -83,7 +83,7 @@ class RuoteKit::Application
 
       when 'application/json' then
 
-        OpenStruct.new( Rufus::Json.decode( env['rack.input'].read ) )
+        OpenStruct.new(Rufus::Json.decode(env['rack.input'].read))
 
       when 'multipart/form-data'
 
@@ -93,15 +93,15 @@ class RuoteKit::Application
 
       when 'application/x-www-form-urlencoded'
 
-        info = OpenStruct.new( 'definition' => params[:definition] )
+        info = OpenStruct.new('definition' => params[:definition])
 
         fields = params[:fields] || ''
         fields = '{}' if fields.empty?
-        info.fields = Rufus::Json.decode( fields )
+        info.fields = Rufus::Json.decode(fields)
 
         vars = params[:variables] || ''
         vars = '{}' if vars.empty?
-        info.variables = Rufus::Json.decode( vars )
+        info.variables = Rufus::Json.decode(vars)
 
         info
 

@@ -55,7 +55,7 @@ describe 'GET /_ruote/expressions/wfid' do
       get "/_ruote/expressions/foo"
 
       last_response.should_not be_ok
-      last_response.status.should be( 404 )
+      last_response.status.should be(404)
     end
 
     it 'should 404 correctly (JSON)' do
@@ -63,7 +63,7 @@ describe 'GET /_ruote/expressions/wfid' do
       get '/_ruote/expressions/foo.json'
 
       last_response.should_not be_ok
-      last_response.status.should be( 404 )
+      last_response.status.should be(404)
     end
   end
 end
@@ -74,9 +74,9 @@ describe 'GET /_ruote/expressions/wfid/expid' do
 
   describe 'with running processes' do
 
-    before( :each ) do
+    before(:each) do
       @wfid = launch_test_process
-      process = engine.process( @wfid )
+      process = engine.process(@wfid)
       @nada_exp_id = process.expressions.last.fei.expid
     end
 
@@ -102,7 +102,7 @@ describe 'GET /_ruote/expressions/wfid/expid' do
       get '/workitems/foo/bar'
 
       last_response.should_not be_ok
-      last_response.status.should be( 404 )
+      last_response.status.should be(404)
     end
 
     it 'should 404 correctly (JSON)' do
@@ -110,7 +110,7 @@ describe 'GET /_ruote/expressions/wfid/expid' do
       get '/workitems/foo/bar.json'
 
       last_response.should_not be_ok
-      last_response.status.should be( 404 )
+      last_response.status.should be(404)
     end
   end
 end
@@ -121,7 +121,7 @@ describe 'DELETE /_ruote/expressions/wfid/expid' do
 
   describe 'with running processes' do
 
-    before( :each ) do
+    before(:each) do
 
       @wfid = launch_test_process do
         Ruote.process_definition :name => 'delete' do
@@ -138,7 +138,7 @@ describe 'DELETE /_ruote/expressions/wfid/expid' do
         end
       end
 
-      wait_exp = engine.process( @wfid ).expressions.last
+      wait_exp = engine.process(@wfid).expressions.last
       @expid = "0_1_0" #wait_exp.fei.expid
     end
 
@@ -150,7 +150,7 @@ describe 'DELETE /_ruote/expressions/wfid/expid' do
       last_response['Location'].should == "/_ruote/expressions/#{@wfid}"
 
       #sleep 0.4
-      wait_for( @wfid )
+      wait_for(@wfid)
 
       @tracer.to_s.should == "bailed\ndone"
     end
@@ -163,7 +163,7 @@ describe 'DELETE /_ruote/expressions/wfid/expid' do
       last_response.json_body['status'].should == 'ok'
 
       #sleep 0.4
-      wait_for( @wfid )
+      wait_for(@wfid)
 
       @tracer.to_s.should == "bailed\ndone"
     end
@@ -176,7 +176,7 @@ describe 'DELETE /_ruote/expressions/wfid/expid' do
       last_response['Location'].should == "/_ruote/expressions/#{@wfid}"
 
       #sleep 0.4
-      wait_for( @wfid )
+      wait_for(@wfid)
 
       @tracer.to_s.should == 'done'
     end
@@ -189,7 +189,7 @@ describe 'DELETE /_ruote/expressions/wfid/expid' do
       last_response.json_body['status'].should == 'ok'
 
       #sleep 0.4
-      wait_for( @wfid )
+      wait_for(@wfid)
 
       @tracer.to_s.should == 'done'
     end
@@ -201,7 +201,7 @@ describe 'DELETE /_ruote/expressions/wfid/expid' do
       delete '/_ruote/expressions/foo/bar'
 
       last_response.should_not be_ok
-      last_response.status.should be( 404 )
+      last_response.status.should be(404)
     end
 
     it 'should 404 correctly (JSON)' do
@@ -209,7 +209,7 @@ describe 'DELETE /_ruote/expressions/wfid/expid' do
       delete '/_ruote/expressions/foo/bar.json'
 
       last_response.should_not be_ok
-      last_response.status.should be( 404 )
+      last_response.status.should be(404)
     end
   end
 end

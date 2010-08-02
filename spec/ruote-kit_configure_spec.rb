@@ -1,7 +1,7 @@
 
 require File.join(File.dirname(__FILE__), 'spec_helper.rb')
 
-undef :context if defined?( context )
+undef :context if defined?(context)
 
 
 describe RuoteKit do
@@ -9,7 +9,7 @@ describe RuoteKit do
   describe 'run_worker' do
 
     before(:each) do
-      RuoteKit.run_worker( Ruote::HashStorage.new )
+      RuoteKit.run_worker(Ruote::HashStorage.new)
     end
 
     it 'should instantiate an engine' do
@@ -28,7 +28,7 @@ describe RuoteKit do
   describe 'bind_engine' do
 
     before(:each) do
-      RuoteKit.bind_engine( Ruote::HashStorage.new )
+      RuoteKit.bind_engine(Ruote::HashStorage.new)
     end
 
     it 'should instantiate an engine' do
@@ -49,7 +49,7 @@ describe RuoteKit do
     # stupid illustrative spec
 
     it 'should comply' do
-      RuoteKit.engine = Ruote::Engine.new( Ruote::HashStorage.new )
+      RuoteKit.engine = Ruote::Engine.new(Ruote::HashStorage.new)
       RuoteKit.engine.should_not == nil
     end
   end

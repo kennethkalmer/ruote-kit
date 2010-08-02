@@ -1,7 +1,7 @@
 
-require File.dirname( __FILE__ ) + '/../spec_helper'
+require File.dirname(__FILE__) + '/../spec_helper'
 
-def process_links( wfid )
+def process_links(wfid)
   [
     { 'href' => "/_ruote/processes/#{wfid}",
       'rel' => 'self' },
@@ -37,7 +37,7 @@ describe 'GET /_ruote/processes' do
       last_response.should be_ok
 
       body = last_response.json_body
-      body.should have_key( 'processes' )
+      body.should have_key('processes')
 
       body['processes'].should be_empty
     end
@@ -45,7 +45,7 @@ describe 'GET /_ruote/processes' do
 
   describe 'with running processes' do
 
-    before( :each ) do
+    before(:each) do
       @wfid = launch_test_process
     end
 
@@ -66,8 +66,8 @@ describe 'GET /_ruote/processes' do
 
       body['processes'].should_not be_empty
 
-      body['links'].should == root_links( '/_ruote/processes' )
-      body['processes'].first['links'].should == process_links( @wfid )
+      body['links'].should == root_links('/_ruote/processes')
+      body['processes'].first['links'].should == process_links(@wfid)
     end
   end
 end
@@ -78,7 +78,7 @@ describe 'GET /_ruote/processes/X-Y' do
 
   describe 'with a running process' do
 
-    before( :each ) do
+    before(:each) do
       @wfid = launch_test_process
     end
 
@@ -97,9 +97,9 @@ describe 'GET /_ruote/processes/X-Y' do
 
       body = last_response.json_body
 
-      body.should have_key( 'process' )
+      body.should have_key('process')
 
-      body['process']['links'].should == process_links( @wfid )
+      body['process']['links'].should == process_links(@wfid)
     end
   end
 
@@ -110,9 +110,9 @@ describe 'GET /_ruote/processes/X-Y' do
       get '/_ruote/processes/foo'
 
       last_response.should_not be_ok
-      last_response.status.should be( 404 )
+      last_response.status.should be(404)
 
-      last_response.should match( /resource not found/ )
+      last_response.should match(/resource not found/)
     end
 
     it 'should 404 correctly (JSON)' do
@@ -120,9 +120,9 @@ describe 'GET /_ruote/processes/X-Y' do
       get '/_ruote/processes/foo.json'
 
       last_response.should_not be_ok
-      last_response.status.should be( 404 )
+      last_response.status.should be(404)
 
-      last_response.json_body.keys.should include( 'error' )
+      last_response.json_body.keys.should include('error')
 
       last_response.json_body['error'].should == {
         'code' => 404, 'message' => 'resource not found' }
@@ -145,7 +145,7 @@ describe 'POST /_ruote/processes' do
 
   it_has_an_engine
 
-  before( :each ) do
+  before(:each) do
     engine.processes.should be_empty
   end
 
@@ -161,12 +161,12 @@ describe 'POST /_ruote/processes' do
 
     post(
       '/_ruote/processes.json',
-      Rufus::Json.encode( params ),
-      { 'CONTENT_TYPE' => 'application/json' } )
+      Rufus::Json.encode(params),
+      { 'CONTENT_TYPE' => 'application/json' })
 
-    last_response.status.should be( 201 )
+    last_response.status.should be(201)
 
-    last_response.json_body['launched'].should match( /[0-9a-z\-]+/ )
+    last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
 
     sleep 0.4
 
@@ -186,11 +186,11 @@ describe 'POST /_ruote/processes' do
 
     post(
       '/_ruote/processes.json',
-      Rufus::Json.encode( params ),
-      { 'CONTENT_TYPE' => 'application/json' } )
+      Rufus::Json.encode(params),
+      { 'CONTENT_TYPE' => 'application/json' })
 
-    last_response.status.should be( 201 )
-    last_response.json_body['launched'].should match( /[0-9a-z\-]+/ )
+    last_response.status.should be(201)
+    last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
 
     sleep 0.5
 
@@ -262,10 +262,10 @@ describe 'POST /_ruote/processes' do
 
     post(
       '/_ruote/processes.json',
-      Rufus::Json.encode( params ),
-      { 'CONTENT_TYPE' => 'application/json' } )
+      Rufus::Json.encode(params),
+      { 'CONTENT_TYPE' => 'application/json' })
 
-    last_response.status.should be( 400 )
+    last_response.status.should be(400)
 
     last_response.json_body.keys.should include('exception')
   end
@@ -276,9 +276,9 @@ describe 'POST /_ruote/processes' do
 
     post '/_ruote/processes', params
 
-    last_response.status.should be( 400 )
+    last_response.status.should be(400)
 
-    last_response.should match( /failed to launch process/ )
+    last_response.should match(/failed to launch process/)
   end
 
 end
@@ -309,9 +309,9 @@ describe 'DELETE /_ruote/processes/X-Y' do
 
     last_response.should be_ok
 
-    wait_for( @wfid )
+    wait_for(@wfid)
 
-    engine.process( @wfid ).should be_nil
+    engine.process(@wfid).should be_nil
 
     @tracer.to_s.should == "done.\nbailout."
   end
@@ -323,9 +323,9 @@ describe 'DELETE /_ruote/processes/X-Y' do
     last_response.should be_redirect
     last_response['Location'].should == '/_ruote/processes'
 
-    wait_for( @wfid )
+    wait_for(@wfid)
 
-    engine.process( @wfid ).should be_nil
+    engine.process(@wfid).should be_nil
 
     @tracer.to_s.should == "done.\nbailout."
   end
@@ -336,9 +336,9 @@ describe 'DELETE /_ruote/processes/X-Y' do
 
     last_response.should be_ok
 
-    wait_for( @wfid )
+    wait_for(@wfid)
 
-    engine.process( @wfid ).should be_nil
+    engine.process(@wfid).should be_nil
 
     @tracer.to_s.should == 'done.'
   end
@@ -350,9 +350,9 @@ describe 'DELETE /_ruote/processes/X-Y' do
     last_response.should be_redirect
     last_response['Location'].should == '/_ruote/processes'
 
-    wait_for( @wfid )
+    wait_for(@wfid)
 
-    engine.process( @wfid ).should be_nil
+    engine.process(@wfid).should be_nil
 
     @tracer.to_s.should == 'done.'
   end

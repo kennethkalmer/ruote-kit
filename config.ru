@@ -3,12 +3,12 @@
 
 begin
   # try to require the preresolved locked set of gems.
-  require ::File.expand_path( '.bundle/environment', __FILE__ )
+  require ::File.expand_path('.bundle/environment', __FILE__)
 rescue LoadError
   # fall back on doing an unlocked resolve at runtime.
   require 'rubygems'
   require 'bundler'
-  Bundler.setup( :default )
+  Bundler.setup(:default)
 end
 
 
@@ -43,7 +43,7 @@ require 'ruote/storage/fs_storage'
 RuoteKit.engine = Ruote::Engine.new(
   Ruote::Worker.new(
     Ruote::FsStorage.new(
-      "ruote_work_#{RuoteKit.env}" ) ) )
+      "ruote_work_#{RuoteKit.env}")))
 
 RuoteKit.engine.register do
   catchall

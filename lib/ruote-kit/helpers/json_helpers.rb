@@ -6,107 +6,107 @@ module RuoteKit
     #
     module JsonHelpers
 
-      def json( resource, *args )
+      def json(resource, *args)
 
-        if respond_to?( "json_#{resource}" )
-          object = send( "json_#{resource}", *args )
+        if respond_to?("json_#{resource}")
+          object = send("json_#{resource}", *args)
         end
 
-        Rufus::Json.encode( {
-          'links' => links( resource ),
+        Rufus::Json.encode({
+          'links' => links(resource),
           resource.to_s => object || args.first
-        } )
+        })
       end
 
-      def json_exception( code, exception )
+      def json_exception(code, exception)
 
         { 'code' => code, 'exception' => { 'message' => exception.message } }
       end
 
-      def json_processes( processes )
+      def json_processes(processes)
 
-        processes.map { |p| json_process( p, false ) }
+        processes.map { |p| json_process(p, false) }
       end
 
-      def json_process( process, detailed = true )
+      def json_process(process, detailed = true)
 
-        process.as_h( detailed ).merge( 'links' => [
-          link( "/_ruote/processes/#{process.wfid}", 'self' ),
-          link( "/_ruote/processes/#{process.wfid}", '#process' ),
-          link( "/_ruote/expressions/#{process.wfid}", '#process_expressions' ),
-          link( "/_ruote/workitems/#{process.wfid}", '#process_workitems' ),
-          link( "/_ruote/errors/#{process.wfid}", '#process_errors' )
-        ] )
+        process.as_h(detailed).merge('links' => [
+          link("/_ruote/processes/#{process.wfid}", 'self'),
+          link("/_ruote/processes/#{process.wfid}", '#process'),
+          link("/_ruote/expressions/#{process.wfid}", '#process_expressions'),
+          link("/_ruote/workitems/#{process.wfid}", '#process_workitems'),
+          link("/_ruote/errors/#{process.wfid}", '#process_errors')
+        ])
       end
 
-      def json_expression( expression )
+      def json_expression(expression)
 
         links = [
-          link( "/_ruote/processes/#{expression.fei.wfid}", '#process' ),
-          link( "/_ruote/expressions/#{expression.fei.wfid}", '#expressions' )
+          link("/_ruote/processes/#{expression.fei.wfid}", '#process'),
+          link("/_ruote/expressions/#{expression.fei.wfid}", '#expressions')
         ]
 
         links << link(
           "/_ruote/expressions/#{expression.fei.wfid}/#{expression.parent.fei.expid}",
-          'parent' ) if expression.parent
+          'parent') if expression.parent
 
-        expression.to_h.merge( 'links' => links )
+        expression.to_h.merge('links' => links)
       end
 
-      def json_expressions( expressions )
+      def json_expressions(expressions)
 
-        expressions.map { |e| json_expression( e ) }
+        expressions.map { |e| json_expression(e) }
       end
 
-      def json_workitems( workitems )
+      def json_workitems(workitems)
 
-        workitems.map { |w| json_workitem( w, false ) }
+        workitems.map { |w| json_workitem(w, false) }
       end
 
-      def json_workitem( workitem, detailed = true )
+      def json_workitem(workitem, detailed = true)
 
         links = [
-          link( "/_ruote/processes/#{workitem.fei.wfid}", '#process' ),
-          link( "/_ruote/expressions/#{workitem.fei.wfid}", '#process_expressions' ),
-          link( "/_ruote/errors/#{workitem.fei.wfid}", '#process_errors' )
+          link("/_ruote/processes/#{workitem.fei.wfid}", '#process'),
+          link("/_ruote/expressions/#{workitem.fei.wfid}", '#process_expressions'),
+          link("/_ruote/errors/#{workitem.fei.wfid}", '#process_errors')
         ]
 
-        workitem.as_h( detailed ).merge( 'links' => links )
+        workitem.as_h(detailed).merge('links' => links)
       end
 
-      def json_errors( errors )
+      def json_errors(errors)
 
-        errors.collect { |e| json_error( e ) }
+        errors.collect { |e| json_error(e) }
       end
 
-      def json_error( error )
+      def json_error(error)
 
         fei = error.fei
         wfid = fei.wfid
 
-        error.to_h.merge( 'links' => [
-          link( "/_ruote/errors/#{fei.sid}", 'self' ),
-          link( "/_ruote/errors/#{wfid}", '#process_errors' ),
-          link( "/_ruote/processes/#{wfid}", '#process' )
-        ] )
+        error.to_h.merge('links' => [
+          link("/_ruote/errors/#{fei.sid}", 'self'),
+          link("/_ruote/errors/#{wfid}", '#process_errors'),
+          link("/_ruote/processes/#{wfid}", '#process')
+        ])
       end
 
-      def links( resource )
+      def links(resource)
         [
-          link( '/_ruote', '#root' ),
-          link( '/_ruote/processes', '#processes' ),
-          link( '/_ruote/workitems', '#workitems' ),
-          link( '/_ruote/errors', '#errors' ),
-          link( '/_ruote/participants', '#participants' ),
-          link( '/_ruote/history', '#history' ),
-          link( request.fullpath, 'self' )
+          link('/_ruote', '#root'),
+          link('/_ruote/processes', '#processes'),
+          link('/_ruote/workitems', '#workitems'),
+          link('/_ruote/errors', '#errors'),
+          link('/_ruote/participants', '#participants'),
+          link('/_ruote/history', '#history'),
+          link(request.fullpath, 'self')
         ]
       end
 
-      def link( href, rel )
+      def link(href, rel)
         {
           'href' => href,
-          'rel' => rel.match( /^#/ ) ?
+          'rel' => rel.match(/^#/) ?
             "http://ruote.rubyforge.org/rels.html#{rel}" : rel
         }
       end
@@ -121,7 +121,7 @@ module Ruote
   #
   class ProcessStatus
 
-    def as_h( detailed = true )
+    def as_h(detailed = true)
 
       h = {}
 
@@ -150,7 +150,7 @@ module Ruote
       ] if detailed
 
       properties.each { |m|
-        h[m] = self.send( m )
+        h[m] = self.send(m)
       }
 
       h
@@ -162,7 +162,7 @@ module Ruote
   #
   class Workitem
 
-    def as_h( detailed = true )
+    def as_h(detailed = true)
 
       r = {}
 

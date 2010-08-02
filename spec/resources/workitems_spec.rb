@@ -1,7 +1,7 @@
 
-require File.join( File.dirname( __FILE__ ), '/../spec_helper' )
+require File.join(File.dirname(__FILE__), '/../spec_helper')
 
-undef :context if defined?( context )
+undef :context if defined?(context)
 
 
 describe 'GET /_ruote/workitems' do
@@ -17,7 +17,7 @@ describe 'GET /_ruote/workitems' do
       last_response.should be_ok
 
       last_response.should have_selector(
-        'div.warn p', :content => 'no workitems' )
+        'div.warn p', :content => 'no workitems')
     end
 
     it 'should report no workitems (JSON)' do
@@ -27,14 +27,14 @@ describe 'GET /_ruote/workitems' do
       last_response.should be_ok
       json = last_response.json_body
 
-      json.should have_key( 'workitems' )
+      json.should have_key('workitems')
       json['workitems'].should be_empty
     end
   end
 
   describe 'with workitems' do
 
-    before( :each ) do
+    before(:each) do
 
       @wfid = launch_test_process do
         Ruote.process_definition :name => 'test' do
@@ -50,7 +50,7 @@ describe 'GET /_ruote/workitems' do
       get '/_ruote/workitems'
 
       last_response.should have_selector(
-        'div.notice p', :content => '1 workitem available' )
+        'div.notice p', :content => '1 workitem available')
     end
 
     it 'should have a list of workitems (JSON)' do
@@ -60,11 +60,11 @@ describe 'GET /_ruote/workitems' do
       last_response.should be_ok
       json = last_response.json_body
 
-      json['workitems'].size.should be( 1 )
+      json['workitems'].size.should be(1)
 
       wi = json['workitems'][0]
 
-      wi.keys.should include( 'fei', 'participant_name', 'fields' )
+      wi.keys.should include('fei', 'participant_name', 'fields')
       wi['wfid'].should == @wfid
       wi['participant_name'].should == 'nada'
       wi['fields']['params']['activity'].should == 'Work your magic'
@@ -78,7 +78,7 @@ describe 'GET /_ruote/workitems/wfid' do
 
   describe 'with workitems' do
 
-    before( :each ) do
+    before(:each) do
       @wfid = launch_test_process do
         Ruote.process_definition :name => 'foo' do
           concurrence do
@@ -96,7 +96,7 @@ describe 'GET /_ruote/workitems/wfid' do
       last_response.should be_ok
 
       last_response.should have_selector(
-        'div.notice p', :content => '2 workitems available' )
+        'div.notice p', :content => '2 workitems available')
     end
 
     it 'should list the workitems (JSON)' do
@@ -107,7 +107,7 @@ describe 'GET /_ruote/workitems/wfid' do
 
       json = last_response.json_body
 
-      json.should have_key( 'workitems' )
+      json.should have_key('workitems')
       json['workitems'].should_not be_empty
     end
   end
@@ -119,7 +119,7 @@ describe 'GET /_ruote/workitems/wfid' do
       get '/_ruote/workitems/foo'
 
       last_response.should be_ok
-      last_response.should match( /no workitems/ )
+      last_response.should match(/no workitems/)
     end
 
     it 'should report an empty list (JSON)' do
@@ -130,7 +130,7 @@ describe 'GET /_ruote/workitems/wfid' do
 
       json = last_response.json_body
 
-      json.should have_key( 'workitems' )
+      json.should have_key('workitems')
       json['workitems'].should be_empty
     end
   end
@@ -142,7 +142,7 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
 
   describe 'with a workitem' do
 
-    before( :each ) do
+    before(:each) do
       @wfid = launch_test_process do
         Ruote.process_definition :name => 'foo' do
           sequence do
@@ -151,7 +151,7 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
         end
       end
 
-      process = engine.process( @wfid )
+      process = engine.process(@wfid)
       @nada_exp_id = '0_0_0' #process.expressions.last.fei.expid
 
       @nada_exp_id.should_not be_nil
@@ -193,14 +193,14 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
       get '/_ruote/workitems/foo/bar'
 
       last_response.should_not be_ok
-      last_response.status.should be( 404 )
+      last_response.status.should be(404)
     end
 
     it 'should return a 404 (JSON)' do
       get '/_ruote/workitems/foo/bar.json'
 
       last_response.should_not be_ok
-      last_response.status.should be( 404 )
+      last_response.status.should be(404)
     end
   end
 end
@@ -209,7 +209,7 @@ describe 'PUT /_ruote/workitems/X-Y' do
 
   it_has_an_engine
 
-  before( :each ) do
+  before(:each) do
 
     @wfid = launch_test_process do
       Ruote.process_definition :name => 'foo' do
@@ -220,7 +220,7 @@ describe 'PUT /_ruote/workitems/X-Y' do
       end
     end
 
-    process = engine.process( @wfid )
+    process = engine.process(@wfid)
     @nada_exp_id = '0_0_0' #process.expressions.last.fei.expid
 
     @nada_exp_id.should_not be_nil
@@ -234,14 +234,14 @@ describe 'PUT /_ruote/workitems/X-Y' do
 
     put(
       "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}",
-      :fields => Rufus::Json.encode( @fields ) )
+      :fields => Rufus::Json.encode(@fields))
 
     last_response.should be_redirect
 
     last_response['Location'].should ==
       "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}"
 
-    find_workitem( @wfid, @nada_exp_id ).fields.should == @fields
+    find_workitem(@wfid, @nada_exp_id).fields.should == @fields
 
     sleep 0.4
 
@@ -254,12 +254,12 @@ describe 'PUT /_ruote/workitems/X-Y' do
 
     put(
       "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
-      Rufus::Json.encode( params ),
-      { 'CONTENT_TYPE' => 'application/json' } )
+      Rufus::Json.encode(params),
+      { 'CONTENT_TYPE' => 'application/json' })
 
     last_response.should be_ok
 
-    find_workitem( @wfid, @nada_exp_id ).fields.should == @fields
+    find_workitem(@wfid, @nada_exp_id).fields.should == @fields
 
     sleep 0.4
 
@@ -268,12 +268,12 @@ describe 'PUT /_ruote/workitems/X-Y' do
 
   it 'should reply to the engine (HTML)' do
 
-    fields = Rufus::Json.encode( @fields )
+    fields = Rufus::Json.encode(@fields)
 
     put(
       "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}",
       :fields => fields,
-      :_proceed => '1' )
+      :_proceed => '1')
 
     last_response.should be_redirect
     last_response['Location'].should == "/_ruote/workitems/#{@wfid}"
@@ -293,8 +293,8 @@ describe 'PUT /_ruote/workitems/X-Y' do
 
     put(
       "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
-      Rufus::Json.encode( params ),
-      { 'CONTENT_TYPE' => 'application/json' } )
+      Rufus::Json.encode(params),
+      { 'CONTENT_TYPE' => 'application/json' })
 
     last_response.should be_ok
 
@@ -312,7 +312,7 @@ describe 'Filtering workitems' do
 
   it_has_an_engine
 
-  before( :each ) do
+  before(:each) do
 
     @wfid = launch_test_process do
       Ruote.process_definition :name => 'test' do
@@ -341,7 +341,7 @@ describe 'Filtering workitems' do
 
       last_response.should be_ok
 
-      last_response.json_body['workitems'].size.should be( 1 )
+      last_response.json_body['workitems'].size.should be(1)
     end
 
     it 'should narrow results down to a single participant (HTML)' do
@@ -351,9 +351,9 @@ describe 'Filtering workitems' do
       last_response.should be_ok
 
       last_response.should have_selector(
-        'div.notice p', :content => '1 workitem available' )
+        'div.notice p', :content => '1 workitem available')
       #last_response.should have_selector(
-      #  'div.notice p', :content => 'Filtered for participant(s): jack' )
+      #  'div.notice p', :content => 'Filtered for participant(s): jack')
     end
 
   end
@@ -366,7 +366,7 @@ describe 'Filtering workitems' do
 
       last_response.should be_ok
 
-      last_response.json_body['workitems'].size.should be( 2 )
+      last_response.json_body['workitems'].size.should be(2)
     end
 
     it 'should find workitems with fields set to a given value (HTML)' do
@@ -382,7 +382,7 @@ describe 'Filtering workitems' do
 
       last_response.should be_ok
 
-      last_response.json_body['workitems'].size.should be( 1 )
+      last_response.json_body['workitems'].size.should be(1)
     end
 
     it 'should respect JSON encoded filter vars (HTML)' do
@@ -398,7 +398,7 @@ describe 'Filtering workitems' do
 
       last_response.should be_ok
 
-      last_response.json_body['workitems'].size.should be( 1 )
+      last_response.json_body['workitems'].size.should be(1)
     end
 
     it "should combine search criteria by 'and' (HMTL)" do
