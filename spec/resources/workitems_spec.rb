@@ -190,6 +190,7 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
   describe 'without a workitem' do
 
     it 'should return a 404 (HTML)' do
+
       get '/_ruote/workitems/foo/bar'
 
       last_response.should_not be_ok
@@ -197,6 +198,7 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
     end
 
     it 'should return a 404 (JSON)' do
+
       get '/_ruote/workitems/foo/bar.json'
 
       last_response.should_not be_ok

@@ -106,6 +106,10 @@ table.list tr td.right {
 table.list tr:hover {
   background: #f4f6f6;
 }
+table.list td.no_padding {
+  padding: 0;
+  margin: 0;
+}
 
 table.details {
   margin-top: 14px;
@@ -129,6 +133,10 @@ table.details td.no_border {
 }
 table.details td.no_border:hover {
   background: white;
+}
+table.details td.no_padding {
+  padding: 0;
+  margin: 0;
 }
 
 /*
@@ -180,5 +188,111 @@ pre.trace {
   font-family: "Menlo Regular", "Monaco", courier, monospace;
   font-size: 90%;
   line-height: 11px;
+}
+
+/* participants */
+
+input.participant {
+  width: 250px;
+  height: 20px;
+  font-family: "Menlo Regular", "Monaco", courier, monospace;
+}
+input#put_button {
+  margin-top: 14px;
+}
+
+table.participants {
+  margin-top: 14px;
+}
+table.participants td {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+table.participants td:last-child {
+  padding-left: 7px;
+}
+table.participants thead td {
+  text-align: center;
+  color #d0d1d3;
+}
+table.participants tr:hover {
+  background: #f4f6f6;
+}
+
+/* buttons +-^vx... */
+
+a.ruote_button {
+  display: inline-block;
+  margin-right: 1px;
+  width: 12px;
+  height: 12px;
+  background: transparent url(../images/ruote_buttons.png) no-repeat;
+}
+a.ruote_plus_button {
+  background-position: 0 0;
+}
+a.ruote_minus_button {
+  background-position: 0 -20px;
+}
+a.ruote_up_button {
+  background-position: 0 -40px;
+}
+a.ruote_down_button {
+  background-position: 0 -60px;
+}
+a.ruote_cut_button {
+  background-position: 0 -20px;
+}
+a.ruote_paste_button {
+  background-position: 0 -80px;
+}
+a.ruote_go_button {
+  background-position: 0 -100px;
+}
+a.ruote_copy_button {
+  background-position: 0 -120px;
+}
+a.ruote_left_button {
+  background-position: 0 -140px;
+}
+a.ruote_right_button {
+  background-position: 0 -160px;
+}
+a.ruote_cross_button {
+  background-position: 0 -180px;
+}
+a.ruote_plus_button:hover {
+  background-position: -20px 0;
+}
+a.ruote_minus_button:hover {
+  background-position: -20px -20px;
+}
+a.ruote_up_button:hover {
+  background-position: -20px -40px;
+}
+a.ruote_down_button:hover {
+  background-position: -20px -60px;
+}
+a.ruote_cut_button:hover {
+  background-position: -20px -20px;
+}
+a.ruote_paste_button:hover {
+  background-position: -20px -80px;
+}
+a.ruote_go_button:hover {
+  background-position: -20px -100px;
+}
+a.ruote_copy_button:hover {
+  background-position: -20px -120px;
+}
+a.ruote_left_button:hover {
+  background-position: -20px -140px;
+}
+a.ruote_right_button:hover {
+  background-position: -20px -160px;
+}
+a.ruote_cross_button:hover {
+  background-position: -20px -180px;
 }
 

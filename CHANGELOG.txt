@@ -1,0 +1,8 @@
+
+= ruote-kit - CHANGELOG.txt
+
+
+== ruote-kit - 2.1.11    not yet released
+
+- /participants resource
+

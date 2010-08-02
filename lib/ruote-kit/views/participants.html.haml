@@ -1,0 +1,77 @@
+
+%h1 participants
+
+.flash
+  .message
+    .notice
+      %p #{pluralize( @participants.size, 'participant' )} registered
+
+%form{ :method => 'POST', :enctype => 'multipart/form-data', :accept_charset => 'UTF-8' }
+
+  %input{ :type => 'hidden', :name => '_method', :value => 'PUT' }
+  %input{ :type => 'hidden', :name => '_snowman', :value => '&#9731;' }
+
+  %table.participants
+    %thead
+      %td
+        regex
+      %td
+        classname
+      %td
+        options
+      %td
+        &nbsp;
+
+    - @participants.each_with_index do |pa, i|
+      %tr
+        %td
+          %input.participant{ :type => :text, :value => pa.regex }
+        %td
+          %input.participant{ :type => :text, :style => 'width: 350px;', :value => pa.classname }
+        %td
+          %input.participant{ :type => :text, :style => 'width: 350px;', :value => Rufus::Json.encode(pa.options) }
+        %td
+          %a.ruote_button.ruote_minus_button{ :title => 'remove', :href => '', :onclick => 'remove(this); return false;' }
+          %a.ruote_button.ruote_up_button{ :title => 'move up', :href => '', :onclick => 'move(this, "up"); return false;' }
+          %a.ruote_button.ruote_down_button{ :title => 'move down', :href => '', :onclick => 'move(this, "down"); return false;' }
+          %a.ruote_button.ruote_copy_button{ :title => 'copy', :href => '', :onclick => 'copy(this); return false;' }
+
+  %input#put_button{ :type => 'submit', :value => 'PUT /_ruote/participants', :onclick => 'nameInputs(); return true;' }
+
+
+:javascript
+
+  function nameInputs () {
+    $('tr').each(function (index) {
+      var inputs = $(this).children('td').map(function () {
+        return $(this).children('input')[0];
+      });
+      inputs[0].name = 'regex_' + index;
+      inputs[1].name = 'classname_' + index;
+      inputs[2].name = 'options_' + index;
+    });
+  }
+
+  function move (elt, direction) {
+    var tr = elt.parentNode.parentNode;
+    if (direction == 'up') {
+      var ps = tr.previousSibling;
+      if ( ! ps) return;
+      tr.parentNode.insertBefore(tr, ps);
+    }
+    else {
+      var ns = tr.nextSibling;
+      if ( ! ns) return;
+      tr.parentNode.insertBefore(ns, tr);
+    }
+  }
+  function copy (elt) {
+    var tr = elt.parentNode.parentNode;
+    var tr2 = tr.cloneNode(true);
+    tr.parentNode.insertBefore(tr2, tr);
+  }
+  function remove (elt) {
+    var tr = elt.parentNode.parentNode;
+    tr.parentNode.removeChild(tr);
+  }
+

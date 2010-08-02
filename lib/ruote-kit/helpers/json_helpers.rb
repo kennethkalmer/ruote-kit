@@ -91,6 +91,18 @@ module RuoteKit
         ])
       end
 
+      def json_participants(pas)
+
+        pas.collect { |pa| json_participant(pa) }
+      end
+
+      def json_participant(pa)
+
+        pa.as_h.merge('links' => [
+          link("/_ruote/participants", 'self')
+        ])
+      end
+
       def links(resource)
         [
           link('/_ruote', '#root'),
@@ -121,7 +133,7 @@ module Ruote
   #
   class ProcessStatus
 
-    def as_h(detailed = true)
+    def as_h(detailed=true)
 
       h = {}
 
@@ -162,7 +174,7 @@ module Ruote
   #
   class Workitem
 
-    def as_h(detailed = true)
+    def as_h(detailed=true)
 
       r = {}
 
@@ -177,6 +189,17 @@ module Ruote
       r['put_at'] = h.put_at
 
       r
+    end
+  end
+
+  #
+  # Re-opening to provide an as_h method
+  #
+  class ParticipantEntry
+
+    def as_h(detailed=true)
+
+      { 'regex' => @regex, 'classname' => @classname, 'options' => @options }
     end
   end
 end

@@ -1,105 +1,102 @@
-require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "GET /_ruote/participants" do
+require File.join(File.dirname(__FILE__), '/../spec_helper')
 
-  describe "without any participant" do
+
+describe 'GET /_ruote/participants' do
+
+  describe 'without any participant' do
 
     it_has_an_engine_with_no_participants
 
-    it "should give an empty list (HTML)" do
-      get "/_ruote/participants"
+    it 'should give an empty list (HTML)' do
+      get '/_ruote/participants'
 
-      last_response.should be_ok
+      last_response.status.should be(200)
     end
 
-    it "should give an empty array (JSON)" do
-      get "/_ruote/participants.json"
+    it 'should give an empty array (JSON)' do
 
-      last_response.should be_ok
+      get '/_ruote/participants.json'
+
+      last_response.status.should be(200)
 
       body = last_response.json_body
-      body.should have_key("participants")
+      body.should have_key('participants')
 
-      body["participants"].should be_empty
+      body['participants'].should be_empty
     end
   end
 
-  describe "with participant" do
+  describe 'with participant' do
 
     it_has_an_engine
 
-    it "should give participant information back (HTML)" do
-      get "/_ruote/participants"
+    it 'should give participant information back (HTML)' do
 
-      last_response.should be_ok
+      get '/_ruote/participants'
+
+      last_response.status.should be(200)
     end
 
-    it "should give participant information back (JSON)" do
-      get "/_ruote/participants.json"
+    it 'should give participant information back (JSON)' do
 
-      last_response.should be_ok
+      get '/_ruote/participants.json'
+
+      last_response.status.should be(200)
 
       body = last_response.json_body
 
-      body["participants"].should_not be_empty
+      body['participants'].should_not be_empty
     end
   end
 end
 
-describe "GET /_ruote/participants/:name", :type => :with_engine do
+describe 'PUT /_ruote/participants' do
 
-  describe "without registered participants" do
+  it_has_an_engine
 
-    it_has_an_engine_with_no_participants
+  it 'should update the list (HTML)' do
 
-    it "should 404 correctly (HTML)" do
-      get "/_ruote/participants/foo"
+    put(
+      '/_ruote/participants',
+      'regex_0' => '^alice$',
+      'classname_0' => 'Ruote::StorageParticipant',
+      'options_0' => '{}',
+      'regex_1' => '^bravo$',
+      'classname_1' => 'Ruote::StorageParticipant',
+      'options_1' => '{}')
 
-      last_response.should_not be_ok
-      last_response.status.should be(404)
+    last_response.should be_redirect
+    last_response['Location'].should == '/_ruote/participants'
 
-      last_response.should have_selector(
-        'div.error p', :content => 'could not be found')
-    end
-
-    it "should 404 correctly (JSON)" do
-      get "/_ruote/participants/foo.json"
-
-      last_response.should_not be_ok
-      last_response.status.should be(404)
-
-      last_response.json_body.keys.should include("error")
-      last_response.json_body['error'].should == { "code" => 404, "message" => "Resource not found" }
-    end
+    RuoteKit.engine.participant_list.collect { |pe| pe.regex }.should == [
+      '^alice$', '^bravo$'
+    ]
   end
 
-  describe "with registered participants" do
+  it 'should update the list (JSON)' do
 
-    it_has_an_engine_with_no_participants
+    list = {
+      'participants' => [
+        { 'regex' => '^alice$',
+          'classname' => 'Ruote::StorageParticipant',
+          'options' => {} },
+        { 'regex' => '^bravo$',
+          'classname' => 'Ruote::StorageParticipant',
+          'options' => {} }
+      ]
+    }
 
-    before :each do
-      @name = 'foo'
+    put(
+      '/_ruote/participants.json',
+      Rufus::Json.encode(list),
+      { 'CONTENT_TYPE' => 'application/json' })
 
-      RuoteKit.engine.register do
-        participant @name, Ruote::NoOpParticipant
-        catchall Ruote::StorageParticipant
-      end
-    end
+    last_response.status.should be(200)
 
-    it "should give participant information back (HTML)" do
-      get "/_ruote/participants/#{@name}"
-
-      last_response.should be_ok
-    end
-
-    it "should give process information back (JSON)" do
-      get "/_ruote/participants/#{@name}.json"
-
-      last_response.should be_ok
-
-      body = last_response.json_body
-
-      body.should have_key('participant')
-    end
+    RuoteKit.engine.participant_list.collect { |pe| pe.regex }.should == [
+      '^alice$', '^bravo$'
+    ]
   end
 end
+
