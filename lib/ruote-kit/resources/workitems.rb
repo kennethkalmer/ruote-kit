@@ -1,4 +1,6 @@
 
+# license is MIT, see LICENSE.txt
+
 class RuoteKit::Application
 
   get '/_ruote/workitems/?' do

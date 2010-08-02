@@ -1,4 +1,6 @@
 
+# license is MIT, see LICENSE.txt
+
 # lib/ruote-kit/version.rb
 #
 # so that the Rakefile doesn't have to load all the deps

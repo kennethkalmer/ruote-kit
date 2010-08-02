@@ -1,4 +1,6 @@
 
+# license is MIT, see LICENSE.txt
+
 module RuoteKit
   module Helpers
     module NavigationHelpers

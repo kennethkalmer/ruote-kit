@@ -1,4 +1,6 @@
 
+# license is MIT, see LICENSE.txt
+
 require 'sinatra/respond_to'
 require 'haml'
 

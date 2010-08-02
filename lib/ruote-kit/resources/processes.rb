@@ -1,4 +1,6 @@
 
+# license is MIT, see LICENSE.txt
+
 require 'ostruct'
 
 
