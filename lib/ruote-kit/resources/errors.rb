@@ -37,22 +37,20 @@ class RuoteKit::Application
 
   # replay_at_error(e)
   #
-  delete '/_ruote/errors/:wfid/:expid' do
+  delete '/_ruote/errors/:fei' do
 
-    #process = engine.process(params[:wfid])
-    #if process && expression = process.expressions.detect { |exp| exp.fei.expid == params[:expid] }
-    #  if params[:_kill]
-    #    engine.kill_expression(expression.fei)
-    #  else
-    #    engine.cancel_expression(expression.fei)
-    #  end
-    #  respond_to do |format|
-    #    format.html { redirect "/_ruote/expressions/#{params[:wfid]}" }
-    #    format.json { json(:status, :ok) }
-    #  end
-    #else
-    #  resource_not_found
-    #end
+    fei = params[:fei]
+    wfid = fei.split('!').last
+
+    ps = RuoteKit.engine.process(wfid)
+    error = ps.errors.find { |e| e.fei.sid == fei }
+
+    RuoteKit.engine.replay_at_error(error)
+
+    respond_to do |format|
+      format.html { redirect '/_ruote/errors' }
+      format.json { json(:status, :ok) }
+    end
   end
 
   protected
