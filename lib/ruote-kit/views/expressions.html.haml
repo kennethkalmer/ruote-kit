@@ -3,31 +3,31 @@
 
 - @_uses_fluo = true
 
-- unless @process
+%h1 expressions for #{@process.wfid}
 
-  %h1 expressions
-  .flash
-    .message
-      .notice
-        %p Expressions are atomic pieces of process instances.
-        %p Have a look at the <a href="/_ruote/processes">processes</a> and then follow their links to their set of expressions.
+%canvas#fluo
 
-- else
+%table.list{ :style => 'width: auto;', :onmouseout => "Fluo.highlight('fluo')" }
+  %thead
+    %td fei
+    %td expid
+    %td exp
+    %td applied
 
-  %h1 expressions for #{@process.wfid}
 
-  %canvas#fluo
-
-  %ul
-    - @process.expressions.each do |expression|
-      %li
+  - @process.expressions.each do |expression|
+    %tr{ :onmouseover => "Fluo.highlight('fluo', '#{expression.fei.expid}')" }
+      %td
         = alink(:expressions, expression.fei.sid)
-        %ul
-          %li id: #{expression.fei.sid}
-          %li class: #{expression.class.name}
-          %li name: #{expression.respond_to?(:participant_name) ? expression.participant_name : expression.name}
+      %td
+        &= expression.fei.expid
+      %td
+        &= expression.tree.first
+      %td
+        = Time.parse(expression.h.put_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
 
 :javascript
+
   var proc_rep = #{process_tree(@process)};
   Fluo.renderFlow('fluo', proc_rep);
   Fluo.crop('fluo');

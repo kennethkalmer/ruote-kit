@@ -5,36 +5,118 @@
 
 %h1 expression #{@expression.fei.sid}
 
-.options
-  %ul
-    %li
+%canvas#fluo
+
+%table.details
+
+  %tr
+    %td
+      fei
+    %td
+      &= @expression.fei.sid
+  %tr
+    %td
+      expid
+    %td
+      &= @expression.fei.expid
+  %tr
+    %td
+      expression
+    %td
+      &= @expression.tree.first
+  %tr
+    %td
+      expression class
+    %td
+      &= @expression.class.to_s
+  -#%tr
+  -#  %td
+  -#    original tree
+  -#  %td
+  -#    - ruby = Ruote::Parser.to_ruby(@expression.original_tree)
+  -#    - rubyline = ruby.split("\n").first
+  -#    -#%pre{ :onclick => 'toggleNextSibling(this);' } #{rubyline}
+  -#    -#%pre{ :onclick => 'toggleNextSibling(this);', :style => 'display: none;' } #{ruby}
+  -#    %pre #{ruby}
+  %tr
+    %td
+      tree
+    %td
+      - ruby = Ruote::Parser.to_ruby(@expression.tree)
+      - rubyline = ruby.split("\n").first
+      %pre #{ruby}
+
+  %tr
+    %td.no_border{ :colspan => 2 }
+      &nbsp;
+
+  %tr
+    %td
+      process
+    %td
+      GET
+      = alink(:processes, @expression.fei.wfid)
+  %tr
+    %td
+      other expressions
+    %td
+      GET
+      = alink(:expressions, @expression.fei.wfid)
+  %tr
+    %td
+      workitem
+    %td
+      (if any)
+
+  %tr
+    %td.no_border{ :colspan => 2 }
+      &nbsp;
+
+  %tr
+    %td
+      cancel
+    %td
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         %input{ :type => 'submit', :value => 'cancel' }
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}
-    %li
+  %tr
+    %td
+      kill
+    %td
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         %input{ :type => 'hidden', :name => '_kill', :value => '1' }
         %input{ :type => 'submit', :value => 'kill' }
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}?_kill=1
 
-%ul
-  %li id: #{@expression.fei.sid}
-  %li class: #{@expression.class.name}
-  %li name: #{@expression.respond_to?(:participant_name) ? @expression.participant_name : @expression.name}
-  %li process: #{alink(:processes, @process.wfid)}
-  %li
-    process expressions:
-    %a{ :href => "/_ruote/expressions/#{@process.wfid}" } GET /_ruote/expressions/#{@process.wfid}
-  - if @expression.parent
-    %li parent expression: #{alink(:expressions, @expression.parent.fei.sid)}
+  %tr
+    %td.no_border{ :colspan => 2 }
+      &nbsp;
 
-%canvas#fluo
+  %tr
+    %td
+      re-apply
+    %td
+      (...)
 
 :javascript
+
   var proc_rep = #{process_tree(@process)};
   Fluo.renderFlow('fluo', proc_rep);
   Fluo.crop('fluo');
   Fluo.highlight('fluo', '#{@expression.fei.expid}');
+
+  //function toggleNextSibling (elt) {
+  //  console.log(elt);
+  //  $(elt).hide();
+  //  var next = elt.nextSibling;
+  //  if ( ! next) next = firstSibling(elt);
+  //  console.log(next);
+  //  $(next).show();
+  //}
+  //function firstSibling (elt) {
+  //  if (elt.previousSibling) return firstSibling(elt.previousSibling);
+  //  return elt;
+  //}
 

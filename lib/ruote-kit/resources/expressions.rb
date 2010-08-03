@@ -3,14 +3,6 @@
 
 class RuoteKit::Application
 
-  get '/_ruote/expressions/?' do
-
-    respond_to do |format|
-      format.html { haml :expressions }
-      format.json { json(:status, :ok) }
-    end
-  end
-
   get '/_ruote/expressions/:id' do
 
     @process, @expression, fei = fetch_pe
@@ -50,6 +42,11 @@ class RuoteKit::Application
       format.html { redirect "/_ruote/expressions/#{expression.fei.wfid}" }
       format.json { json(:status, :ok) } # TODO : really 200 ?
     end
+  end
+
+  put '/_ruote/expressions/:id' do
+
+    # TODO
   end
 
   protected

@@ -1,25 +1,18 @@
 
 require File.join(File.dirname(__FILE__), '/../spec_helper')
 
+undef :context if defined?(context)
+
 
 describe 'GET /_ruote/expressions' do
 
   it_has_an_engine
 
-  it 'should report a friendly message to the user (HTML)' do
+  it 'should 404 (HTML)' do
 
     get '/_ruote/expressions'
 
-    last_response.should be_ok
-  end
-
-  it 'should report a friendly message to the client (JSON)' do
-
-    get '/_ruote/expressions.json'
-
-    last_response.should be_ok
-
-    last_response.json_body['status'].should == 'ok'
+    last_response.status.should be(404)
   end
 end
 
