@@ -40,7 +40,7 @@ describe 'with a running process that has an error' do
     RuoteKit.engine.register_participant :alice, Ruote::StorageParticipant
 
     @wfid = RuoteKit.engine.launch(
-      Ruote.process_definition :name => 'test' do
+      Ruote.process_definition(:name => 'test') do
         sequence do
           nemo
           alice
