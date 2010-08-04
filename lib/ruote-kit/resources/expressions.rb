@@ -50,11 +50,11 @@ class RuoteKit::Application
 
     return http_error(404) unless expression
 
-    info = #begin
+    info = begin
       fetch_re_apply_info
-    #rescue Rufus::Json::ParserError => pe
-    #  return bad_request(pe)
-    #end
+    rescue Rufus::Json::ParserError => pe
+      return http_error(400, pe)
+    end
 
     #puts '-' * 80
     #p params

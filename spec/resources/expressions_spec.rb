@@ -304,5 +304,22 @@ describe 'PUT /_ruote/expressions/fei' do
     RuoteKit.engine.process(@wfid).current_tree.should == [ 'define', {}, [
       [ 'participant', { '_triggered' => 'on_re_apply', 'ref' => 'bravo' }, [] ] ] ]
   end
+
+  it 'should 400 when passed bogus JSON (HTML)' do
+
+    pending('work in progress')
+  end
+
+  it 'should 400 when passed bogus JSON (JSON)' do
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}.json",
+      '{"fields":{bogus}}',
+      { 'CONTENT_TYPE' => 'application/json' })
+
+    last_response.status.should be(400)
+    last_response.json_body['http_error']['code'].should == 400
+    last_response.json_body['http_error']['message'].should == 'bad request'
+  end
 end
 

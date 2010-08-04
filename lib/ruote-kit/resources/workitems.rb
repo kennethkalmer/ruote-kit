@@ -46,7 +46,11 @@ class RuoteKit::Application
 
     return http_error(404) unless workitem
 
-    options = field_updates_and_proceed_from_put
+    options = begin
+      field_updates_and_proceed_from_put
+    rescue Rufus::Json::ParserError => pe
+      return http_error(400, pe)
+    end
 
     unless options[:fields].empty?
       workitem.fields = options[:fields]

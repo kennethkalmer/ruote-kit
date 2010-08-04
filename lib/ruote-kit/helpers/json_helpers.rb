@@ -20,10 +20,9 @@ module RuoteKit
         })
       end
 
-      def json_exception(code, exception)
-
-        { 'code' => code, 'exception' => { 'message' => exception.message } }
-      end
+      #def json_exception(code, exception)
+      #  { 'code' => code, 'exception' => { 'message' => exception.message } }
+      #end
 
       def json_processes(processes)
 

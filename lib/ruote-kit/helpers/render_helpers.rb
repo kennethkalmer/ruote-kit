@@ -68,14 +68,10 @@ module RuoteKit
 
       # HTTP errors
       #
-      def http_error(code, message=nil, cause=nil)
-
-        if message.nil? and m = HTTP_CODES[code]
-          message = m
-        end
+      def http_error(code, cause=nil)
 
         @code = code
-        @message = message
+        @message = HTTP_CODES[code]
         @cause = cause
 
         @format = if m = @format.to_s.match(/^[^\/]+\/([^;]+)/)
@@ -89,7 +85,7 @@ module RuoteKit
 
         respond_to do |format|
           format.html { haml :http_error }
-          format.json { json(:http_error, [ code, message, cause ]) }
+          format.json { json(:http_error, [ @code, @message, @cause ]) }
         end
       end
 
