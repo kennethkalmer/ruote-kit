@@ -16,34 +16,34 @@
  
   %thead
     %td
-      owner
+      owner / [ target ]
     %td
-      target
-    %td
-      at
-    %td
-      action
+      process schedules
     %td
       type
     %td
+      put at
+    %td
       original
     %td
-      put at
+      at
 
   - @schedules.each do |schedule|
     %tr
       %td
-        = alink(:expressions, schedule['owner'].sid)
+        %div
+          = alink(:expressions, schedule['owner'].sid)
+        - if schedule['owner'] != schedule['target']
+          %div
+            = alink(:expressions, schedule['target'].sid)
       %td
-        = alink(:expressions, schedule['target'].sid)
-      %td
-        = Time.parse(schedule['at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
-      %td
-        &= schedule['action']
+        = alink(:schedules, schedule['owner'].wfid)
       %td
         &= schedule['type']
       %td
+        = Time.parse(schedule['put_at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
+      %td
         &= schedule['original']
       %td
-        = Time.parse(schedule['put_at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
+        = Time.parse(schedule['at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
 

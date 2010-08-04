@@ -36,7 +36,8 @@ module RuoteKit
           link("/_ruote/processes/#{process.wfid}", '#process'),
           link("/_ruote/expressions/#{process.wfid}", '#process_expressions'),
           link("/_ruote/workitems/#{process.wfid}", '#process_workitems'),
-          link("/_ruote/errors/#{process.wfid}", '#process_errors')
+          link("/_ruote/errors/#{process.wfid}", '#process_errors'),
+          link("/_ruote/schedules/#{process.wfid}", '#process_schedules')
         ])
       end
 

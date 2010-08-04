@@ -27,6 +27,9 @@ describe 'GET /_ruote/schedules' do
     get '/_ruote/schedules'
 
     last_response.status.should be(200)
+
+    last_response.should have_selector(
+      'a[rel="http://ruote.rubyforge.org/rels.html#process_schedules"]')
   end
 
   it 'should list schedules (JSON)' do

@@ -49,6 +49,8 @@ module RuoteKit
           fei ? '#error' : '#process_errors'
         elsif resource == 'workitems'
           fei ? '#workitem' : '#process_workitems'
+        elsif resource == 'schedules'
+          id ? '#process_schedules' : '#schedules'
         else
           ''
         end

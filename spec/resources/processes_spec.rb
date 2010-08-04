@@ -15,7 +15,9 @@ def process_links(wfid)
     { 'href' => "/_ruote/workitems/#{wfid}",
       'rel' => 'http://ruote.rubyforge.org/rels.html#process_workitems' },
     { 'href' => "/_ruote/errors/#{wfid}",
-      'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' }
+      'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },
+    { 'href' => "/_ruote/schedules/#{wfid}",
+      'rel' => 'http://ruote.rubyforge.org/rels.html#process_schedules' }
   ]
 end
 
@@ -75,7 +77,7 @@ describe 'GET /_ruote/processes' do
   end
 end
 
-describe 'GET /_ruote/processes/X-Y' do
+describe 'GET /_ruote/processes/wfid' do
 
   it_has_an_engine
 
@@ -90,6 +92,9 @@ describe 'GET /_ruote/processes/X-Y' do
       get "/_ruote/processes/#{@wfid}"
 
       last_response.should be_ok
+
+      last_response.should have_selector(
+        'a[rel="http://ruote.rubyforge.org/rels.html#process_schedules"]')
     end
 
     it 'should give process information back (JSON)' do
