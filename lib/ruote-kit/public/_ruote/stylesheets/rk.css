@@ -220,6 +220,16 @@ table.participants tr:hover {
   background: #f4f6f6;
 }
 
+/* expressions */
+
+pre.pdef {
+  font-family: "Menlo Regular", "Monaco", courier, monospace;
+  font-size: 90%;
+  line-height: 14px;
+  margin-top: 4px;
+  cursor: pointer;
+}
+
 /* errors */
 
 #trace {

@@ -29,22 +29,27 @@
       expression class
     %td
       &= @expression.class.to_s
-  -#%tr
-  -#  %td
-  -#    original tree
-  -#  %td
-  -#    - ruby = Ruote::Parser.to_ruby(@expression.original_tree)
-  -#    - rubyline = ruby.split("\n").first
-  -#    -#%pre{ :onclick => 'toggleNextSibling(this);' } #{rubyline}
-  -#    -#%pre{ :onclick => 'toggleNextSibling(this);', :style => 'display: none;' } #{ruby}
-  -#    %pre #{ruby}
+  - if @expression.original_tree != @expression.tree
+    %tr
+      %td
+        original tree
+      %td
+        - ruby = Ruote::Parser.to_ruby(@expression.original_tree)
+        - rubyline = ruby.split("\n").first
+        - json = Rufus::Json.pretty_encode(@expression.original_tree)
+        %pre.pdef{ :onclick => 'Rk.toggleNext(this);' } #{rubyline}
+        %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{ruby}
+        %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{json}
   %tr
     %td
       tree
     %td
       - ruby = Ruote::Parser.to_ruby(@expression.tree)
       - rubyline = ruby.split("\n").first
-      %pre #{ruby}
+      - json = Rufus::Json.pretty_encode(@expression.tree)
+      %pre.pdef{ :onclick => 'Rk.toggleNext(this);' } #{rubyline}
+      %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{ruby}
+      %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{json}
 
   %tr
     %td.no_border{ :colspan => 2 }
@@ -106,17 +111,4 @@
   Fluo.renderFlow('fluo', proc_rep);
   Fluo.crop('fluo');
   Fluo.highlight('fluo', '#{@expression.fei.expid}');
-
-  //function toggleNextSibling (elt) {
-  //  console.log(elt);
-  //  $(elt).hide();
-  //  var next = elt.nextSibling;
-  //  if ( ! next) next = firstSibling(elt);
-  //  console.log(next);
-  //  $(next).show();
-  //}
-  //function firstSibling (elt) {
-  //  if (elt.previousSibling) return firstSibling(elt.previousSibling);
-  //  return elt;
-  //}
 
