@@ -1,5 +1,8 @@
 
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.join(File.dirname(__FILE__), '/../spec_helper')
+
+undef :context if defined?(context)
+
 
 def process_links(wfid)
   [
@@ -122,10 +125,11 @@ describe 'GET /_ruote/processes/X-Y' do
       last_response.should_not be_ok
       last_response.status.should be(404)
 
-      last_response.json_body.keys.should include('error')
+      last_response.json_body.keys.should include('http_error')
 
-      last_response.json_body['error'].should == {
-        'code' => 404, 'message' => 'resource not found' }
+      last_response.json_body['http_error'].should == {
+        'code' => 404, 'message' => 'resource not found', 'cause' => ''
+      }
     end
   end
 end
@@ -256,7 +260,7 @@ describe 'POST /_ruote/processes' do
     engine.processes.should_not be_empty
   end
 
-  it 'should return a 400 code when it fails to determine what to launch (JSON)' do
+  it 'should 400 code when it fails to determine what to launch (JSON)' do
 
     params = { :definition => 'http://invalid.invalid' }
 
@@ -266,19 +270,17 @@ describe 'POST /_ruote/processes' do
       { 'CONTENT_TYPE' => 'application/json' })
 
     last_response.status.should be(400)
-
-    last_response.json_body.keys.should include('exception')
+    last_response.json_body.keys.should include('http_error')
   end
 
-  it 'should return a 400 code page when it fails to determine what to launch (HTML)' do
+  it 'should 400 when it fails to determine what to launch (HTML)' do
 
     params = { :definition => %q{http://invalid.invalid} }
 
     post '/_ruote/processes', params
 
     last_response.status.should be(400)
-
-    last_response.should match(/failed to launch process/)
+    last_response.should match(/bad request/)
   end
 
 end

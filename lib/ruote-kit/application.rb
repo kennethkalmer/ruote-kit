@@ -51,7 +51,7 @@ module RuoteKit
       # handle 404s ourselves when not in Rails
 
       not_found do
-        resource_not_found
+        http_error(404)
       end
     end
 
@@ -63,7 +63,7 @@ module RuoteKit
           haml :index
         }
         format.json {
-          json :misc, "ruote-kit" => "welcome", "version" => RuoteKit::VERSION
+          json :misc, 'ruote-kit' => 'welcome', 'version' => RuoteKit::VERSION
         }
       end
     end

@@ -324,6 +324,23 @@ describe 'PUT /_ruote/workitems/X-Y' do
 
     @tracer.to_s.should == 'bar'
   end
+
+  it 'should 400 when passed bogus JSON fields (HTML)' do
+
+    put "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}", :fields => '{"bogus"}'
+
+    last_response.status.should be(400)
+  end
+
+  it 'should 400 when passed bogus JSON fields (JSON)' do
+
+    put(
+      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
+      "{'bogus'}",
+      { 'CONTENT_TYPE' => 'application/json' })
+
+    last_response.status.should be(400)
+  end
 end
 
 describe 'Filtering workitems' do

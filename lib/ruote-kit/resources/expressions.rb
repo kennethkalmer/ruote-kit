@@ -7,11 +7,11 @@ class RuoteKit::Application
 
     @process, @expression, fei = fetch_pe
 
-    return resource_not_found unless @process
+    return http_error(404) unless @process
 
     if fei
 
-      return resource_not_found unless @expression
+      return http_error(404) unless @expression
 
       respond_to do |format|
         format.html { haml :expression }
@@ -30,7 +30,7 @@ class RuoteKit::Application
 
     process, expression, fei = fetch_pe
 
-    return resource_not_found unless expression
+    return http_error(404) unless expression
 
     if params[:_kill]
       RuoteKit.engine.kill_expression(expression.fei)
@@ -40,13 +40,37 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { redirect "/_ruote/expressions/#{expression.fei.wfid}" }
-      format.json { json(:status, :ok) } # TODO : really 200 ?
+      format.json { json(:status, :ok) }
     end
   end
 
   put '/_ruote/expressions/:id' do
 
-    # TODO
+    process, expression, fei = fetch_pe
+
+    return http_error(404) unless expression
+
+    info = begin
+      fetch_re_apply_info
+    rescue Rufus::Json::ParserError => pe
+      return http_error(400, pe)
+    end
+
+    #puts '-' * 80
+    #p params
+    #p info
+    #puts '-' * 80
+
+    options = {}
+    options[:fields] = info.fields if info.fields
+    options[:tree] = info.tree if info.tree
+
+    RuoteKit.engine.re_apply(expression.fei, options)
+
+    respond_to do |format|
+      format.html { redirect "/_ruote/expressions/#{expression.fei.wfid}" }
+      format.json { json(:status, :ok) }
+    end
   end
 
   protected
@@ -65,6 +89,27 @@ class RuoteKit::Application
     fei = (fei.length > 1)
 
     [ process, expression, fei ]
+  end
+
+  def fetch_re_apply_info
+
+    if request.content_type == 'application/json' then
+
+      OpenStruct.new(Rufus::Json.decode(request.body.read))
+
+    else
+
+      o = OpenStruct.new
+
+      if fields = params[:fields]
+        o.fields = Rufus::Json.decode(fields)
+      end
+      if tree = params[:tree]
+        o.tree = Rufus::Json.decode(tree)
+      end
+
+      o
+    end
   end
 end
 

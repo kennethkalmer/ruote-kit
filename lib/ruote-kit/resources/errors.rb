@@ -17,7 +17,7 @@ class RuoteKit::Application
 
     @error, @errors = fetch_e
 
-    return resource_not_found if @error.nil? && @errors.nil?
+    return http_error(404) if @error.nil? && @errors.nil?
 
     if @error
 

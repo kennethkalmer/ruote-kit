@@ -20,10 +20,9 @@ module RuoteKit
         })
       end
 
-      def json_exception(code, exception)
-
-        { 'code' => code, 'exception' => { 'message' => exception.message } }
-      end
+      #def json_exception(code, exception)
+      #  { 'code' => code, 'exception' => { 'message' => exception.message } }
+      #end
 
       def json_processes(processes)
 
@@ -105,6 +104,24 @@ module RuoteKit
         ])
       end
 
+      def json_schedules(scheds)
+
+        scheds.each do |sched|
+
+          sched['links'] = [
+            link("/_ruote/expressions/#{sched['owner']}", '#schedule_owner'),
+            link("/_ruote/expressions/#{sched['target']}", '#schedule_target')
+          ]
+        end
+
+        scheds
+      end
+
+      def json_http_error(err)
+
+        { 'code' => err[0], 'message' => err[1], 'cause' => err[2].to_s }
+      end
+
       def links(resource)
         [
           link('/_ruote', '#root'),
@@ -112,6 +129,7 @@ module RuoteKit
           link('/_ruote/workitems', '#workitems'),
           link('/_ruote/errors', '#errors'),
           link('/_ruote/participants', '#participants'),
+          link('/_ruote/schedules', '#schedules'),
           link('/_ruote/history', '#history'),
           link(request.fullpath, 'self')
         ]
@@ -129,6 +147,26 @@ module RuoteKit
 end
 
 module Ruote
+
+  # Refines a schedule as found in the ruote storage into something a bit
+  # easier to present.
+  #
+  def self.schedule_to_h (sched)
+
+    h = sched.dup
+
+    h.delete('_rev')
+    h.delete('type')
+    msg = h.delete('msg')
+    owner = h.delete('owner')
+
+    h['action'] = msg['action']
+    h['type'] = msg['flavour']
+    h['owner'] = Ruote.to_storage_id(owner)
+    h['target'] = Ruote.to_storage_id(msg['fei'])
+
+    h
+  end
 
   #
   # Re-opening to provide an as_h method

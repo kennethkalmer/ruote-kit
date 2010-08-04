@@ -1,0 +1,49 @@
+
+- # under the MIT license, see LICENSE.txt
+
+%h1 schedules
+
+.flash
+  .message
+    - if @schedules.empty?
+      .warn
+        %p there are currently no schedules for the processes in the engine
+    - else
+      .notice
+        %p currently #{@schedules.size} schedules for the processes in the engine
+
+%table.list
+ 
+  %thead
+    %td
+      owner
+    %td
+      target
+    %td
+      at
+    %td
+      action
+    %td
+      type
+    %td
+      original
+    %td
+      put at
+
+  - @schedules.each do |schedule|
+    %tr
+      %td
+        = alink(:expressions, schedule['owner'])
+      %td
+        = alink(:expressions, schedule['target'])
+      %td
+        = Time.parse(schedule['at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
+      %td
+        &= schedule['action']
+      %td
+        &= schedule['type']
+      %td
+        &= schedule['original']
+      %td
+        = Time.parse(schedule['put_at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
+

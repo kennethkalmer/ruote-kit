@@ -1,8 +1,6 @@
 
 # license is MIT, see LICENSE.txt
 
-require 'ostruct'
-
 
 class RuoteKit::Application
 
@@ -27,39 +25,32 @@ class RuoteKit::Application
 
     @process = RuoteKit.engine.process(params[:wfid])
 
-    if @process
-      respond_to do |format|
-        format.html { haml :process }
-        format.json { json(:process, @process) }
-      end
-    else
-      resource_not_found
+    return http_error(404) unless @process
+
+    respond_to do |format|
+      format.html { haml :process }
+      format.json { json(:process, @process) }
     end
   end
 
   post '/_ruote/processes' do
 
+    begin
+
+      @info = fetch_launch_info
+
+      @wfid = RuoteKit.engine.launch(
+        @info.definition, @info.fields || {}, @info.variables || {})
+
+    rescue Exception => e
+      return http_error(400, e)
+    end
+
+    status 201 # created
+
     respond_to do |format|
-      begin
-
-        @info = fetch_launch_info
-
-        @wfid = RuoteKit.engine.launch(
-          @info.definition, @info.fields || {}, @info.variables || {})
-
-      rescue Exception => @exception
-
-        status 400
-
-        format.html { haml :process_failed_to_launch }
-        format.json { json(:exception, 400, @exception) }
-      else
-
-        status 201 # created
-
-        format.html { haml :process_launched }
-        format.json { json(:launched, @wfid) }
-      end
+      format.html { haml :process_launched }
+      format.json { json(:launched, @wfid) }
     end
   end
 

@@ -22,7 +22,7 @@ class RuoteKit::Application
 
     @workitem, @workitems, @wfid = fetch_wi
 
-    return resource_not_found if @workitem.nil? && @workitems.nil?
+    return http_error(404) if @workitem.nil? && @workitems.nil?
 
     if @workitem
 
@@ -44,9 +44,13 @@ class RuoteKit::Application
 
     workitem, _, _ = fetch_wi
 
-    return resource_not_found unless workitem
+    return http_error(404) unless workitem
 
-    options = field_updates_and_proceed_from_put
+    options = begin
+      field_updates_and_proceed_from_put
+    rescue Rufus::Json::ParserError => pe
+      return http_error(400, pe)
+    end
 
     unless options[:fields].empty?
       workitem.fields = options[:fields]
