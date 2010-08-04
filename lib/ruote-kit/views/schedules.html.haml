@@ -33,9 +33,9 @@
   - @schedules.each do |schedule|
     %tr
       %td
-        = alink(:expressions, schedule['owner'])
+        = alink(:expressions, schedule['owner'].sid)
       %td
-        = alink(:expressions, schedule['target'])
+        = alink(:expressions, schedule['target'].sid)
       %td
         = Time.parse(schedule['at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
       %td

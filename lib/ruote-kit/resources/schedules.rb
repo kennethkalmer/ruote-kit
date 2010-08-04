@@ -5,8 +5,17 @@ class RuoteKit::Application
 
   get '/_ruote/schedules/?' do
 
-    @schedules = RuoteKit.engine.context.storage.get_many('schedules')
-    @schedules = @schedules.collect { |sched| Ruote.schedule_to_h(sched) }
+    @schedules = RuoteKit.engine.schedules
+
+    respond_to do |format|
+      format.html { haml :schedules }
+      format.json { json(:schedules, @schedules) }
+    end
+  end
+
+  get '/_ruote/schedules/:wfid' do
+
+    @schedules = RuoteKit.engine.schedules(params[:wfid])
 
     respond_to do |format|
       format.html { haml :schedules }

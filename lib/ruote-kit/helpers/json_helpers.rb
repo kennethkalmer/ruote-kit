@@ -148,26 +148,6 @@ end
 
 module Ruote
 
-  # Refines a schedule as found in the ruote storage into something a bit
-  # easier to present.
-  #
-  def self.schedule_to_h (sched)
-
-    h = sched.dup
-
-    h.delete('_rev')
-    h.delete('type')
-    msg = h.delete('msg')
-    owner = h.delete('owner')
-
-    h['action'] = msg['action']
-    h['type'] = msg['flavour']
-    h['owner'] = Ruote.to_storage_id(owner)
-    h['target'] = Ruote.to_storage_id(msg['fei'])
-
-    h
-  end
-
   #
   # Re-opening to provide an as_h method
   #
