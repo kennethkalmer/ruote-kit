@@ -71,7 +71,7 @@
       %td
         fields
       %td.no_padding
-        %textarea{ :name => "fields", :cols => 80, :rows => 10 } #{Rufus::Json.pretty_encode(fields)}
+        %textarea{ :name => "fields", :cols => 80, :rows => 10 } #{Rufus::Json.pretty_encode(@workitem.fields)}
     %tr
       %td
         proceed ?

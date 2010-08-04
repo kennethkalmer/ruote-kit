@@ -207,7 +207,7 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
   end
 end
 
-describe 'PUT /_ruote/workitems/X-Y' do
+describe 'PUT /_ruote/workitems/fei' do
 
   it_has_an_engine
 
@@ -242,22 +242,6 @@ describe 'PUT /_ruote/workitems/X-Y' do
 
     last_response['Location'].should ==
       "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}"
-
-    find_workitem(@wfid, @nada_exp_id).fields.should == @fields
-
-    sleep 0.4
-
-    @tracer.to_s.should == ''
-  end
-
-  it "shouldn't loose the original params when none given (HTML)" do
-
-    fields = @fields.dup
-    fields.delete('params')
-
-    put(
-      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}",
-      :fields => Rufus::Json.encode(fields))
 
     find_workitem(@wfid, @nada_exp_id).fields.should == @fields
 
