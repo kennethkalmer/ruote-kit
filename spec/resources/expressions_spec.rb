@@ -61,13 +61,14 @@ describe 'GET /_ruote/expressions/wfid' do
   end
 end
 
-describe 'GET /_ruote/expressions/wfid/expid' do
+describe 'GET /_ruote/expressions/fei' do
 
   it_has_an_engine
 
   describe 'with running processes' do
 
     before(:each) do
+
       @wfid = launch_test_process
       process = engine.process(@wfid)
       @nada_exp_id = process.expressions.last.fei.expid
@@ -108,7 +109,7 @@ describe 'GET /_ruote/expressions/wfid/expid' do
   end
 end
 
-describe 'DELETE /_ruote/expressions/wfid/expid' do
+describe 'DELETE /_ruote/expressions/fei' do
 
   it_has_an_engine
 
@@ -191,6 +192,7 @@ describe 'DELETE /_ruote/expressions/wfid/expid' do
   describe 'without running processes' do
 
     it 'should 404 correctly (HTML)' do
+
       delete '/_ruote/expressions/foo/bar'
 
       last_response.should_not be_ok
@@ -204,6 +206,105 @@ describe 'DELETE /_ruote/expressions/wfid/expid' do
       last_response.should_not be_ok
       last_response.status.should be(404)
     end
+  end
+end
+
+describe 'PUT /_ruote/expressions/fei' do
+
+  it_has_an_engine
+
+  before(:each) do
+
+    @wfid = launch_test_process do
+      Ruote.process_definition do
+        alpha
+      end
+    end
+
+    @exp = RuoteKit.engine.process(@wfid).expressions.find { |e|
+      e.fei.expid == '0_0'
+    }
+  end
+
+  it 'should re-apply (HTML)' do
+
+    pending('work in progress')
+  end
+
+  it 'should re-apply (JSON)' do
+
+    #RuoteKit.engine.noisy = true
+
+    at0 = RuoteKit.engine.storage_participant.first.dispatched_at
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}.json",
+      Rufus::Json.encode({}),
+      { 'CONTENT_TYPE' => 'application/json' })
+
+    last_response.status.should be(200)
+
+    #RuoteKit.engine.wait_for(:alpha)
+    sleep 0.500
+
+    at1 = RuoteKit.engine.storage_participant.first.dispatched_at
+
+    at1.should_not == at0
+  end
+
+  it 'should re-apply with different fields (HTML)' do
+
+    pending('work in progress')
+  end
+
+  it 'should re-apply with different fields (JSON)' do
+
+    wi = RuoteKit.engine.storage_participant.first
+    wi.fields['car'].should be(nil)
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}.json",
+      Rufus::Json.encode({ 'fields' => { 'car' => 'bentley' } }),
+      { 'CONTENT_TYPE' => 'application/json' })
+
+    last_response.status.should be(200)
+
+    #RuoteKit.engine.wait_for(:alpha)
+    sleep 0.500
+
+    wi = RuoteKit.engine.storage_participant.first
+
+    wi.fields['car'].should == 'bentley'
+  end
+
+  it 'should re-apply with a different tree (HTML)' do
+
+    pending('work in progress')
+  end
+
+  it 'should re-apply with a different tree (JSON)' do
+
+    wi = RuoteKit.engine.storage_participant.first
+    wi.participant_name.should == 'alpha'
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}.json",
+      Rufus::Json.encode({ 'tree' => [ 'bravo', {}, [] ] }),
+      { 'CONTENT_TYPE' => 'application/json' })
+
+    last_response.status.should be(200)
+
+    #RuoteKit.engine.wait_for(:alpha)
+    sleep 0.500
+
+    wi = RuoteKit.engine.storage_participant.first
+
+    wi.participant_name.should == 'bravo'
+
+    #p RuoteKit.engine.process(@wfid).current_tree
+    #RuoteKit.engine.process(@wfid).expressions.each do |exp|
+    #  p exp.tree
+    #end
   end
 end
 

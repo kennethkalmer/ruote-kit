@@ -40,13 +40,33 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { redirect "/_ruote/expressions/#{expression.fei.wfid}" }
-      format.json { json(:status, :ok) } # TODO : really 200 ?
+      format.json { json(:status, :ok) }
     end
   end
 
   put '/_ruote/expressions/:id' do
 
-    # TODO
+    process, expression, fei = fetch_pe
+
+    return resource_not_found unless expression
+
+    info = fetch_re_apply_info
+
+    #puts '-' * 80
+    #p params
+    #p info
+    #puts '-' * 80
+
+    options = {}
+    options[:fields] = info.fields if info.fields
+    options[:tree] = info.tree if info.tree
+
+    RuoteKit.engine.re_apply(expression.fei, options)
+
+    respond_to do |format|
+      format.html { redirect "/_ruote/expressions/#{expression.fei.wfid}" }
+      format.json { json(:status, :ok) }
+    end
   end
 
   protected
@@ -65,6 +85,26 @@ class RuoteKit::Application
     fei = (fei.length > 1)
 
     [ process, expression, fei ]
+  end
+
+  def fetch_re_apply_info
+
+    if request.content_type == 'application/json' then
+
+      OpenStruct.new(Rufus::Json.decode(request.body.read))
+
+    else
+
+      #info = OpenStruct.new('definition' => params[:definition])
+      #fields = params[:fields] || ''
+      #fields = '{}' if fields.empty?
+      #info.fields = Rufus::Json.decode(fields)
+      #vars = params[:variables] || ''
+      #vars = '{}' if vars.empty?
+      #info.variables = Rufus::Json.decode(vars)
+      #info
+      {}
+    end
   end
 end
 

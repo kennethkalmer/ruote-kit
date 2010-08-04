@@ -1,8 +1,6 @@
 
 # license is MIT, see LICENSE.txt
 
-require 'ostruct'
-
 
 class RuoteKit::Application
 
