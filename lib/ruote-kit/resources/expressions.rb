@@ -7,11 +7,11 @@ class RuoteKit::Application
 
     @process, @expression, fei = fetch_pe
 
-    return resource_not_found unless @process
+    return http_error(404) unless @process
 
     if fei
 
-      return resource_not_found unless @expression
+      return http_error(404) unless @expression
 
       respond_to do |format|
         format.html { haml :expression }
@@ -30,7 +30,7 @@ class RuoteKit::Application
 
     process, expression, fei = fetch_pe
 
-    return resource_not_found unless expression
+    return http_error(404) unless expression
 
     if params[:_kill]
       RuoteKit.engine.kill_expression(expression.fei)
@@ -48,7 +48,7 @@ class RuoteKit::Application
 
     process, expression, fei = fetch_pe
 
-    return resource_not_found unless expression
+    return http_error(404) unless expression
 
     info = #begin
       fetch_re_apply_info

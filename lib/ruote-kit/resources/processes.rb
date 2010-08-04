@@ -25,13 +25,11 @@ class RuoteKit::Application
 
     @process = RuoteKit.engine.process(params[:wfid])
 
-    if @process
-      respond_to do |format|
-        format.html { haml :process }
-        format.json { json(:process, @process) }
-      end
-    else
-      resource_not_found
+    return http_error(404) unless @process
+
+    respond_to do |format|
+      format.html { haml :process }
+      format.json { json(:process, @process) }
     end
   end
 

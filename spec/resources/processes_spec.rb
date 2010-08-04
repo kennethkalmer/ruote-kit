@@ -122,10 +122,11 @@ describe 'GET /_ruote/processes/X-Y' do
       last_response.should_not be_ok
       last_response.status.should be(404)
 
-      last_response.json_body.keys.should include('error')
+      last_response.json_body.keys.should include('http_error')
 
-      last_response.json_body['error'].should == {
-        'code' => 404, 'message' => 'resource not found' }
+      last_response.json_body['http_error'].should == {
+        'code' => 404, 'message' => 'resource not found', 'cause' => ''
+      }
     end
   end
 end

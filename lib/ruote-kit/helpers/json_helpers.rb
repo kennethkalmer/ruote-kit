@@ -105,6 +105,11 @@ module RuoteKit
         ])
       end
 
+      def json_http_error(err)
+
+        { 'code' => err[0], 'message' => err[1], 'cause' => err[2].to_s }
+      end
+
       def links(resource)
         [
           link('/_ruote', '#root'),

@@ -59,11 +59,24 @@ module RuoteKit
         "<a href=\"#{href}\" title=\"#{title}\" rel=\"#{rel}\">#{text}</a>"
       end
 
-      # Easy 404
+      # Used by #http_error
       #
-      def resource_not_found
+      HTTP_CODES = {
+        400 => 'bad request',
+        404 => 'resource not found'
+      }
 
-        status 404
+      # HTTP errors
+      #
+      def http_error(code, message=nil, cause=nil)
+
+        if message.nil? and m = HTTP_CODES[code]
+          message = m
+        end
+
+        @code = code
+        @message = message
+        @cause = cause
 
         @format = if m = @format.to_s.match(/^[^\/]+\/([^;]+)/)
           m[1].to_sym
@@ -72,16 +85,11 @@ module RuoteKit
         end
           # freaking sinata-respond_to 0.4.0... (or is that it ?)
 
-        respond_to do |format|
+        status(@code)
 
-          format.html {
-            haml :resource_not_found
-          }
-          format.json {
-            Rufus::Json.encode(
-              { 'error' => {
-                'code' => 404, 'message' => 'resource not found' } })
-          }
+        respond_to do |format|
+          format.html { haml :http_error }
+          format.json { json(:http_error, [ code, message, cause ]) }
         end
       end
 
