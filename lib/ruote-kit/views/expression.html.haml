@@ -69,9 +69,11 @@
       = alink(:expressions, @expression.fei.wfid)
   %tr
     %td
-      workitem
+      stored workitem
     %td
-      (if any)
+      - if workitem = @process.stored_workitems.find { |wi| wi.fei == @expression.fei }
+        GET
+        = alink(:workitems, @expression.fei.sid)
 
   %tr
     %td.no_border{ :colspan => 2 }
