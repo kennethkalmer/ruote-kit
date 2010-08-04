@@ -250,6 +250,22 @@ describe 'PUT /_ruote/workitems/X-Y' do
     @tracer.to_s.should == ''
   end
 
+  it "shouldn't loose the original params when none given (HTML)" do
+
+    fields = @fields.dup
+    fields.delete('params')
+
+    put(
+      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}",
+      :fields => Rufus::Json.encode(fields))
+
+    find_workitem(@wfid, @nada_exp_id).fields.should == @fields
+
+    sleep 0.4
+
+    @tracer.to_s.should == ''
+  end
+
   it 'should update the workitem fields (JSON)' do
 
     params = { 'fields' => @fields }
