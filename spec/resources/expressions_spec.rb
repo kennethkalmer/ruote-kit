@@ -301,10 +301,8 @@ describe 'PUT /_ruote/expressions/fei' do
 
     wi.participant_name.should == 'bravo'
 
-    #p RuoteKit.engine.process(@wfid).current_tree
-    #RuoteKit.engine.process(@wfid).expressions.each do |exp|
-    #  p exp.tree
-    #end
+    RuoteKit.engine.process(@wfid).current_tree.should == [ 'define', {}, [
+      [ 'participant', { '_triggered' => 'on_re_apply', 'ref' => 'bravo' }, [] ] ] ]
   end
 end
 
