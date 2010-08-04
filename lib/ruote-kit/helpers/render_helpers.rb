@@ -85,24 +85,6 @@ module RuoteKit
         end
       end
 
-      # Easy 503
-      #
-      def workitems_not_available
-
-        status 503
-
-        respond_to do |format|
-
-          format.html {
-            haml :workitems_not_available
-          }
-          format.json { Rufus::Json.encode(
-            { 'error' => {
-              'code' => 503, 'messages' => 'Workitems not available' } })
-          }
-        end
-      end
-
       # Extract the process tree
       #
       def process_tree(object)
