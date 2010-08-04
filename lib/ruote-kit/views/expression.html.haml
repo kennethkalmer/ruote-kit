@@ -7,98 +7,101 @@
 
 %canvas#fluo
 
-%table.details
+%form{ :method => 'POST', :enctype => 'multipart/form-data', :accept_charset => 'UTF-8' }
 
-  %tr
-    %td
-      fei
-    %td
-      &= @expression.fei.sid
-  %tr
-    %td
-      expid
-    %td
-      &= @expression.fei.expid
-  %tr
-    %td
-      expression
-    %td
-      &= @expression.tree.first
-  %tr
-    %td
-      expression class
-    %td
-      &= @expression.class.to_s
-  - if @expression.original_tree != @expression.tree
+  %input#_method{ :type => 'hidden', :name => '_method', :value => 'DELETE' }
+  %input{ :type => 'hidden', :name => '_snowman', :value => '&#9731;' }
+
+  %table.details
+
     %tr
       %td
-        original tree
+        fei
       %td
-        - ruby = Ruote::Parser.to_ruby(@expression.original_tree)
+        &= @expression.fei.sid
+    %tr
+      %td
+        expid
+      %td
+        &= @expression.fei.expid
+    %tr
+      %td
+        expression
+      %td
+        &= @expression.tree.first
+    %tr
+      %td
+        expression class
+      %td
+        &= @expression.class.to_s
+    - if @expression.original_tree != @expression.tree
+      %tr
+        %td
+          original tree
+        %td
+          - ruby = Ruote::Parser.to_ruby(@expression.original_tree)
+          - rubyline = ruby.split("\n").first
+          - json = Rufus::Json.pretty_encode(@expression.original_tree)
+          %pre.pdef{ :onclick => 'Rk.toggleNext(this);' } #{rubyline}
+          %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{ruby}
+          %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{json}
+    %tr
+      %td
+        tree
+      %td
+        - ruby = Ruote::Parser.to_ruby(@expression.tree)
         - rubyline = ruby.split("\n").first
-        - json = Rufus::Json.pretty_encode(@expression.original_tree)
+        - json = Rufus::Json.pretty_encode(@expression.tree)
         %pre.pdef{ :onclick => 'Rk.toggleNext(this);' } #{rubyline}
         %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{ruby}
         %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{json}
-  %tr
-    %td
-      tree
-    %td
-      - ruby = Ruote::Parser.to_ruby(@expression.tree)
-      - rubyline = ruby.split("\n").first
-      - json = Rufus::Json.pretty_encode(@expression.tree)
-      %pre.pdef{ :onclick => 'Rk.toggleNext(this);' } #{rubyline}
-      %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{ruby}
-      %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{json}
 
-  %tr
-    %td.no_border{ :colspan => 2 }
-      &nbsp;
+    %tr
+      %td.no_border{ :colspan => 2 }
+        &nbsp;
 
-  %tr
-    %td
-      process
-    %td
-      GET
-      = alink(:processes, @expression.fei.wfid)
-  %tr
-    %td
-      other expressions
-    %td
-      GET
-      = alink(:expressions, @expression.fei.wfid)
-  %tr
-    %td
-      stored workitem
-    %td
-      - if workitem = @process.stored_workitems.find { |wi| wi.fei == @expression.fei }
+    %tr
+      %td
+        process
+      %td
         GET
-        = alink(:workitems, @expression.fei.sid)
+        = alink(:processes, @expression.fei.wfid)
+    %tr
+      %td
+        other expressions
+      %td
+        GET
+        = alink(:expressions, @expression.fei.wfid)
+    %tr
+      %td
+        stored workitem
+      %td
+        - if workitem = @process.stored_workitems.find { |wi| wi.fei == @expression.fei }
+          GET
+          = alink(:workitems, @expression.fei.sid)
 
-  %tr
-    %td.no_border{ :colspan => 2 }
-      &nbsp;
+    %tr
+      %td.no_border{ :colspan => 2 }
+        &nbsp;
 
-  %tr
-    %td
-      cancel
-    %td
-      %form{ :method => 'post' }
-        %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
+    %tr
+      %td
+        cancel
+      %td
         %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really ?");' }
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}
-  %tr
-    %td
-      kill
-    %td
-      %form{ :method => 'post' }
-        %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
-        %input{ :type => 'hidden', :name => '_kill', :value => '1' }
+    %tr
+      %td
+        kill
+      %td
+        -#%input{ :type => 'hidden', :name => '_kill', :value => '1' }
         %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really ?");' }
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}?_kill=1
 
-%form{ :method => 'post' }
-  %table.details
+    %tr
+      %td.no_border{ :colspan => 2 }
+        &nbsp;
+
     %tr{ :style => 'cursor: pointer;', :onclick => 'showReApply(this);' }
       %td{ :colspan => 2 }
         re-apply
@@ -120,9 +123,10 @@
     %tr.re_apply
       %td
       %td
-        %input{ :type => 'hidden', :name => '_method', :value => 'put' }
-        %input{ :type => 'submit', :value => 're-apply', :onclick => 'return confirm("really ?");' }
+        -#%input{ :type => 'hidden', :name => '_method', :value => 'put' }
+        %input{ :type => 'submit', :value => 're-apply', :onclick => 'return confirmReApply();', :onsubmit => 'alert("nada");' }
         %span.description PUT /_ruote/expressions/#{@expression.fei.sid}
+
 
 :javascript
 
@@ -136,5 +140,13 @@
   function showReApply (elt) {
     $(elt).hide();
     $('.re_apply').show();
+  }
+
+  function confirmReApply () {
+
+    var r = confirm('really ?');
+    if (r) $('#_method')[0].value = 'PUT';
+
+    return r;
   }
 

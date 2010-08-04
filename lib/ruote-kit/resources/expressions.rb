@@ -50,7 +50,11 @@ class RuoteKit::Application
 
     return resource_not_found unless expression
 
-    info = fetch_re_apply_info
+    info = #begin
+      fetch_re_apply_info
+    #rescue Rufus::Json::ParserError => pe
+    #  return bad_request(pe)
+    #end
 
     #puts '-' * 80
     #p params
@@ -95,15 +99,16 @@ class RuoteKit::Application
 
     else
 
-      #info = OpenStruct.new('definition' => params[:definition])
-      #fields = params[:fields] || ''
-      #fields = '{}' if fields.empty?
-      #info.fields = Rufus::Json.decode(fields)
-      #vars = params[:variables] || ''
-      #vars = '{}' if vars.empty?
-      #info.variables = Rufus::Json.decode(vars)
-      #info
-      {}
+      o = OpenStruct.new
+
+      if fields = params[:fields]
+        o.fields = Rufus::Json.decode(fields)
+      end
+      if tree = params[:tree]
+        o.tree = Rufus::Json.decode(tree)
+      end
+
+      o
     end
   end
 end
