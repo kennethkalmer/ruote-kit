@@ -85,7 +85,7 @@
     %td
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
-        %input{ :type => 'submit', :value => 'cancel' }
+        %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really ?");' }
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}
   %tr
     %td
@@ -94,18 +94,35 @@
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         %input{ :type => 'hidden', :name => '_kill', :value => '1' }
-        %input{ :type => 'submit', :value => 'kill' }
+        %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really ?");' }
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}?_kill=1
 
-  %tr
-    %td.no_border{ :colspan => 2 }
-      &nbsp;
-
-  %tr
-    %td
-      re-apply
-    %td
-      (...)
+%form{ :method => 'post' }
+  %table.details
+    %tr{ :style => 'cursor: pointer;', :onclick => 'showReApply(this);' }
+      %td{ :colspan => 2 }
+        re-apply
+    %tr.re_apply
+      %td
+        fields
+      %td.no_padding
+        - fields = @expression.h.applied_workitem['fields']
+        - fields.delete('params')
+        %textarea{ :name => 'fields', :cols => 70, :rows => 7 } #{Rufus::Json.pretty_encode(fields)}
+    %tr.re_apply
+      %td
+        tree
+      %td.no_padding
+        - tree = @expression.tree
+        - tree = Rufus::Json.pretty_encode(tree)
+        - rows = tree.split("\n").size
+        %textarea{ :name => 'tree', :cols => 70, :rows => rows } #{tree}
+    %tr.re_apply
+      %td
+      %td
+        %input{ :type => 'hidden', :name => '_method', :value => 'put' }
+        %input{ :type => 'submit', :value => 're-apply', :onclick => 'return confirm("really ?");' }
+        %span.description PUT /_ruote/expressions/#{@expression.fei.sid}
 
 :javascript
 
@@ -113,4 +130,11 @@
   Fluo.renderFlow('fluo', proc_rep);
   Fluo.crop('fluo');
   Fluo.highlight('fluo', '#{@expression.fei.expid}');
+
+  $('.re_apply').hide();
+
+  function showReApply (elt) {
+    $(elt).hide();
+    $('.re_apply').show();
+  }
 

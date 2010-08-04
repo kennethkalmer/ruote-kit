@@ -128,8 +128,8 @@ table.details tr:hover {
   background: #f4f6f6;
 }
 table.details td.no_border {
-  border-left: 0px;
-  border-right: 0px;
+  border-left: 0;
+  border-right: 0;
 }
 table.details td.no_border:hover {
   background: white;
