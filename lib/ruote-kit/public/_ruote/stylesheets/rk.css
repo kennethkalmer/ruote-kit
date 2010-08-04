@@ -235,6 +235,8 @@ pre.pdef {
 #trace {
   font-size: 10px;
   line-height: 11px;
+  margin-top: 7px;
+  cursor: pointer;
 }
 
 /* buttons +-^vx... */
