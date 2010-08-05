@@ -26,18 +26,22 @@ describe 'GET /_ruote/expressions/wfid' do
       @wfid = launch_test_process
     end
 
-    it 'should render the expression tree (HTML)' do
+    it 'should render the expressions (HTML)' do
 
       get "/_ruote/expressions/#{@wfid}"
 
       last_response.should be_ok
     end
 
-    it 'should render the expression tree (JSON)' do
+    it 'should render the expressions (JSON)' do
 
       get "/_ruote/expressions/#{@wfid}.json"
 
       last_response.should be_ok
+
+      last_response.json_body['expressions'].first.keys.sort.should == %w[
+        class fei links name parent
+      ]
     end
   end
 
@@ -74,18 +78,27 @@ describe 'GET /_ruote/expressions/fei' do
       @nada_exp_id = process.expressions.last.fei.expid
     end
 
-    it 'should render the expression details (HTML)' do
+    it 'should render the expression (HTML)' do
 
       get "/_ruote/expressions/#{@nada_exp_id}!!#{@wfid}"
 
       last_response.should be_ok
     end
 
-    it 'should render the expression details (JSON)' do
+    it 'should render the expression (JSON)' do
 
       get "/_ruote/expressions/#{@nada_exp_id}!!#{@wfid}.json"
 
       last_response.should be_ok
+
+      #puts Rufus::Json.pretty_encode(last_response.json_body)
+
+      last_response.json_body['expression']['links'].size.should be(4)
+
+      last_response.json_body['expression'].keys.sort.should == %w[
+        applied_workitem class fei links name original_tree parent
+        timeout_schedule_id tree variables
+      ]
     end
   end
 
@@ -105,6 +118,40 @@ describe 'GET /_ruote/expressions/fei' do
 
       last_response.should_not be_ok
       last_response.status.should be(404)
+    end
+  end
+
+  describe 'with an expression that has a schedule' do
+
+    before(:each) do
+
+      @wfid = RuoteKit.engine.launch(Ruote.define do
+        alpha :timeout => '2y'
+      end)
+
+      RuoteKit.engine.wait_for(:alpha)
+    end
+
+    it 'should render the expression (HTML)' do
+
+      get "/_ruote/expressions/0_0!!#{@wfid}"
+
+      last_response.status.should be(200)
+
+      last_response.should have_selector(
+        'table.details tr td', :content => 'timeout')
+    end
+
+    it 'should render the expression (JSON)' do
+
+      get "/_ruote/expressions/0_0!!#{@wfid}.json"
+
+      last_response.status.should be(200)
+
+      #puts Rufus::Json.pretty_encode(last_response.json_body)
+
+      last_response.json_body['expression'].keys.should include(
+        'timeout_schedule_id')
     end
   end
 end

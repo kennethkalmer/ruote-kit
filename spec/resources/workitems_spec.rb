@@ -179,6 +179,7 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
 
       assert_equal(
         %w[
+          self
           http://ruote.rubyforge.org/rels.html#process
           http://ruote.rubyforge.org/rels.html#process_expressions
           http://ruote.rubyforge.org/rels.html#process_errors

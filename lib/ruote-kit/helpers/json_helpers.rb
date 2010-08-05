@@ -29,7 +29,7 @@ module RuoteKit
         processes.map { |p| json_process(p, false) }
       end
 
-      def json_process(process, detailed = true)
+      def json_process(process, detailed=true)
 
         process.as_h(detailed).merge('links' => [
           link("/_ruote/processes/#{process.wfid}", 'self'),
@@ -41,23 +41,23 @@ module RuoteKit
         ])
       end
 
-      def json_expression(expression)
+      def json_expression(expression, detailed=true)
 
         links = [
+          link("/_ruote/expressions/#{expression.fei.sid}", 'self'),
           link("/_ruote/processes/#{expression.fei.wfid}", '#process'),
-          link("/_ruote/expressions/#{expression.fei.wfid}", '#expressions')
+          link("/_ruote/expressions/#{expression.fei.wfid}", '#process_expressions')
         ]
-
         links << link(
-          "/_ruote/expressions/#{expression.fei.wfid}/#{expression.parent.fei.expid}",
-          'parent') if expression.parent
+          "/_ruote/expressions/#{expression.parent.fei.sid}", 'parent'
+        ) if expression.parent
 
-        expression.to_h.merge('links' => links)
+        expression.as_h(detailed).merge('links' => links)
       end
 
       def json_expressions(expressions)
 
-        expressions.map { |e| json_expression(e) }
+        expressions.map { |e| json_expression(e, false) }
       end
 
       def json_workitems(workitems)
@@ -68,6 +68,7 @@ module RuoteKit
       def json_workitem(workitem, detailed = true)
 
         links = [
+          link("/_ruote/expressions/#{workitem.fei.sid}", 'self'),
           link("/_ruote/processes/#{workitem.fei.wfid}", '#process'),
           link("/_ruote/expressions/#{workitem.fei.wfid}", '#process_expressions'),
           link("/_ruote/errors/#{workitem.fei.wfid}", '#process_errors')
@@ -221,6 +222,35 @@ module Ruote
     def as_h(detailed=true)
 
       { 'regex' => @regex, 'classname' => @classname, 'options' => @options }
+    end
+  end
+
+  module Exp
+
+    #
+    # Re-opening to provide an as_h method
+    #
+    class FlowExpression
+
+      def as_h(detailed=true)
+
+        r = {}
+
+        r['fei'] = fei.sid
+        r['parent'] = h.parent_id ? parent_id.sid : nil
+        r['name'] = h.name
+        r['class'] = self.class.name
+
+        if detailed
+          r['variables'] = variables
+          r['applied_workitem'] = h.applied_workitem['fields']
+          r['tree'] = tree
+          r['original_tree'] = original_tree
+          r['timeout_schedule_id'] = h.timeout_schedule_id
+        end
+
+        r
+      end
     end
   end
 end

@@ -56,6 +56,15 @@
         %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{ruby}
         %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{json}
 
+    - if sched = @process.schedules.find { |s| s['owner'] == @expression.fei }
+      %tr
+        %td
+          schedule
+        %td
+          &= sched['type']
+          - if sched['at']
+            at
+            = Time.parse(sched['at']).localtime.strftime('%Y/%m/%d %H:%M:%S')
     %tr
       %td.no_border{ :colspan => 2 }
         &nbsp;
