@@ -275,7 +275,21 @@ describe 'PUT /_ruote/expressions/fei' do
 
   it 'should re-apply (HTML)' do
 
-    pending('work in progress')
+    at0 = RuoteKit.engine.storage_participant.first.dispatched_at
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}",
+      :fields => '{}')
+
+    last_response.status.should be(302)
+    last_response.location.should == "/_ruote/expressions/#{@wfid}"
+
+    #RuoteKit.engine.wait_for(:alpha)
+    sleep 0.500
+
+    at1 = RuoteKit.engine.storage_participant.first.dispatched_at
+
+    at1.should_not == at0
   end
 
   it 'should re-apply (JSON)' do
@@ -301,7 +315,22 @@ describe 'PUT /_ruote/expressions/fei' do
 
   it 'should re-apply with different fields (HTML)' do
 
-    pending('work in progress')
+    wi = RuoteKit.engine.storage_participant.first
+    wi.fields['car'].should be(nil)
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}",
+      :fields => '{"car":"daimler-benz"}')
+
+    last_response.status.should be(302)
+    last_response.location.should == "/_ruote/expressions/#{@wfid}"
+
+    #RuoteKit.engine.wait_for(:alpha)
+    sleep 0.500
+
+    wi = RuoteKit.engine.storage_participant.first
+
+    wi.fields['car'].should == 'daimler-benz'
   end
 
   it 'should re-apply with different fields (JSON)' do
@@ -345,7 +374,22 @@ describe 'PUT /_ruote/expressions/fei' do
 
   it 'should re-apply with a different tree (HTML)' do
 
-    pending('work in progress')
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}",
+      :tree => '["charly", {}, []]')
+
+    last_response.status.should be(302)
+    last_response.location.should == "/_ruote/expressions/#{@wfid}"
+
+    #RuoteKit.engine.wait_for(:alpha)
+    sleep 0.500
+
+    wi = RuoteKit.engine.storage_participant.first
+
+    wi.participant_name.should == 'charly'
+
+    RuoteKit.engine.process(@wfid).current_tree.should == [ 'define', {}, [
+      [ 'participant', { '_triggered' => 'on_re_apply', 'ref' => 'charly' }, [] ] ] ]
   end
 
   it 'should re-apply with a different tree (JSON)' do
@@ -373,7 +417,11 @@ describe 'PUT /_ruote/expressions/fei' do
 
   it 'should 400 when passed bogus JSON (HTML)' do
 
-    pending('work in progress')
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}",
+      :fields => "{bogus}")
+
+    last_response.status.should be(400)
   end
 
   it 'should 400 when passed bogus JSON (JSON)' do
