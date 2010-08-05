@@ -102,6 +102,7 @@ class RuoteKit::Application
     if request.content_type == 'application/json'
 
       data = Rufus::Json.decode(env['rack.input'].read)
+      if wi = data['workitem']; data = wi; end
 
       unless data['fields'].nil? || data['fields'].empty?
         options[:fields] = data['fields']

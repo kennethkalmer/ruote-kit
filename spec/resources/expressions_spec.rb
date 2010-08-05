@@ -324,6 +324,25 @@ describe 'PUT /_ruote/expressions/fei' do
     wi.fields['car'].should == 'bentley'
   end
 
+  it 'should re-apply when passed {"expression":{"fields":...}} (JSON)' do
+
+    exp = { 'expression' => { 'fields' => { 'car' => 'BMW' } } }
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}.json",
+      Rufus::Json.encode(exp),
+      { 'CONTENT_TYPE' => 'application/json' })
+
+    last_response.status.should be(200)
+
+    #RuoteKit.engine.wait_for(:alpha)
+    sleep 0.500
+
+    wi = RuoteKit.engine.storage_participant.first
+
+    wi.fields['car'].should == 'BMW'
+  end
+
   it 'should re-apply with a different tree (HTML)' do
 
     pending('work in progress')

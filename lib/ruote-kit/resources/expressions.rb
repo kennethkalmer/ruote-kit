@@ -95,7 +95,10 @@ class RuoteKit::Application
 
     if request.content_type == 'application/json' then
 
-      OpenStruct.new(Rufus::Json.decode(request.body.read))
+      data = Rufus::Json.decode(request.body.read)
+      if exp = data['expression']; data = exp; end
+
+      OpenStruct.new(data)
 
     else
 

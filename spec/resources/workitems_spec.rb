@@ -269,6 +269,20 @@ describe 'PUT /_ruote/workitems/fei' do
     @tracer.to_s.should == ''
   end
 
+  it 'should update the fields when passed {"workitem":...} (JSON)' do
+
+    params = { 'workitem' => { 'fields' => @fields } }
+
+    put(
+      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
+      Rufus::Json.encode(params),
+      { 'CONTENT_TYPE' => 'application/json' })
+
+    last_response.should be_ok
+
+    find_workitem(@wfid, @nada_exp_id).fields.should == @fields
+  end
+
   it 'should reply to the engine (HTML)' do
 
     fields = Rufus::Json.encode(@fields)
