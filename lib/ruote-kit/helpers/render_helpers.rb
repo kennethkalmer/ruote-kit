@@ -76,6 +76,12 @@ module RuoteKit
         @message = HTTP_CODES[code]
         @cause = cause
 
+        @trace = if cause
+          [ cause.message ] + cause.backtrace
+        else
+          nil
+        end
+
         @format = if m = @format.to_s.match(/^[^\/]+\/([^;]+)/)
           m[1].to_sym
         else

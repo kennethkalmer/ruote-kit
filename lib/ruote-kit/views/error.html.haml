@@ -27,8 +27,8 @@
     %td
       trace
     %td
-      %pre#trace{ :onclick => 'Rk.toggleNext(this);' } #{h(@error.trace[0, 80] + '...')}
-      %pre#trace{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{h(@error.trace)}
+      %pre.trace{ :onclick => 'Rk.toggleNext(this);' } #{h(@error.trace[0, 80] + '...')}
+      %pre.trace{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{h(@error.trace)}
 
   %tr
     %td.no_border{ :colspan => 2 }

@@ -182,14 +182,6 @@ table.details td.no_padding {
   font-size: 80%;
 }
 
-/* processes */
-
-pre.trace {
-  font-family: "Menlo Regular", "Monaco", courier, monospace;
-  font-size: 90%;
-  line-height: 11px;
-}
-
 /* participants */
 
 input.participant {
@@ -230,12 +222,19 @@ pre.pdef {
   cursor: pointer;
 }
 
-/* errors */
+/* ... traces */
 
-#trace {
+pre.trace {
+  font-family: "Menlo Regular", "Monaco", courier, monospace;
+  font-size: 10px;
+  margin-top: 7px;
+  margin-bottom: 5px;
+  line-height: 11px;
+}
+
+div.trace {
   font-size: 10px;
   line-height: 11px;
-  margin-top: 7px;
   cursor: pointer;
 }
 
