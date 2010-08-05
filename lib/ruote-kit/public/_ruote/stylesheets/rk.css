@@ -266,14 +266,15 @@ div#editor {
   height: auto;
   background-color: white;
   z-index: 999;
+  padding: 14px; 14px;
 }
 div#editor > canvas#fluo {
-  margin: 3px 3px;
+  margin: -3px -3px;
 }
 div#fluo_editor {
 }
 div#editor > a.ruote_go_button {
-  margin-left: 3px;
+  margin-left: 4px;
 }
 
 /* buttons +-^vx... */
