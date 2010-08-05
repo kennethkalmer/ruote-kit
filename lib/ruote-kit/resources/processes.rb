@@ -18,7 +18,7 @@ class RuoteKit::Application
 
   get '/_ruote/processes/new' do
 
-    haml :process_new
+    haml :processes_new
   end
 
   get '/_ruote/processes/:wfid' do
