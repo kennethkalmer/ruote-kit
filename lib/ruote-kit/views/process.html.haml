@@ -22,10 +22,12 @@
     %td
       - @process.position.each do |pos|
         - text = "#{pos[1]} #{pos[2]['task']}"
-        - if @process.stored_workitems.find { |wi| wi.fei.sid == pos.first }
-          = alink(:workitems, pos.first, :text => text)
-        - else
-          = text
+        - expid = pos.first.split('!').first
+        %span{ :onmouseover => "Fluo.highlight('fluo', '#{expid}');", :onmouseout => "Fluo.highlight('fluo');" }
+          - if @process.stored_workitems.find { |wi| wi.fei.sid == pos.first }
+            = alink(:workitems, pos.first, :text => text)
+          - else
+            = text
   %tr
     %td
       expressions
