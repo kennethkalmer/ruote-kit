@@ -16,6 +16,11 @@ Ruote.process_definition :name => 'test', :revision => '0.1' do
 end
         }.strip
       end
+
+      def sample_process_tree
+
+        Rufus::Json.encode(Ruote::Parser.parse(sample_process))
+      end
     end
   end
 end

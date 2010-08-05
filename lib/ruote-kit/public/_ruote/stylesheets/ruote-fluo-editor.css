@@ -1,0 +1,108 @@
+
+#fluo_editor {
+  font: 14px/1.5em monaco, mono;
+  text-align: left;
+  color: #000;
+  border: 1px solid #c1c1c1;
+  border-top-color: #848484;
+  border-bottom-color: #ddd;
+  padding: 6px;
+  margin: 6px 4px;
+  background: #fff;
+  background: -webkit-gradient(linear, 0% 0%, 0% 6, from(#dbe0e2), to(#fff));
+  background: -moz-linear-gradient(top, #dbe0e2, #fff 6px);
+}
+.rfe_expression {
+}
+.rfe_expression_atts,
+.rfe_text,
+.rfe_expression_name,
+.rfe_expression_string,
+.rfe_ghost_button {
+}
+.rfe_expression_name {
+  color: #8b8f91;
+}
+.rfe_expression_atts {
+}
+.rfe_expression_string {
+  color: #82dd48;
+}
+.rfe_exp_span {
+}
+.rfe_buttons {
+  display: inline-block;
+  white-space: nowrap;
+  margin-left: 6px;
+}
+.rfe_buttons:hover {
+  cursor: default;
+}
+.rfe_button {
+  cursor: pointer;
+  padding-left: 1px;
+}
+a.rfe_button {
+  display: inline-block;
+  padding: 0;
+  margin: 0 -1px;
+  width: 12px;
+  height: 12px;
+  background: transparent url(/_ruote/images/ruote_buttons.png) no-repeat;
+}
+a.rfe_add {
+  background-position: 0 0;
+}
+a.rfe_cut {
+  background-position: 0 -20px;
+}
+a.rfe_moveup {
+  background-position: 0 -40px;
+}
+a.rfe_movedown {
+  background-position: 0 -60px;
+}
+a.rfe_paste {
+  background-position: 0 -80px;
+}
+a.rfe_add:hover {
+  background-position: -20px 0;
+}
+a.rfe_cut:hover {
+  background-position: -20px -20px;
+}
+a.rfe_moveup:hover {
+  background-position: -20px -40px;
+}
+a.rfe_movedown:hover {
+  background-position: -20px -60px;
+}
+a.rfe_paste:hover {
+  background-position: -20px -80px;
+}
+.rfe_exp > input[type="text"] {
+  color: #000;
+  font: 14px/1em monaco, mono;
+  border: 0;
+  padding: 0 10px;
+  padding-top: 1px;
+  margin: 0;
+  margin-left: -11px;
+  margin-bottom: 1px;
+  width: 400px;
+  background: #86e74c;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+}
+img.rfe_button {
+  margin: 0;
+  vertical-align: middle;
+}
+/* safari */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.rfe_exp > input[type="text"] {
+  padding-top: 2px;
+  margin-bottom: 0;
+}
+

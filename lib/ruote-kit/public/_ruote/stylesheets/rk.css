@@ -5,7 +5,9 @@
   margin: 0;
 }
 html, body {
+  /*
   height: 100%;
+  */
 }
 
 /* general */
@@ -236,6 +238,42 @@ div.trace {
   font-size: 10px;
   line-height: 11px;
   cursor: pointer;
+}
+
+/* overlay */
+
+div#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 0.7;
+  width: auto;
+  height: auto;
+  z-index: 99;
+}
+
+/* editor */
+
+div#editor {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  width: 80%;
+  height: auto;
+  background-color: white;
+  z-index: 999;
+}
+div#editor > canvas#fluo {
+  margin: 3px 3px;
+}
+div#fluo_editor {
+}
+div#editor > a.ruote_go_button {
+  margin-left: 3px;
 }
 
 /* buttons +-^vx... */
