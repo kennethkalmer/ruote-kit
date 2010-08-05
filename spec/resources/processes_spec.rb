@@ -32,14 +32,16 @@ describe 'GET /_ruote/processes' do
 
       get '/_ruote/processes'
 
-      last_response.should be_ok
+      last_response.status.should be(200)
+
+      last_response.should have_selector('a', :content => 'as JSON')
     end
 
     it 'should give an empty array (JSON)' do
 
       get '/_ruote/processes.json'
 
-      last_response.should be_ok
+      last_response.status.should be(200)
 
       body = last_response.json_body
       body.should have_key('processes')
@@ -58,14 +60,14 @@ describe 'GET /_ruote/processes' do
 
       get '/_ruote/processes'
 
-      last_response.should be_ok
+      last_response.status.should be(200)
     end
 
     it 'should give process information back (JSON)' do
 
       get '/_ruote/processes.json'
 
-      last_response.should be_ok
+      last_response.status.should be(200)
 
       body = last_response.json_body
 
@@ -91,7 +93,7 @@ describe 'GET /_ruote/processes/wfid' do
 
       get "/_ruote/processes/#{@wfid}"
 
-      last_response.should be_ok
+      last_response.status.should be(200)
 
       last_response.should have_selector(
         'a[rel="http://ruote.rubyforge.org/rels.html#process_schedules"]')
@@ -101,7 +103,7 @@ describe 'GET /_ruote/processes/wfid' do
 
       get "/_ruote/processes/#{@wfid}.json"
 
-      last_response.should be_ok
+      last_response.status.should be(200)
 
       body = last_response.json_body
 
@@ -117,7 +119,6 @@ describe 'GET /_ruote/processes/wfid' do
 
       get '/_ruote/processes/foo'
 
-      last_response.should_not be_ok
       last_response.status.should be(404)
 
       last_response.should match(/resource not found/)
@@ -127,7 +128,6 @@ describe 'GET /_ruote/processes/wfid' do
 
       get '/_ruote/processes/foo.json'
 
-      last_response.should_not be_ok
       last_response.status.should be(404)
 
       last_response.json_body.keys.should include('http_error')
@@ -144,9 +144,12 @@ describe 'GET /_ruote/processes/new' do
   it_has_an_engine
 
   it 'should return a launch form' do
+
     get '/_ruote/processes/new'
 
-    last_response.should be_ok
+    last_response.status.should be(200)
+
+    last_response.should_not have_selector('a', :content => 'as JSON')
   end
 end
 
@@ -290,7 +293,7 @@ describe 'POST /_ruote/processes' do
 
 end
 
-describe 'DELETE /_ruote/processes/X-Y' do
+describe 'DELETE /_ruote/processes/wfid' do
 
   it_has_an_engine
 
@@ -314,7 +317,7 @@ describe 'DELETE /_ruote/processes/X-Y' do
 
     delete "/_ruote/processes/#{@wfid}.json"
 
-    last_response.should be_ok
+    last_response.status.should be(200)
 
     wait_for(@wfid)
 
@@ -341,7 +344,7 @@ describe 'DELETE /_ruote/processes/X-Y' do
 
     delete "/_ruote/processes/#{@wfid}.json?_kill=1"
 
-    last_response.should be_ok
+    last_response.status.should be(200)
 
     wait_for(@wfid)
 

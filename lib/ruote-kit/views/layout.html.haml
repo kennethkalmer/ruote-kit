@@ -45,9 +45,10 @@
       #main
         = yield
 
-      #as_json
-        %a{ :href => request.fullpath + '.json', :title => 'same page, but as JSON' }
-          as JSON
+      - unless request.path.match(/\/processes\/new/)
+        #as_json
+          %a{ :href => request.fullpath + '.json', :title => 'same page, but as JSON' }
+            as JSON
 
       #footer
         %div
