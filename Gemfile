@@ -30,7 +30,7 @@ gem 'rufus-json', '>= 0.2.3'
 
 # ruote
 
-#gem 'ruote', '>= 2.1.10'
+#gem 'ruote', '>= 2.1.11'
 gem 'ruote', :git => 'git://github.com/jmettraux/ruote.git', :branch => 'ruote2.1'
 #gem 'ruote', :path => '~/w/ruote/'
 
