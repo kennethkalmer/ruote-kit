@@ -44,11 +44,12 @@
       %td
         &= wi.participant_name
       %td
-        - params = wi.fields['params'].dup
+        - params = (wi.fields['params'] || {}).dup
         - params.delete('ref')
         &= Rufus::Json.encode(params)[1..-2]
       %td
-        = Time.parse(wi.dispatched_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
+        - if wi.dispatched_at
+          = Time.parse(wi.dispatched_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
       %td
         - fields = wi.fields.dup
         - fields.delete('params')

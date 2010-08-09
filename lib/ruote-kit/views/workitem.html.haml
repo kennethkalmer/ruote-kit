@@ -24,7 +24,8 @@
       %td
         dispatched at
       %td
-        = Time.parse(@workitem.dispatched_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
+        - if @workitem.dispatched_at
+          = Time.parse(@workitem.dispatched_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
     %tr
       %td
         last modified
@@ -63,7 +64,7 @@
         params
       %td
         - fields = @workitem.fields.dup
-        - params = fields.delete('params')
+        - params = fields.delete('params') || {}
         - params.delete('ref')
         - fields.delete('dispatched_at')
         &= Rufus::Json.encode(params)[1..-2]
