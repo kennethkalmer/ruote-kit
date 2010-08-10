@@ -24,12 +24,14 @@ module RuoteKit
       #  { 'code' => code, 'exception' => { 'message' => exception.message } }
       #end
 
-      def json_processes(processes)
+      def json_processes
 
-        processes.map { |p| json_process(p, false) }
+        @processes.map { |p| json_process(p) }
       end
 
-      def json_process(process, detailed=true)
+      def json_process(process=@process)
+
+        detailed = (@process != nil)
 
         process.as_h(detailed).merge('links' => [
           link("/_ruote/processes/#{process.wfid}", 'self'),
@@ -41,7 +43,14 @@ module RuoteKit
         ])
       end
 
-      def json_expression(expression, detailed=true)
+      def json_expressions
+
+        @process.expressions.map { |e| json_expression(e) }
+      end
+
+      def json_expression(expression=@expression)
+
+        detailed = (@expression != nil)
 
         links = [
           link("/_ruote/expressions/#{expression.fei.sid}", 'self'),
@@ -55,17 +64,14 @@ module RuoteKit
         expression.as_h(detailed).merge('links' => links)
       end
 
-      def json_expressions(expressions)
+      def json_workitems
 
-        expressions.map { |e| json_expression(e, false) }
+        @workitems.map { |w| json_workitem(w) }
       end
 
-      def json_workitems(workitems)
+      def json_workitem(workitem=@workitem)
 
-        workitems.map { |w| json_workitem(w, false) }
-      end
-
-      def json_workitem(workitem, detailed = true)
+        detailed = (@workitem != nil)
 
         links = [
           link("/_ruote/expressions/#{workitem.fei.sid}", 'self'),
@@ -77,12 +83,12 @@ module RuoteKit
         workitem.as_h(detailed).merge('links' => links)
       end
 
-      def json_errors(errors)
+      def json_errors
 
-        errors.collect { |e| json_error(e) }
+        @errors.collect { |e| json_error(e) }
       end
 
-      def json_error(error)
+      def json_error(error=@error)
 
         fei = error.fei
         wfid = fei.wfid
@@ -94,21 +100,16 @@ module RuoteKit
         ])
       end
 
-      def json_participants(pas)
+      def json_participants
 
-        pas.collect { |pa| json_participant(pa) }
+        @participants.collect { |pa|
+          pa.as_h.merge('links' => [ link("/_ruote/participants", 'self') ])
+        }
       end
 
-      def json_participant(pa)
+      def json_schedules
 
-        pa.as_h.merge('links' => [
-          link("/_ruote/participants", 'self')
-        ])
-      end
-
-      def json_schedules(scheds)
-
-        scheds.each do |sched|
+        @schedules.each do |sched|
 
           sched['links'] = [
             link("/_ruote/expressions/#{sched['owner']}", '#schedule_owner'),
@@ -116,7 +117,7 @@ module RuoteKit
           ]
         end
 
-        scheds
+        @schedules
       end
 
       def json_http_error(err)

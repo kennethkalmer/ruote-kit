@@ -9,7 +9,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :participants }
-      format.json { json(:participants, @participants) }
+      format.json { json :participants }
     end
   end
 
@@ -48,7 +48,7 @@ class RuoteKit::Application
       end
       format.json do
         @participants = RuoteKit.engine.participant_list
-        json(:participants, @participants)
+        json :participants
       end
     end
   end

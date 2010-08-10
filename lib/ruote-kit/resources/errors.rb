@@ -9,7 +9,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :errors }
-      format.json { json(:errors, @errors) }
+      format.json { json :errors }
     end
   end
 
@@ -23,14 +23,14 @@ class RuoteKit::Application
 
       respond_to do |format|
         format.html { haml :error }
-        format.json { json(:error, @error) }
+        format.json { json :error }
       end
 
     else
 
       respond_to do |format|
         format.html { haml :errors }
-        format.json { json(:errors, @errors) }
+        format.json { json :errors }
       end
     end
   end
@@ -49,7 +49,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { redirect '/_ruote/errors' }
-      format.json { json(:status, :ok) }
+      format.json { json :status, :ok }
     end
   end
 

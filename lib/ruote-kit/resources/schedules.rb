@@ -9,7 +9,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :schedules }
-      format.json { json(:schedules, @schedules) }
+      format.json { json :schedules }
     end
   end
 
@@ -19,7 +19,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :schedules }
-      format.json { json(:schedules, @schedules) }
+      format.json { json :schedules }
     end
   end
 end

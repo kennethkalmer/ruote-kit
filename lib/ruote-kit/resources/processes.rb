@@ -12,7 +12,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :processes }
-      format.json { json(:processes, @processes) }
+      format.json { json :processes }
     end
   end
 
@@ -29,7 +29,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :process }
-      format.json { json(:process, @process) }
+      format.json { json :process }
     end
   end
 
@@ -50,7 +50,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :process_launched }
-      format.json { json(:launched, @wfid) }
+      format.json { json :launched, @wfid }
     end
   end
 
@@ -64,7 +64,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { redirect '/_ruote/processes' }
-      format.json { json(:status, :ok) }
+      format.json { json :status, :ok }
     end
   end
 

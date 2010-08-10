@@ -15,13 +15,13 @@ class RuoteKit::Application
 
       respond_to do |format|
         format.html { haml :expression }
-        format.json { json(:expression, @expression) }
+        format.json { json :expression }
       end
     else
 
       respond_to do |format|
         format.html { haml :expressions }
-        format.json { json(:expressions, @process.expressions) }
+        format.json { json :expressions }
       end
     end
   end
@@ -40,7 +40,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { redirect "/_ruote/expressions/#{expression.fei.wfid}" }
-      format.json { json(:status, :ok) }
+      format.json { json :status, :ok }
     end
   end
 
@@ -69,7 +69,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { redirect "/_ruote/expressions/#{expression.fei.wfid}" }
-      format.json { json(:status, :ok) }
+      format.json { json :status, :ok }
     end
   end
 

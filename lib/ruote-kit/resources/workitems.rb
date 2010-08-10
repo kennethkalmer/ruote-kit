@@ -14,7 +14,7 @@ class RuoteKit::Application
 
     respond_to do |format|
       format.html { haml :workitems }
-      format.json { json(:workitems, @workitems) }
+      format.json { json :workitems }
     end
   end
 
@@ -28,23 +28,23 @@ class RuoteKit::Application
 
       respond_to do |format|
         format.html { haml :workitem }
-        format.json { json(:workitem, @workitem) }
+        format.json { json :workitem }
       end
 
     else
 
       respond_to do |format|
-        format.html { haml(:workitems) }
-        format.json { json(:workitems, @workitems) }
+        format.html { haml :workitems }
+        format.json { json :workitems }
       end
     end
   end
 
   put '/_ruote/workitems/:id' do
 
-    workitem, _, _ = fetch_wi
+    @workitem, _, _ = fetch_wi
 
-    return http_error(404) unless workitem
+    return http_error(404) unless @workitem
 
     options = begin
       field_updates_and_proceed_from_put
@@ -53,24 +53,24 @@ class RuoteKit::Application
     end
 
     unless options[:fields].empty?
-      workitem.fields = options[:fields]
-      RuoteKit.engine.storage_participant.update(workitem)
+      @workitem.fields = options[:fields]
+      RuoteKit.engine.storage_participant.update(@workitem)
     end
 
     if options[:proceed]
-      RuoteKit.engine.storage_participant.reply(workitem)
+      RuoteKit.engine.storage_participant.reply(@workitem)
     end
 
     respond_to do |format|
 
-      format.html {
+      format.html do
         redirect(options[:proceed] ?
-          "/_ruote/workitems/#{workitem.fei.wfid}" :
-          "/_ruote/workitems/#{workitem.fei.sid}")
-      }
-      format.json {
-        json(:workitem, workitem)
-      }
+          "/_ruote/workitems/#{@workitem.fei.wfid}" :
+          "/_ruote/workitems/#{@workitem.fei.sid}")
+      end
+      format.json do
+        json :workitem
+      end
     end
   end
 
