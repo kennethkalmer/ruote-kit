@@ -22,6 +22,8 @@ module RuoteKit
         Rack::Utils.escape_html(s)
       end
 
+      # Returns an <a href="x" rel="y">z</a>
+      #
       def alink(resource, id=nil, opts={})
 
         fei = nil
@@ -41,8 +43,8 @@ module RuoteKit
           href = "/_ruote/#{resource}"
         end
 
-        rel = if resource == 'processes'
-          '#process'
+        rel = opts.delete(:rel) || if resource == 'processes'
+          id ? '#process' : '#processes'
         elsif resource == 'expressions'
           fei ? '#expression' : '#process_expressions'
         elsif resource == 'errors'
@@ -54,8 +56,15 @@ module RuoteKit
         else
           ''
         end
-        rel = "http://ruote.rubyforge.org/rels.html#{rel}" if rel.length > 0
-        text = opts[:text] || href
+        rel = "http://ruote.rubyforge.org/rels.html#{rel}" if rel.match(/^#/)
+
+        text = opts.delete(:text) || href
+
+        opts = opts.inject({}) { |h, (k, v)| h[k.to_s] = v; h }
+        qs = opts.keys.sort.collect { |k| "#{k}=#{opts[k]}" }.join('&')
+
+        href = "#{href}#{qs.length > 0 ? "?#{qs}" : ''}"
+
         title = href
 
         "<a href=\"#{href}\" title=\"#{title}\" rel=\"#{rel}\">#{text}</a>"

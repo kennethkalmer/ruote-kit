@@ -7,8 +7,12 @@ class RuoteKit::Application
   get '/_ruote/processes/?' do
 
     @process_count = RuoteKit.engine.processes(:count => true)
-    #@processes = RuoteKit.engine.processes(:limit => 3, :descending => true)
-    @processes = RuoteKit.engine.processes(:descending => true)
+
+    opts = { :descending => true }
+    if s = params[:skip]; opts[:skip] = s; end
+    if l = params[:limit]; opts[:limit] = l; end
+
+    @processes = RuoteKit.engine.processes(opts)
 
     respond_with :processes
   end
