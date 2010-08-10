@@ -5,12 +5,12 @@
 
 .flash
   .message
-    - if @processes.empty?
+    - if @process_count < 1
       .warn
         %p no processes are currently running
     - else
       .notice
-        %p currently running #{@processes.size} processes
+        %p currently running #{@process_count} processes
 
 %table.list
   %thead

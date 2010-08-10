@@ -6,9 +6,9 @@ class RuoteKit::Application
 
   get '/_ruote/processes/?' do
 
-    @processes = RuoteKit.engine.processes.sort_by { |pr|
-      pr.launched_time
-    }.reverse
+    @process_count = RuoteKit.engine.processes(:count => true)
+    #@processes = RuoteKit.engine.processes(:limit => 3, :descending => true)
+    @processes = RuoteKit.engine.processes(:descending => true)
 
     respond_to do |format|
       format.html { haml :processes }
