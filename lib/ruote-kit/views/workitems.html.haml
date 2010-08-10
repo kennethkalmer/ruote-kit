@@ -54,6 +54,5 @@
         - fields = wi.fields.dup
         - fields.delete('params')
         - fields.delete('dispatched_at')
-        - fields = Rufus::Json.encode(fields)[1, 28].strip
-        = fields == '}' ? '' : fields
+        = Rufus::Json.encode(fields)[1..-2][0, 28]
 
