@@ -7,20 +7,14 @@ class RuoteKit::Application
 
     @schedules = RuoteKit.engine.schedules
 
-    respond_to do |format|
-      format.html { haml :schedules }
-      format.json { json :schedules }
-    end
+    respond_with :schedules
   end
 
   get '/_ruote/schedules/:wfid' do
 
     @schedules = RuoteKit.engine.schedules(params[:wfid])
 
-    respond_to do |format|
-      format.html { haml :schedules }
-      format.json { json :schedules }
-    end
+    respond_with :schedules
   end
 end
 

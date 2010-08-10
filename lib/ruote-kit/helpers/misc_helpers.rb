@@ -6,6 +6,14 @@ module RuoteKit
 
     module MiscHelpers
 
+      def respond_with(template)
+
+        respond_to do |format|
+          format.html { haml(template) }
+          format.json { json(template) }
+        end
+      end
+
       def sample_process
         %{
 Ruote.process_definition :name => 'test', :revision => '0.1' do

@@ -12,10 +12,7 @@ class RuoteKit::Application
 
     @workitems = RuoteKit.engine.storage_participant.query(query)
 
-    respond_to do |format|
-      format.html { haml :workitems }
-      format.json { json :workitems }
-    end
+    respond_with :workitems
   end
 
   get '/_ruote/workitems/:id' do
@@ -25,18 +22,9 @@ class RuoteKit::Application
     return http_error(404) if @workitem.nil? && @workitems.nil?
 
     if @workitem
-
-      respond_to do |format|
-        format.html { haml :workitem }
-        format.json { json :workitem }
-      end
-
+      respond_with :workitem
     else
-
-      respond_to do |format|
-        format.html { haml :workitems }
-        format.json { json :workitems }
-      end
+      respond_with :workitems
     end
   end
 

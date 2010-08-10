@@ -59,12 +59,12 @@ module RuoteKit
 
       respond_to do |format|
 
-        format.html {
+        format.html do
           haml :index
-        }
-        format.json {
+        end
+        format.json do
           json :misc, 'ruote-kit' => 'welcome', 'version' => RuoteKit::VERSION
-        }
+        end
       end
     end
 

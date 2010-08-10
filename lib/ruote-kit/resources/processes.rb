@@ -10,10 +10,7 @@ class RuoteKit::Application
     #@processes = RuoteKit.engine.processes(:limit => 3, :descending => true)
     @processes = RuoteKit.engine.processes(:descending => true)
 
-    respond_to do |format|
-      format.html { haml :processes }
-      format.json { json :processes }
-    end
+    respond_with :processes
   end
 
   get '/_ruote/processes/new' do
@@ -27,10 +24,7 @@ class RuoteKit::Application
 
     return http_error(404) unless @process
 
-    respond_to do |format|
-      format.html { haml :process }
-      format.json { json :process }
-    end
+    respond_with :process
   end
 
   post '/_ruote/processes' do

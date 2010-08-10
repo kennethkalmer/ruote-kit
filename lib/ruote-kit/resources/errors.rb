@@ -7,10 +7,7 @@ class RuoteKit::Application
 
     @errors = RuoteKit.engine.errors
 
-    respond_to do |format|
-      format.html { haml :errors }
-      format.json { json :errors }
-    end
+    respond_with :errors
   end
 
   get '/_ruote/errors/:id' do
@@ -20,18 +17,9 @@ class RuoteKit::Application
     return http_error(404) if @error.nil? && @errors.nil?
 
     if @error
-
-      respond_to do |format|
-        format.html { haml :error }
-        format.json { json :error }
-      end
-
+      respond_with :error
     else
-
-      respond_to do |format|
-        format.html { haml :errors }
-        format.json { json :errors }
-      end
+      respond_with :errors
     end
   end
 

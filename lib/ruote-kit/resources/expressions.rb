@@ -13,16 +13,10 @@ class RuoteKit::Application
 
       return http_error(404) unless @expression
 
-      respond_to do |format|
-        format.html { haml :expression }
-        format.json { json :expression }
-      end
+      respond_with :expression
     else
 
-      respond_to do |format|
-        format.html { haml :expressions }
-        format.json { json :expressions }
-      end
+      respond_with :expressions
     end
   end
 

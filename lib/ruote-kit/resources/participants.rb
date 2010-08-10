@@ -7,10 +7,7 @@ class RuoteKit::Application
 
     @participants = RuoteKit.engine.participant_list
 
-    respond_to do |format|
-      format.html { haml :participants }
-      format.json { json :participants }
-    end
+    respond_with :participants
   end
 
   put '/_ruote/participants/?' do
