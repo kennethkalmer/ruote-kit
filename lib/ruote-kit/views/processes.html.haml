@@ -5,12 +5,8 @@
 
 .flash
   .message
-    - if @process_count < 1
-      .warn
-        %p no processes are currently running
-    - else
-      .notice
-        %p currently running #{@process_count} processes
+    .notice
+      %p #{@skip + 1} to #{@skip + @limit} of #{@count} processes
 
 %table.list
   %thead

@@ -35,6 +35,17 @@ describe RuoteKit::Helpers::RenderHelpers do
       alink(:processes, :rel => 'last').should ==
         '<a href="/_ruote/processes" title="/_ruote/processes" rel="last">/_ruote/processes</a>'
     end
+
+    it 'should accept a :head id for processes, errors, schedules and workitems' do
+
+      self.instance_eval do
+        def settings; OpenStruct.new(:limit => 100); end
+      end
+        # tricking the helper...
+
+      alink(:processes, :head, :text => 'processes').should ==
+        '<a href="/_ruote/processes?limit=100&skip=0" title="/_ruote/processes?limit=100&skip=0" rel="http://ruote.rubyforge.org/rels.html#processes">processes</a>'
+    end
   end
 end
 

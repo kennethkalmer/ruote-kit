@@ -33,6 +33,10 @@ module RuoteKit
         if id.is_a?(Hash)
           opts = id
           id = nil
+        elsif id == :head
+          opts[:skip] = 0
+          opts[:limit] = settings.limit
+          id = nil
         end
 
         if id

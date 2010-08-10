@@ -7,6 +7,7 @@ module RuoteKit
     autoload :RenderHelpers, 'ruote-kit/helpers/render_helpers'
     autoload :JsonHelpers, 'ruote-kit/helpers/json_helpers'
     autoload :MiscHelpers, 'ruote-kit/helpers/misc_helpers'
+    autoload :PaginationHelpers, 'ruote-kit/helpers/pagination_helpers'
   end
 end
 

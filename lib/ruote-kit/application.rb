@@ -22,6 +22,8 @@ module RuoteKit
       end
     end
 
+    set :limit, 100
+
     set :views, File.join(File.dirname(__FILE__), 'views')
 
     use(
@@ -35,6 +37,7 @@ module RuoteKit
       include RuoteKit::Helpers::JsonHelpers
       include RuoteKit::Helpers::MiscHelpers
       include RuoteKit::Helpers::RenderHelpers
+      include RuoteKit::Helpers::PaginationHelpers
     end
 
     before do
