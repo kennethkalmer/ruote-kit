@@ -19,11 +19,11 @@ module RuoteKit
 
       # Outputs a text like "11 to 15 of 15 processes"
       #
-      def pagination_position(resources)
+      def pagination_position
 
         to = [ @skip + @limit, @count ].min
 
-        "#{@skip + 1} to #{to} of #{@count} #{resources}"
+        "#{@skip + 1} to #{to} of #{@count} #{request.path.split('/').last}"
       end
     end
   end
