@@ -118,8 +118,8 @@ module RuoteKit
           sched['target'] = target_fei.to_h
 
           sched['links'] = [
-            link("/_ruote/expressions/#{sched['owner']}", '#schedule_owner'),
-            link("/_ruote/expressions/#{sched['target']}", '#schedule_target')
+            link("/_ruote/expressions/#{owner_fei.sid}", '#schedule_owner'),
+            link("/_ruote/expressions/#{target_fei.sid}", '#schedule_target')
           ]
         end
 

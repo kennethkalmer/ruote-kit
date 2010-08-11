@@ -38,16 +38,24 @@ describe 'GET /_ruote/schedules' do
 
     last_response.status.should be(200)
 
-    #puts Rufus::Json.pretty_encode(last_response.json_body)
+    json = last_response.json_body
+    #puts Rufus::Json.pretty_encode(json)
 
-    last_response.json_body['schedules'].size.should == 2
+    schedules = json['schedules']
 
-    last_response.json_body['schedules'].first.keys.sort.should == %w[
+    schedules.size.should == 2
+
+    schedules.first.keys.sort.should == %w[
       _id action at flavour links original owner put_at target type wfid
     ]
 
-    last_response.json_body['schedules'].first['target'].should be_kind_of(Hash)
-    last_response.json_body['schedules'].first['owner'].should be_kind_of(Hash)
+    schedules.first['target'].should be_kind_of(Hash)
+    schedules.first['owner'].should be_kind_of(Hash)
+
+    wfid = [ @wfid0, @wfid1 ].sort.first
+
+    schedules.first['links'].first['href'].should ==
+      "/_ruote/expressions/0_0!!#{wfid}"
   end
 end
 
