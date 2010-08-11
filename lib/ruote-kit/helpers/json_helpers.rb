@@ -111,6 +111,12 @@ module RuoteKit
 
         @schedules.each do |sched|
 
+          owner_fei = sched.delete('owner')
+          target_fei = sched.delete('target')
+
+          sched['owner'] = owner_fei.to_h
+          sched['target'] = target_fei.to_h
+
           sched['links'] = [
             link("/_ruote/expressions/#{sched['owner']}", '#schedule_owner'),
             link("/_ruote/expressions/#{sched['target']}", '#schedule_target')

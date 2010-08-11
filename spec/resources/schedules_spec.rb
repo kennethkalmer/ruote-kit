@@ -45,6 +45,9 @@ describe 'GET /_ruote/schedules' do
     last_response.json_body['schedules'].first.keys.sort.should == %w[
       _id action at flavour links original owner put_at target type wfid
     ]
+
+    last_response.json_body['schedules'].first['target'].should be_kind_of(Hash)
+    last_response.json_body['schedules'].first['owner'].should be_kind_of(Hash)
   end
 end
 
