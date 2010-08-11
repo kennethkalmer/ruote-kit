@@ -6,7 +6,8 @@
 .flash
   .message
     .notice
-      %p #{@skip + 1} to #{@skip + @limit} of #{@count} processes
+      %p
+        = pagination_position(:processes)
 
 %table.list
   %thead

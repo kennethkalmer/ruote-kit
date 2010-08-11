@@ -11,15 +11,19 @@ module RuoteKit
       # Prerequesite : a @count var with the number of records (processes,
       # workitems, errors or schedules) found.
       #
-      def paginate(opts={})
+      def paginate
 
-        if s = params[:skip]; opts[:skip] = s.to_i; end
-        if l = params[:limit]; opts[:limit] = l.to_i; end
+        @skip = (params[:skip] || 0).to_i
+        @limit = (params[:limit] || @count).to_i
+      end
 
-        @skip = opts[:skip] || 0
-        @limit = opts[:limit] || @count
+      # Outputs a text like "11 to 15 of 15 processes"
+      #
+      def pagination_position(resources)
 
-        opts
+        to = [ @skip + @limit, @count ].min
+
+        "#{@skip + 1} to #{to} of #{@count} #{resources}"
       end
     end
   end
