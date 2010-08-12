@@ -92,13 +92,13 @@ describe 'GET /_ruote/processes' do
           'rel' => 'self' },
         { 'href' => '/_ruote/processes',
           'rel' => 'all' },
-        { 'href' => '/_ruote/processes?limit=100?skip=0',
+        { 'href' => '/_ruote/processes?limit=100&skip=0',
           'rel' => 'first' },
-        { 'href' => '/_ruote/processes?limit=100?skip=0',
+        { 'href' => '/_ruote/processes?limit=100&skip=0',
           'rel' => 'last' },
-        { 'href' => '/_ruote/processes?limit=100?skip=0',
+        { 'href' => '/_ruote/processes?limit=100&skip=0',
           'rel' => 'previous' },
-        { 'href' => '/_ruote/processes?limit=100?skip=0',
+        { 'href' => '/_ruote/processes?limit=100&skip=0',
           'rel' => 'next' } ]
 
       body['processes'].first['links'].should == process_links(@wfid)

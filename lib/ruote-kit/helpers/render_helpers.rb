@@ -22,58 +22,6 @@ module RuoteKit
         Rack::Utils.escape_html(s)
       end
 
-      # Returns an <a href="x" rel="y">z</a>
-      #
-      def alink(resource, id=nil, opts={})
-
-        fei = nil
-        href = nil
-        resource = resource.to_s
-
-        if id.is_a?(Hash)
-          opts = id
-          id = nil
-        elsif id == :head
-          opts[:skip] = 0
-          opts[:limit] = settings.limit
-          id = nil
-        end
-
-        if id
-          fei = id.index('!')
-          path = "#{resource}/#{id}"
-          href = "/_ruote/#{path}"
-        else
-          href = "/_ruote/#{resource}"
-        end
-
-        rel = opts.delete(:rel) || if resource == 'processes'
-          id ? '#process' : '#processes'
-        elsif resource == 'expressions'
-          fei ? '#expression' : '#process_expressions'
-        elsif resource == 'errors'
-          fei ? '#error' : '#process_errors'
-        elsif resource == 'workitems'
-          fei ? '#workitem' : '#process_workitems'
-        elsif resource == 'schedules'
-          id ? '#process_schedules' : '#schedules'
-        else
-          ''
-        end
-        rel = "http://ruote.rubyforge.org/rels.html#{rel}" if rel.match(/^#/)
-
-        text = opts.delete(:text) || href
-
-        opts = opts.inject({}) { |h, (k, v)| h[k.to_s] = v; h }
-        qs = opts.keys.sort.collect { |k| "#{k}=#{opts[k]}" }.join('&')
-
-        href = "#{href}#{qs.length > 0 ? "?#{qs}" : ''}"
-
-        title = href
-
-        "<a href=\"#{href}\" title=\"#{title}\" rel=\"#{rel}\">#{text}</a>"
-      end
-
       # Used by #http_error
       #
       HTTP_CODES = {

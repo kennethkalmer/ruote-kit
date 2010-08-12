@@ -36,6 +36,7 @@ module RuoteKit
     Dir[File.join(File.dirname(__FILE__), 'helpers/*.rb')].each { |r| load r }
 
     helpers do
+      include RuoteKit::Helpers::LinkHelpers
       include RuoteKit::Helpers::JsonHelpers
       include RuoteKit::Helpers::MiscHelpers
       include RuoteKit::Helpers::RenderHelpers
