@@ -73,7 +73,23 @@ describe 'with a running process that has an error' do
 
       # global links
 
-      json['links'].should == root_links('/_ruote/errors')
+      json['links'].should == [
+        { 'href' => '/_ruote',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#root'  },
+        { 'href' => '/_ruote/processes',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#processes' },
+        { 'href' => '/_ruote/workitems',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#workitems' },
+        { 'href' => '/_ruote/errors',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#errors' },
+        { 'href' => '/_ruote/participants',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#participants' },
+        { 'href' => '/_ruote/schedules',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#schedules' },
+        { 'href' => '/_ruote/history',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#history' },
+        { 'href' => '/_ruote/errors',
+          'rel' => 'self' } ]
 
       # the error itself
 
@@ -113,9 +129,16 @@ describe 'with a running process that has an error' do
 
       json = last_response.json_body
 
-      json['links'].should == root_links("/_ruote/errors/#{@wfid}")
       json['errors'].size.should == 1
       json['errors'].first['message'].should == "#<RuntimeError: unknown participant or subprocess 'nemo'>"
+
+      json['errors'].first['links'].should == [
+        { 'href' => "/_ruote/errors/0_0_0!!#{@wfid}",
+          'rel' => 'self' },
+        { 'href' => "/_ruote/errors/#{@wfid}",
+          'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },
+        { 'href' => "/_ruote/processes/#{@wfid}",
+          'rel' => 'http://ruote.rubyforge.org/rels.html#process' } ]
     end
   end
 
