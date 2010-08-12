@@ -8,6 +8,21 @@ module RuoteKit
     #
     module LinkHelpers
 
+      # Computing the href for the "as_json" link at the bottom of each page
+      #
+      def as_json
+
+        href = request.path + '.json'
+
+        if request.query_string.length > 0
+          href = "#{href}?#{request.query_string}"
+        end
+
+        href
+      end
+
+      # Determining { 'href' => 'x', 'rel' => 'y', ... } and co
+      #
       def hlink(*args)
 
         query = args.last.is_a?(Hash) ? args.pop : {}
@@ -48,7 +63,7 @@ module RuoteKit
         result
       end
 
-      # Returns an <a href="x" rel="y">z</a>
+      # Returns an <a href="x" rel="y">z</a>, uses #hlink.
       #
       def alink(*args)
 

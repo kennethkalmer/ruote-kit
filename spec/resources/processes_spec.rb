@@ -30,11 +30,14 @@ describe 'GET /_ruote/processes' do
 
     it 'should give no processes back (HTML)' do
 
-      get '/_ruote/processes'
+      get '/_ruote/processes?limit=100&skip=0'
 
       last_response.status.should be(200)
 
-      last_response.should have_selector('a', :content => 'as JSON')
+      last_response.should have_selector(
+        'a', :content => 'as JSON')
+      last_response.should have_selector(
+        'a', :href => '/_ruote/processes.json?limit=100&skip=0')
     end
 
     it 'should give an empty array (JSON)' do

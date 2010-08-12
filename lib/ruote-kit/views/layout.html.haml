@@ -49,7 +49,7 @@
 
       - unless request.path.match(/\/processes\/new/)
         #as_json
-          %a{ :href => request.fullpath + '.json', :title => 'same page, but as JSON' }
+          %a{ :href => as_json, :title => 'same page, but as JSON' }
             as JSON
 
       #footer
