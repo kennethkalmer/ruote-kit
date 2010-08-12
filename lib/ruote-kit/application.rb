@@ -33,6 +33,8 @@ module RuoteKit
     use(
       Rack::MethodOverride)
 
+    Dir[File.join(File.dirname(__FILE__), 'helpers/*.rb')].each { |r| load r }
+
     helpers do
       include RuoteKit::Helpers::JsonHelpers
       include RuoteKit::Helpers::MiscHelpers
@@ -71,9 +73,7 @@ module RuoteKit
       end
     end
 
-    Dir[ File.join(File.dirname(__FILE__), '/resources/*.rb') ].each { |r|
-      load r
-    }
+    Dir[File.join(File.dirname(__FILE__), 'resources/*.rb')].each { |r| load r }
   end
 end
 

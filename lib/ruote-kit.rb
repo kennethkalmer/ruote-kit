@@ -12,7 +12,6 @@ require 'ruote-kit/version'
 module RuoteKit
 
   autoload :Application, 'ruote-kit/application'
-  autoload :Helpers, 'ruote-kit/helpers'
 
   class << self
 
