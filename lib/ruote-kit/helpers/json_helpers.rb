@@ -132,7 +132,8 @@ module RuoteKit
       end
 
       def links(resource)
-        [
+
+        result = [
           link('#root'),
           link('processes', '#processes'),
           link('workitems', '#workitems'),
@@ -142,6 +143,26 @@ module RuoteKit
           link('history', '#history'),
           link(request.fullpath, 'self')
         ]
+
+        if @skip # pagination is active
+
+          result << link(resource.to_s, 'all')
+
+          las = @count / settings.limit
+          pre = [ 0, @skip - settings.limit ].max
+          nex = [ @skip + settings.limit, las ].min
+
+          result << link(
+            resource.to_s, { :skip => 0, :limit => settings.limit }, 'first')
+          result << link(
+            resource.to_s, { :skip => las, :limit => settings.limit }, 'last')
+          result << link(
+            resource.to_s, { :skip => pre, :limit => settings.limit }, 'previous')
+          result << link(
+            resource.to_s, { :skip => nex, :limit => settings.limit }, 'next')
+        end
+
+        result
       end
 
       def link(*args)

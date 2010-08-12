@@ -106,7 +106,7 @@ end
 # Sets the local variables that will be accessible in the HAML
 # template
 def assigns
-  @assigns ||= { }
+  @assigns ||= {}
 end
 
 # Renders the supplied template with Haml::Engine and assigns the
@@ -126,7 +126,7 @@ end
 # Sets the local variables that will be accessible in the HAML
 # template
 def assigns
-  @assigns ||= { }
+  @assigns ||= {}
 end
 
 # Prepends the assigns keywords with an "@" so that they will be

@@ -73,7 +73,34 @@ describe 'GET /_ruote/processes' do
 
       body['processes'].should_not be_empty
 
-      body['links'].should == root_links('/_ruote/processes')
+      body['links'].should == [
+        { 'href' => '/_ruote',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#root' },
+        { 'href' => '/_ruote/processes',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#processes' },
+        { 'href' => '/_ruote/workitems',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#workitems' },
+        { 'href' => '/_ruote/errors',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#errors' },
+        { 'href' => '/_ruote/participants',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#participants' },
+        { 'href' => '/_ruote/schedules',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#schedules' },
+        { 'href' => '/_ruote/history',
+          'rel' => 'http://ruote.rubyforge.org/rels.html#history' },
+        { 'href' => '/_ruote/processes',
+          'rel' => 'self' },
+        { 'href' => '/_ruote/processes',
+          'rel' => 'all' },
+        { 'href' => '/_ruote/processes?limit=100?skip=0',
+          'rel' => 'first' },
+        { 'href' => '/_ruote/processes?limit=100?skip=0',
+          'rel' => 'last' },
+        { 'href' => '/_ruote/processes?limit=100?skip=0',
+          'rel' => 'previous' },
+        { 'href' => '/_ruote/processes?limit=100?skip=0',
+          'rel' => 'next' } ]
+
       body['processes'].first['links'].should == process_links(@wfid)
     end
   end
