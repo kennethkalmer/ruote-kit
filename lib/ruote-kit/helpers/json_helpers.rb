@@ -34,12 +34,12 @@ module RuoteKit
         detailed = (@process != nil)
 
         process.as_h(detailed).merge('links' => [
-          link("/_ruote/processes/#{process.wfid}", 'self'),
-          link("/_ruote/processes/#{process.wfid}", '#process'),
-          link("/_ruote/expressions/#{process.wfid}", '#process_expressions'),
-          link("/_ruote/workitems/#{process.wfid}", '#process_workitems'),
-          link("/_ruote/errors/#{process.wfid}", '#process_errors'),
-          link("/_ruote/schedules/#{process.wfid}", '#process_schedules')
+          link('processes', process.wfid, 'self'),
+          link('processes', process.wfid, '#process'),
+          link('expressions', process.wfid, '#process_expressions'),
+          link('workitems', process.wfid, '#process_workitems'),
+          link('errors', process.wfid, '#process_errors'),
+          link('schedules', process.wfid, '#process_schedules')
         ])
       end
 
@@ -53,12 +53,12 @@ module RuoteKit
         detailed = (@expression != nil)
 
         links = [
-          link("/_ruote/expressions/#{expression.fei.sid}", 'self'),
-          link("/_ruote/processes/#{expression.fei.wfid}", '#process'),
-          link("/_ruote/expressions/#{expression.fei.wfid}", '#process_expressions')
+          link('expressions', expression.fei.sid, 'self'),
+          link('processes', expression.fei.wfid, '#process'),
+          link('expressions', expression.fei.wfid, '#process_expressions')
         ]
         links << link(
-          "/_ruote/expressions/#{expression.parent.fei.sid}", 'parent'
+          'expressions', expression.parent.fei.sid, 'parent'
         ) if expression.parent
 
         expression.as_h(detailed).merge('links' => links)
@@ -74,10 +74,10 @@ module RuoteKit
         detailed = (@workitem != nil)
 
         links = [
-          link("/_ruote/expressions/#{workitem.fei.sid}", 'self'),
-          link("/_ruote/processes/#{workitem.fei.wfid}", '#process'),
-          link("/_ruote/expressions/#{workitem.fei.wfid}", '#process_expressions'),
-          link("/_ruote/errors/#{workitem.fei.wfid}", '#process_errors')
+          link('expressions', workitem.fei.sid, 'self'),
+          link('processes', workitem.fei.wfid, '#process'),
+          link('expressions', workitem.fei.wfid, '#process_expressions'),
+          link('errors', workitem.fei.wfid, '#process_errors')
         ]
 
         workitem.as_h(detailed).merge('links' => links)
@@ -94,16 +94,16 @@ module RuoteKit
         wfid = fei.wfid
 
         error.to_h.merge('links' => [
-          link("/_ruote/errors/#{fei.sid}", 'self'),
-          link("/_ruote/errors/#{wfid}", '#process_errors'),
-          link("/_ruote/processes/#{wfid}", '#process')
+          link('errors', fei.sid, 'self'),
+          link('errors', wfid, '#process_errors'),
+          link('processes', wfid, '#process')
         ])
       end
 
       def json_participants
 
         @participants.collect { |pa|
-          pa.as_h.merge('links' => [ link("/_ruote/participants", 'self') ])
+          pa.as_h.merge('links' => [ link('participants', 'self') ])
         }
       end
 
@@ -118,8 +118,8 @@ module RuoteKit
           sched['target'] = target_fei.to_h
 
           sched['links'] = [
-            link("/_ruote/expressions/#{owner_fei.sid}", '#schedule_owner'),
-            link("/_ruote/expressions/#{target_fei.sid}", '#schedule_target')
+            link('expressions', owner_fei.sid, '#schedule_owner'),
+            link('expressions', target_fei.sid, '#schedule_target')
           ]
         end
 
@@ -133,18 +133,30 @@ module RuoteKit
 
       def links(resource)
         [
-          link('/_ruote', '#root'),
-          link('/_ruote/processes', '#processes'),
-          link('/_ruote/workitems', '#workitems'),
-          link('/_ruote/errors', '#errors'),
-          link('/_ruote/participants', '#participants'),
-          link('/_ruote/schedules', '#schedules'),
-          link('/_ruote/history', '#history'),
+          link('#root'),
+          link('processes', '#processes'),
+          link('workitems', '#workitems'),
+          link('errors', '#errors'),
+          link('participants', '#participants'),
+          link('schedules', '#schedules'),
+          link('history', '#history'),
           link(request.fullpath, 'self')
         ]
       end
 
-      def link(href, rel)
+      def link(*args)
+
+        rel = args.pop
+        query = args.last.is_a?(Hash) ? args.pop : nil
+
+        if args.empty? or ( ! args.first.match(/^\/\_ruote/))
+          args.unshift('/_ruote')
+        end
+        href = args.join('/')
+
+        query = '?' + query.collect { |k, v| "#{k}=#{v}" }.join('?') if query
+        href = "#{href}#{query}"
+
         {
           'href' => href,
           'rel' => rel.match(/^#/) ?
