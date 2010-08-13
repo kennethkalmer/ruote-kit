@@ -5,12 +5,9 @@
 
 .flash
   .message
-    - if @errors.empty?
-      .warn
-        %p there are currently no errors for the processes in the engine
-    - else
-      .notice
-        %p currently #{@errors.size} errors for the processes in the engine
+    .notice
+      %p
+        = pagination_position
 
 %table.list
  

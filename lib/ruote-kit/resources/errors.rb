@@ -5,7 +5,11 @@ class RuoteKit::Application
 
   get '/_ruote/errors/?' do
 
-    @errors = RuoteKit.engine.errors
+    @count = RuoteKit.engine.errors(:count => true)
+
+    paginate
+
+    @errors = RuoteKit.engine.errors(:skip => @skip, :limit => @limit)
 
     respond_with :errors
   end
@@ -19,6 +23,9 @@ class RuoteKit::Application
     if @error
       respond_with :error
     else
+      @count = @errors.size
+      @skip = 0
+      @limit = @count
       respond_with :errors
     end
   end

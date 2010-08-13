@@ -89,7 +89,17 @@ describe 'with a running process that has an error' do
         { 'href' => '/_ruote/history',
           'rel' => 'http://ruote.rubyforge.org/rels.html#history' },
         { 'href' => '/_ruote/errors',
-          'rel' => 'self' } ]
+          'rel' => 'self' },
+        { 'href' => '/_ruote/errors',
+          'rel' => 'all' },
+        { 'href' => '/_ruote/errors?limit=100&skip=0',
+          'rel' => 'first' },
+        { 'href' => '/_ruote/errors?limit=100&skip=0',
+          'rel' => 'last' },
+        { 'href' => '/_ruote/errors?limit=100&skip=0',
+          'rel' => 'previous' },
+        { 'href' => '/_ruote/errors?limit=100&skip=0',
+          'rel' => 'next' } ]
 
       # the error itself
 
