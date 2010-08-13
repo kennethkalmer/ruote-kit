@@ -3,11 +3,7 @@
 
 %h1 errors
 
-.flash
-  .message
-    .notice
-      %p
-        = pagination_position
+= haml :_pagination, :layout => false
 
 %table.list
  
@@ -35,5 +31,4 @@
         = Time.parse(error.at).localtime.strftime('%Y/%m/%d %H:%M:%S')
       %td
         &= error.action
-
 

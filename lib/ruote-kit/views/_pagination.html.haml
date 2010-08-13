@@ -1,0 +1,21 @@
+
+#pagination
+
+  = @skip + 1
+  to
+  = [ @skip + @limit, @count ].min
+  of
+  = @count
+  = request.path.split('/').last
+
+  - lim = settings.limit
+  - las = (@count / lim) * lim
+  - pre = [ 0, @skip - lim ].max
+  - nex = [ @skip + lim, las ].min
+
+  %a.pagination{ :href => request.path, :rel => 'all' } all
+  %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=0", :rel => 'first' } first
+  %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{pre}", :rel => 'previous' } previous
+  %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{nex}", :rel => 'next' } next
+  %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{las}", :rel => 'last' } last
+

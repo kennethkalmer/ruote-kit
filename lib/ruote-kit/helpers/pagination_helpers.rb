@@ -16,15 +16,6 @@ module RuoteKit
         @skip = (params[:skip] || 0).to_i
         @limit = (params[:limit] || @count).to_i
       end
-
-      # Outputs a text like "11 to 15 of 15 processes"
-      #
-      def pagination_position
-
-        to = [ @skip + @limit, @count ].min
-
-        "#{@skip + 1} to #{to} of #{@count} #{request.path.split('/').last}"
-      end
     end
   end
 end

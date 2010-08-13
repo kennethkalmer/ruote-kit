@@ -3,13 +3,7 @@
 
 %h1 processes
 
-.flash
-  .message
-    .notice
-      %p
-        = pagination_position
-
--#= haml :_pagination
+= haml :_pagination, :layout => false
 
 %table.list
   %thead
