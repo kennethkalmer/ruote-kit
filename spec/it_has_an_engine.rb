@@ -1,4 +1,22 @@
 
+class Tracer
+  def initialize
+    @trace = ''
+  end
+  def to_s
+    @trace.to_s.strip
+  end
+  def << s
+    @trace << s
+  end
+  def clear
+    @trace = ''
+  end
+  def puts s
+    @trace << "#{s}\n"
+  end
+end
+
 shared_examples_for 'it has an engine' do
 
   before(:each) do

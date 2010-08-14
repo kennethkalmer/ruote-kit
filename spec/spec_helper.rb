@@ -67,39 +67,10 @@ def app
   RuoteKit::Application
 end
 
-# Sets the local variables that will be accessible in the HAML
-# template
-def assigns
-  @assigns ||= {}
-end
-
-# Renders the supplied template with Haml::Engine and assigns the
-# @response instance variable
-def render(template_path)
-  template = File.read("#{app.views}/#{template_path.sub(/^\//, '')}")
+def render(template, scope=nil, locals={}, &block)
+  template = File.read(File.join(app.views, template.to_s))
   engine = Haml::Engine.new(template)
-  @response = engine.render(self, assigns_for_template)
-end
-
-# Convenience method to access the @response instance variable set in
-# the render call
-def response
-  @response
-end
-
-# Sets the local variables that will be accessible in the HAML
-# template
-def assigns
-  @assigns ||= {}
-end
-
-# Prepends the assigns keywords with an "@" so that they will be
-# instance variables when the template is rendered.
-def assigns_for_template
-  assigns.inject({}) do |memo, kv|
-    memo["@#{kv[0].to_s}".to_sym] = kv[1]
-    memo
-  end
+  engine.render(scope, locals, &block)
 end
 
 class Rack::MockResponse
@@ -119,24 +90,6 @@ class Rack::MockResponse
 
   def html?
     ! json?
-  end
-end
-
-class Tracer
-  def initialize
-    @trace = ''
-  end
-  def to_s
-    @trace.to_s.strip
-  end
-  def << s
-    @trace << s
-  end
-  def clear
-    @trace = ''
-  end
-  def puts s
-    @trace << "#{s}\n"
   end
 end
 

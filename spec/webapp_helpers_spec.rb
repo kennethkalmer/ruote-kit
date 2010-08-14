@@ -89,15 +89,40 @@ describe RuoteKit::Helpers::RenderHelpers do
 
   describe '_pagination.html.haml (HTML)' do
 
-    it 'should flip burgers' do
+    before(:each) do
+      @resource = Object.new
+      class << @resource
+        attr_accessor :count, :skip, :limit, :request
+        def to_html
+          '<div>' + render('_pagination.html.haml', self) + '</div>'
+        end
+        def settings
+          OpenStruct.new(:limit => @limit)
+        end
+      end
+      @resource.request = OpenStruct.new(:path => '/_ruote/processes')
+    end
 
-      @count = 201
-      @skip = 0
-      @limit = 7
+    it 'should paginate correctly' do
 
-      #render('_pagination.html.haml').should have_selector('nada', 'surf')
-      #p render('_pagination.html.haml')
-      pending('work in progress')
+      @resource.count = 201
+      @resource.skip = 0
+      @resource.limit = 7
+
+      html = @resource.to_html
+
+      html.index("  1\n  to\n  7\n  of\n  201\n  processes").should > 0
+
+      html.should have_selector(
+        'a', :href => '/_ruote/processes', :rel => 'all')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'first')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'previous')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=7', :rel => 'next')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
     end
   end
 end
