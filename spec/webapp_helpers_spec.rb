@@ -51,6 +51,7 @@ describe RuoteKit::Helpers::RenderHelpers do
   describe 'links(resource) (JSON)' do
 
     before(:each) do
+
       @resource = Object.new
       class << @resource
         include RuoteKit::Helpers::LinkHelpers
@@ -83,6 +84,20 @@ describe RuoteKit::Helpers::RenderHelpers do
         { 'href' => '/_ruote/processes?limit=5&skip=10',
           'rel' => 'next' }
       ]
+    end
+  end
+
+  describe '_pagination.html.haml (HTML)' do
+
+    it 'should flip burgers' do
+
+      @count = 201
+      @skip = 0
+      @limit = 7
+
+      #render('_pagination.html.haml').should have_selector('nada', 'surf')
+      #p render('_pagination.html.haml')
+      pending('work in progress')
     end
   end
 end
