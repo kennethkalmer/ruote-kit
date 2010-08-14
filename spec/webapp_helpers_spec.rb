@@ -47,5 +47,43 @@ describe RuoteKit::Helpers::RenderHelpers do
         '<a href="/_ruote/processes?limit=100&skip=0" rel="http://ruote.rubyforge.org/rels.html#processes" title="/_ruote/processes?limit=100&skip=0">processes</a>'
     end
   end
+
+  describe 'links(resource) (JSON)' do
+
+    before(:each) do
+      @resource = Object.new
+      class << @resource
+        include RuoteKit::Helpers::LinkHelpers
+        include RuoteKit::Helpers::JsonHelpers
+        attr_accessor :processes, :count, :skip, :limit, :request
+        def settings
+          OpenStruct.new(:limit => @limit)
+        end
+      end
+      @resource.request = OpenStruct.new(:fullpath => '/_ruote/processes')
+    end
+
+    it 'should paginate correctly' do
+
+      @resource.processes = (1..201).to_a
+      @resource.count = @resource.processes.size
+
+      @resource.skip = 5
+      @resource.limit = 5
+
+      @resource.links(:processes)[8..-1].should == [
+        { 'href' => '/_ruote/processes',
+          'rel' => 'all' },
+        { 'href' => '/_ruote/processes?limit=5&skip=0',
+          'rel' => 'first' },
+        { 'href' => '/_ruote/processes?limit=5&skip=200',
+          'rel' => 'last' },
+        { 'href' => '/_ruote/processes?limit=5&skip=0',
+          'rel' => 'previous' },
+        { 'href' => '/_ruote/processes?limit=5&skip=10',
+          'rel' => 'next' }
+      ]
+    end
+  end
 end
 

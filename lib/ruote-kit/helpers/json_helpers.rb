@@ -10,14 +10,12 @@ module RuoteKit
 
       def json(resource, *args)
 
-        if respond_to?("json_#{resource}")
-          object = send("json_#{resource}", *args)
-        end
+        object = respond_to?("json_#{resource}") ?
+          send("json_#{resource}", *args) : nil
 
-        Rufus::Json.encode({
-          'links' => links(resource),
-          resource.to_s => object || args.first
-        })
+        Rufus::Json.encode(
+          'links' => links(resource), resource.to_s => object || args.first
+        )
       end
 
       #def json_exception(code, exception)
