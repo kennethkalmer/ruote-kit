@@ -10,6 +10,18 @@ class RuoteKit::Application
       h
     }
 
+    @count = RuoteKit.engine.storage_participant.query(:count => true)
+
+    if (query.keys - %w[ limit skip ]).empty?
+      paginate
+    else
+      @skip = 0
+      @limit = @count
+    end
+
+    query[:skip] = @skip
+    query[:limit] = @limit
+
     @workitems = RuoteKit.engine.storage_participant.query(query)
 
     respond_with :workitems

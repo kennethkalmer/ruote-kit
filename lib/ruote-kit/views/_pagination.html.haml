@@ -1,25 +1,34 @@
 
 #pagination
 
-  = @skip + 1
-  to
-  = [ @skip + @limit, @count ].min
-  of
-  = @count
-  = request.path.split('/').last
+  - res = request.path.split('/')[2]
 
-  - lim = @limit || settings.limit
-  - las = (@count / lim) * lim
-  - pre = [ 0, @skip - lim ].max
-  - nex = [ @skip + lim, las ].min
+  - if @skip
 
-  %a.pagination{ :href => request.path, :rel => 'all' } all
-  - if @skip > 0
-    %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=0", :rel => 'first' } first
-  - if @skip > 0 && pre != 0
-    %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{pre}", :rel => 'previous' } previous
-  - if nex != las
-    %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{nex}", :rel => 'next' } next
-  - if las > 0
-    %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{las}", :rel => 'last' } last
+    = @skip + 1
+    to
+    = [ @skip + @limit, @count ].min
+    of
+    = @count
+    = res
 
+    - lim = @limit || settings.limit
+    - las = (@count / lim) * lim
+    - pre = [ 0, @skip - lim ].max
+    - nex = [ @skip + lim, las ].min
+
+    %a.pagination{ :href => request.path, :rel => 'all' } all
+    - if @skip > 0
+      %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=0", :rel => 'first' } first
+    - if @skip > 0 && pre != 0
+      %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{pre}", :rel => 'previous' } previous
+    - if nex != las
+      %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{nex}", :rel => 'next' } next
+    - if las > 0
+      %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{las}", :rel => 'last' } last
+
+  - else
+
+    - if resources = instance_variable_get("@#{res}")
+      = "#{resources.size} #{res}"
+ 

@@ -7,7 +7,6 @@ class RuoteKit::Application
   get '/_ruote/processes/?' do
 
     @count = RuoteKit.engine.processes(:count => true)
-
     paginate
 
     @processes = RuoteKit.engine.processes(

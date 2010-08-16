@@ -3,14 +3,7 @@
 
 %h1 schedules
 
-.flash
-  .message
-    - if @schedules.empty?
-      .warn
-        %p there are currently no schedules for the processes in the engine
-    - else
-      .notice
-        %p currently #{@schedules.size} schedules for the processes in the engine
+= haml :_pagination, :layout => false
 
 %table.list
  

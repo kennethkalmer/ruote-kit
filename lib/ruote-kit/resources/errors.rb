@@ -6,7 +6,6 @@ class RuoteKit::Application
   get '/_ruote/errors/?' do
 
     @count = RuoteKit.engine.errors(:count => true)
-
     paginate
 
     @errors = RuoteKit.engine.errors(:skip => @skip, :limit => @limit)

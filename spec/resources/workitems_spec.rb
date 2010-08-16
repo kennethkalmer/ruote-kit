@@ -4,6 +4,15 @@ require File.join(File.dirname(__FILE__), '/../spec_helper')
 undef :context if defined?(context)
 
 
+def workitem_count(from, to, of)
+  [
+    from, 'to', to, 'of', of, 'workitems'
+  ].collect { |e|
+    e.to_s
+  }.join("\n          ")
+end
+
+
 describe 'GET /_ruote/workitems' do
 
   it_has_an_engine
@@ -16,8 +25,7 @@ describe 'GET /_ruote/workitems' do
 
       last_response.should be_ok
 
-      last_response.should have_selector(
-        'div.warn p', :content => 'no workitems')
+      last_response.should match(workitem_count(1, 0, 0))
     end
 
     it 'should report no workitems (JSON)' do
@@ -49,8 +57,7 @@ describe 'GET /_ruote/workitems' do
 
       get '/_ruote/workitems'
 
-      last_response.should have_selector(
-        'div.notice p', :content => '1 workitem available')
+      last_response.should match(workitem_count(1, 1, 1))
     end
 
     it 'should have a list of workitems (JSON)' do
@@ -96,7 +103,7 @@ describe 'GET /_ruote/workitems/wfid' do
       last_response.should be_ok
 
       last_response.should have_selector(
-        'div.notice p', :content => '2 workitems available')
+        'div#pagination', :content => '2 workitems')
     end
 
     it 'should list the workitems (JSON)' do
@@ -119,7 +126,9 @@ describe 'GET /_ruote/workitems/wfid' do
       get '/_ruote/workitems/foo'
 
       last_response.should be_ok
-      last_response.should match(/no workitems/)
+
+      last_response.should have_selector(
+        'div#pagination', :content => '0 workitems')
     end
 
     it 'should report an empty list (JSON)' do
@@ -384,10 +393,7 @@ describe 'Filtering workitems' do
 
       last_response.should be_ok
 
-      last_response.should have_selector(
-        'div.notice p', :content => '1 workitem available')
-      #last_response.should have_selector(
-      #  'div.notice p', :content => 'Filtered for participant(s): jack')
+      last_response.should match(workitem_count(1, 3, 3))
     end
 
   end

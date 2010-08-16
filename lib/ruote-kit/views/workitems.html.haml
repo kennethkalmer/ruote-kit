@@ -5,19 +5,7 @@
   workitems
   = @wfid ? "for #{@wfid}" : ''
 
-.flash
-  .message
-    - if @workitems.empty?
-      .warn
-        %p no workitems
-    - else
-      .notice
-        %p
-          #{pluralize(@workitems.size, 'workitem')} available
-
-    - if @participants
-      .notice
-        %p for participant(s): #{@participants.join(', ')}
+= haml :_pagination, :layout => false
 
 %table.list
 
