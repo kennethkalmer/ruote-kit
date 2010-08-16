@@ -103,7 +103,7 @@ describe RuoteKit::Helpers::RenderHelpers do
       @resource.request = OpenStruct.new(:path => '/_ruote/processes')
     end
 
-    it 'should paginate correctly' do
+    it 'should paginate correctly (1st page)' do
 
       @resource.count = 201
       @resource.skip = 0
@@ -115,14 +115,102 @@ describe RuoteKit::Helpers::RenderHelpers do
 
       html.should have_selector(
         'a', :href => '/_ruote/processes', :rel => 'all')
-      html.should have_selector(
-        'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'first')
-      html.should have_selector(
-        'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'previous')
+      #html.should have_selector(
+      #  'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'first')
+      #html.should have_selector(
+      #  'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'previous')
       html.should have_selector(
         'a', :href => '/_ruote/processes?limit=7&skip=7', :rel => 'next')
       html.should have_selector(
         'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
+    end
+
+    it 'should paginate correctly (2nd page)' do
+
+      @resource.count = 201
+      @resource.skip = 7
+      @resource.limit = 7
+
+      html = @resource.to_html
+
+      html.index("  8\n  to\n  14\n  of\n  201\n  processes").should_not be(nil)
+
+      html.should have_selector(
+        'a', :href => '/_ruote/processes', :rel => 'all')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'first')
+      #html.should have_selector(
+      #  'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'previous')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=14', :rel => 'next')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
+    end
+
+    it 'should paginate correctly (3rd page)' do
+
+      @resource.count = 201
+      @resource.skip = 14
+      @resource.limit = 7
+
+      html = @resource.to_html
+
+      html.index("  15\n  to\n  21\n  of\n  201\n  processes").should_not be(nil)
+
+      html.should have_selector(
+        'a', :href => '/_ruote/processes', :rel => 'all')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'first')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=7', :rel => 'previous')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=21', :rel => 'next')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
+    end
+
+    it 'should paginate correctly (right before last page)' do
+
+      @resource.count = 201
+      @resource.skip = 189
+      @resource.limit = 7
+
+      html = @resource.to_html
+
+      html.index("  190\n  to\n  196\n  of\n  201\n  processes").should_not be(nil)
+
+      html.should have_selector(
+        'a', :href => '/_ruote/processes', :rel => 'all')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'first')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=182', :rel => 'previous')
+      #html.should have_selector(
+      #  'a', :href => '/_ruote/processes?limit=7&skip=21', :rel => 'next')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
+    end
+
+    it 'should paginate correctly (last page)' do
+
+      @resource.count = 201
+      @resource.skip = 196
+      @resource.limit = 7
+
+      html = @resource.to_html
+
+      html.index("  197\n  to\n  201\n  of\n  201\n  processes").should_not be(nil)
+
+      html.should have_selector(
+        'a', :href => '/_ruote/processes', :rel => 'all')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=0', :rel => 'first')
+      html.should have_selector(
+        'a', :href => '/_ruote/processes?limit=7&skip=189', :rel => 'previous')
+      #html.should have_selector(
+      #  'a', :href => '/_ruote/processes?limit=7&skip=21', :rel => 'next')
+      #html.should have_selector(
+      #  'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
     end
   end
 end

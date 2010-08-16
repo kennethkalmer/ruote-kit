@@ -14,7 +14,7 @@ module RuoteKit
       def paginate
 
         @skip = (params[:skip] || 0).to_i
-        @limit = (params[:limit] || @count).to_i
+        @limit = (params[:limit] || settings.limit).to_i
       end
     end
   end

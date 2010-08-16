@@ -146,22 +146,23 @@ module RuoteKit
 
           result << hlink(resource.to_s, :rel => 'all')
 
-          las = (@count / settings.limit) * settings.limit
-          pre = [ 0, @skip - settings.limit ].max
-          nex = [ @skip + settings.limit, las ].min
+          lim = @limit || settings.limit
+          las = (@count / lim) * lim
+          pre = [ 0, @skip - lim ].max
+          nex = [ @skip + lim, las ].min
 
           result << hlink(
             resource.to_s,
-            :skip => 0, :limit => settings.limit, :rel => 'first')
+            :skip => 0, :limit => lim, :rel => 'first')
           result << hlink(
             resource.to_s,
-            :skip => las, :limit => settings.limit, :rel => 'last')
+            :skip => las, :limit => lim, :rel => 'last')
           result << hlink(
             resource.to_s,
-            :skip => pre, :limit => settings.limit, :rel => 'previous')
+            :skip => pre, :limit => lim, :rel => 'previous')
           result << hlink(
             resource.to_s,
-            :skip => nex, :limit => settings.limit, :rel => 'next')
+            :skip => nex, :limit => lim, :rel => 'next')
         end
 
         result
