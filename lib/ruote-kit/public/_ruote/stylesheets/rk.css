@@ -1,4 +1,4 @@
-
+e
 /* layout */
 
 * {
@@ -156,6 +156,9 @@ table.details td.no_padding {
 }*/
 
 #fluo {
+  float: right;
+}
+#efluo {
   float: right;
 }
 

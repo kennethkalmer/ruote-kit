@@ -124,11 +124,12 @@
     %tr.re_apply
       %td
         tree
+        %a.ruote_button.ruote_go_button{ :title => 'open process definition editor', :href => '', :onclick => 'showEditor(); return false;' }
       %td.no_padding
         - tree = @expression.tree
         - tree = Rufus::Json.pretty_encode(tree)
         - rows = tree.split("\n").size
-        %textarea{ :name => 'tree', :cols => 70, :rows => rows } #{tree}
+        %textarea#tree{ :name => 'tree', :cols => 70, :rows => rows } #{tree}
     %tr.re_apply
       %td
       %td
@@ -158,4 +159,6 @@
 
     return r;
   }
+
+= haml :_tree_editor, :layout => false
 

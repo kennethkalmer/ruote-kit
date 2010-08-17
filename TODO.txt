@@ -3,6 +3,5 @@
 [o] pagination for /workitems
 [o] pagination for /processes
 [o] pagination for /errors
-
-[ ] PUT /expressions fluo-editor integration
+[o] PUT /expressions fluo-editor integration
 
