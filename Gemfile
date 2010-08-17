@@ -12,7 +12,8 @@ gem 'haml'
 
 # more servers
 
-gem 'thin'
+#gem 'thin'
+  # for rackup -s thin
 
 # json support
 #
