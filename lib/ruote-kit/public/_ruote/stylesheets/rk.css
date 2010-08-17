@@ -272,9 +272,15 @@ div#editor {
   right: 10%;
   width: 80%;
   height: auto;
-  background-color: white;
+  background: #ffffff;
   z-index: 999;
-  padding: 14px; 14px;
+  padding: 14px;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  box-shadow: 0 1px 12px #000;
+  -webkit-box-shadow: 0 1px 12px #000;
+  -moz-box-shadow: 0 1px 12px #000;
 }
 div#editor > canvas#fluo {
   margin: -3px -3px;
