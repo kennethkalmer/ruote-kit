@@ -36,6 +36,14 @@
 
   %tr
     %td
+      expression
+    %td
+      GET
+      = alink(:expressions, @error.fei.sid)
+      %span.explanation
+        you can re-apply the expression (and hopefully nuke the error) from there
+  %tr
+    %td
       process
     %td
       GET
@@ -56,4 +64,6 @@
       %form{ :method => 'POST' }
         %input{ :type => 'hidden', :name => '_method', :value => 'delete' }
         %input{ :type => 'submit', :value => "DELETE /_ruote/errors/#{@error.fei.sid}", :title => 'replay at this error' }
+        %span.explanation
+          replay at this error
 

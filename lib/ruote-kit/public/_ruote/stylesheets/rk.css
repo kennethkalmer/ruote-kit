@@ -165,6 +165,11 @@ table.details td.no_padding {
   padding-left: 7px;
 }
 
+span.explanation {
+  font-size: 80%;
+  color: #8b8f91;
+}
+
 /* flash */
 
 .flash {
