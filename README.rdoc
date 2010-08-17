@@ -16,24 +16,16 @@ Follow development:
 
 == Dependencies
 
-Dependencies you currently need are:
-
-* bundler 0.9.5 or later (gem install bundler)
-* sinatra
-* sinatra-respond_to
-* haml
-* rufus-json[http://github.com/jmettraux/rufus-json] and a compatible backend
-  (preferably yajl-ruby)
-* rspec (only to run the specs)
-
-ruote-kit uses bundler to setup and maintain its environment. Before running
-ruote-kit for the first time you need to install bundler and then run:
+ruote-kit uses bundler[http://gembundler.com/] to setup and maintain its
+environment. Before running ruote-kit for the first time you need to install
+bundler (gem install bundler) and then run:
 
   $ bundle install
 
 Bundler will download all the required gems and install them for you. To
-bundle the gems you can simply run 'bundle lock' and all the gems will be
-unpacked in .bundle
+'freeze' the gem versions used you may run "bundle lock".
+
+Have a look at the Gemfile if you want to see the various dependencies.
 
 == Getting started quickly
 
@@ -125,22 +117,37 @@ See http://github.com/tosch/ruote-on-rails for an example Rails app.
 
 == Configuring ruote-kit & ruote
 
-ruote-kit can be configured using RuoteKit#configure, after which it will start
-the engine. From that point the engine is accessible through RuoteKit.engine.
+ruote-kit itself needs only little configuration, the only thing to do is to
+bind a ruote engine to use. That engine may be configured, see
+http://ruote.rubyforge.org/configuration.html for details.
 
-Without any configuration ruote-kit will use file system persistence, and save
-the work in a sub-folder of the current working directory named +work_<env>+,
-where +env+ is the RACK_ENV or RAILS_ENV.
+When using the source version, you'll have to edit the +config.ru+ file if you
+want to change the engine configuration. It defaults to use file system
+persistence and runs a
+worker[http://ruote.rubyforge.org/configuration.html#worker] within the engine.
+The persistence files will be stored in a sub directory called
+"ruote_work_#{ENV}".
+
+When using the gem version or plugging ruote-kit into your rack stack, you'll
+have to bind the ruote engine to use yourself. See the examples above.
 
 === Registration of participants
 
-ruote participants may be registered within the block given to
-RuoteKit#configure by the RuoteKit::Configuration#register method. It expects a
-block containing of +participant+ and one or less +catchall+ calls (see example
-above).
+ruote participants may be registered using the register method of the engine.
+It expects a block containing of +participant+ and one or less +catchall+ calls.
+
+  require 'ruote/part/no_op_participant'
+
+  RuoteKit.engine.register do
+    participant 'no-op', Ruote::NoOpParticipant
+    catchall
+  end
 
 Note that all +participant+ calls after a +catchall+ one are pretty useless:
 The catchall will eat all their cookies.
+
+If you want to learn more about ruote's participants, have a look at
+http://ruote.rubyforge.org/participants.html .
 
 == The +workitems+ resource
 
@@ -151,25 +158,65 @@ the resource. Example:
   require 'ruote/part/storage_participant'
   RuoteKit.engine.register_participant :storage, Ruote::StorageParticipant
 
-You may also use the catchall participant provided by RuoteKit. It's named '.+',
+You may also use the catchall participant provided by ruote. It's named '.+',
 so it will catch all workitems for any participant mentioned in your workflow
 definitions which are not already caught by another (previously) registered
 participant. So make sure to register the catchall after your own participants.
 The catchall participant may be registered by calling +catchall+ within the
-block given to RuoteKit::Configuration#register (this will use
-Ruote::StorageParticipant as participant implementation, you may use any options
-of Ruote::Engine#register_participant to overwrite that default -- see the
-example above).
+block given to Ruote::Engine#register (this will use Ruote::StorageParticipant
+as participant implementation, you may use any options of
+Ruote::Engine#register_participant to overwrite that default -- see the example
+above).
 
 == Running workers
 
-If you're using ruote-kit as part of your rack stack you'll need to start at
-least one worker separately or the workflows won't be executed. You won't need
-more than one worker unless you are running hundreds of processes at the same
-time.
+Always make sure to have a running ruote
+worker[http://ruote.rubyforge.org/configuration.html#worker] for your storage.
+The shipped config.ru takes care of that, but if you use the gem version or use
+ruote-kit as part of your rack stack, you'll need to make sure there is a
+running worker.
 
-To run a worker you need to setup a worker script similar to the rake example
-below:
+Perhaps it's best to give some more explanations about the architecture of ruote
+here. Ruote's engine class is shallow, just a few methods that insert launch and
+reply orders in the storage and read it when querying for process statuses. You
+see: The storage is important, it is used as communications backend between the
+various parts of ruote. The engine class and the storage are not enough, though.
+The real work is done by one or more workers which query the storage for things
+to do (note: it is unlikely that you will ever need more than one worker for one
+ruote instance; ruote isn't fast, but it's faster than most human processes, so
+that you'll won't need more than one worker unless you are running hundreds of
+processes at the same time ).
+
+Ruote ships with one worker implementation (you won't need more) and various
+different storages. Have a look at
+http://ruote.rubyforge.org/configuration.html#storage for an overview.
+
+In the most examples above, the worker instance is bound to the engine which
+is given to RuoteKit.engine:
+
+  RuoteKit.engine = Ruote::Engine.new(
+    Ruote::Worker.new(
+      Ruote::FsStorage.new('ruote_work')))
+
+That is fine, especially when there is only one instance of the app running or
+the storage implementation supports multiple workers, because if there is more
+than one instance of the app running, there will be more than one worker
+operating on the same storage.
+
+If you want to use a storage implementation which doesn't support multiple
+workers (Ruote::FsStorage under Windows, for example), you should start a
+dedicated worker in its own instance. In config.ru (or whereever you configure
+the engine to be used by ruote-kit), instanciate the engine without a worker:
+
+  RuoteKit.engine = Ruote::Engine.new(
+    Ruote::FsStorage.new('ruote_work'))
+
+ruote-kit or your rack app will start with no problems, you may even launch
+processes, but they'll never show up under /_ruote/processes: There is no worker
+which processes the launch requests stored in the storage.
+
+To run a worker you need to setup a worker script similar to the rake task
+example below:
 
   require 'rake'
   require 'ruote-kit'
@@ -180,9 +227,15 @@ below:
     RuoteKit.run_worker(Ruote::FsStorage.new('ruote_work'))
   end
 
-This will only work correctly if using the default file system persistence.
-Support for ruote-couch[http://github.com/jmettraux/ruote-couch] is coming
-soon.
+Make sure to configure the storage in the same way as in the rest of the
+application or you won't get what you expect ;-)
+
+You also should consider using a separate worker instance when you're running
+ruote-kit or you're rack app in an environment like Passenger: You won't be sure
+the app runs all the time, so it's likely that scheduled events will be missed
+(better: triggered too late). If you don't want to start a separate worker
+process, configure Passenger in a way that your app won't be killed in a very
+long time and make sure your storage implementation supports multiple workers.
 
 == Feedback & bug reports
 
