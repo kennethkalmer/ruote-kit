@@ -39,7 +39,7 @@
     initEditor();
 
     document.getElementById('overlay').style.height =
-      '' + ($('body').height() + 21) + 'px';
+      '' + window.outerHeight + 'px';
 
     $('#overlay').slideDown(function () { $('#editor').show(); });
   }
