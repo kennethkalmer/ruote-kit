@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["kenneth.kalmer@gmail.com", "Torsten Schoenebaum", "John Mettraux"]
-  s.date = %q{2010-08-02}
+  s.date = %q{2010-08-17}
   s.description = %q{ruote-kit is a RESTful Rack app for the ruote workflow engine}
   s.email = %q{kenneth.kalmer@gmail.com}
   s.extra_rdoc_files = [
@@ -26,41 +26,48 @@ Gem::Specification.new do |s|
      "LICENSE.txt",
      "README.rdoc",
      "Rakefile",
+     "TODO.txt",
      "config.ru",
      "lib/ruote-kit.rb",
      "lib/ruote-kit/application.rb",
-     "lib/ruote-kit/helpers.rb",
      "lib/ruote-kit/helpers/json_helpers.rb",
+     "lib/ruote-kit/helpers/link_helpers.rb",
      "lib/ruote-kit/helpers/misc_helpers.rb",
+     "lib/ruote-kit/helpers/pagination_helpers.rb",
      "lib/ruote-kit/helpers/render_helpers.rb",
      "lib/ruote-kit/public/_ruote/images/favicon.ico",
      "lib/ruote-kit/public/_ruote/images/ruote.png",
      "lib/ruote-kit/public/_ruote/images/ruote_buttons.png",
      "lib/ruote-kit/public/_ruote/javascripts/jquery-1.4.2.min.js",
      "lib/ruote-kit/public/_ruote/javascripts/rk.js",
+     "lib/ruote-kit/public/_ruote/javascripts/ruote-fluo-editor.js",
      "lib/ruote-kit/public/_ruote/javascripts/ruote-fluo.js",
      "lib/ruote-kit/public/_ruote/stylesheets/reset.css",
      "lib/ruote-kit/public/_ruote/stylesheets/rk.css",
+     "lib/ruote-kit/public/_ruote/stylesheets/ruote-fluo-editor.css",
      "lib/ruote-kit/resources/errors.rb",
      "lib/ruote-kit/resources/expressions.rb",
      "lib/ruote-kit/resources/participants.rb",
      "lib/ruote-kit/resources/processes.rb",
+     "lib/ruote-kit/resources/schedules.rb",
      "lib/ruote-kit/resources/workitems.rb",
      "lib/ruote-kit/spec/ruote_helpers.rb",
      "lib/ruote-kit/version.rb",
+     "lib/ruote-kit/views/_pagination.html.haml",
+     "lib/ruote-kit/views/_tree_editor.html.haml",
      "lib/ruote-kit/views/error.html.haml",
      "lib/ruote-kit/views/errors.html.haml",
      "lib/ruote-kit/views/expression.html.haml",
      "lib/ruote-kit/views/expressions.html.haml",
+     "lib/ruote-kit/views/http_error.html.haml",
      "lib/ruote-kit/views/index.html.haml",
      "lib/ruote-kit/views/layout.html.haml",
      "lib/ruote-kit/views/participants.html.haml",
      "lib/ruote-kit/views/process.html.haml",
-     "lib/ruote-kit/views/process_failed_to_launch.html.haml",
      "lib/ruote-kit/views/process_launched.html.haml",
-     "lib/ruote-kit/views/process_new.html.haml",
      "lib/ruote-kit/views/processes.html.haml",
-     "lib/ruote-kit/views/resource_not_found.html.haml",
+     "lib/ruote-kit/views/processes_new.html.haml",
+     "lib/ruote-kit/views/schedules.html.haml",
      "lib/ruote-kit/views/workitem.html.haml",
      "lib/ruote-kit/views/workitems.html.haml",
      "ruote-kit.gemspec",
@@ -70,10 +77,12 @@ Gem::Specification.new do |s|
      "spec/resources/index_spec.rb",
      "spec/resources/participants_spec.rb",
      "spec/resources/processes_spec.rb",
+     "spec/resources/schedules_spec.rb",
      "spec/resources/workitems_spec.rb",
      "spec/ruote-kit_configure_spec.rb",
      "spec/spec.opts",
-     "spec/spec_helper.rb"
+     "spec/spec_helper.rb",
+     "spec/webapp_helpers_spec.rb"
   ]
   s.homepage = %q{http://github.com/kennethkalmer/ruote-kit}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -87,9 +96,11 @@ Gem::Specification.new do |s|
      "spec/resources/index_spec.rb",
      "spec/resources/participants_spec.rb",
      "spec/resources/processes_spec.rb",
+     "spec/resources/schedules_spec.rb",
      "spec/resources/workitems_spec.rb",
      "spec/ruote-kit_configure_spec.rb",
-     "spec/spec_helper.rb"
+     "spec/spec_helper.rb",
+     "spec/webapp_helpers_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
