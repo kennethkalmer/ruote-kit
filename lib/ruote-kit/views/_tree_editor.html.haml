@@ -17,7 +17,7 @@
 
   function initEditor () {
 
-    var tree = initialTree;
+    var tree = tree || initialTree;
     var def = $('#tree')[0].value;
     if (def.match(/\s*\[/)) tree = JSON.parse(def);
 

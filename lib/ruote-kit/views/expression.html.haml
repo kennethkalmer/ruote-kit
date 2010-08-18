@@ -160,5 +160,7 @@
     return r;
   }
 
+  var tree = #{Rufus::Json.encode(@expression.tree)};
+
 = haml :_tree_editor, :layout => false
 

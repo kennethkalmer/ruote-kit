@@ -155,13 +155,6 @@ table.details td.no_padding {
   border-style: solid;
 }*/
 
-#fluo {
-  float: right;
-}
-#efluo {
-  float: right;
-}
-
 .links {
   margin-top: 14px;
   border-left: 2px solid #ccd0d4;
@@ -263,6 +256,12 @@ div#overlay {
   z-index: 99;
 }
 
+/* fluo */
+
+#fluo {
+  float: right;
+}
+
 /* editor */
 
 div#editor {
@@ -282,13 +281,14 @@ div#editor {
   -webkit-box-shadow: 0 1px 12px #000;
   -moz-box-shadow: 0 1px 12px #000;
 }
-div#editor > canvas#fluo {
-  margin: -3px -3px;
-}
 div#fluo_editor {
 }
 div#editor > a.ruote_go_button {
   margin-left: 4px;
+}
+#efluo {
+  margin: -3px -3px;
+  float: right;
 }
 
 /* buttons +-^vx... */
