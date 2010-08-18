@@ -13,11 +13,9 @@
   $('#overlay').hide();
   $('#editor').hide();
 
-  var initialTree = #{sample_process_tree};
-
   function initEditor () {
 
-    var tree = tree || initialTree;
+    var tree = tree || #{sample_process_tree};
     var def = $('#tree')[0].value;
     if (def.match(/\s*\[/)) tree = JSON.parse(def);
 
