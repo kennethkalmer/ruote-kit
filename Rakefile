@@ -5,7 +5,7 @@ require "rubygems"
 require "bundler"
 Bundler.setup(:default, :test, :build)
 
-require 'lib/ruote-kit/version'
+require File.join(File.dirname(__FILE__), 'lib/ruote-kit/version')
 
 begin
   require 'jeweler'
