@@ -26,7 +26,8 @@ module RuoteKit
     end
 
     def run_worker (storage)
-      RuoteKit.engine = Ruote::Engine.new(Ruote::Worker.new(storage))
+      RuoteKit.engine = Ruote::Engine.new(
+        Ruote::Worker.new(storage), :join => true)
     end
 
     def bind_engine (storage)

@@ -4,5 +4,7 @@
 
 == ruote-kit - 2.1.11    not yet released
 
+- RuoteKit.run_worker(storage) will not return (since it will let the worker
+  run in the current thread)
 - /participants resource
 
