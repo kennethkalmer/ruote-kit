@@ -27,7 +27,7 @@ gem 'thin'
 #
 # needed, uses one of the above as backend
 
-gem 'yajl-ruby'
+gem 'yajl-ruby', :require => 'yajl'
 gem 'rufus-json', '>= 0.2.5'
 
 # ruote
