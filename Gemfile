@@ -20,14 +20,15 @@ gem 'thin'
 # you should choose one of the following three or add another backend supported
 # by Rufus::Json (http://github.com/jmettraux/rufus-json/)
 #
-# gem 'json_pure' # safest all-around choice
-# gem 'yajl-ruby' # the fastest, but using c code
-# gem 'json'      # not bad, but using c code and sometimes broken
+# gem 'json_pure'  # safest all-around choice
+# gem 'yajl-ruby'  # the fastest, but using c code
+# gem 'json'       # not bad, but using c code and sometimes broken
+# gem 'json-jruby' # for jruby
 #
 # needed, uses one of the above as backend
 
 gem 'yajl-ruby'
-gem 'rufus-json', '>= 0.2.3'
+gem 'rufus-json', '>= 0.2.5'
 
 # ruote
 
