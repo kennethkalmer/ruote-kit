@@ -19,8 +19,8 @@ class RuoteKit::Application
       @limit = @count
     end
 
-    query[:skip] = @skip
-    query[:limit] = @limit
+    query['skip'] = @skip
+    query['limit'] = @limit
 
     @workitems = RuoteKit.engine.storage_participant.query(query)
 

@@ -5,15 +5,19 @@
 
   - if @skip
 
-    = @skip + 1
+    - lim = @limit || settings.limit
+
+    - @skip = 0 if @skip < 0
+    - @skip = @count - lim if @skip >= @count
+
+    = (@count > 0) ? @skip + 1 : 0
     to
     = [ @skip + @limit, @count ].min
     of
     = @count
     = res
 
-    - lim = @limit || settings.limit
-    - las = (@count / lim) * lim
+    - las = ((@count / lim.to_f).ceil - 1) * lim
     - pre = [ 0, @skip - lim ].max
     - nex = [ @skip + lim, las ].min
 
@@ -24,7 +28,7 @@
       %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{pre}", :rel => 'previous' } previous
     - if nex != las
       %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{nex}", :rel => 'next' } next
-    - if las > 0
+    - if las > 0 && @skip < las
       %a.pagination{ :href => "#{request.path}?limit=#{lim}&skip=#{las}", :rel => 'last' } last
 
   - else

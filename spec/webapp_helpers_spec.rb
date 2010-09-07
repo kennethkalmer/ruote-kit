@@ -212,6 +212,98 @@ describe RuoteKit::Helpers::RenderHelpers do
       #html.should have_selector(
       #  'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
     end
+
+    it 'should paginate correctly (corner case 3 items, limit 3)' do
+
+      @resource.count = 3
+      @resource.skip  = 0
+      @resource.limit = 3
+
+      html = @resource.to_html
+
+      html.index("  1\n  to\n  3\n  of\n  3\n  processes").should_not be(nil)
+
+      html.should have_selector(
+        'a', :href => '/_ruote/processes', :rel => 'all')
+      html.should_not have_selector(
+        'a', :rel => 'first')
+      html.should_not have_selector(
+        'a', :rel => 'previous')
+      html.should_not have_selector(
+        'a', :rel => 'next')
+      html.should_not have_selector(
+        'a', :rel => 'last')
+
+    end
+
+    it 'should paginate correctly (corner case 30 items, limit 10, skip 20)' do
+
+      @resource.count = 30
+      @resource.skip  = 20
+      @resource.limit = 10
+
+      html = @resource.to_html
+
+      html.should_not have_selector(
+        'a', :rel => 'next')
+      html.should_not have_selector(
+        'a', :rel => 'last')
+
+    end
+
+    it 'should not show there is an item if there is none' do
+
+      @resource.count = 0
+      @resource.skip  = 0
+      @resource.limit = 100
+
+      html = @resource.to_html
+
+      html.index("  0\n  to\n  0\n  of\n  0\n  processes").should_not be(nil)
+
+      html.should have_selector(
+        'a', :href => '/_ruote/processes', :rel => 'all')
+      html.should_not have_selector(
+        'a', :rel => 'first')
+      html.should_not have_selector(
+        'a', :rel => 'previous')
+      html.should_not have_selector(
+        'a', :rel => 'next')
+      html.should_not have_selector(
+        'a', :rel => 'last')
+
+    end
+
+    it 'should ignore negative values for skip param' do
+
+      @resource.count = 10
+      @resource.skip  = -5
+      @resource.limit = 100
+
+      html = @resource.to_html
+
+      html.index("  1\n  to\n  10\n  of\n  10\n  processes").should_not be(nil)
+
+      # perhaps a redirection to the same url but with a sane param would be
+      # more appropriate?
+
+    end
+
+    it 'should ignore values for the skip param larger than the number of items' do
+
+      @resource.count = 10
+      @resource.skip  = 20
+      @resource.limit = 5
+
+      html = @resource.to_html
+
+      html.index("  6\n  to\n  10\n  of\n  10\n  processes").should_not be(nil)
+
+      # perhaps a redirection to the same url but with a sane param would be
+      # more appropriate?
+
+    end
+
   end
 end
 
