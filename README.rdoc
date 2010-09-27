@@ -16,29 +16,43 @@ Follow development:
 
 == Dependencies
 
-ruote-kit uses bundler[http://gembundler.com/] to setup and maintain its
+ruote-kit uses Bundler[http://gembundler.com/] to setup and maintain its
 environment. Before running ruote-kit for the first time you need to install
-bundler (gem install bundler) and then run:
+Bundler (gem install bundler) and then run:
 
   $ bundle install
 
-Bundler will download all the required gems and install them for you. To
-'freeze' the gem versions used you may run "bundle lock".
+Bundler will download all the required gems and install them for you.
 
 Have a look at the Gemfile if you want to see the various dependencies.
 
 == Getting started quickly
 
-=== Using the RubyGem
+=== Using the source
 
-* Install the gem and its dependencies
-    $ gem install ruote-kit
+* Get the source files using git
+    $ git clone http://github.com/kennethkalmer/ruote-kit.git && cd ruote-kit
+* Make sure every dependency is resolved
+    $ bundle install
+* Get going
+    $ rackup
+
+=== Using the RubyGem / Bundler
+
+The gem released at rubygems.org is a bit out-dated (it's v2.1.10). There will
+be a new release soon, but until all the polishing needed is done, you should
+build the gem yourself or use the sources directly as in this example.
+
 * You'll need an empty directory
     $ mkdir my-ruote-kit && cd my-ruote-kit
 * There are two files needed in that directory: Gemfile and config.ru
   * Gemfile
       source :gemcutter
-      gem 'ruote-kit'
+      gem 'ruote', # we won't use the released gem, but latest stuff from Github
+        :git => 'git://github.com/jmettraux/ruote.git',
+        :branch => 'ruote2.1'
+      gem 'ruote-kit', # use the sources instead of the old released gem
+        :git => 'git://github.com/kennethkalmer/ruote-kit.git'
   * config.ru
       begin
         # Try to require the preresolved locked set of gems.
@@ -68,19 +82,7 @@ Have a look at the Gemfile if you want to see the various dependencies.
       use Rack::Lint
 
       run RuoteKit::Application
-* Just to make sure every dependency is resolved
-    $ bundle check
-* If there are missing dependencies (there shouldn't be any if the gem
-  installation succeeded)
-    $ bundle install
-* Get going
-    $ rackup
-
-=== Using the source
-
-* Get the source files using git
-    $ git clone http://github.com/kennethkalmer/ruote-kit.git && cd ruote-kit
-* Make sure every dependency is resolved
+* Install all needed gems
     $ bundle install
 * Get going
     $ rackup
