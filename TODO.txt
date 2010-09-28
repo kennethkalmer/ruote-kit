@@ -5,3 +5,8 @@
 [o] pagination for /errors
 [o] PUT /expressions fluo-editor integration
 
+[ ] error : replay_at_error OK but reply too
+[ ] expression : re_apply OK but reply too
+
+[ ] If-Match etag
+
