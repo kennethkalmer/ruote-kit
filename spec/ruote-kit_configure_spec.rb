@@ -6,24 +6,24 @@ undef :context if defined?(context)
 
 describe RuoteKit do
 
-  describe 'run_worker' do
-
-    before(:each) do
-      RuoteKit.run_worker(Ruote::HashStorage.new)
-    end
-
-    it 'should instantiate an engine' do
-      RuoteKit.engine.should_not == nil
-    end
-
-    it 'should instantiate an engine with a worker' do
-      RuoteKit.engine.worker.should_not == nil
-    end
-
-    it 'should instantiate an engine bound to a storage' do
-      RuoteKit.engine.storage.class.should == Ruote::HashStorage
-    end
-  end
+#  describe 'run_worker' do
+#
+#    before(:each) do
+#      RuoteKit.run_worker(Ruote::HashStorage.new)
+#    end
+#
+#    it 'should instantiate an engine' do
+#      RuoteKit.engine.should_not == nil
+#    end
+#
+#    it 'should instantiate an engine with a worker' do
+#      RuoteKit.engine.worker.should_not == nil
+#    end
+#
+#    it 'should instantiate an engine bound to a storage' do
+#      RuoteKit.engine.storage.class.should == Ruote::HashStorage
+#    end
+#  end
 
   describe 'bind_engine' do
 
