@@ -25,7 +25,7 @@ describe 'GET /_ruote/workitems' do
 
       last_response.should be_ok
 
-      last_response.should match(workitem_count(1, 0, 0))
+      last_response.should match(workitem_count(0, 0, 0))
     end
 
     it 'should report no workitems (JSON)' do

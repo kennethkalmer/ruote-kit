@@ -16,9 +16,13 @@ module RuoteKit
         @skip = (params[:skip] || 0).to_i
         @limit = (params[:limit] || settings.limit).to_i
 
-        @skip = 0 if @skip < 0
-        @skip = @count - @limit if @skip >= @count
-
+        #@skip = 0 if @skip < 0
+        #@skip = @count - @limit if @skip >= @count
+        if @skip <= 0
+          @skip = 0
+        elsif @skip >= @count
+          @skip = @count - @limit
+        end
       end
     end
   end
