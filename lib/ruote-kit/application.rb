@@ -4,11 +4,10 @@
 require 'sinatra/respond_to'
 require 'haml'
 
-Sinatra::Application.register Sinatra::RespondTo
-
-
 module RuoteKit
   class Application < Sinatra::Application
+
+    register Sinatra::RespondTo
 
     # delay these a bit
 
