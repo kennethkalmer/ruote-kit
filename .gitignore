@@ -7,3 +7,4 @@ doc/*
 pkg/*
 .bundle/*
 nbproject/*
+Gemfile.lock
