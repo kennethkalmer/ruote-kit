@@ -15,7 +15,7 @@ begin
     gemspec.summary = 'ruote workflow engine, wrapped in a loving rack embrace'
     gemspec.description = 'ruote-kit is a RESTful Rack app for the ruote workflow engine'
     gemspec.email = 'kenneth.kalmer@gmail.com'
-    gemspec.homepage = 'http://github.com/kennethkalmer/ruote-kit'
+    gemspec.homepage = 'http://github.com/tosch/ruote-kit'
     gemspec.authors = [ 'kenneth.kalmer@gmail.com', 'Torsten Schoenebaum', 'John Mettraux' ]
     gemspec.extra_rdoc_files.include '*.txt'
 
