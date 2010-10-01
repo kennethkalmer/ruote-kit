@@ -84,7 +84,7 @@ Gem::Specification.new do |s|
      "spec/spec_helper.rb",
      "spec/webapp_helpers_spec.rb"
   ]
-  s.homepage = %q{http://github.com/kennethkalmer/ruote-kit}
+  s.homepage = %q{http://github.com/tosch/ruote-kit}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
