@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["kenneth.kalmer@gmail.com", "Torsten Schoenebaum", "John Mettraux"]
-  s.date = %q{2010-09-24}
+  s.date = %q{2010-10-01}
   s.description = %q{ruote-kit is a RESTful Rack app for the ruote workflow engine}
   s.email = %q{kenneth.kalmer@gmail.com}
   s.extra_rdoc_files = [
@@ -90,17 +90,17 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{ruote workflow engine, wrapped in a loving rack embrace}
   s.test_files = [
-    "spec/it_has_an_engine.rb",
-     "spec/resources/schedules_spec.rb",
+    "spec/webapp_helpers_spec.rb",
      "spec/resources/participants_spec.rb",
-     "spec/resources/expressions_spec.rb",
-     "spec/resources/workitems_spec.rb",
      "spec/resources/index_spec.rb",
      "spec/resources/errors_spec.rb",
      "spec/resources/processes_spec.rb",
-     "spec/ruote-kit_configure_spec.rb",
-     "spec/webapp_helpers_spec.rb",
-     "spec/spec_helper.rb"
+     "spec/resources/workitems_spec.rb",
+     "spec/resources/schedules_spec.rb",
+     "spec/resources/expressions_spec.rb",
+     "spec/it_has_an_engine.rb",
+     "spec/spec_helper.rb",
+     "spec/ruote-kit_configure_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -115,7 +115,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<thin>, [">= 0"])
       s.add_runtime_dependency(%q<yajl-ruby>, [">= 0"])
       s.add_runtime_dependency(%q<rufus-json>, [">= 0.2.5"])
-      s.add_runtime_dependency(%q<ruote>, [">= 0"])
+      s.add_runtime_dependency(%q<ruote>, ["~> 2.1.11"])
     else
       s.add_dependency(%q<bundler>, [">= 0"])
       s.add_dependency(%q<sinatra>, [">= 0"])
@@ -124,7 +124,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<thin>, [">= 0"])
       s.add_dependency(%q<yajl-ruby>, [">= 0"])
       s.add_dependency(%q<rufus-json>, [">= 0.2.5"])
-      s.add_dependency(%q<ruote>, [">= 0"])
+      s.add_dependency(%q<ruote>, ["~> 2.1.11"])
     end
   else
     s.add_dependency(%q<bundler>, [">= 0"])
@@ -134,7 +134,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<thin>, [">= 0"])
     s.add_dependency(%q<yajl-ruby>, [">= 0"])
     s.add_dependency(%q<rufus-json>, [">= 0.2.5"])
-    s.add_dependency(%q<ruote>, [">= 0"])
+    s.add_dependency(%q<ruote>, ["~> 2.1.11"])
   end
 end
 
