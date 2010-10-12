@@ -100,6 +100,22 @@ describe 'GET /_ruote/expressions/fei' do
         timeout_schedule_id tree variables
       ]
     end
+
+    it 'should include an etag header (HTML)' do
+
+      get "/_ruote/expressions/#{@nada_exp_id}!!#{@wfid}"
+
+      last_response.headers.should include('ETag')
+      last_response.headers['ETag'].should == "\"#{engine.process(@wfid).expressions.last.to_h['_rev'].to_s}\""
+    end
+
+    it 'should include an etag header (JSON)' do
+
+      get "/_ruote/expressions/#{@nada_exp_id}!!#{@wfid}.json"
+
+      last_response.headers.should include('ETag')
+      last_response.headers['ETag'].should == "\"#{engine.process(@wfid).expressions.last.to_h['_rev'].to_s}\""
+    end
   end
 
   describe 'without running processes' do

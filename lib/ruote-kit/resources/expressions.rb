@@ -13,6 +13,8 @@ class RuoteKit::Application
 
       return http_error(404) unless @expression
 
+      etag @expression.to_h['_rev']
+
       respond_with :expression
     else
 
