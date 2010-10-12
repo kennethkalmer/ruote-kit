@@ -15,15 +15,15 @@
 
   %table.participants
     %thead
-      %td
-        regex
-      %td
-        classname
-      %td
-        options
-      %td
-        &nbsp;
-
+      %tr
+        %td
+          regex
+        %td
+          classname
+        %td
+          options
+        %td
+          &nbsp;
     - @participants.each_with_index do |pa, i|
       %tr
         %td
@@ -44,7 +44,7 @@
 :javascript
 
   function nameInputs () {
-    $('tr').each(function (index) {
+    $('tbody tr').each(function (index) {
       var inputs = $(this).children('td').map(function () {
         return $(this).children('input')[0];
       });
