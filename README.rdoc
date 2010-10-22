@@ -31,7 +31,7 @@ Have a look at the Gemfile if you want to see the various dependencies.
 === Using the source
 
 * Get the source files using git
-    $ git clone http://github.com/kennethkalmer/ruote-kit.git && cd ruote-kit
+    $ git clone http://github.com/tosch/ruote-kit.git && cd ruote-kit
 * Make sure every dependency is resolved
     $ bundle install
 * Get going

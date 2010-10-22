@@ -11,3 +11,5 @@
 [ ] If-Match etag
 [ ] JSON pretty encode output mode (only necessary with CURL and co)
 
+[ ] relative paths : http://groups.google.com/group/rack-devel/browse_thread/thread/32312e78f42351f0
+
