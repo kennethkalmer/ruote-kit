@@ -1,9 +1,6 @@
 
 = ruote-kit (RESTful ruote & middleware)
 
-* http://kit.rubyforge.org/ruote (soon)
-* http://kit.rubyforge.org/ruote/rdoc (soon)
-
 A RESTful wrapper around the ruote[http://ruote.rubyforge.org] workflow engine,
 built as a modular sinatra[http://www.sinatrarb.com/] application.
 
@@ -107,6 +104,46 @@ Example:
   use RuoteKit::Application
 
 === Notes for Rails
+
+ruote-kit ships with an application template for Ruby on Rails 3.
+
+==== Generate a new Rails app using ruote[-kit]
+
+*   install Rails
+        $ gem install rails
+*   create a new Rails app by running
+        $ rails new foo -m http://github.com/tosch/ruote-kit/raw/master/rails-template.rb
+*   cd into the new Rails dir
+        $ cd foo
+*   make sure all dependencies are met
+        $ bundle install
+
+==== Update an existing Rails app to use ruote[-kit]
+
+*   in your Rails dir, apply the app template
+        $ rake rails:template LOCATION=http://github.com/tosch/ruote-kit/raw/master/rails-template.rb
+
+==== Configure your ruote-kit integration
+
+See config/initializers/ruote-kit.rb in your Rails app.
+
+==== Run
+
+    $ rails server
+
+Browse to http://localhost:3000/_ruote and you'll see there are no running
+processes. You could change that using the "Launch process" link ;-)
+
+==== Using Ruote from within Rails
+
+You can access Ruote's engine anywhere in your Rails code by calling
+    RuoteKit.engine
+So launching a workflow process is as easy as
+    RuoteKit.engine.launch your_process_definition
+The storage participant (used by the catchall participant) is available at
+    RuoteKit.storage_participant
+
+==== Example application
 
 See http://github.com/tosch/ruote-on-rails for an example Rails app.
 

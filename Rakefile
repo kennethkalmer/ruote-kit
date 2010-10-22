@@ -23,6 +23,7 @@ begin
     gemspec.executables.clear
 
     gemspec.add_bundler_dependencies
+    gemspec.files.exclude 'rails-template.rb'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
