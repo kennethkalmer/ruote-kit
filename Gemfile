@@ -6,8 +6,8 @@ source :gemcutter
 # ruote-kit itself
 
 gem 'bundler'
-gem 'sinatra'
-gem 'sinatra-respond_to'
+gem 'sinatra', '1.0'
+gem 'sinatra-respond_to', '0.5.0'
 gem 'haml'
 
 # more servers

@@ -13,3 +13,5 @@
 
 [ ] relative paths : http://groups.google.com/group/rack-devel/browse_thread/thread/32312e78f42351f0
 
+[ ] application/vnd.ruote.lambda.io+json;type=xxx
+
