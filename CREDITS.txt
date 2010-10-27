@@ -1,0 +1,10 @@
+
+= CREDITS
+
+
+- Kenneth Kalmer
+- Torsten Schoenenbaum
+- John Mettraux
+
+- http://github.com/joerixaop
+
