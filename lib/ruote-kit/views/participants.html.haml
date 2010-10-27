@@ -15,28 +15,29 @@
 
   %table.participants
     %thead
-      %td
-        regex
-      %td
-        classname
-      %td
-        options
-      %td
-        &nbsp;
-
-    - @participants.each_with_index do |pa, i|
       %tr
         %td
-          %input.participant{ :type => :text, :value => pa.regex }
+          regex
         %td
-          %input.participant{ :type => :text, :style => 'width: 350px;', :value => pa.classname }
+          classname
         %td
-          %input.participant{ :type => :text, :style => 'width: 350px;', :value => Rufus::Json.encode(pa.options) }
+          options
         %td
-          %a.ruote_button.ruote_minus_button{ :title => 'remove', :href => '', :onclick => 'remove(this); return false;' }
-          %a.ruote_button.ruote_up_button{ :title => 'move up', :href => '', :onclick => 'move(this, "up"); return false;' }
-          %a.ruote_button.ruote_down_button{ :title => 'move down', :href => '', :onclick => 'move(this, "down"); return false;' }
-          %a.ruote_button.ruote_copy_button{ :title => 'copy', :href => '', :onclick => 'copy(this); return false;' }
+          &nbsp;
+    %tbody
+      - @participants.each_with_index do |pa, i|
+        %tr
+          %td
+            %input.participant{ :type => :text, :value => pa.regex }
+          %td
+            %input.participant{ :type => :text, :style => 'width: 350px;', :value => pa.classname }
+          %td
+            %input.participant{ :type => :text, :style => 'width: 350px;', :value => Rufus::Json.encode(pa.options) }
+          %td
+            %a.ruote_button.ruote_minus_button{ :title => 'remove', :href => '', :onclick => 'remove(this); return false;' }
+            %a.ruote_button.ruote_up_button{ :title => 'move up', :href => '', :onclick => 'move(this, "up"); return false;' }
+            %a.ruote_button.ruote_down_button{ :title => 'move down', :href => '', :onclick => 'move(this, "down"); return false;' }
+            %a.ruote_button.ruote_copy_button{ :title => 'copy', :href => '', :onclick => 'copy(this); return false;' }
 
   %input#put_button{ :type => 'submit', :value => 'PUT /_ruote/participants', :onclick => 'nameInputs(); return true;' }
 
@@ -44,7 +45,7 @@
 :javascript
 
   function nameInputs () {
-    $('tr').each(function (index) {
+    $('tbody tr').each(function (index) {
       var inputs = $(this).children('td').map(function () {
         return $(this).children('input')[0];
       });

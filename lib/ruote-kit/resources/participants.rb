@@ -36,7 +36,9 @@ class RuoteKit::Application
       end
     end
 
-    RuoteKit.engine.participant_list = list
+    unless list.empty?
+      RuoteKit.engine.participant_list = list
+    end
 
     respond_to do |format|
 
