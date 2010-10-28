@@ -2,9 +2,14 @@
 = CREDITS
 
 
-- Kenneth Kalmer
-- Torsten Schoenenbaum
-- John Mettraux
+== Main project team
 
-- http://github.com/joerixaop
+- Kenneth Kalmer (http://opensourcery.co.za/)
+- Torsten Schönebaum (http://www.torstenschoenebaum.de)
+- John Mettraux (http://jmettraux.wordpress.com)
+
+
+== Contributors
+
+- Joeri Samson (http://github.com/joerixaop)
 
