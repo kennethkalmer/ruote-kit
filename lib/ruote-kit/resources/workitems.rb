@@ -34,6 +34,8 @@ class RuoteKit::Application
     return http_error(404) if @workitem.nil? && @workitems.nil?
 
     if @workitem
+      etag @workitem.to_h['_rev']
+
       respond_with :workitem
     else
       respond_with :workitems

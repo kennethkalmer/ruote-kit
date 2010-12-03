@@ -195,6 +195,22 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
         ],
         json['workitem']['links'].collect { |li| li['rel'] })
     end
+
+    it 'should include an etag header (HTML)' do
+
+      get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}"
+
+      last_response.headers.should include('ETag')
+      last_response.headers['ETag'].should == "\"#{find_workitem(@wfid, @nada_exp_id).to_h['_rev'].to_s}\""
+    end
+
+    it 'should include an etag header (JSON)' do
+
+      get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json"
+
+      last_response.headers.should include('ETag')
+      last_response.headers['ETag'].should == "\"#{find_workitem(@wfid, @nada_exp_id).to_h['_rev'].to_s}\""
+    end
   end
 
   describe 'without a workitem' do
