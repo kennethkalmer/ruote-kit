@@ -365,6 +365,44 @@ describe 'PUT /_ruote/workitems/fei' do
 
     last_response.status.should be(400)
   end
+
+  it 'should 412 if the etags do not match (HTML)' do
+    workitem = find_workitem(@wfid, @nada_exp_id)
+    old_rev  = workitem.to_h['_rev']
+
+    workitem.fields = {'baz' => 'bar'}.merge!(@fields)
+    RuoteKit.engine.storage_participant.update(workitem)
+
+    put(
+      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}",
+      { :fields => Rufus::Json.encode(@fields) },
+      { 'HTTP_IF_MATCH' => ('"%s"' % old_rev) }
+    )
+
+    last_response.status.should be(412)
+  end
+
+  it 'should 412 if the etags do not match (JSON)' do
+    workitem = find_workitem(@wfid, @nada_exp_id)
+
+    old_rev = workitem.to_h['_rev']
+
+    workitem.fields = {'baz' => 'bar'}.merge!(@fields)
+    RuoteKit.engine.storage_participant.update(workitem)
+
+    params = { 'workitem' => { 'fields' => @fields } }
+
+    put(
+      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
+      Rufus::Json.encode(params),
+      {
+        'CONTENT_TYPE'  => 'application/json',
+        'HTTP_IF_MATCH' => ('"%s"' % old_rev)
+      }
+    )
+
+    last_response.status.should be(412)
+  end
 end
 
 describe 'Filtering workitems' do

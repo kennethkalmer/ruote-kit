@@ -26,7 +26,8 @@ module RuoteKit
       #
       HTTP_CODES = {
         400 => 'bad request',
-        404 => 'resource not found'
+        404 => 'resource not found',
+        412 => 'precondition failed'
       }
 
       # HTTP errors
@@ -55,6 +56,22 @@ module RuoteKit
         respond_to do |format|
           format.html { haml :http_error }
           format.json { json(:http_error, [ @code, @message, @cause ]) }
+        end
+      end
+
+      # http error 412 if if-match header is set to an etag different to the
+      # value given
+      #
+      def check_if_match_etag(value)
+        value = '"%s"' % value
+
+        if etags = request.env['HTTP_IF_MATCH']
+          etags = etags.split(/\s*,\s*/)
+
+          unless etags.include?(value) || etags.include?('*')
+            http_error(412)
+            halt
+          end
         end
       end
 

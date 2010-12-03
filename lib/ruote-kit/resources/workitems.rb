@@ -48,6 +48,8 @@ class RuoteKit::Application
 
     return http_error(404) unless @workitem
 
+    check_if_match_etag(@workitem.to_h['_rev'])
+
     options = begin
       field_updates_and_proceed_from_put
     rescue Rufus::Json::ParserError => pe
