@@ -28,6 +28,8 @@ class RuoteKit::Application
 
     return http_error(404) unless expression
 
+    check_if_match_etag(expression.to_h['_rev'])
+
     if params[:_kill]
       RuoteKit.engine.kill_expression(expression.fei)
     else
@@ -45,6 +47,8 @@ class RuoteKit::Application
     process, expression, fei = fetch_pe
 
     return http_error(404) unless expression
+
+    check_if_match_etag(expression.to_h['_rev'])
 
     info = begin
       fetch_re_apply_info

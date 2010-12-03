@@ -250,6 +250,62 @@ describe 'DELETE /_ruote/expressions/fei' do
 
       @tracer.to_s.should == 'done'
     end
+
+    it 'should 412 when the etags do not match (HTML)' do
+
+      delete(
+        "/_ruote/expressions/#{@expid}!!#{@wfid}",
+        nil,
+        { 'HTTP_IF_MATCH' => '"foo"' }
+      )
+
+      last_response.status.should be(412)
+    end
+
+    it 'should 412 when the etags do not match (JSON)' do
+
+      delete(
+        "/_ruote/expressions/#{@expid}!!#{@wfid}.json",
+        nil,
+        {
+          'HTTP_IF_MATCH' => '"foo"',
+          'CONTENT_TYPE'  => 'application/json',
+        }
+      )
+
+      last_response.status.should be(412)
+    end
+
+    it 'should not 412 when the etags do match (HTML)' do
+      exp = RuoteKit.engine.process(@wfid).expressions.find { |e|
+        e.fei.expid == @expid
+      }
+
+      delete(
+        "/_ruote/expressions/#{@expid}!!#{@wfid}",
+        nil,
+        { 'HTTP_IF_MATCH' => ('"%s"' % exp.to_h['_rev'] ) }
+      )
+
+      last_response.status.should_not be(412)
+    end
+
+    it 'should not 412 when the etags do match (JSON)' do
+      exp = RuoteKit.engine.process(@wfid).expressions.find { |e|
+        e.fei.expid == @expid
+      }
+
+      delete(
+        "/_ruote/expressions/#{@expid}!!#{@wfid}.json",
+        nil,
+        {
+          'HTTP_IF_MATCH' => ('"%s"' % exp.to_h['_rev'] ),
+          'CONTENT_TYPE'  => 'application/json',
+        }
+      )
+
+      last_response.status.should_not be(412)
+    end
   end
 
   describe 'without running processes' do
@@ -450,6 +506,59 @@ describe 'PUT /_ruote/expressions/fei' do
     last_response.status.should be(400)
     last_response.json_body['http_error']['code'].should == 400
     last_response.json_body['http_error']['message'].should == 'bad request'
+  end
+
+  it 'should 412 when the etags do not match (HTML)' do
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}",
+      { :fields => '{}' },
+      { 'HTTP_IF_MATCH' => '"foo"' }
+    )
+    
+    last_response.status.should be(412)
+  end
+
+  it 'should 412 when the etags do not match (JSON)' do
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}",
+      Rufus::Json.encode({}),
+      {
+        'CONTENT_TYPE' => 'application/json',
+        'HTTP_IF_MATCH' => '"foo"'
+      }
+    )
+
+    last_response.status.should be(412)
+  end
+
+  it 'should not 412 when the etags match (HTML)' do
+
+    rev = @exp.to_h['_rev']
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}",
+      { :fields => '{}' },
+      { 'HTTP_IF_MATCH' => ('"%s"' % rev) }
+    )
+
+    last_response.status.should_not be(412)
+  end
+
+  it 'should not 412 when the etags match (JSON)' do
+    rev = @exp.to_h['_rev']
+
+    put(
+      "/_ruote/expressions/#{@exp.fei.sid}",
+      Rufus::Json.encode({}),
+      {
+        'CONTENT_TYPE' => 'application/json',
+        'HTTP_IF_MATCH' => ('"%s"' % rev )
+      }
+    )
+
+    last_response.status.should_not be(412)
   end
 end
 
