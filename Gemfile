@@ -39,7 +39,7 @@ gem 'ruote', '~> 2.1.11'
 # Testing environment requirements
 
 group :test do
-  gem 'rspec', :require => "spec"
+  gem 'rspec', '~> 1.3.1', :require => "spec"
   gem 'rack-test'
   gem 'webrat'
   gem 'test-unit', '~> 1.2.3'
