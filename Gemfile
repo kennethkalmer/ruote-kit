@@ -6,7 +6,7 @@ source :gemcutter
 # ruote-kit itself
 
 gem 'bundler'
-gem 'sinatra', '1.0'
+gem 'sinatra', '1.0', :require => 'sinatra/base'
 gem 'sinatra-respond_to', '0.5.0'
 gem 'haml'
 
