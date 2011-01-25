@@ -27,7 +27,7 @@ end
 
       def sample_process_tree
 
-        Rufus::Json.encode(Ruote::Parser.parse(sample_process))
+        Rufus::Json.encode(Ruote::Reader.read(sample_process))
       end
     end
   end

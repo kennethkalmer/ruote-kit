@@ -41,7 +41,7 @@
         %td
           original tree
         %td
-          - ruby = Ruote::Parser.to_ruby(@expression.original_tree)
+          - ruby = Ruote::Reader.to_ruby(@expression.original_tree)
           - rubyline = ruby.split("\n").first
           - json = Rufus::Json.pretty_encode(@expression.original_tree)
           %pre.pdef{ :onclick => 'Rk.toggleNext(this);' } #{rubyline}
@@ -51,7 +51,7 @@
       %td
         tree
       %td
-        - ruby = Ruote::Parser.to_ruby(@expression.tree)
+        - ruby = Ruote::Reader.to_ruby(@expression.tree)
         - rubyline = ruby.split("\n").first
         - json = Rufus::Json.pretty_encode(@expression.tree)
         %pre.pdef{ :onclick => 'Rk.toggleNext(this);' } #{rubyline}
