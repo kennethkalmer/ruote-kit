@@ -152,6 +152,7 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
   describe 'with a workitem' do
 
     before(:each) do
+
       @wfid = launch_test_process do
         Ruote.process_definition :name => 'foo' do
           sequence do
@@ -160,29 +161,28 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
         end
       end
 
-      process = engine.process(@wfid)
-      @nada_exp_id = '0_0_0' #process.expressions.last.fei.expid
+      RuoteKit.engine.wait_for(:nada)
 
-      @nada_exp_id.should_not be_nil
+      @fei = engine.process(@wfid).expressions.last.fei
     end
 
     it 'should return it (HTML)' do
 
-      get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}"
+      get "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}"
 
       last_response.should be_ok
     end
 
     it 'should return it (JSON)' do
 
-      get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json"
+      get "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json"
 
       last_response.should be_ok
     end
 
     it 'should provide a workitem with the correct links (JSON)' do
 
-      get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json"
+      get "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json"
 
       json = last_response.json_body
 
@@ -198,7 +198,7 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
 
     it 'should include an etag header (HTML)' do
 
-      get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}"
+      get "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}"
 
       last_response.headers.should include('ETag')
       last_response.headers['ETag'].should == "\"#{find_workitem(@wfid, @nada_exp_id).to_h['_rev'].to_s}\""
@@ -206,7 +206,7 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
 
     it 'should include an etag header (JSON)' do
 
-      get "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json"
+      get "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json"
 
       last_response.headers.should include('ETag')
       last_response.headers['ETag'].should == "\"#{find_workitem(@wfid, @nada_exp_id).to_h['_rev'].to_s}\""
@@ -248,10 +248,9 @@ describe 'PUT /_ruote/workitems/fei' do
       end
     end
 
-    process = engine.process(@wfid)
-    @nada_exp_id = '0_0_0' #process.expressions.last.fei.expid
+    RuoteKit.engine.wait_for(:nada)
 
-    @nada_exp_id.should_not be_nil
+    @fei = engine.process(@wfid).expressions.last.fei
 
     @fields = {
       'params' => { 'activity' => 'Work your magic' }, 'foo' => 'bar'
@@ -261,13 +260,13 @@ describe 'PUT /_ruote/workitems/fei' do
   it 'should update the workitem fields (HTML)' do
 
     put(
-      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}",
+      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
       :fields => Rufus::Json.encode(@fields))
 
     last_response.should be_redirect
 
     last_response['Location'].should ==
-      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}"
+      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}"
 
     find_workitem(@wfid, @nada_exp_id).fields.should == @fields
 
@@ -281,7 +280,7 @@ describe 'PUT /_ruote/workitems/fei' do
     params = { 'fields' => @fields }
 
     put(
-      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
+      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
       Rufus::Json.encode(params),
       { 'CONTENT_TYPE' => 'application/json' })
 
@@ -299,7 +298,7 @@ describe 'PUT /_ruote/workitems/fei' do
     params = { 'workitem' => { 'fields' => @fields } }
 
     put(
-      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
+      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
       Rufus::Json.encode(params),
       { 'CONTENT_TYPE' => 'application/json' })
 
@@ -313,7 +312,7 @@ describe 'PUT /_ruote/workitems/fei' do
     fields = Rufus::Json.encode(@fields)
 
     put(
-      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}",
+      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
       :fields => fields,
       :_proceed => '1')
 
@@ -334,7 +333,7 @@ describe 'PUT /_ruote/workitems/fei' do
     params = { 'fields' => @fields, '_proceed' => '1' }
 
     put(
-      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
+      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
       Rufus::Json.encode(params),
       { 'CONTENT_TYPE' => 'application/json' })
 
@@ -351,7 +350,9 @@ describe 'PUT /_ruote/workitems/fei' do
 
   it 'should 400 when passed bogus JSON fields (HTML)' do
 
-    put "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}", :fields => '{"bogus"}'
+    put(
+      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
+      :fields => '{"bogus"}')
 
     last_response.status.should be(400)
   end
@@ -359,7 +360,7 @@ describe 'PUT /_ruote/workitems/fei' do
   it 'should 400 when passed bogus JSON fields (JSON)' do
 
     put(
-      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
+      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
       "{'bogus'}",
       { 'CONTENT_TYPE' => 'application/json' })
 
@@ -367,6 +368,7 @@ describe 'PUT /_ruote/workitems/fei' do
   end
 
   it 'should 412 if the etags do not match (HTML)' do
+
     workitem = find_workitem(@wfid, @nada_exp_id)
     old_rev  = workitem.to_h['_rev']
 
@@ -374,7 +376,7 @@ describe 'PUT /_ruote/workitems/fei' do
     RuoteKit.engine.storage_participant.update(workitem)
 
     put(
-      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}",
+      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
       { :fields => Rufus::Json.encode(@fields) },
       { 'HTTP_IF_MATCH' => ('"%s"' % old_rev) }
     )
@@ -383,6 +385,7 @@ describe 'PUT /_ruote/workitems/fei' do
   end
 
   it 'should 412 if the etags do not match (JSON)' do
+
     workitem = find_workitem(@wfid, @nada_exp_id)
 
     old_rev = workitem.to_h['_rev']
@@ -393,7 +396,7 @@ describe 'PUT /_ruote/workitems/fei' do
     params = { 'workitem' => { 'fields' => @fields } }
 
     put(
-      "/_ruote/workitems/#{@nada_exp_id}!!#{@wfid}.json",
+      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
       Rufus::Json.encode(params),
       {
         'CONTENT_TYPE'  => 'application/json',

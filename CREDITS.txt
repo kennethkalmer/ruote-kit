@@ -4,12 +4,13 @@
 
 == Main project team
 
-- Kenneth Kalmer (http://opensourcery.co.za/)
-- Torsten Schönebaum (http://www.torstenschoenebaum.de)
-- John Mettraux (http://jmettraux.wordpress.com)
+- Kenneth Kalmer - http://opensourcery.co.za
+- Torsten Schönebaum - http://www.torstenschoenebaum.de
+- John Mettraux - http://jmettraux.wordpress.com
 
 
 == Contributors
 
-- Joeri Samson (http://github.com/joerixaop)
+- Chris Buben - https://github.com/cbuben
+- Joeri Samson - https://github.com/joerixaop
 

@@ -75,19 +75,19 @@ describe 'GET /_ruote/expressions/fei' do
 
       @wfid = launch_test_process
       process = engine.process(@wfid)
-      @nada_exp_id = process.expressions.last.fei.expid
+      @nada_fei = process.expressions.last.fei
     end
 
     it 'should render the expression (HTML)' do
 
-      get "/_ruote/expressions/#{@nada_exp_id}!!#{@wfid}"
+      get "/_ruote/expressions/#{@nada_fei.expid}!#{@nada_fei.subid}!#{@wfid}"
 
       last_response.should be_ok
     end
 
     it 'should render the expression (JSON)' do
 
-      get "/_ruote/expressions/#{@nada_exp_id}!!#{@wfid}.json"
+      get "/_ruote/expressions/#{@nada_fei.expid}!#{@nada_fei.subid}!#{@wfid}.json"
 
       last_response.should be_ok
 
@@ -103,7 +103,7 @@ describe 'GET /_ruote/expressions/fei' do
 
     it 'should include an etag header (HTML)' do
 
-      get "/_ruote/expressions/#{@nada_exp_id}!!#{@wfid}"
+      get "/_ruote/expressions/#{@nada_fei.expid}!#{@nada_fei.subid}!#{@wfid}"
 
       last_response.headers.should include('ETag')
       last_response.headers['ETag'].should == "\"#{engine.process(@wfid).expressions.last.to_h['_rev'].to_s}\""
@@ -111,7 +111,7 @@ describe 'GET /_ruote/expressions/fei' do
 
     it 'should include an etag header (JSON)' do
 
-      get "/_ruote/expressions/#{@nada_exp_id}!!#{@wfid}.json"
+      get "/_ruote/expressions/#{@nada_fei.expid}!#{@nada_fei.subid}!#{@wfid}.json"
 
       last_response.headers.should include('ETag')
       last_response.headers['ETag'].should == "\"#{engine.process(@wfid).expressions.last.to_h['_rev'].to_s}\""
@@ -146,11 +146,13 @@ describe 'GET /_ruote/expressions/fei' do
       end)
 
       RuoteKit.engine.wait_for(:alpha)
+
+      @fei = RuoteKit.engine.process(@wfid).expressions.last.fei
     end
 
     it 'should render the expression (HTML)' do
 
-      get "/_ruote/expressions/0_0!!#{@wfid}"
+      get "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}"
 
       last_response.status.should be(200)
 
@@ -160,7 +162,7 @@ describe 'GET /_ruote/expressions/fei' do
 
     it 'should render the expression (JSON)' do
 
-      get "/_ruote/expressions/0_0!!#{@wfid}.json"
+      get "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json"
 
       last_response.status.should be(200)
 
@@ -195,13 +197,12 @@ describe 'DELETE /_ruote/expressions/fei' do
         end
       end
 
-      wait_exp = engine.process(@wfid).expressions.last
-      @expid = "0_1_0" #wait_exp.fei.expid
+      @fei = engine.process(@wfid).expressions.last.fei
     end
 
     it 'should cancel the expressions (HTML)' do
 
-      delete "/_ruote/expressions/#{@expid}!!#{@wfid}"
+      delete "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}"
 
       last_response.should be_redirect
       last_response['Location'].should == "/_ruote/expressions/#{@wfid}"
@@ -214,7 +215,7 @@ describe 'DELETE /_ruote/expressions/fei' do
 
     it 'should cancel the expressions (JSON)' do
 
-      delete "/_ruote/expressions/#{@expid}!!#{@wfid}.json"
+      delete "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json"
 
       last_response.should be_ok
       last_response.json_body['status'].should == 'ok'
@@ -227,7 +228,7 @@ describe 'DELETE /_ruote/expressions/fei' do
 
     it 'should kill the expression (HTML)' do
 
-      delete "/_ruote/expressions/#{@expid}!!#{@wfid}?_kill=1"
+      delete "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}?_kill=1"
 
       last_response.should be_redirect
       last_response['Location'].should == "/_ruote/expressions/#{@wfid}"
@@ -240,7 +241,7 @@ describe 'DELETE /_ruote/expressions/fei' do
 
     it 'should kill the expression (JSON)' do
 
-      delete "/_ruote/expressions/#{@expid}!!#{@wfid}.json?_kill=1"
+      delete "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json?_kill=1"
 
       last_response.should be_ok
       last_response.json_body['status'].should == 'ok'
@@ -254,7 +255,7 @@ describe 'DELETE /_ruote/expressions/fei' do
     it 'should 412 when the etags do not match (HTML)' do
 
       delete(
-        "/_ruote/expressions/#{@expid}!!#{@wfid}",
+        "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
         nil,
         { 'HTTP_IF_MATCH' => '"foo"' }
       )
@@ -265,7 +266,7 @@ describe 'DELETE /_ruote/expressions/fei' do
     it 'should 412 when the etags do not match (JSON)' do
 
       delete(
-        "/_ruote/expressions/#{@expid}!!#{@wfid}.json",
+        "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
         nil,
         {
           'HTTP_IF_MATCH' => '"foo"',
@@ -278,11 +279,11 @@ describe 'DELETE /_ruote/expressions/fei' do
 
     it 'should not 412 when the etags do match (HTML)' do
       exp = RuoteKit.engine.process(@wfid).expressions.find { |e|
-        e.fei.expid == @expid
+        e.fei.expid == @fei.expid
       }
 
       delete(
-        "/_ruote/expressions/#{@expid}!!#{@wfid}",
+        "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
         nil,
         { 'HTTP_IF_MATCH' => ('"%s"' % exp.to_h['_rev'] ) }
       )
@@ -292,11 +293,11 @@ describe 'DELETE /_ruote/expressions/fei' do
 
     it 'should not 412 when the etags do match (JSON)' do
       exp = RuoteKit.engine.process(@wfid).expressions.find { |e|
-        e.fei.expid == @expid
+        e.fei.expid == @fei.expid
       }
 
       delete(
-        "/_ruote/expressions/#{@expid}!!#{@wfid}.json",
+        "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
         nil,
         {
           'HTTP_IF_MATCH' => ('"%s"' % exp.to_h['_rev'] ),

@@ -53,8 +53,8 @@ describe 'GET /_ruote/schedules' do
 
     wfid = [ @wfid0, @wfid1 ].sort.first
 
-    schedules.first['links'].first['href'].should ==
-      "/_ruote/expressions/0_0!!#{wfid}"
+    schedules.first['links'].first['href'].should match(
+      /^\/_ruote\/expressions\/0_0![a-f0-9]+!#{wfid}$/)
   end
 end
 

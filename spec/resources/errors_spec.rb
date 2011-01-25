@@ -51,6 +51,7 @@ describe 'with a running process that has an error' do
     RuoteKit.engine.wait_for(@wfid)
 
     @error = RuoteKit.engine.process(@wfid).errors.first
+    @fei = @error.fei
   end
 
   describe 'GET /_ruote/errors' do
@@ -109,7 +110,7 @@ describe 'with a running process that has an error' do
       # the links for the error itself
 
       json['errors'].first['links'].should == [
-        { 'href' => "/_ruote/errors/0_0_0!!#{@wfid}",
+        { 'href' => "/_ruote/errors/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
           'rel' => 'self' },
         { 'href' => "/_ruote/errors/#{@wfid}",
           'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },
@@ -143,7 +144,7 @@ describe 'with a running process that has an error' do
       json['errors'].first['message'].should == "#<RuntimeError: unknown participant or subprocess 'nemo'>"
 
       json['errors'].first['links'].should == [
-        { 'href' => "/_ruote/errors/0_0_0!!#{@wfid}",
+        { 'href' => "/_ruote/errors/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
           'rel' => 'self' },
         { 'href' => "/_ruote/errors/#{@wfid}",
           'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },

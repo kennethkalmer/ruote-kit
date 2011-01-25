@@ -15,3 +15,6 @@
 
 [ ] application/vnd.ruote.lambda.io+json;type=xxx
 
+[ ] update rspec
+[ ] write ruote-kit.gemspec manually
+

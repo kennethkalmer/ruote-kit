@@ -2,7 +2,12 @@
 = ruote-kit - CHANGELOG.txt
 
 
-== ruote-kit - 2.1.11    not yet released
+== ruote-kit - 2.1.12    not yet released
+
+- Adapted to ruote 2.1.12 : Parser -> Reader (patch by Chris Buben)
+
+
+== ruote-kit - 2.1.11    not released
 
 - RuoteKit.run_worker(storage) will not return (since it will let the worker
   run in the current thread)
