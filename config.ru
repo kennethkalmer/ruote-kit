@@ -50,7 +50,24 @@ RuoteKit.engine.register do
 end
 
 
+# redirecting / to /_ruote (to avoid issue reports from new users)
+
+class ToRuote
+  def initialize(app)
+    @app = app
+  end
+  def call(env)
+    if env['PATH_INFO'] == '/'
+      [ 303, { 'Location' => '/_ruote', 'Content-Type' => 'text/plain' }, '' ]
+    else
+      @app.call(env)
+    end
+  end
+end
+
 # rack middlewares, business as usual...
+
+use ToRuote
 
 use Rack::CommonLogger
 use Rack::Lint
