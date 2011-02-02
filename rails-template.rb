@@ -1,13 +1,5 @@
-gem 'ruote', '~>2.1.11'
-gem 'ruote-kit', '~>2.1.11'
-
-environment <<-CODE
-  # we don't put RuoteKit into the Rack middleware stack as we would duplicate
-    # routing between Rails and RuoteKit (it's a Sinatra app). Instead, we use
-    # Rails' routes.rb to pass requests on /_ruote(.*) to RuoteKit.
-    #
-    # config.middleware.use 'RuoteKit::Application'
-CODE
+gem 'ruote', '>=2.1.11'
+gem 'ruote-kit', '>=2.1.11'
 
 rakefile 'ruote.rake', <<-CODE
   namespace :ruote do
