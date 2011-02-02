@@ -1,7 +1,7 @@
 
-= ruote-kit (RESTful ruote & middleware)
+= ruote-kit (ruote on rack)
 
-A RESTful wrapper around the ruote[http://ruote.rubyforge.org] workflow engine,
+A wrapper around the ruote[http://ruote.rubyforge.org] workflow engine,
 built as a modular sinatra[http://www.sinatrarb.com/] application.
 
 Follow development:

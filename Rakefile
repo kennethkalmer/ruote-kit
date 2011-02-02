@@ -1,56 +1,86 @@
 
-require 'rake/tasklib'
+$:.unshift('.') # 1.9.2
 
-require "rubygems"
-require "bundler"
-Bundler.setup(:default, :test, :build)
+require 'rubygems'
 
-require File.join(File.dirname(__FILE__), 'lib/ruote-kit/version')
+require 'rake'
+require 'rake/clean'
+require 'rake/rdoctask'
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gemspec|
-    gemspec.name = 'ruote-kit'
-    gemspec.version = RuoteKit::VERSION
-    gemspec.summary = 'ruote workflow engine, wrapped in a loving rack embrace'
-    gemspec.description = 'ruote-kit is a RESTful Rack app for the ruote workflow engine'
-    gemspec.email = 'kenneth.kalmer@gmail.com'
-    gemspec.homepage = 'http://github.com/tosch/ruote-kit'
-    gemspec.authors = [ 'kenneth.kalmer@gmail.com', 'Torsten Schoenebaum', 'John Mettraux' ]
-    gemspec.extra_rdoc_files.include '*.txt'
 
-    gemspec.files.include 'lib/ruote-kit/public/**/*'
-    gemspec.executables.clear
+#
+# clean
 
-    gemspec.add_bundler_dependencies
-    gemspec.files.exclude 'rails-template.rb'
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler not available. Install it with 'gem install jeweler'"
+CLEAN.include('pkg', 'rdoc')
+
+
+#
+# test / spec
+
+task :spec do
+
+  sh 'spec spec/'
 end
 
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/**/*_spec.rb']
-end
-
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
-end
-
-task :spec #=> :check_dependencies
-
+task :test => :spec
 task :default => :spec
 
-begin
-  require 'yard'
-  YARD::Rake::YardocTask.new
-rescue LoadError
-  task :yardoc do
-    abort "YARD is not available. In order to run yardoc, you must: sudo gem install yard"
-  end
+
+#
+# gem
+
+GEMSPEC_FILE = Dir['*.gemspec'].first
+GEMSPEC = eval(File.read(GEMSPEC_FILE))
+GEMSPEC.validate
+
+
+desc %{
+  builds the gem and places it in pkg/
+}
+task :build do
+
+  sh "gem build #{GEMSPEC_FILE}"
+  sh "mkdir pkg" rescue nil
+  sh "mv #{GEMSPEC.name}-#{GEMSPEC.version}.gem pkg/"
 end
+
+desc %{
+  builds the gem and pushes it to rubygems.org
+}
+task :push => :build do
+
+  sh "gem push pkg/#{GEMSPEC.name}-#{GEMSPEC.version}.gem"
+end
+
+
+#
+# rdoc
+#
+# make sure to have rdoc 2.5.x to run that
+
+Rake::RDocTask.new do |rd|
+
+  rd.main = 'README.rdoc'
+  rd.rdoc_dir = 'rdoc'
+
+  rd.rdoc_files.include(
+    'README.rdoc', 'CHANGELOG.txt', 'CREDITS.txt', 'lib/**/*.rb')
+
+  rd.title = "#{GEMSPEC.name} #{GEMSPEC.version}"
+end
+
+
+#
+# upload_rdoc
+
+desc %{
+  upload the rdoc to rubyforge
+}
+task :upload_rdoc => [ :clean, :rdoc ] do
+
+  account = 'jmettraux@rubyforge.org'
+  webdir = '/var/www/gforge-projects/ruote'
+
+  sh "rsync -azv -e ssh rdoc/#{GEMSPEC.name}_rdoc #{account}:#{webdir}/"
+end
+
