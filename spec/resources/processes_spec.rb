@@ -366,19 +366,16 @@ describe 'DELETE /_ruote/processes/wfid' do
 
   before(:each) do
 
-    @wfid = RuoteKit.engine.launch(
-
-      Ruote.process_definition :name => 'test' do
-        sequence :on_cancel => 'bail_out' do
-          echo 'done.'
-          wait '1d'
-        end
-
-        define :name => 'bail_out' do
-          echo 'bailout.'
-        end
+    @wfid = RuoteKit.engine.launch(Ruote.process_definition do
+      sequence :on_cancel => 'bail_out' do
+        echo 'done.'
+        wait '1d'
       end
-    )
+
+      define :name => 'bail_out' do
+        echo 'bailout.'
+      end
+    end)
 
     RuoteKit.engine.wait_for(3)
   end

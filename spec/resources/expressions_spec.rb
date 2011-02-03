@@ -220,19 +220,16 @@ describe 'DELETE /_ruote/expressions/fei' do
 
     before(:each) do
 
-      @wfid = RuoteKit.engine.launch(
-
-        Ruote.process_definition :name => 'delete' do
-          sequence do
-            alfred :on_cancel => 'bail_out'
-            echo 'done'
-          end
-
-          define 'bail_out' do
-            echo 'bailed'
-          end
+      @wfid = RuoteKit.engine.launch(Ruote.process_definition do
+        sequence do
+          alfred :on_cancel => 'bail_out'
+          echo 'done'
         end
-      )
+
+        define 'bail_out' do
+          echo 'bailed'
+        end
+      end)
 
       RuoteKit.engine.wait_for(:alfred)
 

@@ -54,14 +54,11 @@ describe 'GET /_ruote/workitems' do
 
       register_participants
 
-      @wfid = RuoteKit.engine.launch(
-
-        Ruote.process_definition :name => 'test' do
-          sequence do
-            nada :activity => 'Work your magic'
-          end
+      @wfid = RuoteKit.engine.launch(Ruote.process_definition do
+        sequence do
+          nada :activity => 'Work your magic'
         end
-      )
+      end)
 
       RuoteKit.engine.wait_for(:nada)
       RuoteKit.engine.wait_for(1)
@@ -111,15 +108,12 @@ describe 'GET /_ruote/workitems/wfid' do
 
       register_participants
 
-      @wfid = RuoteKit.engine.launch(
-
-        Ruote.process_definition :name => 'foo' do
-          concurrence do
-            nada :activity => 'This'
-            nada :activity => 'Or that'
-          end
+      @wfid = RuoteKit.engine.launch(Ruote.process_definition do
+        concurrence do
+          nada :activity => 'This'
+          nada :activity => 'Or that'
         end
-      )
+      end)
 
       RuoteKit.engine.wait_for(:nada)
       RuoteKit.engine.wait_for(1)
@@ -190,14 +184,11 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
 
     before(:each) do
 
-      @wfid = RuoteKit.engine.launch(
-
-        Ruote.process_definition :name => 'foo' do
-          sequence do
-            nada :activity => 'Work your magic'
-          end
+      @wfid = RuoteKit.engine.launch(Ruote.process_definition do
+        sequence do
+          nada :activity => 'Work your magic'
         end
-      )
+      end)
 
       RuoteKit.engine.wait_for(:nada)
 
@@ -275,15 +266,12 @@ describe 'PUT /_ruote/workitems/fei' do
 
     prepare_engine_with_participants
 
-    @wfid = RuoteKit.engine.launch(
-
-      Ruote.process_definition :name => 'foo' do
-        sequence do
-          nada :activity => 'Work your magic'
-          echo '${f:foo}'
-        end
+    @wfid = RuoteKit.engine.launch(Ruote.process_definition do
+      sequence do
+        nada :activity => 'Work your magic'
+        echo '${f:foo}'
       end
-    )
+    end)
 
     RuoteKit.engine.wait_for(:nada)
 
@@ -456,24 +444,21 @@ describe 'Filtering workitems' do
 
     prepare_engine_with_participants
 
-    @wfid = RuoteKit.engine.launch(
-
-      Ruote.process_definition :name => 'test' do
-        set 'foo' => 'bar'
-        concurrence do
-          sequence do
-            set 'wands' => 101
-            set 'hinkypinky' => 'honkytonky'
-            jack :activity => 'Fetch a pale'
-          end
-          sequence do
-            set 'hinkypinky' => 'honkytonky'
-            jill :activity => 'Chase Jack'
-          end
-          well :activity => 'Ready water'
+    @wfid = RuoteKit.engine.launch(Ruote.process_definition do
+      set 'foo' => 'bar'
+      concurrence do
+        sequence do
+          set 'wands' => 101
+          set 'hinkypinky' => 'honkytonky'
+          jack :activity => 'Fetch a pale'
         end
+        sequence do
+          set 'hinkypinky' => 'honkytonky'
+          jill :activity => 'Chase Jack'
+        end
+        well :activity => 'Ready water'
       end
-    )
+    end)
 
     RuoteKit.engine.wait_for(:jack)
     RuoteKit.engine.wait_for(1)
