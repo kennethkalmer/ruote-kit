@@ -368,8 +368,9 @@ describe 'DELETE /_ruote/processes/wfid' do
 
     @wfid = RuoteKit.engine.launch(Ruote.process_definition do
       sequence :on_cancel => 'bail_out' do
-        echo 'done.'
+        echo 'in'
         wait '1d'
+        echo 'done.'
       end
 
       define :name => 'bail_out' do
@@ -390,7 +391,7 @@ describe 'DELETE /_ruote/processes/wfid' do
 
     engine.process(@wfid).should be_nil
 
-    @tracer.to_s.should == "done.\nbailout."
+    @tracer.to_s.should == "in\nbailout."
   end
 
   it 'should cancel processes (HMTL)' do
@@ -404,7 +405,7 @@ describe 'DELETE /_ruote/processes/wfid' do
 
     engine.process(@wfid).should be_nil
 
-    @tracer.to_s.should == "done.\nbailout."
+    @tracer.to_s.should == "in\nbailout."
   end
 
   it 'should kill processes (JSON)' do
@@ -417,7 +418,7 @@ describe 'DELETE /_ruote/processes/wfid' do
 
     engine.process(@wfid).should be_nil
 
-    @tracer.to_s.should == 'done.'
+    @tracer.to_s.should == 'in'
   end
 
   it 'should kill processes (HTML)' do
@@ -431,7 +432,7 @@ describe 'DELETE /_ruote/processes/wfid' do
 
     engine.process(@wfid).should be_nil
 
-    @tracer.to_s.should == 'done.'
+    @tracer.to_s.should == 'in'
   end
 end
 
