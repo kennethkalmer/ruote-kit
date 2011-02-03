@@ -19,7 +19,7 @@ CLEAN.include('pkg', 'rdoc')
 
 task :spec do
 
-  sh 'spec spec/'
+  sh 'rspec spec/'
 end
 
 task :test => :spec

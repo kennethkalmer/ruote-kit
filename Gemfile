@@ -39,9 +39,9 @@ gem 'ruote', :git => 'git://github.com/jmettraux/ruote.git'
 # Testing environment requirements
 
 group :test do
-  gem 'rspec', '~> 1.3.1', :require => "spec"
+  #gem 'rspec', '~> 1.3.1', :require => "spec"
+  gem 'rspec', '2.4.0'
   gem 'rack-test'
-  gem 'webrat'
-  gem 'test-unit', '~> 1.2.3'
+  gem 'webrat', '0.7.3'
 end
 

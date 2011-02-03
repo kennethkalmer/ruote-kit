@@ -1,7 +1,7 @@
 
 require 'spec_helper'
 
-undef :context if defined?(context)
+#undef :context if defined?(context)
 
 
 def workitem_count(from, to, of)
@@ -15,7 +15,15 @@ end
 
 describe 'GET /_ruote/workitems' do
 
-  it_has_an_engine
+  before(:each) do
+
+    prepare_engine
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
+  end
 
   describe 'without any workitems' do
 
@@ -44,13 +52,19 @@ describe 'GET /_ruote/workitems' do
 
     before(:each) do
 
-      @wfid = launch_test_process do
+      register_participants
+
+      @wfid = RuoteKit.engine.launch(
+
         Ruote.process_definition :name => 'test' do
           sequence do
             nada :activity => 'Work your magic'
           end
         end
-      end
+      )
+
+      RuoteKit.engine.wait_for(:nada)
+      RuoteKit.engine.wait_for(1)
     end
 
     it 'should have a list of workitems (HTML)' do
@@ -67,7 +81,7 @@ describe 'GET /_ruote/workitems' do
       last_response.should be_ok
       json = last_response.json_body
 
-      json['workitems'].size.should be(1)
+      json['workitems'].size.should == 1
 
       wi = json['workitems'][0]
 
@@ -81,19 +95,34 @@ end
 
 describe 'GET /_ruote/workitems/wfid' do
 
-  it_has_an_engine
+  before(:each) do
+
+    prepare_engine
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
+  end
 
   describe 'with workitems' do
 
     before(:each) do
-      @wfid = launch_test_process do
+
+      register_participants
+
+      @wfid = RuoteKit.engine.launch(
+
         Ruote.process_definition :name => 'foo' do
           concurrence do
             nada :activity => 'This'
             nada :activity => 'Or that'
           end
         end
-      end
+      )
+
+      RuoteKit.engine.wait_for(:nada)
+      RuoteKit.engine.wait_for(1)
     end
 
     it 'should list the workitems (HTML)' do
@@ -145,21 +174,30 @@ describe 'GET /_ruote/workitems/wfid' do
   end
 end
 
-describe 'GET /_ruote/workitems/expid!!wfid' do
+describe 'GET /_ruote/workitems/expid!subid!wfid' do
 
-  it_has_an_engine
+  before(:each) do
+
+    prepare_engine_with_participants
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
+  end
 
   describe 'with a workitem' do
 
     before(:each) do
 
-      @wfid = launch_test_process do
+      @wfid = RuoteKit.engine.launch(
+
         Ruote.process_definition :name => 'foo' do
           sequence do
             nada :activity => 'Work your magic'
           end
         end
-      end
+      )
 
       RuoteKit.engine.wait_for(:nada)
 
@@ -168,37 +206,35 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
 
     it 'should return it (HTML)' do
 
-      get "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}"
+      get "/_ruote/workitems/#{@fei.sid}"
 
       last_response.should be_ok
     end
 
     it 'should return it (JSON)' do
 
-      get "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json"
+      get "/_ruote/workitems/#{@fei.sid}.json"
 
       last_response.should be_ok
     end
 
     it 'should provide a workitem with the correct links (JSON)' do
 
-      get "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json"
+      get "/_ruote/workitems/#{@fei.sid}.json"
 
-      json = last_response.json_body
-
-      assert_equal(
-        %w[
-          self
-          http://ruote.rubyforge.org/rels.html#process
-          http://ruote.rubyforge.org/rels.html#process_expressions
-          http://ruote.rubyforge.org/rels.html#process_errors
-        ],
-        json['workitem']['links'].collect { |li| li['rel'] })
+      last_response.json_body['workitem']['links'].collect { |li|
+        li['rel']
+      }.should == %w[
+        self
+        http://ruote.rubyforge.org/rels.html#process
+        http://ruote.rubyforge.org/rels.html#process_expressions
+        http://ruote.rubyforge.org/rels.html#process_errors
+      ]
     end
 
     it 'should include an etag header (HTML)' do
 
-      get "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}"
+      get "/_ruote/workitems/#{@fei.sid}"
 
       last_response.headers.should include('ETag')
       last_response.headers['ETag'].should == "\"#{find_workitem(@wfid, @nada_exp_id).to_h['_rev'].to_s}\""
@@ -206,7 +242,7 @@ describe 'GET /_ruote/workitems/expid!!wfid' do
 
     it 'should include an etag header (JSON)' do
 
-      get "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json"
+      get "/_ruote/workitems/#{@fei.sid}.json"
 
       last_response.headers.should include('ETag')
       last_response.headers['ETag'].should == "\"#{find_workitem(@wfid, @nada_exp_id).to_h['_rev'].to_s}\""
@@ -235,18 +271,19 @@ end
 
 describe 'PUT /_ruote/workitems/fei' do
 
-  it_has_an_engine
-
   before(:each) do
 
-    @wfid = launch_test_process do
+    prepare_engine_with_participants
+
+    @wfid = RuoteKit.engine.launch(
+
       Ruote.process_definition :name => 'foo' do
         sequence do
           nada :activity => 'Work your magic'
           echo '${f:foo}'
         end
       end
-    end
+    )
 
     RuoteKit.engine.wait_for(:nada)
 
@@ -255,6 +292,11 @@ describe 'PUT /_ruote/workitems/fei' do
     @fields = {
       'params' => { 'activity' => 'Work your magic' }, 'foo' => 'bar'
     }
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
   end
 
   it 'should update the workitem fields (HTML)' do
@@ -410,11 +452,12 @@ end
 
 describe 'Filtering workitems' do
 
-  it_has_an_engine
-
   before(:each) do
 
-    @wfid = launch_test_process do
+    prepare_engine_with_participants
+
+    @wfid = RuoteKit.engine.launch(
+
       Ruote.process_definition :name => 'test' do
         set 'foo' => 'bar'
         concurrence do
@@ -430,7 +473,15 @@ describe 'Filtering workitems' do
           well :activity => 'Ready water'
         end
       end
-    end
+    )
+
+    RuoteKit.engine.wait_for(:jack)
+    RuoteKit.engine.wait_for(1)
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
   end
 
   describe 'on participants' do
@@ -441,7 +492,7 @@ describe 'Filtering workitems' do
 
       last_response.should be_ok
 
-      last_response.json_body['workitems'].size.should be(1)
+      last_response.json_body['workitems'].size.should == 1
     end
 
     it 'should narrow results down to a single participant (HTML)' do
@@ -463,7 +514,7 @@ describe 'Filtering workitems' do
 
       last_response.should be_ok
 
-      last_response.json_body['workitems'].size.should be(2)
+      last_response.json_body['workitems'].size.should == 2
     end
 
     it 'should find workitems with fields set to a given value (HTML)' do
@@ -479,7 +530,7 @@ describe 'Filtering workitems' do
 
       last_response.should be_ok
 
-      last_response.json_body['workitems'].size.should be(1)
+      last_response.json_body['workitems'].size.should == 1
     end
 
     it 'should respect JSON encoded filter vars (HTML)' do
@@ -495,7 +546,7 @@ describe 'Filtering workitems' do
 
       last_response.should be_ok
 
-      last_response.json_body['workitems'].size.should be(1)
+      last_response.json_body['workitems'].size.should == 1
     end
 
     it "should combine search criteria by 'and' (HMTL)" do

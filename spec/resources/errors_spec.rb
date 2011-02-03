@@ -1,12 +1,20 @@
 
 require 'spec_helper'
 
-undef :context if defined?(context)
+#undef :context if defined?(context)
 
 
 describe 'without any running processes' do
 
-  it_has_an_engine_with_no_participants
+  before(:each) do
+
+    prepare_engine
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
+  end
 
   describe 'GET /_ruote/errors' do
 
@@ -33,9 +41,9 @@ end
 
 describe 'with a running process that has an error' do
 
-  it_has_an_engine_with_no_participants
-
   before(:each) do
+
+    prepare_engine
 
     RuoteKit.engine.register_participant :alice, Ruote::StorageParticipant
 
@@ -52,6 +60,11 @@ describe 'with a running process that has an error' do
 
     @error = RuoteKit.engine.process(@wfid).errors.first
     @fei = @error.fei
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
   end
 
   describe 'GET /_ruote/errors' do

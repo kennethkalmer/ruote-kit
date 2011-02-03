@@ -1,13 +1,14 @@
+
 require 'spec_helper'
 
-undef :context if defined?(context)
+#undef :context if defined?(context)
 
 
 describe 'GET /_ruote/schedules' do
 
-  it_has_an_engine
-
   before(:each) do
+
+    prepare_engine_with_participants
 
     @wfid0 = RuoteKit.engine.launch(Ruote.define do
       wait :for => '3d'
@@ -19,6 +20,11 @@ describe 'GET /_ruote/schedules' do
     end)
 
     RuoteKit.engine.wait_for(:alpha)
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
   end
 
   it 'should list schedules (HTML)' do
@@ -60,9 +66,9 @@ end
 
 describe 'GET /_ruote/schedules/wfid' do
 
-  it_has_an_engine
-
   before(:each) do
+
+    prepare_engine_with_participants
 
     @wfid0 = RuoteKit.engine.launch(Ruote.define do
       wait :for => '3d'
@@ -74,6 +80,11 @@ describe 'GET /_ruote/schedules/wfid' do
     end)
 
     RuoteKit.engine.wait_for(:alpha)
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
   end
 
   it 'should list schedules (HTML)' do

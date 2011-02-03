@@ -4,8 +4,6 @@ require 'spec_helper'
 
 describe 'GET /' do
 
-  it_has_an_engine
-
   it 'should return a welcome message in HTML be default' do
 
     get '/_ruote'
@@ -33,8 +31,6 @@ describe 'GET /' do
 end
 
 describe 'Generic error handling' do
-
-  it_has_an_engine
 
   it 'should give our own 404 page (HTML)' do
 

@@ -4,11 +4,20 @@ require 'spec_helper'
 
 describe 'GET /_ruote/participants' do
 
+  before(:each) do
+
+    prepare_engine
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
+  end
+
   describe 'without any participant' do
 
-    it_has_an_engine_with_no_participants
-
     it 'should give an empty list (HTML)' do
+
       get '/_ruote/participants'
 
       last_response.status.should be(200)
@@ -29,7 +38,10 @@ describe 'GET /_ruote/participants' do
 
   describe 'with participant' do
 
-    it_has_an_engine
+    before(:each) do
+
+      register_participants
+    end
 
     it 'should give participant information back (HTML)' do
 
@@ -43,17 +55,22 @@ describe 'GET /_ruote/participants' do
       get '/_ruote/participants.json'
 
       last_response.status.should be(200)
-
-      body = last_response.json_body
-
-      body['participants'].should_not be_empty
+      last_response.json_body['participants'].should_not be_empty
     end
   end
 end
 
 describe 'PUT /_ruote/participants' do
 
-  it_has_an_engine
+  before(:each) do
+
+    prepare_engine
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
+  end
 
   it 'should update the list (HTML)' do
 

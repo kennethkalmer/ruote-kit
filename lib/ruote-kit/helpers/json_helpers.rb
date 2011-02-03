@@ -147,7 +147,7 @@ module RuoteKit
           result << hlink(resource.to_s, :rel => 'all')
 
           lim = @limit || settings.limit
-          las = (@count / lim) * lim
+          las = (@count / lim) * lim rescue 0
           pre = [ 0, @skip - lim ].max
           nex = [ @skip + lim, las ].min
 

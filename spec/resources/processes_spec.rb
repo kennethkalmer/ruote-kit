@@ -1,7 +1,7 @@
 
 require 'spec_helper'
 
-undef :context if defined?(context)
+#undef :context if defined?(context)
 
 
 def process_links(wfid)
@@ -24,7 +24,15 @@ end
 
 describe 'GET /_ruote/processes' do
 
-  it_has_an_engine
+  before(:each) do
+
+    prepare_engine_with_participants
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
+  end
 
   describe 'without any running processes' do
 
@@ -32,7 +40,7 @@ describe 'GET /_ruote/processes' do
 
       get '/_ruote/processes?limit=100&skip=0'
 
-      last_response.status.should be(200)
+      last_response.status.should == 200
 
       last_response.should have_selector(
         'a', :content => 'as JSON')
@@ -44,7 +52,7 @@ describe 'GET /_ruote/processes' do
 
       get '/_ruote/processes.json'
 
-      last_response.status.should be(200)
+      last_response.status.should == 200
 
       body = last_response.json_body
       body.should have_key('processes')
@@ -56,21 +64,21 @@ describe 'GET /_ruote/processes' do
   describe 'with running processes' do
 
     before(:each) do
-      @wfid = launch_test_process
+      @wfid = launch_nada_process
     end
 
     it 'should give process information back (HTML)' do
 
       get '/_ruote/processes'
 
-      last_response.status.should be(200)
+      last_response.status.should == 200
     end
 
     it 'should give process information back (JSON)' do
 
       get '/_ruote/processes.json'
 
-      last_response.status.should be(200)
+      last_response.status.should == 200
 
       body = last_response.json_body
 
@@ -111,19 +119,28 @@ end
 
 describe 'GET /_ruote/processes/wfid' do
 
-  it_has_an_engine
+  before(:each) do
+
+    prepare_engine_with_participants
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
+  end
 
   describe 'with a running process' do
 
     before(:each) do
-      @wfid = launch_test_process
+
+      @wfid = launch_nada_process
     end
 
     it 'should give process information back (HTML)' do
 
       get "/_ruote/processes/#{@wfid}"
 
-      last_response.status.should be(200)
+      last_response.status.should == 200
 
       last_response.should have_selector(
         'a[rel="http://ruote.rubyforge.org/rels.html#process_schedules"]')
@@ -133,7 +150,7 @@ describe 'GET /_ruote/processes/wfid' do
 
       get "/_ruote/processes/#{@wfid}.json"
 
-      last_response.status.should be(200)
+      last_response.status.should == 200
 
       body = last_response.json_body
 
@@ -149,7 +166,7 @@ describe 'GET /_ruote/processes/wfid' do
 
       get '/_ruote/processes/foo'
 
-      last_response.status.should be(404)
+      last_response.status.should == 404
 
       last_response.should match(/resource not found/)
     end
@@ -158,7 +175,7 @@ describe 'GET /_ruote/processes/wfid' do
 
       get '/_ruote/processes/foo.json'
 
-      last_response.status.should be(404)
+      last_response.status.should == 404
 
       last_response.json_body.keys.should include('http_error')
 
@@ -171,13 +188,21 @@ end
 
 describe 'GET /_ruote/processes/new' do
 
-  it_has_an_engine
+  before(:each) do
+
+    prepare_engine
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
+  end
 
   it 'should return a launch form' do
 
     get '/_ruote/processes/new'
 
-    last_response.status.should be(200)
+    last_response.status.should == 200
 
     last_response.should_not have_selector('a', :content => 'as JSON')
   end
@@ -185,10 +210,14 @@ end
 
 describe 'POST /_ruote/processes' do
 
-  it_has_an_engine
-
   before(:each) do
-    engine.processes.should be_empty
+
+    prepare_engine
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
   end
 
   it 'should launch a valid process definition (JSON)' do
@@ -206,7 +235,7 @@ describe 'POST /_ruote/processes' do
       Rufus::Json.encode(params),
       { 'CONTENT_TYPE' => 'application/json' })
 
-    last_response.status.should be(201)
+    last_response.status.should == 201
 
     last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
 
@@ -231,7 +260,7 @@ describe 'POST /_ruote/processes' do
       Rufus::Json.encode(params),
       { 'CONTENT_TYPE' => 'application/json' })
 
-    last_response.status.should be(201)
+    last_response.status.should == 201
     last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
 
     sleep 0.5
@@ -307,7 +336,7 @@ describe 'POST /_ruote/processes' do
       Rufus::Json.encode(params),
       { 'CONTENT_TYPE' => 'application/json' })
 
-    last_response.status.should be(400)
+    last_response.status.should == 400
     last_response.json_body.keys.should include('http_error')
   end
 
@@ -317,7 +346,7 @@ describe 'POST /_ruote/processes' do
 
     post '/_ruote/processes', params
 
-    last_response.status.should be(400)
+    last_response.status.should == 400
     last_response.should match(/bad request/)
   end
 
@@ -325,11 +354,20 @@ end
 
 describe 'DELETE /_ruote/processes/wfid' do
 
-  it_has_an_engine
+  before(:each) do
+
+    prepare_engine
+  end
+
+  after(:each) do
+
+    shutdown_and_purge_engine
+  end
 
   before(:each) do
 
-    @wfid = launch_test_process do
+    @wfid = RuoteKit.engine.launch(
+
       Ruote.process_definition :name => 'test' do
         sequence :on_cancel => 'bail_out' do
           echo 'done.'
@@ -340,14 +378,16 @@ describe 'DELETE /_ruote/processes/wfid' do
           echo 'bailout.'
         end
       end
-    end
+    )
+
+    RuoteKit.engine.wait_for(3)
   end
 
   it 'should cancel processes (JSON)' do
 
     delete "/_ruote/processes/#{@wfid}.json"
 
-    last_response.status.should be(200)
+    last_response.status.should == 200
 
     wait_for(@wfid)
 
@@ -374,7 +414,7 @@ describe 'DELETE /_ruote/processes/wfid' do
 
     delete "/_ruote/processes/#{@wfid}.json?_kill=1"
 
-    last_response.status.should be(200)
+    last_response.status.should == 200
 
     wait_for(@wfid)
 

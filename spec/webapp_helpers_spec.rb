@@ -92,6 +92,7 @@ describe RuoteKit::Helpers::RenderHelpers do
     before(:each) do
       @resource = Object.new
       class << @resource
+        include RenderHelper
         attr_accessor :count, :skip, :limit, :request
         def to_html
           '<div>' + render('_pagination.html.haml', self) + '</div>'
