@@ -1,5 +1,5 @@
 
-require 'spec_helper'
+require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
 
 describe 'GET /_ruote/participants' do

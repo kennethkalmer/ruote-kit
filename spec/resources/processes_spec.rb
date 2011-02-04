@@ -1,7 +1,5 @@
 
-require 'spec_helper'
-
-#undef :context if defined?(context)
+require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
 
 def process_links(wfid)

@@ -1,6 +1,4 @@
 
-#$:.unshift(File.join(File.dirname(__FILE__), '..'))
-
 HERE = File.dirname(__FILE__)
 
 ENV['RACK_ENV'] = 'test'
