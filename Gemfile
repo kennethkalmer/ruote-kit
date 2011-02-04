@@ -4,7 +4,7 @@ gemspec
 #gem 'thin'
   # for rackup -s thin
 
-#gem 'yajl-ruby', :require => 'yajl'
+gem 'yajl-ruby', :require => 'yajl'
   # fast JSON library
 
 #gem 'ruote', '~> 2.1.11'
