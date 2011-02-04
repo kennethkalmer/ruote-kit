@@ -1,8 +1,5 @@
 # encoding: utf-8
 
-require 'bundler'
-  # for #add_bundler_dependencies
-
 Gem::Specification.new do |s|
 
   s.name = 'ruote-kit'
@@ -24,8 +21,18 @@ ruote workflow engine, wrapped in a loving rack embrace
     '*.gemspec', '*.txt', '*.rdoc', '*.md'
   ] - [ 'rails-template.rb' ]
 
-  s.add_bundler_dependencies
+  s.add_runtime_dependency 'sinatra', '1.0'
+  s.add_runtime_dependency 'sinatra-respond_to', '0.5.0'
+  s.add_runtime_dependency 'haml'
 
-  #s.require_path = 'lib'
+  s.add_runtime_dependency 'rufus-json', '>= 0.2.5'
+  s.add_runtime_dependency('ruote', s.version) unless defined?(Bundler)
+    # see Gemfile
+
+  s.add_development_dependency 'rspec', '2.4.0'
+  s.add_development_dependency 'rack-test'
+  s.add_development_dependency 'webrat', '0.7.3'
+
+  s.require_path = 'lib'
 end
 
