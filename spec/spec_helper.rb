@@ -1,5 +1,5 @@
 
-HERE = File.dirname(__FILE__)
+HERE = File.dirname(__FILE__) unless defined?(HERE)
 
 ENV['RACK_ENV'] = 'test'
 
