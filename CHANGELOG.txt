@@ -2,9 +2,9 @@
 = ruote-kit - CHANGELOG.txt
 
 
-== ruote-kit - 2.1.12    not yet released
+== ruote-kit - 2.2.0    not yet released
 
-- Adapted to ruote 2.1.12 : Parser -> Reader (patch by Chris Buben)
+- Adapted to ruote 2.2.0 : Parser -> Reader (patch by Chris Buben)
 
 
 == ruote-kit - 2.1.11    not released
