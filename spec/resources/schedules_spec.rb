@@ -16,6 +16,9 @@ describe 'GET /_ruote/schedules' do
         alpha :timeout => '2d'
       end
     end)
+    @wfid2 = RuoteKit.engine.launch(Ruote.define do
+       nada
+    end)
 
     RuoteKit.engine.wait_for(:alpha)
   end
@@ -33,6 +36,8 @@ describe 'GET /_ruote/schedules' do
 
     last_response.should have_selector(
       'a[rel="http://ruote.rubyforge.org/rels.html#process_schedules"]')
+
+    last_response.should contain('1 to 2 of 2 schedules')
   end
 
   it 'should list schedules (JSON)' do

@@ -5,7 +5,7 @@ class RuoteKit::Application
 
   get '/_ruote/schedules/?' do
 
-    @count = RuoteKit.engine.processes(:count => true)
+    @count = RuoteKit.engine.schedules(:count => true)
     paginate
 
     @schedules = RuoteKit.engine.schedules(:skip => @skip, :limit => @limit)
