@@ -60,10 +60,20 @@ describe 'GET /_ruote/schedules' do
     schedules.first['target'].should be_kind_of(Hash)
     schedules.first['owner'].should be_kind_of(Hash)
 
-    wfid = [ @wfid0, @wfid1 ].sort.first
+    hrefs = schedules.collect { |s| s['links'].first['href'] }
+    prefixes = hrefs.collect { |h| h.split('!').first }.sort
+    suffixes = hrefs.collect { |h| h.split('!').last }.sort
 
-    schedules.first['links'].first['href'].should match(
-      /^\/_ruote\/expressions\/0_0![a-f0-9]+!#{wfid}$/)
+    hrefs = schedules.collect { |s|
+      s['links'].first['href']
+    }.collect { |h|
+      pieces = h.split('!')
+      pieces.first + '/' + pieces.last
+    }.sort
+
+    hrefs.should ==
+      [ "/_ruote/expressions/0_0/#{@wfid0}",
+        "/_ruote/expressions/0_0_0/#{@wfid1}" ]
   end
 end
 
