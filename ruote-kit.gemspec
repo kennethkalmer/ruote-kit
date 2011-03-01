@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.name = 'ruote-kit'
   s.version = File.read('lib/ruote-kit/version.rb').match(/VERSION = '([^']+)'/)[1]
   s.platform = Gem::Platform::RUBY
-  s.authors = [ 'Kenneth kalmer', 'Torsten Schoenebaum', 'John Mettraux' ]
+  s.authors = [ 'Kenneth Kalmer', 'Torsten Schoenebaum', 'John Mettraux' ]
   s.email = [ 'kenneth.kalmer@gmail.com' ]
   s.homepage = 'http://github.com/tosch/ruote-kit'
   s.rubyforge_project = 'ruote'
