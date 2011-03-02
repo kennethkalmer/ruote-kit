@@ -14,3 +14,9 @@
 - Chris Buben - https://github.com/cbuben
 - Joeri Samson - https://github.com/joerixaop
 
+
+== Feedback
+
+- Simone Carletti - https://github.com/weppos
+- Nicolai Reuschling - https://github.com/codeblogger
+
