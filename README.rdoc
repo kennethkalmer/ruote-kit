@@ -41,8 +41,8 @@ Have a look at the Gemfile if you want to see the various dependencies.
 * There are two files needed in that directory: Gemfile and config.ru
   * Gemfile
       source :gemcutter
-      gem 'ruote', '~> 2.1.11'
-      gem 'ruote-kit', '~> 2.1.11'
+      gem 'ruote', '~> 2.2.0'
+      gem 'ruote-kit', '~> 2.2.0'
   * config.ru
       begin
         # Try to require the preresolved locked set of gems.
@@ -112,7 +112,7 @@ ruote-kit ships with an application template for Ruby on Rails 3.
 *   install Rails
         $ gem install rails
 *   create a new Rails app by running
-        $ rails new foo -m http://github.com/tosch/ruote-kit/raw/master/rails-template.rb
+        $ rails new foo -m https://github.com/tosch/ruote-kit/raw/master/rails-template.rb
 *   cd into the new Rails dir
         $ cd foo
 *   make sure all dependencies are met
@@ -121,7 +121,7 @@ ruote-kit ships with an application template for Ruby on Rails 3.
 ==== Update an existing Rails app to use ruote[-kit]
 
 *   in your Rails dir, apply the app template
-        $ rake rails:template LOCATION=http://github.com/tosch/ruote-kit/raw/master/rails-template.rb
+        $ rake rails:template LOCATION=https://github.com/tosch/ruote-kit/raw/master/rails-template.rb
 
 ==== Configure your ruote-kit integration
 
@@ -145,7 +145,7 @@ The storage participant (used by the catchall participant) is available at
 
 ==== Example application
 
-See http://github.com/tosch/ruote-on-rails for an example Rails app.
+See https://github.com/tosch/ruote-on-rails for an example Rails app.
 
 == Configuring ruote-kit & ruote
 
@@ -263,11 +263,13 @@ Make sure to configure the storage in the same way as in the rest of the
 application or you won't get what you expect ;-)
 
 You also should consider using a separate worker instance when you're running
-ruote-kit or you're rack app in an environment like Passenger: You won't be sure
+ruote-kit or your rack app in an environment like Passenger: You won't be sure
 the app runs all the time, so it's likely that scheduled events will be missed
 (better: triggered too late). If you don't want to start a separate worker
 process, configure Passenger in a way that your app won't be killed in a very
-long time and make sure your storage implementation supports multiple workers.
+long time (Passenger 3 provides an option to ensure one instance of the app
+won't be killed) and make sure your storage implementation supports multiple
+workers.
 
 == Feedback & bug reports
 
