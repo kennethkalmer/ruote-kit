@@ -1,5 +1,6 @@
-gem 'ruote', '>=2.1.11'
-gem 'ruote-kit', '>=2.1.11'
+
+gem 'ruote', '>=2.2.0'
+gem 'ruote-kit', '>=2.2.0'
 
 rakefile 'ruote.rake', <<-CODE
   namespace :ruote do
@@ -66,3 +67,4 @@ route <<-CODE
   match '/_ruote' => RuoteKit::Application
   match '/_ruote/*path' => RuoteKit::Application
 CODE
+
