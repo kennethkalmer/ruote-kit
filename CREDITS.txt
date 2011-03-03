@@ -17,6 +17,7 @@
 
 == Feedback
 
+- Eric Smith (broken 2.2.0.2)
 - Simone Carletti - https://github.com/weppos
 - Nicolai Reuschling - https://github.com/codeblogger
 
