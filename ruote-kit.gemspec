@@ -18,7 +18,8 @@ ruote workflow engine, wrapped in a loving rack embrace
   s.files = Dir[
     'Rakefile',
     'lib/**/*.rb', 'spec/**/*.rb', 'test/**/*.rb',
-    '*.gemspec', '*.txt', '*.rdoc', '*.md'
+    '*.gemspec', '*.txt', '*.rdoc', '*.md',
+    'lib/ruote-kit/public/**/*', 'lib/ruote-kit/views/**/*'
   ] - [ 'rails-template.rb' ]
 
   s.add_runtime_dependency 'sinatra', '1.0'
@@ -26,7 +27,8 @@ ruote workflow engine, wrapped in a loving rack embrace
   s.add_runtime_dependency 'haml', '3.0.25'
 
   s.add_runtime_dependency 'rufus-json', '>= 0.2.5'
-  s.add_runtime_dependency('ruote', s.version) unless defined?(Bundler)
+  #s.add_runtime_dependency('ruote', s.version) unless defined?(Bundler)
+  s.add_runtime_dependency('ruote', '>= 2.2.0') unless defined?(Bundler)
     # see Gemfile
 
   s.add_development_dependency 'rspec', '2.4.0'
