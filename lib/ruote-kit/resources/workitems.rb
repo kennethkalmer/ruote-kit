@@ -62,7 +62,7 @@ class RuoteKit::Application
     end
 
     if options[:proceed]
-      RuoteKit.engine.storage_participant.reply(@workitem)
+      RuoteKit.engine.storage_participant.proceed(@workitem)
     end
 
     respond_to do |format|
