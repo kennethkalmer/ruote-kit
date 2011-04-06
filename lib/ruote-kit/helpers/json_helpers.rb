@@ -226,6 +226,8 @@ module Ruote
       r['id'] = fei.sid
       r['fei'] = fei.sid
       r['wfid'] = fei.wfid
+      r['wf_name'] = wf_name
+      r['wf_revision'] = wf_revision
       r['type'] = 'workitem'
       r['participant_name'] = participant_name
 
