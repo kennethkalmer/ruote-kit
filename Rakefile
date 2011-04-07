@@ -7,6 +7,7 @@ require 'rubygems/user_interaction' if Gem::RubyGemsVersion == '1.5.0'
 require 'rake'
 require 'rake/clean'
 require 'rake/rdoctask'
+require 'rspec/core/rake_task'
 
 
 #
@@ -18,11 +19,7 @@ CLEAN.include('pkg', 'rdoc')
 #
 # test / spec
 
-task :spec do
-
-  #sh 'rspec spec/'
-  sh 'bundle exec rspec spec/'
-end
+RSpec::Core::RakeTask.new
 
 task :test => :spec
 task :default => :spec
