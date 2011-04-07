@@ -1,6 +1,4 @@
-
-require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
-
+require 'spec_helper'
 
 describe 'GET /_ruote/schedules' do
 
