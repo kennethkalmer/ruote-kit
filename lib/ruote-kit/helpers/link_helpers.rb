@@ -36,7 +36,7 @@ module RuoteKit
           query[:limit] = settings.limit
         end
 
-        rel = query.delete(:rel) || compute_rel(args)
+        rel   = query.delete(:rel) || compute_rel(args)
         title = query.delete(:title)
 
         query = query.inject({}) { |h, (k, v)| h[k.to_s] = v; h }
@@ -48,11 +48,11 @@ module RuoteKit
         end
         href = args.join('/')
 
-        href = "#{href}#{query}"
+        href = url("#{href}#{query}", false)
 
         result = {
           'href' => href,
-          'rel' => rel.match(/^#/) ?
+          'rel'  => rel.match(/^#/) ?
             "http://ruote.rubyforge.org/rels.html#{rel}" : rel,
         }
 
