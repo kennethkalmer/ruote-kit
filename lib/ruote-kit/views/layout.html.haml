@@ -7,25 +7,25 @@
 
     %title ruote-kit
 
-    %link{ :type => 'image/vnd.microsoft.icon', :href => '/_ruote/images/favicon.ico', :rel => 'icon' }
+    %link{ :type => 'image/vnd.microsoft.icon', :href => url('/_ruote/images/favicon.ico'), :rel => 'icon' }
 
-    %link{ :type => 'text/css', :href => '/_ruote/stylesheets/reset.css', :rel => 'stylesheet' }
-    %link{ :type => 'text/css', :href => '/_ruote/stylesheets/rk.css', :rel => 'stylesheet' }
+    %link{ :type => 'text/css', :href => url('/_ruote/stylesheets/reset.css'), :rel => 'stylesheet' }
+    %link{ :type => 'text/css', :href => url('/_ruote/stylesheets/rk.css'), :rel => 'stylesheet' }
 
-    %script{ :type => 'text/javascript', :src => '/_ruote/javascripts/jquery-1.4.2.min.js' }
-    %script{ :type => 'text/javascript', :src => '/_ruote/javascripts/rk.js' }
+    %script{ :type => 'text/javascript', :src => url('/_ruote/javascripts/jquery-1.4.2.min.js') }
+    %script{ :type => 'text/javascript', :src => url('/_ruote/javascripts/rk.js') }
 
     - if @_uses_fluo
-      %script{ :type => 'text/javascript', :src => '/_ruote/javascripts/ruote-fluo.js' }
-      %script{ :type => 'text/javascript', :src => '/_ruote/javascripts/ruote-fluo-editor.js' }
-      %link{ :type => 'text/css', :href => '/_ruote/stylesheets/ruote-fluo-editor.css', :rel => 'stylesheet' }
+      %script{ :type => 'text/javascript', :src => url('/_ruote/javascripts/ruote-fluo.js') }
+      %script{ :type => 'text/javascript', :src => url('/_ruote/javascripts/ruote-fluo-editor.js') }
+      %link{ :type => 'text/css', :href => url('/_ruote/stylesheets/ruote-fluo-editor.css'), :rel => 'stylesheet' }
 
   %body
     #container
 
       #header
         #hlogo
-          %img{ :src => '/_ruote/images/ruote.png' }
+          %img{ :src => url('/_ruote/images/ruote.png') }
         #htext
           #ruote_kit
             ruote-kit
@@ -40,7 +40,7 @@
             |
             = alink(:participants, :text => 'participants')
             ||
-            %a{ :href => '/_ruote/processes/new'} launch process
+            %a{ :href => url('/_ruote/processes/new') } launch process
         #hclear
 
       #main
