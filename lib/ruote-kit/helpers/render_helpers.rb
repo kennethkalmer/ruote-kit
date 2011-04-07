@@ -12,7 +12,7 @@ module RuoteKit
 
         word << 's' if number > 1
 
-        return [ number, word ].join(' ')
+        [ number, word ].join(' ')
       end
 
       # Escaping HTML, rack style.

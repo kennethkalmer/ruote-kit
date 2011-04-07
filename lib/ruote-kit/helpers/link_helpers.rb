@@ -8,8 +8,11 @@ module RuoteKit
     #
     module LinkHelpers
 
-      # Computing the href for the "as_json" link at the bottom of each page
+      # Computes the path to the JSON alternate version
+      # of the current request uri, used by the the "as_json
+      # link at the bottom of each page.
       #
+      # Returns the String path.
       def as_json
 
         href = request.path + '.json'
