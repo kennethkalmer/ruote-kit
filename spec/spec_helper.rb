@@ -3,9 +3,6 @@ HERE = File.dirname(__FILE__) unless defined?(HERE)
 
 ENV['RACK_ENV'] = 'test'
 
-require 'bundler'
-Bundler.setup(:default, :test)
-
 require 'rspec'
 require 'rack/test'
 require 'webrat'
