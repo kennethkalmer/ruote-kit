@@ -84,7 +84,7 @@ describe 'PUT /_ruote/participants' do
       'options_1' => '{}')
 
     last_response.should be_redirect
-    last_response['Location'].should == '/_ruote/participants'
+    last_response['Location'].should == 'http://example.org/_ruote/participants'
 
     RuoteKit.engine.participant_list.collect { |pe| pe.regex }.should == [
       '^alice$', '^bravo$'

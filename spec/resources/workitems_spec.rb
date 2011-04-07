@@ -294,7 +294,7 @@ describe 'PUT /_ruote/workitems/fei' do
     last_response.should be_redirect
 
     last_response['Location'].should ==
-      "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}"
+      "http://example.org/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}"
 
     find_workitem(@wfid, @nada_exp_id).fields.should == @fields
 
@@ -345,7 +345,7 @@ describe 'PUT /_ruote/workitems/fei' do
       :_proceed => '1')
 
     last_response.should be_redirect
-    last_response['Location'].should == "/_ruote/workitems/#{@wfid}"
+    last_response['Location'].should == "http://example.org/_ruote/workitems/#{@wfid}"
 
     #engine.context[:s_logger].wait_for([
     #  [ :processes, :terminated, { :wfid => @wfid } ],

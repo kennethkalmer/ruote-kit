@@ -195,7 +195,7 @@ describe 'with a running process that has an error' do
       delete "/_ruote/errors/#{@error.fei.sid}"
 
       last_response.status.should be(302)
-      last_response['Location'].should == '/_ruote/errors'
+      last_response['Location'].should == 'http://example.org/_ruote/errors'
 
       RuoteKit.engine.wait_for(:nemo)
 

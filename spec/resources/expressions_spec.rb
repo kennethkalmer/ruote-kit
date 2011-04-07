@@ -239,7 +239,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       delete "/_ruote/expressions/#{@fei.sid}"
 
       last_response.should be_redirect
-      last_response['Location'].should == "/_ruote/expressions/#{@wfid}"
+      last_response['Location'].should == "http://example.org/_ruote/expressions/#{@wfid}"
 
       wait_for(@wfid)
 
@@ -263,7 +263,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       delete "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}?_kill=1"
 
       last_response.should be_redirect
-      last_response['Location'].should == "/_ruote/expressions/#{@wfid}"
+      last_response['Location'].should == "http://example.org/_ruote/expressions/#{@wfid}"
 
       #sleep 0.4
       wait_for(@wfid)
@@ -394,7 +394,7 @@ describe 'PUT /_ruote/expressions/fei' do
       :fields => '{}')
 
     last_response.status.should be(302)
-    last_response.location.should == "/_ruote/expressions/#{@wfid}"
+    last_response.location.should == "http://example.org/_ruote/expressions/#{@wfid}"
 
     #RuoteKit.engine.wait_for(:alpha)
     sleep 0.500
@@ -435,7 +435,7 @@ describe 'PUT /_ruote/expressions/fei' do
       :fields => '{"car":"daimler-benz"}')
 
     last_response.status.should be(302)
-    last_response.location.should == "/_ruote/expressions/#{@wfid}"
+    last_response.location.should == "http://example.org/_ruote/expressions/#{@wfid}"
 
     #RuoteKit.engine.wait_for(:alpha)
     sleep 0.500
@@ -491,7 +491,7 @@ describe 'PUT /_ruote/expressions/fei' do
       :tree => '["charly", {}, []]')
 
     last_response.status.should be(302)
-    last_response.location.should == "/_ruote/expressions/#{@wfid}"
+    last_response.location.should == "http://example.org/_ruote/expressions/#{@wfid}"
 
     #RuoteKit.engine.wait_for(:alpha)
     sleep 0.500
