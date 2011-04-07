@@ -1,9 +1,11 @@
 # encoding: utf-8
+$:.push File.expand_path("../lib", __FILE__)
+require "ruote-kit/version"
 
 Gem::Specification.new do |s|
 
   s.name = 'ruote-kit'
-  s.version = File.read('lib/ruote-kit/version.rb').match(/VERSION = '([^']+)'/)[1]
+  s.version = RuoteKit::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = [ 'Kenneth Kalmer', 'Torsten Schoenebaum', 'John Mettraux' ]
   s.email = [ 'kenneth.kalmer@gmail.com' ]
