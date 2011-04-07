@@ -6,6 +6,7 @@ require 'ostruct'
 require 'rufus-json'
 require 'ruote'
 require 'ruote/part/storage_participant'
+require 'ruote-kit/core_ext'
 require 'ruote-kit/version'
 
 
