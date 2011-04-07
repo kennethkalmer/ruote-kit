@@ -1,6 +1,3 @@
-
-$:.unshift('.') # 1.9.2
-
 require 'rubygems'
 require 'rubygems/user_interaction' if Gem::RubyGemsVersion == '1.5.0'
 
