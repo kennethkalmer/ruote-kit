@@ -31,7 +31,7 @@ ruote workflow engine, wrapped in a loving rack embrace
   s.add_runtime_dependency('ruote', '>= 2.2.0') unless defined?(Bundler)
     # see Gemfile
 
-  s.add_development_dependency 'rspec', '2.4.0'
+  s.add_development_dependency 'rspec', '~> 2.5.0'
   s.add_development_dependency 'rack-test', '0.5.7'
   s.add_development_dependency 'webrat', '0.7.3'
 
