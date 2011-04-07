@@ -39,9 +39,8 @@ module RuoteKit
         rel   = query.delete(:rel) || compute_rel(args)
         title = query.delete(:title)
 
-        query = query.inject({}) { |h, (k, v)| h[k.to_s] = v; h }
-        query = query.keys.sort.collect { |k| "#{k}=#{query[k]}" }.join('&')
-        query = "?#{query}" if query.length > 0
+        query = Rack::Utils.build_query(query.sort)
+        query = "?#{query}" if !query.empty?
 
         if args.empty? or ( ! args.first.match(/^\/\_ruote/))
           args.unshift('/_ruote')
