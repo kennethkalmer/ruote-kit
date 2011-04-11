@@ -42,7 +42,7 @@ class RuoteKit::Application
     RuoteKit.engine.replay_at_error(error)
 
     respond_to do |format|
-      format.html { redirect '/_ruote/errors' }
+      format.html { redirect url('/_ruote/errors') }
       format.json { json :status, :ok }
     end
   end

@@ -43,7 +43,7 @@ class RuoteKit::Application
     respond_to do |format|
 
       format.html do
-        redirect '/_ruote/participants'
+        redirect url('/_ruote/participants')
       end
       format.json do
         @participants = RuoteKit.engine.participant_list

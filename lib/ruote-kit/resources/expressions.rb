@@ -37,7 +37,7 @@ class RuoteKit::Application
     end
 
     respond_to do |format|
-      format.html { redirect "/_ruote/expressions/#{expression.fei.wfid}" }
+      format.html { redirect url("/_ruote/expressions/#{expression.fei.wfid}") }
       format.json { json :status, :ok }
     end
   end
@@ -68,7 +68,7 @@ class RuoteKit::Application
     RuoteKit.engine.re_apply(expression.fei, options)
 
     respond_to do |format|
-      format.html { redirect "/_ruote/expressions/#{expression.fei.wfid}" }
+      format.html { redirect url("/_ruote/expressions/#{expression.fei.wfid}") }
       format.json { json :status, :ok }
     end
   end

@@ -59,7 +59,7 @@ class RuoteKit::Application
     end
 
     respond_to do |format|
-      format.html { redirect '/_ruote/processes' }
+      format.html { redirect url('/_ruote/processes') }
       format.json { json :status, :ok }
     end
   end

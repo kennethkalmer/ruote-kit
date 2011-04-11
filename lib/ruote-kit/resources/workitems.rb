@@ -69,8 +69,9 @@ class RuoteKit::Application
 
       format.html do
         redirect(options[:proceed] ?
-          "/_ruote/workitems/#{@workitem.fei.wfid}" :
-          "/_ruote/workitems/#{@workitem.fei.sid}")
+          url("/_ruote/workitems/#{@workitem.fei.wfid}") :
+          url("/_ruote/workitems/#{@workitem.fei.sid}")
+        )
       end
       format.json do
         json :workitem
