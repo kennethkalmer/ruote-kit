@@ -181,7 +181,7 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
     before(:each) do
 
       @wfid = RuoteKit.engine.launch(
-        Ruote.process_definition :name => 'x', :rev => 'y' do
+        Ruote.process_definition(:name => 'x', :rev => 'y') do
           sequence do
             nada :activity => 'Work your magic'
           end
