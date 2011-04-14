@@ -180,11 +180,12 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
 
     before(:each) do
 
-      @wfid = RuoteKit.engine.launch(Ruote.process_definition do
-        sequence do
-          nada :activity => 'Work your magic'
-        end
-      end)
+      @wfid = RuoteKit.engine.launch(
+        Ruote.process_definition :name => 'x', :rev => 'y' do
+          sequence do
+            nada :activity => 'Work your magic'
+          end
+        end)
 
       RuoteKit.engine.wait_for(:nada)
 
@@ -233,6 +234,14 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
 
       last_response.headers.should include('ETag')
       last_response.headers['ETag'].should == "\"#{find_workitem(@wfid, @nada_exp_id).to_h['_rev'].to_s}\""
+    end
+
+    it 'should include a wf_name and a wf_revision (JSON)' do
+
+      get "/_ruote/workitems/#{@fei.sid}.json"
+
+      last_response.json_body['workitem']['wf_name'].should_not == nil
+      last_response.json_body['workitem']['wf_revision'].should_not == nil
     end
   end
 
