@@ -5,7 +5,7 @@
 == Main project team
 
 - Kenneth Kalmer - http://opensourcery.co.za
-- Torsten Schönebaum - http://www.torstenschoenebaum.de
+- Torsten Schönebaum - https://github.com/tosch
 - John Mettraux - http://jmettraux.wordpress.com
 
 
@@ -13,11 +13,11 @@
 
 - Chris Buben - https://github.com/cbuben
 - Joeri Samson - https://github.com/joerixaop
+- Simone Carletti - https://github.com/weppos
 
 
 == Feedback
 
 - Eric Smith (broken 2.2.0.2)
-- Simone Carletti - https://github.com/weppos
 - Nicolai Reuschling - https://github.com/codeblogger
 
