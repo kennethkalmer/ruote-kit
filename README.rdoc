@@ -262,6 +262,9 @@ example below:
 Make sure to configure the storage in the same way as in the rest of the
 application or you won't get what you expect ;-)
 
+If you used the Ruby on Rails 3 template for 'installing' ruote-kit,
+a ruote:run_worker task is added automatically (in lib/tasks/ruote.rake).
+
 You also should consider using a separate worker instance when you're running
 ruote-kit or your rack app in an environment like Passenger: You won't be sure
 the app runs all the time, so it's likely that scheduled events will be missed
