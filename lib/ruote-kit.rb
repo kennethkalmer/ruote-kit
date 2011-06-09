@@ -35,8 +35,8 @@ module RuoteKit
     # (especially useful in an EventMachine setting).
     #
     def run_worker(storage, join=true)
-      RuoteKit.engine = Ruote::Engine.new(
-        Ruote::Worker.new(storage), :join => join)
+      RuoteKit.engine = Ruote::Engine.new(Ruote::Worker.new(storage))
+      RuoteKit.engine.join if join
     end
 
     # Uses the given storage for the RuoteKit.engine (no worker running here).
