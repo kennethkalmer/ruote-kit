@@ -4,6 +4,7 @@
 
 == ruote-kit - 2.2.1    not yet released
 
+- Upgraded to Haml 3.1.2
 - Making sure run_worker really sets RuoteKit.engine
 - Fixed issue with :skip vs :offset for query_workitems (Thanks Eric Smith)
 - Upgraded to Sinatra 1.2.x (Simone Carletti)

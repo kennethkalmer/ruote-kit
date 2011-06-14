@@ -5,7 +5,7 @@ def workitem_count(from, to, of)
     from, 'to', to, 'of', of, 'workitems'
   ].collect { |e|
     e.to_s
-  }.join("\n          ")
+  }.join("\n                  ")
 end
 
 
