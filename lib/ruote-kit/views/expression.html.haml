@@ -97,13 +97,13 @@
 
     %tr
       %td
-        cancel
+        &nbsp;
       %td
         %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really ?");' }
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}
     %tr
       %td
-        kill
+        &nbsp;
       %td
         -#%input{ :type => 'hidden', :name => '_kill', :value => '1' }
         %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really ?");' }
