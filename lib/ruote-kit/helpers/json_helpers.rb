@@ -191,6 +191,7 @@ module Ruote
       h['errors'] = @errors.size
       h['stored_workitems'] = @stored_workitems.size
       h['workitems'] = workitems.size
+      h['root_expression_state'] = root_expression.state
 
       properties = %w[
         wfid
@@ -255,7 +256,7 @@ module Ruote
     #
     # Re-opening to provide an as_h method
     #
-    class FlowExpression
+    class Exp::FlowExpression
 
       def as_h(detailed=true)
 

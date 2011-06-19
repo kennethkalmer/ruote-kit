@@ -63,6 +63,11 @@
       = Time.parse(@process.last_active).localtime.strftime('%Y/%m/%d %H:%M:%S')
   %tr
     %td
+      root exp state
+    %td
+      = @process.root_expression.state
+  %tr
+    %td
       tags
     %td
       &= @process.tags.collect { |ta| ta.first }.join(', ')

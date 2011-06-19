@@ -128,6 +128,8 @@ describe '/_ruote/processes' do
 
         last_response.should have_selector(
           'a[rel="http://ruote.rubyforge.org/rels.html#process_schedules"]')
+
+        last_response.should have_selector('td')
       end
 
       it 'gives process information back (JSON)' do
@@ -141,6 +143,13 @@ describe '/_ruote/processes' do
         body.should have_key('process')
 
         body['process']['links'].should == process_links(@wfid)
+
+        body['process'].keys.sort.should == %w[
+          current_tree definition_name definition_revision detailed errors
+          expressions last_active launched_time links original_tree
+          root_expression_state stored_workitems tags type variables wfid
+          workitems
+        ]
       end
     end
 
