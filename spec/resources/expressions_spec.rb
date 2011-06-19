@@ -52,7 +52,7 @@ describe 'GET /_ruote/expressions/wfid' do
       last_response.should be_ok
 
       last_response.json_body['expressions'].first.keys.sort.should == %w[
-        class fei links name parent
+        class fei links name parent state
       ]
     end
   end
@@ -116,7 +116,7 @@ describe 'GET /_ruote/expressions/fei' do
       last_response.json_body['expression']['links'].size.should == 4
 
       last_response.json_body['expression'].keys.sort.should == %w[
-        applied_workitem class fei links name original_tree parent
+        applied_workitem class fei links name original_tree parent state
         timeout_schedule_id tree variables
       ]
     end

@@ -73,21 +73,19 @@
 
   %tr
     %td
-      &nbsp;
-    %td
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'DELETE' }
         %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really ?");' }
-        %span.description DELETE /_ruote/processes/#{@process.wfid}
-  %tr
     %td
-      &nbsp;
+      %span.description DELETE /_ruote/processes/#{@process.wfid}
+  %tr
     %td
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'DELETE' }
         %input{ :type => 'hidden', :name => '_kill', :value => '1' }
         %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really ?");' }
-        %span.description DELETE /_ruote/processes/#{@process.wfid}?_kill=1
+    %td
+      %span.description DELETE /_ruote/processes/#{@process.wfid}?_kill=1
   %tr
     %td
       expressions

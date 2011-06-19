@@ -33,9 +33,14 @@
         &= @expression.tree.first
     %tr
       %td
-        expression class
+        class
       %td
         &= @expression.class.to_s
+    %tr
+      %td
+        state
+      %td
+        &= @expression.state
     - if @expression.original_tree != @expression.tree
       %tr
         %td
@@ -97,16 +102,13 @@
 
     %tr
       %td
-        &nbsp;
-      %td
         %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really ?");' }
+      %td
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}
     %tr
       %td
-        &nbsp;
-      %td
-        -#%input{ :type => 'hidden', :name => '_kill', :value => '1' }
         %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really ?");' }
+      %td
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}?_kill=1
 
     %tr

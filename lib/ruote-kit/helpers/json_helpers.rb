@@ -265,6 +265,7 @@ module Ruote
         r['parent'] = h.parent_id ? parent_id.sid : nil
         r['name'] = h.name
         r['class'] = self.class.name
+        r['state'] = state
 
         if detailed
           r['variables'] = variables
