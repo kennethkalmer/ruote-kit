@@ -274,6 +274,7 @@ describe '/_ruote/expressions' do
       end
 
       it 'does not go 412 when the etags do match (HTML)' do
+
         exp = RuoteKit.engine.process(@wfid).expressions.find { |e|
           e.fei.expid == @fei.expid
         }
@@ -288,6 +289,7 @@ describe '/_ruote/expressions' do
       end
 
       it 'does not go 412 when the etags do match (JSON)' do
+
         exp = RuoteKit.engine.process(@wfid).expressions.find { |e|
           e.fei.expid == @fei.expid
         }
@@ -457,7 +459,7 @@ describe '/_ruote/expressions' do
 
       wi.participant_name.should == 'charly'
 
-      RuoteKit.engine.process(@wfid).current_tree.should == [ 'define', {}, [
+      RuoteKit.engine.process(@wfid).current_tree.should == ['define', {}, [
         [ 'participant', { '_triggered' => 'on_re_apply', 'ref' => 'charly' }, [] ] ] ]
     end
 
