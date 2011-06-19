@@ -82,7 +82,12 @@ describe '/_ruote/expressions' do
 
         get "/_ruote/expressions/#{@nada_fei.sid}"
 
-        last_response.should be_ok
+        last_response.status.should ==
+          200
+        last_response.should have_selector(
+          'input[name="_method"][type="hidden"][value="DELETE"]')
+        last_response.should have_selector(
+          'input[type="submit"][value="pause"]')
       end
 
       it 'renders the expression (JSON)' do
@@ -344,221 +349,373 @@ describe '/_ruote/expressions' do
       @exp = RuoteKit.engine.process(@wfid).expressions.last
     end
 
-    it 're-applies (HTML)' do
+    context 're_apply' do
 
-      at0 = RuoteKit.engine.storage_participant.first.dispatched_at
+      it 're-applies (HTML)' do
 
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}",
-        :fields => '{}')
+        at0 = RuoteKit.engine.storage_participant.first.dispatched_at
 
-      last_response.status.should be(302)
-      last_response.location.should == "http://example.org/_ruote/expressions/#{@wfid}"
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          :fields => '{}')
 
-      #RuoteKit.engine.wait_for(:alpha)
-      sleep 0.500
+        last_response.status.should be(302)
+        last_response.location.should == "http://example.org/_ruote/expressions/#{@wfid}"
 
-      at1 = RuoteKit.engine.storage_participant.first.dispatched_at
+        #RuoteKit.engine.wait_for(:alpha)
+        sleep 0.500
 
-      at1.should_not == at0
+        at1 = RuoteKit.engine.storage_participant.first.dispatched_at
+
+        at1.should_not == at0
+      end
+
+      it 're-applies (JSON)' do
+
+        #RuoteKit.engine.noisy = true
+
+        at0 = RuoteKit.engine.storage_participant.first.dispatched_at
+
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}.json",
+          Rufus::Json.encode({}),
+          { 'CONTENT_TYPE' => 'application/json' })
+
+        last_response.status.should be(200)
+
+        #RuoteKit.engine.wait_for(:alpha)
+        sleep 0.500
+
+        at1 = RuoteKit.engine.storage_participant.first.dispatched_at
+
+        at1.should_not == at0
+      end
+
+      it 're-applies with different fields (HTML)' do
+
+        wi = RuoteKit.engine.storage_participant.first
+        wi.fields['car'].should be(nil)
+
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          :fields => '{"car":"daimler-benz"}')
+
+        last_response.status.should be(302)
+        last_response.location.should == "http://example.org/_ruote/expressions/#{@wfid}"
+
+        #RuoteKit.engine.wait_for(:alpha)
+        sleep 0.500
+
+        wi = RuoteKit.engine.storage_participant.first
+
+        wi.fields['car'].should == 'daimler-benz'
+      end
+
+      it 're-applies with different fields (JSON)' do
+
+        wi = RuoteKit.engine.storage_participant.first
+        wi.fields['car'].should be(nil)
+
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}.json",
+          Rufus::Json.encode({ 'fields' => { 'car' => 'bentley' } }),
+          { 'CONTENT_TYPE' => 'application/json' })
+
+        last_response.status.should be(200)
+
+        #RuoteKit.engine.wait_for(:alpha)
+        sleep 0.500
+
+        wi = RuoteKit.engine.storage_participant.first
+
+        wi.fields['car'].should == 'bentley'
+      end
+
+      it 're-applies when passed {"expression":{"fields":...}} (JSON)' do
+
+        exp = { 'expression' => { 'fields' => { 'car' => 'BMW' } } }
+
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}.json",
+          Rufus::Json.encode(exp),
+          { 'CONTENT_TYPE' => 'application/json' })
+
+        last_response.status.should be(200)
+
+        #RuoteKit.engine.wait_for(:alpha)
+        sleep 0.500
+
+        wi = RuoteKit.engine.storage_participant.first
+
+        wi.fields['car'].should == 'BMW'
+      end
+
+      it 're-applies with a different tree (HTML)' do
+
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          :tree => '["charly", {}, []]')
+
+        last_response.status.should be(302)
+        last_response.location.should == "http://example.org/_ruote/expressions/#{@wfid}"
+
+        #RuoteKit.engine.wait_for(:alpha)
+        sleep 0.500
+
+        wi = RuoteKit.engine.storage_participant.first
+
+        wi.participant_name.should == 'charly'
+
+        RuoteKit.engine.process(@wfid).current_tree.should == ['define', {}, [
+          [ 'participant', { '_triggered' => 'on_re_apply', 'ref' => 'charly' }, [] ] ] ]
+      end
+
+      it 're-applies with a different tree (JSON)' do
+
+        wi = RuoteKit.engine.storage_participant.first
+        wi.participant_name.should == 'alpha'
+
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}.json",
+          Rufus::Json.encode({ 'tree' => [ 'bravo', {}, [] ] }),
+          { 'CONTENT_TYPE' => 'application/json' })
+
+        last_response.status.should be(200)
+
+        #RuoteKit.engine.wait_for(:alpha)
+        sleep 0.500
+
+        wi = RuoteKit.engine.storage_participant.first
+
+        wi.participant_name.should == 'bravo'
+
+        RuoteKit.engine.process(@wfid).current_tree.should == [ 'define', {}, [
+          [ 'participant', { '_triggered' => 'on_re_apply', 'ref' => 'bravo' }, [] ] ] ]
+      end
     end
 
-    it 're-applies (JSON)' do
+    context 'pausing and resuming' do
 
-      #RuoteKit.engine.noisy = true
+      it 'pauses the expression (branch) (HTML)' do
 
-      at0 = RuoteKit.engine.storage_participant.first.dispatched_at
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          :state => 'paused')
 
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}.json",
-        Rufus::Json.encode({}),
-        { 'CONTENT_TYPE' => 'application/json' })
+        last_response.status.should ==
+          302
+        last_response.location.should ==
+          "http://example.org/_ruote/expressions/#{@exp.fei.sid}"
 
-      last_response.status.should be(200)
+        sleep 0.500
 
-      #RuoteKit.engine.wait_for(:alpha)
-      sleep 0.500
+        exp = RuoteKit.engine.ps(@wfid).expressions.last
 
-      at1 = RuoteKit.engine.storage_participant.first.dispatched_at
+        exp.state.should == 'paused'
+      end
 
-      at1.should_not == at0
+      it 'pauses the expression (branch) (JSON)' do
+
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}.json",
+          '{"state":"paused"}',
+          { 'CONTENT_TYPE' => 'application/json' })
+
+        last_response.status.should ==
+          302
+        last_response.location.should ==
+          "http://example.org/_ruote/expressions/#{@exp.fei.sid}.json"
+
+        sleep 0.500
+
+        exp = RuoteKit.engine.ps(@wfid).expressions.last
+
+        exp.state.should == 'paused'
+      end
+
+      it 'resumes the expression (branch) (HTML)' do
+
+        RuoteKit.engine.pause(@exp.fei)
+
+        sleep 0.500
+
+        RuoteKit.engine.ps(@wfid).expressions[-1].state.should == 'paused'
+
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          :state => 'resuming')
+
+        last_response.status.should ==
+          302
+        last_response.location.should ==
+          "http://example.org/_ruote/expressions/#{@exp.fei.sid}"
+
+        sleep 0.500
+
+        RuoteKit.engine.ps(@wfid).expressions[-1].state.should == nil
+      end
+
+      it 'resumes the expression (branch) (JSON)' do
+
+        RuoteKit.engine.pause(@exp.fei)
+
+        sleep 0.500
+
+        RuoteKit.engine.ps(@wfid).expressions[-1].state.should == 'paused'
+
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}.json",
+          '{"state":"resuming"}',
+          { 'CONTENT_TYPE' => 'application/json' })
+
+        last_response.status.should ==
+          302
+        last_response.location.should ==
+          "http://example.org/_ruote/expressions/#{@exp.fei.sid}.json"
+
+        sleep 0.500
+
+        RuoteKit.engine.ps(@wfid).expressions[-1].state.should == nil
+      end
     end
 
-    it 're-applies with different fields (HTML)' do
+    context 'pausing as a breakpoint' do
 
-      wi = RuoteKit.engine.storage_participant.first
-      wi.fields['car'].should be(nil)
+      before(:each) do
 
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}",
-        :fields => '{"car":"daimler-benz"}')
+        @wfid = RuoteKit.engine.launch(Ruote.define do
+          sequence do
+            nada
+          end
+        end)
 
-      last_response.status.should be(302)
-      last_response.location.should == "http://example.org/_ruote/expressions/#{@wfid}"
+        RuoteKit.engine.wait_for(:nada)
+        RuoteKit.engine.wait_for(1)
 
-      #RuoteKit.engine.wait_for(:alpha)
-      sleep 0.500
+        @exp = RuoteKit.engine.ps(@wfid).expressions[-2]
+      end
 
-      wi = RuoteKit.engine.storage_participant.first
+      it 'pauses the expression (breakpoint) (HTML)' do
 
-      wi.fields['car'].should == 'daimler-benz'
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          :state => 'paused', :breakpoint => true)
+
+        last_response.status.should ==
+          302
+        last_response.location.should ==
+          "http://example.org/_ruote/expressions/#{@exp.fei.sid}"
+
+        sleep 0.500
+
+        states = RuoteKit.engine.ps(@wfid).expressions.collect { |fexp|
+          [ fexp.fei.expid, fexp.state || 'running' ]
+        }.join(' ')
+
+        states.should == '0 running 0_0 paused 0_0_0 running'
+      end
+
+      it 'pauses the expression (breakpoint) (JSON)' do
+
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          Rufus::Json.dump({ 'state' => 'paused', 'breakpoint' => true }),
+          { 'CONTENT_TYPE' => 'application/json' })
+
+        last_response.status.should ==
+          302
+        last_response.location.should ==
+          "http://example.org/_ruote/expressions/#{@exp.fei.sid}.json"
+
+        sleep 0.500
+
+        states = RuoteKit.engine.ps(@wfid).expressions.collect { |fexp|
+          [ fexp.fei.expid, fexp.state || 'running' ]
+        }.join(' ')
+
+        states.should == '0 running 0_0 paused 0_0_0 running'
+      end
     end
 
-    it 're-applies with different fields (JSON)' do
+    context 'broken JSON' do
 
-      wi = RuoteKit.engine.storage_participant.first
-      wi.fields['car'].should be(nil)
+      it 'goes 400 when passed broken JSON (HTML)' do
 
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}.json",
-        Rufus::Json.encode({ 'fields' => { 'car' => 'bentley' } }),
-        { 'CONTENT_TYPE' => 'application/json' })
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          :fields => "{broken}")
 
-      last_response.status.should be(200)
+        last_response.status.should == 400
+      end
 
-      #RuoteKit.engine.wait_for(:alpha)
-      sleep 0.500
+      it 'goes 400 when passed broken JSON (JSON)' do
 
-      wi = RuoteKit.engine.storage_participant.first
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}.json",
+          '{"fields":{broken}}',
+          { 'CONTENT_TYPE' => 'application/json' })
 
-      wi.fields['car'].should == 'bentley'
+        last_response.status.should be(400)
+        last_response.json_body['http_error']['code'].should == 400
+        last_response.json_body['http_error']['message'].should == 'bad request'
+      end
     end
 
-    it 're-applies when passed {"expression":{"fields":...}} (JSON)' do
+    context 'with etags' do
 
-      exp = { 'expression' => { 'fields' => { 'car' => 'BMW' } } }
+      it 'goes 412 when the etags do not match (HTML)' do
 
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}.json",
-        Rufus::Json.encode(exp),
-        { 'CONTENT_TYPE' => 'application/json' })
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          { :fields => '{}' },
+          { 'HTTP_IF_MATCH' => '"foo"' }
+        )
 
-      last_response.status.should be(200)
+        last_response.status.should == 412
+      end
 
-      #RuoteKit.engine.wait_for(:alpha)
-      sleep 0.500
+      it 'goes 412 when the etags do not match (JSON)' do
 
-      wi = RuoteKit.engine.storage_participant.first
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          Rufus::Json.encode({}),
+          {
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_IF_MATCH' => '"foo"'
+          }
+        )
 
-      wi.fields['car'].should == 'BMW'
-    end
+        last_response.status.should == 412
+      end
 
-    it 're-applies with a different tree (HTML)' do
+      it 'does not go 412 when the etags match (HTML)' do
 
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}",
-        :tree => '["charly", {}, []]')
+        rev = @exp.to_h['_rev']
 
-      last_response.status.should be(302)
-      last_response.location.should == "http://example.org/_ruote/expressions/#{@wfid}"
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          { :fields => '{}' },
+          { 'HTTP_IF_MATCH' => ('"%s"' % rev) }
+        )
 
-      #RuoteKit.engine.wait_for(:alpha)
-      sleep 0.500
+        last_response.status.should_not == 412
+      end
 
-      wi = RuoteKit.engine.storage_participant.first
+      it 'does not go 412 when the etags match (JSON)' do
 
-      wi.participant_name.should == 'charly'
+        rev = @exp.to_h['_rev']
 
-      RuoteKit.engine.process(@wfid).current_tree.should == ['define', {}, [
-        [ 'participant', { '_triggered' => 'on_re_apply', 'ref' => 'charly' }, [] ] ] ]
-    end
+        put(
+          "/_ruote/expressions/#{@exp.fei.sid}",
+          Rufus::Json.encode({}),
+          {
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_IF_MATCH' => ('"%s"' % rev )
+          }
+        )
 
-    it 're-applies with a different tree (JSON)' do
-
-      wi = RuoteKit.engine.storage_participant.first
-      wi.participant_name.should == 'alpha'
-
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}.json",
-        Rufus::Json.encode({ 'tree' => [ 'bravo', {}, [] ] }),
-        { 'CONTENT_TYPE' => 'application/json' })
-
-      last_response.status.should be(200)
-
-      #RuoteKit.engine.wait_for(:alpha)
-      sleep 0.500
-
-      wi = RuoteKit.engine.storage_participant.first
-
-      wi.participant_name.should == 'bravo'
-
-      RuoteKit.engine.process(@wfid).current_tree.should == [ 'define', {}, [
-        [ 'participant', { '_triggered' => 'on_re_apply', 'ref' => 'bravo' }, [] ] ] ]
-    end
-
-    it 'goes 400 when passed bogus JSON (HTML)' do
-
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}",
-        :fields => "{bogus}")
-
-      last_response.status.should == 400
-    end
-
-    it 'goes 400 when passed bogus JSON (JSON)' do
-
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}.json",
-        '{"fields":{bogus}}',
-        { 'CONTENT_TYPE' => 'application/json' })
-
-      last_response.status.should be(400)
-      last_response.json_body['http_error']['code'].should == 400
-      last_response.json_body['http_error']['message'].should == 'bad request'
-    end
-
-    it 'goes 412 when the etags do not match (HTML)' do
-
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}",
-        { :fields => '{}' },
-        { 'HTTP_IF_MATCH' => '"foo"' }
-      )
-
-      last_response.status.should == 412
-    end
-
-    it 'goes 412 when the etags do not match (JSON)' do
-
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}",
-        Rufus::Json.encode({}),
-        {
-          'CONTENT_TYPE' => 'application/json',
-          'HTTP_IF_MATCH' => '"foo"'
-        }
-      )
-
-      last_response.status.should == 412
-    end
-
-    it 'does not go 412 when the etags match (HTML)' do
-
-      rev = @exp.to_h['_rev']
-
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}",
-        { :fields => '{}' },
-        { 'HTTP_IF_MATCH' => ('"%s"' % rev) }
-      )
-
-      last_response.status.should_not == 412
-    end
-
-    it 'does not go 412 when the etags match (JSON)' do
-
-      rev = @exp.to_h['_rev']
-
-      put(
-        "/_ruote/expressions/#{@exp.fei.sid}",
-        Rufus::Json.encode({}),
-        {
-          'CONTENT_TYPE' => 'application/json',
-          'HTTP_IF_MATCH' => ('"%s"' % rev )
-        }
-      )
-
-      last_response.status.should_not == 412
+        last_response.status.should_not == 412
+      end
     end
   end
 end

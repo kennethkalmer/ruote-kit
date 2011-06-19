@@ -5,7 +5,7 @@ class RuoteKit::Application
 
   get '/_ruote/expressions/:id' do
 
-    @process, @expression, fei = fetch_pe
+    @process, @expression, fei = fetch_pef
 
     return http_error(404) unless @process
 
@@ -24,7 +24,7 @@ class RuoteKit::Application
 
   delete '/_ruote/expressions/:id' do
 
-    process, expression, fei = fetch_pe
+    process, expression, fei = fetch_pef
 
     return http_error(404) unless expression
 
@@ -44,38 +44,45 @@ class RuoteKit::Application
 
   put '/_ruote/expressions/:id' do
 
-    process, expression, fei = fetch_pe
+    process, exp, fei = fetch_pef
 
-    return http_error(404) unless expression
+    return http_error(404) unless exp
 
-    check_if_match_etag(expression.to_h['_rev'])
+    check_if_match_etag(exp.to_h['_rev'])
 
     info = begin
-      fetch_re_apply_info
+      fetch_expression_put_info
     rescue Rufus::Json::ParserError => pe
       return http_error(400, pe)
     end
 
-    #puts '-' * 80
-    #p params
-    #p info
-    #puts '-' * 80
+    if state = info['state']
 
-    options = {}
-    options[:fields] = info.fields if info.fields
-    options[:tree] = info.tree if info.tree
+      if state == 'paused'
+        RuoteKit.engine.pause(exp.fei, :breakpoint => info['breakpoint'])
+      else
+        RuoteKit.engine.resume(exp.fei)
+      end
 
-    RuoteKit.engine.re_apply(expression.fei, options)
+      route = request.route
+      route = route + '.json' if request.media_type.match(/json/) # :-(
 
-    respond_to do |format|
-      format.html { redirect url("/_ruote/expressions/#{expression.fei.wfid}") }
-      format.json { json :status, :ok }
+      redirect(url(route))
+
+    else
+
+      RuoteKit.engine.re_apply(exp.fei, info)
+
+      respond_to do |format|
+        format.html { redirect url("/_ruote/expressions/#{exp.fei.wfid}") }
+        format.json { json :status, :ok }
+      end
     end
   end
 
   protected
 
-  def fetch_pe
+  def fetch_pef
 
     fei = params[:id].split('!')
     wfid = fei.last
@@ -91,21 +98,22 @@ class RuoteKit::Application
     [ process, expression, fei ]
   end
 
-  def fetch_re_apply_info
+  def fetch_expression_put_info
 
     if request.content_type == 'application/json'
 
       data = Rufus::Json.decode(request.body.read)
 
-      OpenStruct.new(
-        data['expression'] ? data['expression'] : data
-      )
+      data['expression'] ? data['expression'] : data
+
     else
 
-      OpenStruct.new(
-        'fields' => params[:fields] ? Rufus::Json.decode(params[:fields]) : nil,
-        'tree' => params[:tree] ? Rufus::Json.decode(params[:tree]) : nil
-      )
+      {
+        'state' => params[:state],
+        'breakpoint' => !!params[:breakpoint],
+        :fields => params[:fields] ? Rufus::Json.decode(params[:fields]) : nil,
+        :tree => params[:tree] ? Rufus::Json.decode(params[:tree]) : nil
+      }
     end
   end
 end

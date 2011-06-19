@@ -12,6 +12,7 @@
 %form{ :method => 'POST', :enctype => 'multipart/form-data', :accept_charset => 'UTF-8' }
 
   %input#_method{ :type => 'hidden', :name => '_method', :value => 'DELETE' }
+  %input#state{ :type => 'hidden', :name => 'state', :value => '' }
   %input{ :type => 'hidden', :name => '_snowman', :value => '&#9731;' }
 
   %table.details
@@ -102,12 +103,27 @@
 
     %tr
       %td
-        %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really ?");' }
+        - if @expression.state == 'paused'
+          %input{ :type => 'submit', :value => 'resume', :onclick => 'return confirmPut("really resume expression ?");' }
+        - else
+          %input{ :type => 'submit', :value => 'pause', :onclick => 'return confirmPut("really pause expression ?");' }
+          %input{ :type => 'checkbox', :name => 'breakpoint' }
+          breakpoint
+      %td
+        %span.description PUT /_ruote/expressions/#{@expression.fei.sid}
+
+    %tr
+      %td.no_border{ :colspan => 2 }
+        &nbsp;
+
+    %tr
+      %td
+        %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really cancel expression?");' }
       %td
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}
     %tr
       %td
-        %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really ?");' }
+        %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really kill expression ?");' }
       %td
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}?_kill=1
 
@@ -137,8 +153,7 @@
     %tr.re_apply
       %td
       %td
-        -#%input{ :type => 'hidden', :name => '_method', :value => 'PUT' }
-        %input{ :type => 'submit', :value => 're-apply', :onclick => 'return confirmReApply();' }
+        %input{ :type => 'submit', :value => 're-apply', :onclick => 'return confirmPut("really re_apply ?");' }
         %span.description PUT /_ruote/expressions/#{@expression.fei.sid}
 
 
@@ -152,15 +167,24 @@
 
   $('.re_apply').hide();
 
-  function showReApply (elt) {
+  function showReApply(elt) {
     $(elt).hide();
     $('.re_apply').show();
   }
 
-  function confirmReApply () {
+  function confirmPut(message) {
 
-    var r = confirm('really ?');
-    if (r) $('#_method')[0].value = 'PUT';
+    var r = confirm(message);
+    if (r) {
+      $('#_method')[0].value = 'PUT';
+      if (message.match(/pause/)) {
+        $('#state')[0].value = 'paused';
+      } else if (message.match(/resume/)) {
+        $('#state')[0].value = 'resuming';
+      } else {
+        $('#state').detach();
+      }
+    }
 
     return r;
   }
