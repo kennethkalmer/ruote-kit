@@ -90,7 +90,7 @@ table.list {
 }
 table.list td {
   border: 1px solid #d0d1d3;
-  padding: 3px;
+  padding: 0px 7px;
 }
 table.list thead td {
   text-align: center;
@@ -203,6 +203,7 @@ table.participants td {
   border: 0;
   padding: 0;
   margin: 0;
+  /*padding: 0px 3px;*/
 }
 table.participants td:last-child {
   padding-left: 7px;
