@@ -12,7 +12,7 @@ describe 'GET /_ruote/expressions' do
     shutdown_and_purge_engine
   end
 
-  it 'should 404 (HTML)' do
+  it 'goes 404 (HTML)' do
 
     get '/_ruote/expressions'
 
@@ -38,14 +38,14 @@ describe 'GET /_ruote/expressions/wfid' do
       @wfid = launch_nada_process
     end
 
-    it 'should render the expressions (HTML)' do
+    it 'renders the expressions (HTML)' do
 
       get "/_ruote/expressions/#{@wfid}"
 
       last_response.should be_ok
     end
 
-    it 'should render the expressions (JSON)' do
+    it 'renders the expressions (JSON)' do
 
       get "/_ruote/expressions/#{@wfid}.json"
 
@@ -59,7 +59,7 @@ describe 'GET /_ruote/expressions/wfid' do
 
   describe 'without running processes' do
 
-    it 'should 404 correctly (HTML)' do
+    it 'goes 404 correctly (HTML)' do
 
       get "/_ruote/expressions/foo"
 
@@ -67,7 +67,7 @@ describe 'GET /_ruote/expressions/wfid' do
       last_response.status.should be(404)
     end
 
-    it 'should 404 correctly (JSON)' do
+    it 'goes 404 correctly (JSON)' do
 
       get '/_ruote/expressions/foo.json'
 
@@ -98,14 +98,14 @@ describe 'GET /_ruote/expressions/fei' do
       @nada_fei = @nada_fexp.fei
     end
 
-    it 'should render the expression (HTML)' do
+    it 'renders the expression (HTML)' do
 
       get "/_ruote/expressions/#{@nada_fei.sid}"
 
       last_response.should be_ok
     end
 
-    it 'should render the expression (JSON)' do
+    it 'renders the expression (JSON)' do
 
       get "/_ruote/expressions/#{@nada_fei.sid}.json"
 
@@ -121,7 +121,7 @@ describe 'GET /_ruote/expressions/fei' do
       ]
     end
 
-    it 'should include an etag header (HTML)' do
+    it 'includes an etag header (HTML)' do
 
       get "/_ruote/expressions/#{@nada_fei.sid}"
 
@@ -131,7 +131,7 @@ describe 'GET /_ruote/expressions/fei' do
         "\"#{@nada_fexp.to_h['_rev'].to_s}\""
     end
 
-    it 'should include an etag header (JSON)' do
+    it 'includes an etag header (JSON)' do
 
       get "/_ruote/expressions/#{@nada_fei.sid}.json"
 
@@ -144,7 +144,7 @@ describe 'GET /_ruote/expressions/fei' do
 
   describe 'without running processes' do
 
-    it 'should 404 correctly (HTML)' do
+    it 'goes 404 correctly (HTML)' do
 
       get '/workitems/foo/bar'
 
@@ -152,7 +152,7 @@ describe 'GET /_ruote/expressions/fei' do
       last_response.status.should be(404)
     end
 
-    it 'should 404 correctly (JSON)' do
+    it 'goes 404 correctly (JSON)' do
 
       get '/workitems/foo/bar.json'
 
@@ -176,7 +176,7 @@ describe 'GET /_ruote/expressions/fei' do
       @fei = RuoteKit.engine.process(@wfid).expressions.last.fei
     end
 
-    it 'should render the expression (HTML)' do
+    it 'renders the expression (HTML)' do
 
       get "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}"
 
@@ -186,7 +186,7 @@ describe 'GET /_ruote/expressions/fei' do
         'table.details tr td', :content => 'timeout')
     end
 
-    it 'should render the expression (JSON)' do
+    it 'renders the expression (JSON)' do
 
       get "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json"
 
@@ -232,7 +232,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       @fei = engine.process(@wfid).expressions.last.fei
     end
 
-    it 'should cancel the expressions (HTML)' do
+    it 'cancels the expressions (HTML)' do
 
       delete "/_ruote/expressions/#{@fei.sid}"
 
@@ -244,7 +244,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       @tracer.to_s.should == "bailed\ndone"
     end
 
-    it 'should cancel the expressions (JSON)' do
+    it 'cancels the expressions (JSON)' do
 
       delete "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json"
 
@@ -256,7 +256,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       @tracer.to_s.should == "bailed\ndone"
     end
 
-    it 'should kill the expression (HTML)' do
+    it 'kills the expression (HTML)' do
 
       delete "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}?_kill=1"
 
@@ -269,7 +269,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       @tracer.to_s.should == 'done'
     end
 
-    it 'should kill the expression (JSON)' do
+    it 'kills the expression (JSON)' do
 
       delete "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json?_kill=1"
 
@@ -282,7 +282,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       @tracer.to_s.should == 'done'
     end
 
-    it 'should 412 when the etags do not match (HTML)' do
+    it 'goes 412 when the etags do not match (HTML)' do
 
       delete(
         "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
@@ -293,7 +293,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       last_response.status.should == 412
     end
 
-    it 'should 412 when the etags do not match (JSON)' do
+    it 'goes 412 when the etags do not match (JSON)' do
 
       delete(
         "/_ruote/expressions/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
@@ -307,7 +307,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       last_response.status.should == 412
     end
 
-    it 'should not 412 when the etags do match (HTML)' do
+    it 'does not go 412 when the etags do match (HTML)' do
       exp = RuoteKit.engine.process(@wfid).expressions.find { |e|
         e.fei.expid == @fei.expid
       }
@@ -321,7 +321,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       last_response.status.should_not == 412
     end
 
-    it 'should not 412 when the etags do match (JSON)' do
+    it 'does not go 412 when the etags do match (JSON)' do
       exp = RuoteKit.engine.process(@wfid).expressions.find { |e|
         e.fei.expid == @fei.expid
       }
@@ -341,7 +341,7 @@ describe 'DELETE /_ruote/expressions/fei' do
 
   describe 'without running processes' do
 
-    it 'should 404 correctly (HTML)' do
+    it 'goes 404 correctly (HTML)' do
 
       delete '/_ruote/expressions/foo/bar'
 
@@ -349,7 +349,7 @@ describe 'DELETE /_ruote/expressions/fei' do
       last_response.status.should be(404)
     end
 
-    it 'should 404 correctly (JSON)' do
+    it 'goes 404 correctly (JSON)' do
 
       delete '/_ruote/expressions/foo/bar.json'
 
@@ -383,7 +383,7 @@ describe 'PUT /_ruote/expressions/fei' do
     shutdown_and_purge_engine
   end
 
-  it 'should re-apply (HTML)' do
+  it 're-applies (HTML)' do
 
     at0 = RuoteKit.engine.storage_participant.first.dispatched_at
 
@@ -402,7 +402,7 @@ describe 'PUT /_ruote/expressions/fei' do
     at1.should_not == at0
   end
 
-  it 'should re-apply (JSON)' do
+  it 're-applies (JSON)' do
 
     #RuoteKit.engine.noisy = true
 
@@ -423,7 +423,7 @@ describe 'PUT /_ruote/expressions/fei' do
     at1.should_not == at0
   end
 
-  it 'should re-apply with different fields (HTML)' do
+  it 're-applies with different fields (HTML)' do
 
     wi = RuoteKit.engine.storage_participant.first
     wi.fields['car'].should be(nil)
@@ -443,7 +443,7 @@ describe 'PUT /_ruote/expressions/fei' do
     wi.fields['car'].should == 'daimler-benz'
   end
 
-  it 'should re-apply with different fields (JSON)' do
+  it 're-applies with different fields (JSON)' do
 
     wi = RuoteKit.engine.storage_participant.first
     wi.fields['car'].should be(nil)
@@ -463,7 +463,7 @@ describe 'PUT /_ruote/expressions/fei' do
     wi.fields['car'].should == 'bentley'
   end
 
-  it 'should re-apply when passed {"expression":{"fields":...}} (JSON)' do
+  it 're-applies when passed {"expression":{"fields":...}} (JSON)' do
 
     exp = { 'expression' => { 'fields' => { 'car' => 'BMW' } } }
 
@@ -482,7 +482,7 @@ describe 'PUT /_ruote/expressions/fei' do
     wi.fields['car'].should == 'BMW'
   end
 
-  it 'should re-apply with a different tree (HTML)' do
+  it 're-applies with a different tree (HTML)' do
 
     put(
       "/_ruote/expressions/#{@exp.fei.sid}",
@@ -502,7 +502,7 @@ describe 'PUT /_ruote/expressions/fei' do
       [ 'participant', { '_triggered' => 'on_re_apply', 'ref' => 'charly' }, [] ] ] ]
   end
 
-  it 'should re-apply with a different tree (JSON)' do
+  it 're-applies with a different tree (JSON)' do
 
     wi = RuoteKit.engine.storage_participant.first
     wi.participant_name.should == 'alpha'
@@ -525,7 +525,7 @@ describe 'PUT /_ruote/expressions/fei' do
       [ 'participant', { '_triggered' => 'on_re_apply', 'ref' => 'bravo' }, [] ] ] ]
   end
 
-  it 'should 400 when passed bogus JSON (HTML)' do
+  it 'goes 400 when passed bogus JSON (HTML)' do
 
     put(
       "/_ruote/expressions/#{@exp.fei.sid}",
@@ -534,7 +534,7 @@ describe 'PUT /_ruote/expressions/fei' do
     last_response.status.should == 400
   end
 
-  it 'should 400 when passed bogus JSON (JSON)' do
+  it 'goes 400 when passed bogus JSON (JSON)' do
 
     put(
       "/_ruote/expressions/#{@exp.fei.sid}.json",
@@ -546,7 +546,7 @@ describe 'PUT /_ruote/expressions/fei' do
     last_response.json_body['http_error']['message'].should == 'bad request'
   end
 
-  it 'should 412 when the etags do not match (HTML)' do
+  it 'goes 412 when the etags do not match (HTML)' do
 
     put(
       "/_ruote/expressions/#{@exp.fei.sid}",
@@ -557,7 +557,7 @@ describe 'PUT /_ruote/expressions/fei' do
     last_response.status.should == 412
   end
 
-  it 'should 412 when the etags do not match (JSON)' do
+  it 'goes 412 when the etags do not match (JSON)' do
 
     put(
       "/_ruote/expressions/#{@exp.fei.sid}",
@@ -571,7 +571,7 @@ describe 'PUT /_ruote/expressions/fei' do
     last_response.status.should == 412
   end
 
-  it 'should not 412 when the etags match (HTML)' do
+  it 'does not go 412 when the etags match (HTML)' do
 
     rev = @exp.to_h['_rev']
 
@@ -584,7 +584,7 @@ describe 'PUT /_ruote/expressions/fei' do
     last_response.status.should_not == 412
   end
 
-  it 'should not 412 when the etags match (JSON)' do
+  it 'does not go 412 when the etags match (JSON)' do
 
     rev = @exp.to_h['_rev']
 

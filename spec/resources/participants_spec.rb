@@ -14,14 +14,14 @@ describe 'GET /_ruote/participants' do
 
   describe 'without any participant' do
 
-    it 'should give an empty list (HTML)' do
+    it 'gives an empty list (HTML)' do
 
       get '/_ruote/participants'
 
       last_response.status.should be(200)
     end
 
-    it 'should give an empty array (JSON)' do
+    it 'gives an empty array (JSON)' do
 
       get '/_ruote/participants.json'
 
@@ -41,14 +41,14 @@ describe 'GET /_ruote/participants' do
       register_participants
     end
 
-    it 'should give participant information back (HTML)' do
+    it 'gives participant information back (HTML)' do
 
       get '/_ruote/participants'
 
       last_response.status.should be(200)
     end
 
-    it 'should give participant information back (JSON)' do
+    it 'gives participant information back (JSON)' do
 
       get '/_ruote/participants.json'
 
@@ -70,7 +70,7 @@ describe 'PUT /_ruote/participants' do
     shutdown_and_purge_engine
   end
 
-  it 'should update the list (HTML)' do
+  it 'updates the list (HTML)' do
 
     put(
       '/_ruote/participants',
@@ -89,7 +89,7 @@ describe 'PUT /_ruote/participants' do
     ]
   end
 
-  it 'should update the list (JSON)' do
+  it 'updates the list (JSON)' do
 
     list = {
       'participants' => [

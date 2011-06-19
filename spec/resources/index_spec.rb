@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'GET /' do
 
-  it 'should return a welcome message in HTML be default' do
+  it 'returns a welcome message in HTML be default' do
 
     get '/_ruote'
 
@@ -13,7 +13,7 @@ describe 'GET /' do
     last_response.should match(/<title>/)
   end
 
-  it 'should return a version string if JSON is requested' do
+  it 'returns a version string if JSON is requested' do
 
     header 'Accept', 'application/json'
 
@@ -30,7 +30,7 @@ end
 
 describe 'Generic error handling' do
 
-  it 'should give our own 404 page (HTML)' do
+  it 'gives our own 404 page (HTML)' do
 
     get '/kenneth'
 
@@ -41,7 +41,7 @@ describe 'Generic error handling' do
     last_response.should match(/resource not found/)
   end
 
-  it 'should give our own 404 data (JSON)' do
+  it 'gives our own 404 data (JSON)' do
 
     get '/kenneth.json'
 

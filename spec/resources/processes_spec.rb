@@ -32,7 +32,7 @@ describe 'GET /_ruote/processes' do
 
   describe 'without any running processes' do
 
-    it 'should give no processes back (HTML)' do
+    it 'gives no processes back (HTML)' do
 
       get '/_ruote/processes?limit=100&skip=0'
 
@@ -44,7 +44,7 @@ describe 'GET /_ruote/processes' do
         'a', :href => '/_ruote/processes.json?limit=100&skip=0')
     end
 
-    it 'should give an empty array (JSON)' do
+    it 'gives an empty array (JSON)' do
 
       get '/_ruote/processes.json'
 
@@ -63,14 +63,14 @@ describe 'GET /_ruote/processes' do
       @wfid = launch_nada_process
     end
 
-    it 'should give process information back (HTML)' do
+    it 'gives process information back (HTML)' do
 
       get '/_ruote/processes'
 
       last_response.status.should == 200
     end
 
-    it 'should give process information back (JSON)' do
+    it 'gives process information back (JSON)' do
 
       get '/_ruote/processes.json'
 
@@ -132,7 +132,7 @@ describe 'GET /_ruote/processes/wfid' do
       @wfid = launch_nada_process
     end
 
-    it 'should give process information back (HTML)' do
+    it 'gives process information back (HTML)' do
 
       get "/_ruote/processes/#{@wfid}"
 
@@ -142,7 +142,7 @@ describe 'GET /_ruote/processes/wfid' do
         'a[rel="http://ruote.rubyforge.org/rels.html#process_schedules"]')
     end
 
-    it 'should give process information back (JSON)' do
+    it 'gives process information back (JSON)' do
 
       get "/_ruote/processes/#{@wfid}.json"
 
@@ -158,7 +158,7 @@ describe 'GET /_ruote/processes/wfid' do
 
   describe 'without a running process' do
 
-    it 'should 404 correctly (HTML)' do
+    it 'goes 404 correctly (HTML)' do
 
       get '/_ruote/processes/foo'
 
@@ -167,7 +167,7 @@ describe 'GET /_ruote/processes/wfid' do
       last_response.should match(/resource not found/)
     end
 
-    it 'should 404 correctly (JSON)' do
+    it 'goes 404 correctly (JSON)' do
 
       get '/_ruote/processes/foo.json'
 
@@ -194,7 +194,7 @@ describe 'GET /_ruote/processes/new' do
     shutdown_and_purge_engine
   end
 
-  it 'should return a launch form' do
+  it 'returns a launch form' do
 
     get '/_ruote/processes/new'
 
@@ -216,7 +216,7 @@ describe 'POST /_ruote/processes' do
     shutdown_and_purge_engine
   end
 
-  it 'should launch a valid process definition (JSON)' do
+  it 'launches a valid process definition (JSON)' do
 
     params = {
       :definition => %q{
@@ -240,7 +240,7 @@ describe 'POST /_ruote/processes' do
     engine.processes.should_not be_empty
   end
 
-  it 'should launch a valid process definition with fields (JSON)' do
+  it 'launches a valid process definition with fields (JSON)' do
 
     params = {
       :definition => %q{
@@ -264,7 +264,7 @@ describe 'POST /_ruote/processes' do
     @tracer.to_s.should == 'bar'
   end
 
-  it 'should launch a valid process definition (HTML)' do
+  it 'launches a valid process definition (HTML)' do
 
     params = {
       :definition => %q{
@@ -283,7 +283,7 @@ describe 'POST /_ruote/processes' do
     engine.processes.should_not be_empty
   end
 
-  it 'should launch a process definition with fields (HTML)' do
+  it 'launches a process definition with fields (HTML)' do
 
     params = {
       :definition => %{
@@ -303,7 +303,7 @@ describe 'POST /_ruote/processes' do
     @tracer.to_s.should == 'bar'
   end
 
-  it 'should correct for empty fields sent by browsers' do
+  it 'corrects empty fields sent by browsers' do
 
     params = {
       :definition => %q{
@@ -323,7 +323,7 @@ describe 'POST /_ruote/processes' do
     engine.processes.should_not be_empty
   end
 
-  it 'should 400 code when it fails to determine what to launch (JSON)' do
+  it 'goes 400 code when it fails to determine what to launch (JSON)' do
 
     params = { :definition => 'http://invalid.invalid' }
 
@@ -336,7 +336,7 @@ describe 'POST /_ruote/processes' do
     last_response.json_body.keys.should include('http_error')
   end
 
-  it 'should 400 when it fails to determine what to launch (HTML)' do
+  it 'goes 400 when it fails to determine what to launch (HTML)' do
 
     params = { :definition => %q{http://invalid.invalid} }
 
@@ -377,7 +377,7 @@ describe 'DELETE /_ruote/processes/wfid' do
     RuoteKit.engine.wait_for(3)
   end
 
-  it 'should cancel processes (JSON)' do
+  it 'cancels processes (JSON)' do
 
     delete "/_ruote/processes/#{@wfid}.json"
 
@@ -390,7 +390,7 @@ describe 'DELETE /_ruote/processes/wfid' do
     @tracer.to_s.should == "in\nbailout."
   end
 
-  it 'should cancel processes (HMTL)' do
+  it 'cancels processes (HMTL)' do
 
     delete "/_ruote/processes/#{@wfid}"
 
@@ -404,7 +404,7 @@ describe 'DELETE /_ruote/processes/wfid' do
     @tracer.to_s.should == "in\nbailout."
   end
 
-  it 'should kill processes (JSON)' do
+  it 'kills processes (JSON)' do
 
     delete "/_ruote/processes/#{@wfid}.json?_kill=1"
 
@@ -417,7 +417,7 @@ describe 'DELETE /_ruote/processes/wfid' do
     @tracer.to_s.should == 'in'
   end
 
-  it 'should kill processes (HTML)' do
+  it 'kills processes (HTML)' do
 
     delete "/_ruote/processes/#{@wfid}?_kill=1"
 

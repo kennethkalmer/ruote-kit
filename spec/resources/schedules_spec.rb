@@ -26,7 +26,7 @@ describe 'GET /_ruote/schedules' do
     shutdown_and_purge_engine
   end
 
-  it 'should list schedules (HTML)' do
+  it 'lists schedules (HTML)' do
 
     get '/_ruote/schedules'
 
@@ -38,7 +38,7 @@ describe 'GET /_ruote/schedules' do
     last_response.should contain('1 to 2 of 2 schedules')
   end
 
-  it 'should list schedules (JSON)' do
+  it 'lists schedules (JSON)' do
 
     get '/_ruote/schedules.json'
 
@@ -98,14 +98,14 @@ describe 'GET /_ruote/schedules/wfid' do
     shutdown_and_purge_engine
   end
 
-  it 'should list schedules (HTML)' do
+  it 'lists schedules (HTML)' do
 
     get "/_ruote/schedules/#{@wfid1}"
 
     last_response.status.should be(200)
   end
 
-  it 'should list schedules (JSON)' do
+  it 'lists schedules (JSON)' do
 
     get "/_ruote/schedules/#{@wfid0}.json"
 

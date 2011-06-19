@@ -11,15 +11,15 @@ describe RuoteKit do
 #      RuoteKit.run_worker(Ruote::HashStorage.new)
 #    end
 #
-#    it 'should instantiate an engine' do
+#    it 'instantiates an engine' do
 #      RuoteKit.engine.should_not == nil
 #    end
 #
-#    it 'should instantiate an engine with a worker' do
+#    it 'instantiates an engine with a worker' do
 #      RuoteKit.engine.worker.should_not == nil
 #    end
 #
-#    it 'should instantiate an engine bound to a storage' do
+#    it 'instantiates an engine bound to a storage' do
 #      RuoteKit.engine.storage.class.should == Ruote::HashStorage
 #    end
 #  end
@@ -30,15 +30,15 @@ describe RuoteKit do
       RuoteKit.bind_engine(Ruote::HashStorage.new)
     end
 
-    it 'should instantiate an engine' do
+    it 'instantiates an engine' do
       RuoteKit.engine.should_not == nil
     end
 
-    it 'should instantiate an engine without a worker' do
+    it 'instantiates an engine without a worker' do
       RuoteKit.engine.worker.should == nil
     end
 
-    it 'should instantiate an engine bound to a storage' do
+    it 'instantiates an engine bound to a storage' do
       RuoteKit.engine.storage.class.should == Ruote::HashStorage
     end
   end
@@ -47,7 +47,7 @@ describe RuoteKit do
 
     # stupid illustrative spec
 
-    it 'should comply' do
+    it 'complies' do
       RuoteKit.engine = Ruote::Engine.new(Ruote::HashStorage.new)
       RuoteKit.engine.should_not == nil
     end

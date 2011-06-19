@@ -4,37 +4,37 @@ describe RuoteKit::Helpers::RenderHelpers do
 
   describe 'alink()' do
 
-    it 'link to top resources' do
+    it 'links to top resources' do
 
       alink(:processes).should ==
         '<a href="/_ruote/processes" rel="http://ruote.rubyforge.org/rels.html#processes" title="/_ruote/processes">/_ruote/processes</a>'
     end
 
-    it 'should link to identified resources' do
+    it 'links to identified resources' do
 
       alink(:processes, '20120808-tokushima').should ==
         '<a href="/_ruote/processes/20120808-tokushima" rel="http://ruote.rubyforge.org/rels.html#process" title="/_ruote/processes/20120808-tokushima">/_ruote/processes/20120808-tokushima</a>'
     end
 
-    it 'should accept a custom :text' do
+    it 'accepts a custom :text' do
 
       alink(:processes, :text => 'processes').should ==
         '<a href="/_ruote/processes" rel="http://ruote.rubyforge.org/rels.html#processes" title="/_ruote/processes">processes</a>'
     end
 
-    it 'should aggregate non-:text options into the query string' do
+    it 'aggregates non-:text options into the query string' do
 
       alink(:processes, :skip => 3, :limit => 4).should ==
         '<a href="/_ruote/processes?limit=4&skip=3" rel="http://ruote.rubyforge.org/rels.html#processes" title="/_ruote/processes?limit=4&skip=3">/_ruote/processes?limit=4&skip=3</a>'
     end
 
-    it 'should accept a custom :rel' do
+    it 'accepts a custom :rel' do
 
       alink(:processes, :rel => 'last').should ==
         '<a href="/_ruote/processes" rel="last" title="/_ruote/processes">/_ruote/processes</a>'
     end
 
-    it 'should accept a :head id for processes, errors, schedules and workitems' do
+    it 'accepts a :head id for processes, errors, schedules and workitems' do
 
       self.instance_eval do
         def settings; OpenStruct.new(:limit => 100); end
@@ -65,7 +65,7 @@ describe RuoteKit::Helpers::RenderHelpers do
       @resource.request = OpenStruct.new(:fullpath => '/_ruote/processes')
     end
 
-    it 'should paginate correctly' do
+    it 'paginates correctly' do
 
       @resource.processes = (1..201).to_a
       @resource.count = @resource.processes.size
@@ -105,7 +105,7 @@ describe RuoteKit::Helpers::RenderHelpers do
       @resource.request = OpenStruct.new(:path => '/_ruote/processes')
     end
 
-    it 'should paginate correctly (1st page)' do
+    it 'paginates correctly (1st page)' do
 
       @resource.count = 201
       @resource.skip = 0
@@ -127,7 +127,7 @@ describe RuoteKit::Helpers::RenderHelpers do
         'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
     end
 
-    it 'should paginate correctly (2nd page)' do
+    it 'paginates correctly (2nd page)' do
 
       @resource.count = 201
       @resource.skip = 7
@@ -149,7 +149,7 @@ describe RuoteKit::Helpers::RenderHelpers do
         'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
     end
 
-    it 'should paginate correctly (3rd page)' do
+    it 'paginates correctly (3rd page)' do
 
       @resource.count = 201
       @resource.skip = 14
@@ -171,7 +171,7 @@ describe RuoteKit::Helpers::RenderHelpers do
         'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
     end
 
-    it 'should paginate correctly (right before last page)' do
+    it 'paginates correctly (right before last page)' do
 
       @resource.count = 201
       @resource.skip = 189
@@ -193,7 +193,7 @@ describe RuoteKit::Helpers::RenderHelpers do
         'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
     end
 
-    it 'should paginate correctly (last page)' do
+    it 'paginates correctly (last page)' do
 
       @resource.count = 201
       @resource.skip = 196
@@ -215,7 +215,7 @@ describe RuoteKit::Helpers::RenderHelpers do
       #  'a', :href => '/_ruote/processes?limit=7&skip=196', :rel => 'last')
     end
 
-    it 'should paginate correctly (corner case 3 items, limit 3)' do
+    it 'paginates correctly (corner case 3 items, limit 3)' do
 
       @resource.count = 3
       @resource.skip  = 0
@@ -238,7 +238,7 @@ describe RuoteKit::Helpers::RenderHelpers do
 
     end
 
-    it 'should paginate correctly (corner case 30 items, limit 10, skip 20)' do
+    it 'paginates correctly (corner case 30 items, limit 10, skip 20)' do
 
       @resource.count = 30
       @resource.skip  = 20
@@ -253,7 +253,7 @@ describe RuoteKit::Helpers::RenderHelpers do
 
     end
 
-    it 'should not show there is an item if there is none' do
+    it 'does not show there is an item if there is none' do
 
       @resource.count = 0
       @resource.skip  = 0
@@ -276,7 +276,7 @@ describe RuoteKit::Helpers::RenderHelpers do
 
     end
 
-    it 'should ignore negative values for skip param' do
+    it 'ignores negative values for skip param' do
 
       @resource.count = 10
       @resource.skip  = -5
@@ -291,7 +291,7 @@ describe RuoteKit::Helpers::RenderHelpers do
 
     end
 
-    it 'should ignore values for the skip param larger than the number of items' do
+    it 'ignores values for the skip param larger than the number of items' do
 
       @resource.count = 10
       @resource.skip  = 20

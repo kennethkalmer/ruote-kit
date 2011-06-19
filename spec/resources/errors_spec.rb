@@ -14,14 +14,14 @@ describe 'without any running processes' do
 
   describe 'GET /_ruote/errors' do
 
-    it 'should give no processes back (HTML)' do
+    it 'gives no processes back (HTML)' do
 
       get '/_ruote/errors'
 
       last_response.status.should be(200)
     end
 
-    it 'should give an empty array (JSON)' do
+    it 'gives an empty array (JSON)' do
 
       get '/_ruote/errors.json'
 
@@ -65,7 +65,7 @@ describe 'with a running process that has an error' do
 
   describe 'GET /_ruote/errors' do
 
-    it 'should list errors (HTML)' do
+    it 'lists errors (HTML)' do
 
       get '/_ruote/errors'
 
@@ -73,7 +73,7 @@ describe 'with a running process that has an error' do
       last_response.should match(/nemo/)
     end
 
-    it 'should list errors (JSON)' do
+    it 'lists errors (JSON)' do
 
       get '/_ruote/errors.json'
 
@@ -133,7 +133,7 @@ describe 'with a running process that has an error' do
 
   describe 'GET /_ruote/errors/:wfid' do
 
-    it 'should list process errors (HTML)' do
+    it 'lists process errors (HTML)' do
 
       get "/_ruote/errors/#{@wfid}"
 
@@ -141,7 +141,7 @@ describe 'with a running process that has an error' do
       last_response.should match(/nemo/)
     end
 
-    it 'should list process errors (JSON)' do
+    it 'lists process errors (JSON)' do
 
       get "/_ruote/errors/#{@wfid}.json"
 
@@ -164,7 +164,7 @@ describe 'with a running process that has an error' do
 
   describe 'GET /_ruote/errors/:fei' do
 
-    it 'should show the error (HTML)' do
+    it 'shows the error (HTML)' do
 
       get "/_ruote/errors/0_0_0!!#{@wfid}"
 
@@ -172,7 +172,7 @@ describe 'with a running process that has an error' do
       last_response.should match(/nemo/)
     end
 
-    it 'should show the error (JSON)' do
+    it 'shows the error (JSON)' do
 
       get "/_ruote/errors/0_0_0!!#{@wfid}.json"
 
@@ -186,7 +186,7 @@ describe 'with a running process that has an error' do
 
   describe 'DELETE /_ruote/errors/:fei' do
 
-    it 'should replay errors (HTML)' do
+    it 'replays errors (HTML)' do
 
       RuoteKit.engine.register_participant :nemo, Ruote::StorageParticipant
 
@@ -205,7 +205,7 @@ describe 'with a running process that has an error' do
       RuoteKit.engine.process(@wfid).errors.size.should == 0
     end
 
-    it 'should replay errors (JSON)' do
+    it 'replays errors (JSON)' do
 
       #RuoteKit.engine.noisy = true
 

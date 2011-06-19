@@ -23,7 +23,7 @@ describe 'GET /_ruote/workitems' do
 
   describe 'without any workitems' do
 
-    it 'should report no workitems (HTML)' do
+    it 'reports no workitems (HTML)' do
 
       get '/_ruote/workitems'
 
@@ -32,7 +32,7 @@ describe 'GET /_ruote/workitems' do
       last_response.should match(workitem_count(0, 0, 0))
     end
 
-    it 'should report no workitems (JSON)' do
+    it 'reports no workitems (JSON)' do
 
       get '/_ruote/workitems.json'
 
@@ -60,14 +60,14 @@ describe 'GET /_ruote/workitems' do
       RuoteKit.engine.wait_for(1)
     end
 
-    it 'should have a list of workitems (HTML)' do
+    it 'has a list of workitems (HTML)' do
 
       get '/_ruote/workitems'
 
       last_response.should match(workitem_count(1, 1, 1))
     end
 
-    it 'should have a list of workitems (JSON)' do
+    it 'has a list of workitems (JSON)' do
 
       get '/_ruote/workitems.json'
 
@@ -115,7 +115,7 @@ describe 'GET /_ruote/workitems/wfid' do
       RuoteKit.engine.wait_for(1)
     end
 
-    it 'should list the workitems (HTML)' do
+    it 'lists the workitems (HTML)' do
 
       get "/_ruote/workitems/#{@wfid}"
 
@@ -125,7 +125,7 @@ describe 'GET /_ruote/workitems/wfid' do
         'div#pagination', :content => '2 workitems')
     end
 
-    it 'should list the workitems (JSON)' do
+    it 'lists the workitems (JSON)' do
 
       get "/_ruote/workitems/#{@wfid}.json"
 
@@ -140,7 +140,7 @@ describe 'GET /_ruote/workitems/wfid' do
 
   describe 'without workitems' do
 
-    it 'should report no workitems (HTML)' do
+    it 'reports no workitems (HTML)' do
 
       get '/_ruote/workitems/foo'
 
@@ -150,7 +150,7 @@ describe 'GET /_ruote/workitems/wfid' do
         'div#pagination', :content => '0 workitems')
     end
 
-    it 'should report an empty list (JSON)' do
+    it 'reports an empty list (JSON)' do
 
       get '/_ruote/workitems/foo.json'
 
@@ -192,21 +192,21 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
       @fei = engine.process(@wfid).expressions.last.fei
     end
 
-    it 'should return it (HTML)' do
+    it 'returns it (HTML)' do
 
       get "/_ruote/workitems/#{@fei.sid}"
 
       last_response.should be_ok
     end
 
-    it 'should return it (JSON)' do
+    it 'returns it (JSON)' do
 
       get "/_ruote/workitems/#{@fei.sid}.json"
 
       last_response.should be_ok
     end
 
-    it 'should provide a workitem with the correct links (JSON)' do
+    it 'provides a workitem with the correct links (JSON)' do
 
       get "/_ruote/workitems/#{@fei.sid}.json"
 
@@ -220,7 +220,7 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
       ]
     end
 
-    it 'should include an etag header (HTML)' do
+    it 'includes an etag header (HTML)' do
 
       get "/_ruote/workitems/#{@fei.sid}"
 
@@ -228,7 +228,7 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
       last_response.headers['ETag'].should == "\"#{find_workitem(@wfid, @nada_exp_id).to_h['_rev'].to_s}\""
     end
 
-    it 'should include an etag header (JSON)' do
+    it 'includes an etag header (JSON)' do
 
       get "/_ruote/workitems/#{@fei.sid}.json"
 
@@ -236,7 +236,7 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
       last_response.headers['ETag'].should == "\"#{find_workitem(@wfid, @nada_exp_id).to_h['_rev'].to_s}\""
     end
 
-    it 'should include a wf_name and a wf_revision (JSON)' do
+    it 'includes a wf_name and a wf_revision (JSON)' do
 
       get "/_ruote/workitems/#{@fei.sid}.json"
 
@@ -247,7 +247,7 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
 
   describe 'without a workitem' do
 
-    it 'should return a 404 (HTML)' do
+    it 'returns a 404 (HTML)' do
 
       get '/_ruote/workitems/foo/bar'
 
@@ -255,7 +255,7 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
       last_response.status.should be(404)
     end
 
-    it 'should return a 404 (JSON)' do
+    it 'returns a 404 (JSON)' do
 
       get '/_ruote/workitems/foo/bar.json'
 
@@ -292,7 +292,7 @@ describe 'PUT /_ruote/workitems/fei' do
     shutdown_and_purge_engine
   end
 
-  it 'should update the workitem fields (HTML)' do
+  it 'updates the workitem fields (HTML)' do
 
     put(
       "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
@@ -310,7 +310,7 @@ describe 'PUT /_ruote/workitems/fei' do
     @tracer.to_s.should == ''
   end
 
-  it 'should update the workitem fields (JSON)' do
+  it 'updates the workitem fields (JSON)' do
 
     params = { 'fields' => @fields }
 
@@ -328,7 +328,7 @@ describe 'PUT /_ruote/workitems/fei' do
     @tracer.to_s.should == ''
   end
 
-  it 'should update the fields when passed {"workitem":...} (JSON)' do
+  it 'updates the fields when passed {"workitem":...} (JSON)' do
 
     params = { 'workitem' => { 'fields' => @fields } }
 
@@ -342,7 +342,7 @@ describe 'PUT /_ruote/workitems/fei' do
     find_workitem(@wfid, @nada_exp_id).fields.should == @fields
   end
 
-  it 'should reply to the engine (HTML)' do
+  it 'replies to the engine (HTML)' do
 
     fields = Rufus::Json.encode(@fields)
 
@@ -363,7 +363,7 @@ describe 'PUT /_ruote/workitems/fei' do
     @tracer.to_s.should == 'bar'
   end
 
-  it 'should reply to the engine (JSON)' do
+  it 'replies to the engine (JSON)' do
 
     params = { 'fields' => @fields, '_proceed' => '1' }
 
@@ -383,7 +383,7 @@ describe 'PUT /_ruote/workitems/fei' do
     @tracer.to_s.should == 'bar'
   end
 
-  it 'should 400 when passed bogus JSON fields (HTML)' do
+  it 'goes 400 when passed bogus JSON fields (HTML)' do
 
     put(
       "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
@@ -392,7 +392,7 @@ describe 'PUT /_ruote/workitems/fei' do
     last_response.status.should be(400)
   end
 
-  it 'should 400 when passed bogus JSON fields (JSON)' do
+  it 'goes 400 when passed bogus JSON fields (JSON)' do
 
     put(
       "/_ruote/workitems/#{@fei.expid}!#{@fei.subid}!#{@wfid}.json",
@@ -402,7 +402,7 @@ describe 'PUT /_ruote/workitems/fei' do
     last_response.status.should be(400)
   end
 
-  it 'should 412 if the etags do not match (HTML)' do
+  it 'goes 412 if the etags do not match (HTML)' do
 
     workitem = find_workitem(@wfid, @nada_exp_id)
     old_rev  = workitem.to_h['_rev']
@@ -419,7 +419,7 @@ describe 'PUT /_ruote/workitems/fei' do
     last_response.status.should be(412)
   end
 
-  it 'should 412 if the etags do not match (JSON)' do
+  it 'goes 412 if the etags do not match (JSON)' do
 
     workitem = find_workitem(@wfid, @nada_exp_id)
 
@@ -476,7 +476,7 @@ describe 'Filtering workitems' do
 
   describe 'on participants' do
 
-    it 'should narrow results down to a single participant (JSON)' do
+    it 'narrows results down to a single participant (JSON)' do
 
       get '/_ruote/workitems.json', :participant => 'jack'
 
@@ -485,7 +485,7 @@ describe 'Filtering workitems' do
       last_response.json_body['workitems'].size.should == 1
     end
 
-    it 'should narrow results down to a single participant (HTML)' do
+    it 'narrows results down to a single participant (HTML)' do
 
       get '/_ruote/workitems', :participant => 'jack'
 
@@ -498,7 +498,7 @@ describe 'Filtering workitems' do
 
   describe 'on field values' do
 
-    it 'should find workitems with fields set to a given value (JSON)' do
+    it 'finds workitems with fields set to a given value (JSON)' do
 
       get '/_ruote/workitems.json', :hinkypinky => 'honkytonky'
 
@@ -507,14 +507,14 @@ describe 'Filtering workitems' do
       last_response.json_body['workitems'].size.should == 2
     end
 
-    it 'should find workitems with fields set to a given value (HTML)' do
+    it 'finds workitems with fields set to a given value (HTML)' do
 
       get '/_ruote/workitems', :hinkypinky => 'honkytonky'
 
       last_response.should be_ok
     end
 
-    it 'should respect JSON encoded filter vars (JSON)' do
+    it 'respects JSON encoded filter vars (JSON)' do
 
       get '/_ruote/workitems.json', :wands => 101
 
@@ -523,7 +523,7 @@ describe 'Filtering workitems' do
       last_response.json_body['workitems'].size.should == 1
     end
 
-    it 'should respect JSON encoded filter vars (HTML)' do
+    it 'respects JSON encoded filter vars (HTML)' do
 
       get '/_ruote/workitems', :wands => 101
 
