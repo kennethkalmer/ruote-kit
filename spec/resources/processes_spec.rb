@@ -1,434 +1,393 @@
+
 require 'spec_helper'
 
-def process_links(wfid)
-  [
-    { 'href' => "/_ruote/processes/#{wfid}",
-      'rel' => 'self' },
-    { 'href' => "/_ruote/processes/#{wfid}",
-      'rel' => 'http://ruote.rubyforge.org/rels.html#process' },
-    { 'href' => "/_ruote/expressions/#{wfid}",
-      'rel' => 'http://ruote.rubyforge.org/rels.html#process_expressions' },
-    { 'href' => "/_ruote/workitems/#{wfid}",
-      'rel' => 'http://ruote.rubyforge.org/rels.html#process_workitems' },
-    { 'href' => "/_ruote/errors/#{wfid}",
-      'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },
-    { 'href' => "/_ruote/schedules/#{wfid}",
-      'rel' => 'http://ruote.rubyforge.org/rels.html#process_schedules' }
-  ]
-end
-
-
-describe 'GET /_ruote/processes' do
+describe '/_ruote/processes' do
 
   before(:each) do
-
     prepare_engine_with_participants
   end
-
   after(:each) do
-
     shutdown_and_purge_engine
   end
 
-  context 'without any running processes' do
+  def process_links(wfid)
+    [
+      { 'href' => "/_ruote/processes/#{wfid}",
+        'rel' => 'self' },
+      { 'href' => "/_ruote/processes/#{wfid}",
+        'rel' => 'http://ruote.rubyforge.org/rels.html#process' },
+      { 'href' => "/_ruote/expressions/#{wfid}",
+        'rel' => 'http://ruote.rubyforge.org/rels.html#process_expressions' },
+      { 'href' => "/_ruote/workitems/#{wfid}",
+        'rel' => 'http://ruote.rubyforge.org/rels.html#process_workitems' },
+      { 'href' => "/_ruote/errors/#{wfid}",
+        'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },
+      { 'href' => "/_ruote/schedules/#{wfid}",
+        'rel' => 'http://ruote.rubyforge.org/rels.html#process_schedules' }
+    ]
+  end
 
-    it 'gives no processes back (HTML)' do
+  describe 'GET /_ruote/processes' do
 
-      get '/_ruote/processes?limit=100&skip=0'
+    context 'without any running processes' do
 
-      last_response.status.should == 200
+      it 'gives no processes back (HTML)' do
 
-      last_response.should have_selector(
-        'a', :content => 'as JSON')
-      last_response.should have_selector(
-        'a', :href => '/_ruote/processes.json?limit=100&skip=0')
+        get '/_ruote/processes?limit=100&skip=0'
+
+        last_response.status.should == 200
+
+        last_response.should have_selector(
+          'a', :content => 'as JSON')
+        last_response.should have_selector(
+          'a', :href => '/_ruote/processes.json?limit=100&skip=0')
+      end
+
+      it 'gives an empty array (JSON)' do
+
+        get '/_ruote/processes.json'
+
+        last_response.status.should == 200
+
+        body = last_response.json_body
+        body.should have_key('processes')
+
+        body['processes'].should be_empty
+      end
     end
 
-    it 'gives an empty array (JSON)' do
+    context 'with running processes' do
 
-      get '/_ruote/processes.json'
+      before(:each) do
+        @wfid = launch_nada_process
+      end
 
-      last_response.status.should == 200
+      it 'gives process information back (HTML)' do
 
-      body = last_response.json_body
-      body.should have_key('processes')
+        get '/_ruote/processes'
 
-      body['processes'].should be_empty
+        last_response.status.should == 200
+      end
+
+      it 'gives process information back (JSON)' do
+
+        get '/_ruote/processes.json'
+
+        last_response.status.should == 200
+
+        body = last_response.json_body
+
+        body['processes'].should_not be_empty
+
+        body['links'].should == [
+          { 'href' => '/_ruote',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#root' },
+          { 'href' => '/_ruote/processes',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#processes' },
+          { 'href' => '/_ruote/workitems',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#workitems' },
+          { 'href' => '/_ruote/errors',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#errors' },
+          { 'href' => '/_ruote/participants',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#participants' },
+          { 'href' => '/_ruote/schedules',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#schedules' },
+          { 'href' => '/_ruote/history',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#history' },
+          { 'href' => '/_ruote/processes',
+            'rel' => 'self' },
+          { 'href' => '/_ruote/processes',
+            'rel' => 'all' },
+          { 'href' => '/_ruote/processes?limit=100&skip=0',
+            'rel' => 'first' },
+          { 'href' => '/_ruote/processes?limit=100&skip=0',
+            'rel' => 'last' },
+          { 'href' => '/_ruote/processes?limit=100&skip=0',
+            'rel' => 'previous' },
+          { 'href' => '/_ruote/processes?limit=100&skip=0',
+            'rel' => 'next' } ]
+
+        body['processes'].first['links'].should == process_links(@wfid)
+      end
     end
   end
 
-  context 'with running processes' do
+  describe 'GET /_ruote/processes/wfid' do
 
-    before(:each) do
-      @wfid = launch_nada_process
+    context 'with a running process' do
+
+      before(:each) do
+        @wfid = launch_nada_process
+      end
+
+      it 'gives process information back (HTML)' do
+
+        get "/_ruote/processes/#{@wfid}"
+
+        last_response.status.should == 200
+
+        last_response.should have_selector(
+          'a[rel="http://ruote.rubyforge.org/rels.html#process_schedules"]')
+      end
+
+      it 'gives process information back (JSON)' do
+
+        get "/_ruote/processes/#{@wfid}.json"
+
+        last_response.status.should == 200
+
+        body = last_response.json_body
+
+        body.should have_key('process')
+
+        body['process']['links'].should == process_links(@wfid)
+      end
     end
 
-    it 'gives process information back (HTML)' do
+    context 'without a running process' do
 
-      get '/_ruote/processes'
+      it 'goes 404 correctly (HTML)' do
 
-      last_response.status.should == 200
-    end
+        get '/_ruote/processes/foo'
 
-    it 'gives process information back (JSON)' do
+        last_response.status.should == 404
 
-      get '/_ruote/processes.json'
+        last_response.should match(/resource not found/)
+      end
 
-      last_response.status.should == 200
+      it 'goes 404 correctly (JSON)' do
 
-      body = last_response.json_body
+        get '/_ruote/processes/foo.json'
 
-      body['processes'].should_not be_empty
+        last_response.status.should == 404
 
-      body['links'].should == [
-        { 'href' => '/_ruote',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#root' },
-        { 'href' => '/_ruote/processes',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#processes' },
-        { 'href' => '/_ruote/workitems',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#workitems' },
-        { 'href' => '/_ruote/errors',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#errors' },
-        { 'href' => '/_ruote/participants',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#participants' },
-        { 'href' => '/_ruote/schedules',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#schedules' },
-        { 'href' => '/_ruote/history',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#history' },
-        { 'href' => '/_ruote/processes',
-          'rel' => 'self' },
-        { 'href' => '/_ruote/processes',
-          'rel' => 'all' },
-        { 'href' => '/_ruote/processes?limit=100&skip=0',
-          'rel' => 'first' },
-        { 'href' => '/_ruote/processes?limit=100&skip=0',
-          'rel' => 'last' },
-        { 'href' => '/_ruote/processes?limit=100&skip=0',
-          'rel' => 'previous' },
-        { 'href' => '/_ruote/processes?limit=100&skip=0',
-          'rel' => 'next' } ]
+        last_response.json_body.keys.should include('http_error')
 
-      body['processes'].first['links'].should == process_links(@wfid)
-    end
-  end
-end
-
-describe 'GET /_ruote/processes/wfid' do
-
-  before(:each) do
-
-    prepare_engine_with_participants
-  end
-
-  after(:each) do
-
-    shutdown_and_purge_engine
-  end
-
-  context 'with a running process' do
-
-    before(:each) do
-
-      @wfid = launch_nada_process
-    end
-
-    it 'gives process information back (HTML)' do
-
-      get "/_ruote/processes/#{@wfid}"
-
-      last_response.status.should == 200
-
-      last_response.should have_selector(
-        'a[rel="http://ruote.rubyforge.org/rels.html#process_schedules"]')
-    end
-
-    it 'gives process information back (JSON)' do
-
-      get "/_ruote/processes/#{@wfid}.json"
-
-      last_response.status.should == 200
-
-      body = last_response.json_body
-
-      body.should have_key('process')
-
-      body['process']['links'].should == process_links(@wfid)
+        last_response.json_body['http_error'].should == {
+          'code' => 404, 'message' => 'resource not found', 'cause' => ''
+        }
+      end
     end
   end
 
-  context 'without a running process' do
+  describe 'GET /_ruote/processes/new' do
 
-    it 'goes 404 correctly (HTML)' do
+    it 'returns a launch form' do
 
-      get '/_ruote/processes/foo'
+      get '/_ruote/processes/new'
 
-      last_response.status.should == 404
+      last_response.status.should == 200
 
-      last_response.should match(/resource not found/)
+      last_response.should_not have_selector('a', :content => 'as JSON')
+    end
+  end
+
+  describe 'POST /_ruote/processes' do
+
+    it 'launches a valid process definition (JSON)' do
+
+      params = {
+        :definition => %q{
+          Ruote.process_definition :name => 'test' do
+            wait '1m'
+          end
+        }
+      }
+
+      post(
+        '/_ruote/processes.json',
+        Rufus::Json.encode(params),
+        { 'CONTENT_TYPE' => 'application/json' })
+
+      last_response.status.should == 201
+
+      last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
+
+      sleep 0.4
+
+      engine.processes.should_not be_empty
     end
 
-    it 'goes 404 correctly (JSON)' do
+    it 'launches a valid process definition with fields (JSON)' do
 
-      get '/_ruote/processes/foo.json'
+      params = {
+        :definition => %q{
+          Ruote.process_definition :name => 'test' do
+            echo '${f:foo}'
+          end
+        },
+        :fields => { :foo => 'bar' }
+      }
 
-      last_response.status.should == 404
+      post(
+        '/_ruote/processes.json',
+        Rufus::Json.encode(params),
+        { 'CONTENT_TYPE' => 'application/json' })
 
+      last_response.status.should == 201
+      last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
+
+      sleep 0.5
+
+      @tracer.to_s.should == 'bar'
+    end
+
+    it 'launches a valid process definition (HTML)' do
+
+      params = {
+        :definition => %q{
+          Ruote.process_definition :name => 'test' do
+            wait '1m'
+          end
+        }
+      }
+
+      post '/_ruote/processes', params
+
+      last_response.status.should == 201
+
+      sleep 0.4
+
+      engine.processes.should_not be_empty
+    end
+
+    it 'launches a process definition with fields (HTML)' do
+
+      params = {
+        :definition => %{
+          Ruote.process_definition :name => 'test' do
+            echo '${f:foo}'
+          end
+        },
+        :fields => '{ "foo": "bar" }'
+      }
+
+      post '/_ruote/processes', params
+
+      last_response.status.should == 201
+
+      sleep 0.5
+
+      @tracer.to_s.should == 'bar'
+    end
+
+    it 'corrects empty fields sent by browsers' do
+
+      params = {
+        :definition => %q{
+          Ruote.process_definition :name => 'test' do
+            wait '5m'
+          end
+        },
+        :fields => ''
+      }
+
+      post '/_ruote/processes', params
+
+      last_response.status.should == 201
+
+      sleep 0.4
+
+      engine.processes.should_not be_empty
+    end
+
+    it 'goes 400 code when it fails to determine what to launch (JSON)' do
+
+      params = { :definition => 'http://invalid.invalid' }
+
+      post(
+        '/_ruote/processes.json',
+        Rufus::Json.encode(params),
+        { 'CONTENT_TYPE' => 'application/json' })
+
+      last_response.status.should == 400
       last_response.json_body.keys.should include('http_error')
-
-      last_response.json_body['http_error'].should == {
-        'code' => 404, 'message' => 'resource not found', 'cause' => ''
-      }
     end
-  end
-end
 
-describe 'GET /_ruote/processes/new' do
+    it 'goes 400 when it fails to determine what to launch (HTML)' do
 
-  before(:each) do
+      params = { :definition => %q{http://invalid.invalid} }
 
-    prepare_engine
-  end
+      post '/_ruote/processes', params
 
-  after(:each) do
+      last_response.status.should == 400
+      last_response.should match(/bad request/)
+    end
 
-    shutdown_and_purge_engine
   end
 
-  it 'returns a launch form' do
+  describe 'DELETE /_ruote/processes/wfid' do
 
-    get '/_ruote/processes/new'
+    before(:each) do
 
-    last_response.status.should == 200
-
-    last_response.should_not have_selector('a', :content => 'as JSON')
-  end
-end
-
-describe 'POST /_ruote/processes' do
-
-  before(:each) do
-
-    prepare_engine
-  end
-
-  after(:each) do
-
-    shutdown_and_purge_engine
-  end
-
-  it 'launches a valid process definition (JSON)' do
-
-    params = {
-      :definition => %q{
-        Ruote.process_definition :name => 'test' do
-          wait '1m'
+      @wfid = RuoteKit.engine.launch(Ruote.process_definition do
+        sequence :on_cancel => 'bail_out' do
+          echo 'in'
+          wait '1d'
+          echo 'done.'
         end
-      }
-    }
 
-    post(
-      '/_ruote/processes.json',
-      Rufus::Json.encode(params),
-      { 'CONTENT_TYPE' => 'application/json' })
-
-    last_response.status.should == 201
-
-    last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
-
-    sleep 0.4
-
-    engine.processes.should_not be_empty
-  end
-
-  it 'launches a valid process definition with fields (JSON)' do
-
-    params = {
-      :definition => %q{
-        Ruote.process_definition :name => 'test' do
-          echo '${f:foo}'
+        define :name => 'bail_out' do
+          echo 'bailout.'
         end
-      },
-      :fields => { :foo => 'bar' }
-    }
+      end)
 
-    post(
-      '/_ruote/processes.json',
-      Rufus::Json.encode(params),
-      { 'CONTENT_TYPE' => 'application/json' })
+      RuoteKit.engine.wait_for(3)
+    end
 
-    last_response.status.should == 201
-    last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
+    it 'cancels processes (JSON)' do
 
-    sleep 0.5
+      delete "/_ruote/processes/#{@wfid}.json"
 
-    @tracer.to_s.should == 'bar'
-  end
+      last_response.status.should == 200
 
-  it 'launches a valid process definition (HTML)' do
+      wait_for(@wfid)
 
-    params = {
-      :definition => %q{
-        Ruote.process_definition :name => 'test' do
-          wait '1m'
-        end
-      }
-    }
+      engine.process(@wfid).should be_nil
 
-    post '/_ruote/processes', params
+      @tracer.to_s.should == "in\nbailout."
+    end
 
-    last_response.status.should == 201
+    it 'cancels processes (HMTL)' do
 
-    sleep 0.4
+      delete "/_ruote/processes/#{@wfid}"
 
-    engine.processes.should_not be_empty
-  end
+      last_response.should be_redirect
+      last_response['Location'].should == 'http://example.org/_ruote/processes'
 
-  it 'launches a process definition with fields (HTML)' do
+      wait_for(@wfid)
 
-    params = {
-      :definition => %{
-        Ruote.process_definition :name => 'test' do
-          echo '${f:foo}'
-        end
-      },
-      :fields => '{ "foo": "bar" }'
-    }
+      engine.process(@wfid).should be_nil
 
-    post '/_ruote/processes', params
+      @tracer.to_s.should == "in\nbailout."
+    end
 
-    last_response.status.should == 201
+    it 'kills processes (JSON)' do
 
-    sleep 0.5
+      delete "/_ruote/processes/#{@wfid}.json?_kill=1"
 
-    @tracer.to_s.should == 'bar'
-  end
+      last_response.status.should == 200
 
-  it 'corrects empty fields sent by browsers' do
+      wait_for(@wfid)
 
-    params = {
-      :definition => %q{
-        Ruote.process_definition :name => 'test' do
-          wait '5m'
-        end
-      },
-      :fields => ''
-    }
+      engine.process(@wfid).should be_nil
 
-    post '/_ruote/processes', params
+      @tracer.to_s.should == 'in'
+    end
 
-    last_response.status.should == 201
+    it 'kills processes (HTML)' do
 
-    sleep 0.4
+      delete "/_ruote/processes/#{@wfid}?_kill=1"
 
-    engine.processes.should_not be_empty
-  end
+      last_response.should be_redirect
+      last_response['Location'].should == 'http://example.org/_ruote/processes'
 
-  it 'goes 400 code when it fails to determine what to launch (JSON)' do
+      wait_for(@wfid)
 
-    params = { :definition => 'http://invalid.invalid' }
+      engine.process(@wfid).should be_nil
 
-    post(
-      '/_ruote/processes.json',
-      Rufus::Json.encode(params),
-      { 'CONTENT_TYPE' => 'application/json' })
-
-    last_response.status.should == 400
-    last_response.json_body.keys.should include('http_error')
-  end
-
-  it 'goes 400 when it fails to determine what to launch (HTML)' do
-
-    params = { :definition => %q{http://invalid.invalid} }
-
-    post '/_ruote/processes', params
-
-    last_response.status.should == 400
-    last_response.should match(/bad request/)
-  end
-
-end
-
-describe 'DELETE /_ruote/processes/wfid' do
-
-  before(:each) do
-
-    prepare_engine
-  end
-
-  after(:each) do
-
-    shutdown_and_purge_engine
-  end
-
-  before(:each) do
-
-    @wfid = RuoteKit.engine.launch(Ruote.process_definition do
-      sequence :on_cancel => 'bail_out' do
-        echo 'in'
-        wait '1d'
-        echo 'done.'
-      end
-
-      define :name => 'bail_out' do
-        echo 'bailout.'
-      end
-    end)
-
-    RuoteKit.engine.wait_for(3)
-  end
-
-  it 'cancels processes (JSON)' do
-
-    delete "/_ruote/processes/#{@wfid}.json"
-
-    last_response.status.should == 200
-
-    wait_for(@wfid)
-
-    engine.process(@wfid).should be_nil
-
-    @tracer.to_s.should == "in\nbailout."
-  end
-
-  it 'cancels processes (HMTL)' do
-
-    delete "/_ruote/processes/#{@wfid}"
-
-    last_response.should be_redirect
-    last_response['Location'].should == 'http://example.org/_ruote/processes'
-
-    wait_for(@wfid)
-
-    engine.process(@wfid).should be_nil
-
-    @tracer.to_s.should == "in\nbailout."
-  end
-
-  it 'kills processes (JSON)' do
-
-    delete "/_ruote/processes/#{@wfid}.json?_kill=1"
-
-    last_response.status.should == 200
-
-    wait_for(@wfid)
-
-    engine.process(@wfid).should be_nil
-
-    @tracer.to_s.should == 'in'
-  end
-
-  it 'kills processes (HTML)' do
-
-    delete "/_ruote/processes/#{@wfid}?_kill=1"
-
-    last_response.should be_redirect
-    last_response['Location'].should == 'http://example.org/_ruote/processes'
-
-    wait_for(@wfid)
-
-    engine.process(@wfid).should be_nil
-
-    @tracer.to_s.should == 'in'
+      @tracer.to_s.should == 'in'
+    end
   end
 end
 

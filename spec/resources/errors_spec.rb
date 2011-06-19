@@ -1,3 +1,4 @@
+
 require 'spec_helper'
 
 describe '/_ruote/errors' do
@@ -5,12 +6,9 @@ describe '/_ruote/errors' do
   context 'without any running processes' do
 
     before(:each) do
-
       prepare_engine
     end
-
     after(:each) do
-
       shutdown_and_purge_engine
     end
 
@@ -58,11 +56,6 @@ describe '/_ruote/errors' do
 
       @error = RuoteKit.engine.process(@wfid).errors.first
       @fei = @error.fei
-    end
-
-    after(:each) do
-
-      shutdown_and_purge_engine
     end
 
     describe 'GET /_ruote/errors' do
