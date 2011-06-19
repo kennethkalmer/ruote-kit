@@ -4,12 +4,12 @@
 
 == ruote-kit - 2.2.1    not yet released
 
+- Pause/resume process instance
 - Upgraded to Haml 3.1.2
 - Making sure run_worker really sets RuoteKit.engine
 - Fixed issue with :skip vs :offset for query_workitems (Thanks Eric Smith)
 - Upgraded to Sinatra 1.2.x (Simone Carletti)
 - Upgraded to RSpec 2.5.x (Simone Carletti)
-- Upgraded to jQuery 1.5.2 (Simone Carletti)
 - Upgraded to jQuery 1.5.2 (Simone Carletti)
 - Fixed issue that caused the application to generate invalid asset URLs
   when RuoteKit::Application is mounted with a --prefix (Simone Carletti)

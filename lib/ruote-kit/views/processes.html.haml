@@ -14,6 +14,8 @@
     %td
       position
     %td
+      state
+    %td
       tags
     %td
       launched
@@ -41,6 +43,8 @@
             = alink(:workitems, stored_wi.fei.sid, :text => text)
           - else
             &= text
+      %td
+        = process.root_expression.state
       %td
         &= process.tags.collect { |ta| ta.first }.join(', ')
       %td

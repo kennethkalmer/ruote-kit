@@ -129,7 +129,12 @@ describe '/_ruote/processes' do
         last_response.should have_selector(
           'a[rel="http://ruote.rubyforge.org/rels.html#process_schedules"]')
 
-        last_response.should have_selector('td')
+        last_response.should have_selector(
+          'td')
+        last_response.should have_selector(
+          'input[name="_method"][type="hidden"][value="DELETE"]')
+        last_response.should have_selector(
+          'input[name="_method"][type="hidden"][value="PUT"]')
       end
 
       it 'gives process information back (JSON)' do
@@ -188,6 +193,106 @@ describe '/_ruote/processes' do
       last_response.status.should == 200
 
       last_response.should_not have_selector('a', :content => 'as JSON')
+    end
+  end
+
+  describe 'PUT /_ruote/processes/wfid' do
+
+    context 'without a valid process' do
+
+      it 'goes 404 (HTML)' do
+
+        put('/_ruote/processes/123-nada', :state => 'paused')
+
+        last_response.status.should == 404
+      end
+
+      it 'goes 404 (JSON)' do
+
+        put(
+          '/_ruote/processes/456-nada.json',
+          Rufus::Json.encode({ 'state' => 'paused' }),
+          { 'CONTENT_TYPE' => 'application/json' })
+
+        last_response.status.should == 404
+      end
+    end
+
+    context 'with a valid process' do
+
+      before(:each) do
+        @wfid = launch_nada_process
+      end
+
+      it 'pauses the process (HTML)' do
+
+        put(
+          "/_ruote/processes/#{@wfid}",
+          :state => 'paused')
+
+        last_response.status.should == 200
+        last_response.content_type.should match(/^text\/html\b/)
+
+        sleep 0.500
+
+        RuoteKit.engine.ps(@wfid).root_expression.state.should == 'paused'
+      end
+
+      it 'resumes the process if paused (HTML)' do
+
+        RuoteKit.engine.pause(@wfid)
+
+        sleep 0.500
+
+        RuoteKit.engine.ps(@wfid).root_expression.state.should == 'paused'
+
+        put(
+          "/_ruote/processes/#{@wfid}",
+          :state => 'resuming')
+
+        last_response.status.should == 200
+        last_response.content_type.should match(/^text\/html\b/)
+
+        sleep 0.500
+
+        RuoteKit.engine.ps(@wfid).root_expression.state.should == nil
+      end
+
+      it 'pauses the process (JSON)' do
+
+        put(
+          "/_ruote/processes/#{@wfid}.json",
+          Rufus::Json.encode({ 'state' => 'paused' }),
+          { 'CONTENT_TYPE' => 'application/json' })
+
+        last_response.status.should == 200
+        last_response.json_body['process'].should_not == nil
+
+        sleep 0.500
+
+        RuoteKit.engine.ps(@wfid).root_expression.state.should == 'paused'
+      end
+
+      it 'resumes the process if paused (JSON)' do
+
+        RuoteKit.engine.pause(@wfid)
+
+        sleep 0.500
+
+        RuoteKit.engine.ps(@wfid).root_expression.state.should == 'paused'
+
+        put(
+          "/_ruote/processes/#{@wfid}.json",
+          Rufus::Json.encode({ 'state' => 'resuming' }),
+          { 'CONTENT_TYPE' => 'application/json' })
+
+        last_response.status.should == 200
+        last_response.json_body['process'].should_not == nil
+
+        sleep 0.500
+
+        RuoteKit.engine.ps(@wfid).root_expression.state.should == nil
+      end
     end
   end
 

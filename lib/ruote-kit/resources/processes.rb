@@ -29,6 +29,21 @@ class RuoteKit::Application
     respond_with :process
   end
 
+  put '/_ruote/processes/:wfid' do
+
+    @process = RuoteKit.engine.process(params[:wfid])
+
+    return http_error(404) unless @process
+
+    if fetch_put_info['state'] == 'paused'
+      RuoteKit.engine.pause(params[:wfid])
+    else
+      RuoteKit.engine.resume(params[:wfid])
+    end
+
+    respond_with :process
+  end
+
   post '/_ruote/processes' do
 
     begin
@@ -65,6 +80,15 @@ class RuoteKit::Application
   end
 
   protected
+
+  def fetch_put_info
+
+    if request.content_type == 'application/json'
+      Rufus::Json.decode(request.body.read)
+    else
+      params
+    end
+  end
 
   def fetch_launch_info
 

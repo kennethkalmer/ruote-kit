@@ -13,6 +13,7 @@
     %td expid
     %td exp
     %td applied
+    %td state
 
 
   - @process.expressions.each do |expression|
@@ -25,6 +26,8 @@
         &= expression.tree.first
       %td
         = Time.parse(expression.h.put_at).localtime.strftime('%Y/%m/%d %H:%M:%S')
+      %td
+        = expression.state
 
 :javascript
 

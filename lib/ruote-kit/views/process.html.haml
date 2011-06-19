@@ -75,12 +75,28 @@
   %tr
     %td.no_border{ :colspan => 2 }
       &nbsp;
+  %tr
+    %td
+      %form{ :method => 'post' }
+        %input{ :type => 'hidden', :name => '_method', :value => 'PUT' }
+        - if @process.root_expression.state == 'paused'
+          %input{ :type => 'hidden', :name => 'state', :value => 'resuming' }
+          %input{ :type => 'submit', :value => 'resume', :onclick => 'return confirm("really resume process ?");' }
+        - else
+          %input{ :type => 'hidden', :name => 'state', :value => 'paused' }
+          %input{ :type => 'submit', :value => 'pause', :onclick => 'return confirm("really pause process ?");' }
+    %td
+      %span.description
+        - if @process.root_expression.state == 'paused'
+          PUT /_ruote/processes/#{@process.wfid}?state=resuming
+        - else
+          PUT /_ruote/processes/#{@process.wfid}?state=paused
 
   %tr
     %td
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'DELETE' }
-        %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really ?");' }
+        %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really cancel process ?");' }
     %td
       %span.description DELETE /_ruote/processes/#{@process.wfid}
   %tr
@@ -88,7 +104,7 @@
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'DELETE' }
         %input{ :type => 'hidden', :name => '_kill', :value => '1' }
-        %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really ?");' }
+        %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really kill process ?");' }
     %td
       %span.description DELETE /_ruote/processes/#{@process.wfid}?_kill=1
   %tr
