@@ -12,7 +12,7 @@ describe 'GET /_ruote/participants' do
     shutdown_and_purge_engine
   end
 
-  describe 'without any participant' do
+  context 'without any participant' do
 
     it 'gives an empty list (HTML)' do
 
@@ -34,7 +34,7 @@ describe 'GET /_ruote/participants' do
     end
   end
 
-  describe 'with participant' do
+  context 'with participant' do
 
     before(:each) do
 

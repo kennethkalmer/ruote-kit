@@ -1,229 +1,232 @@
 require 'spec_helper'
 
-describe 'without any running processes' do
+describe '/_ruote/errors' do
 
-  before(:each) do
+  context 'without any running processes' do
 
-    prepare_engine
-  end
+    before(:each) do
 
-  after(:each) do
-
-    shutdown_and_purge_engine
-  end
-
-  describe 'GET /_ruote/errors' do
-
-    it 'gives no processes back (HTML)' do
-
-      get '/_ruote/errors'
-
-      last_response.status.should be(200)
+      prepare_engine
     end
 
-    it 'gives an empty array (JSON)' do
+    after(:each) do
 
-      get '/_ruote/errors.json'
-
-      last_response.status.should be(200)
-
-      body = last_response.json_body
-      body.should have_key('errors')
-
-      body['errors'].should be_empty
+      shutdown_and_purge_engine
     end
-  end
-end
 
-describe 'with a running process that has an error' do
+    describe 'GET /_ruote/errors' do
 
-  before(:each) do
+      it 'gives no processes back (HTML)' do
 
-    prepare_engine
+        get '/_ruote/errors'
 
-    RuoteKit.engine.register_participant :alice, Ruote::StorageParticipant
-
-    @wfid = RuoteKit.engine.launch(
-      Ruote.process_definition(:name => 'test') do
-        sequence do
-          nemo
-          alice
-        end
+        last_response.status.should be(200)
       end
-    )
 
-    RuoteKit.engine.wait_for(@wfid)
+      it 'gives an empty array (JSON)' do
 
-    @error = RuoteKit.engine.process(@wfid).errors.first
-    @fei = @error.fei
-  end
+        get '/_ruote/errors.json'
 
-  after(:each) do
+        last_response.status.should be(200)
 
-    shutdown_and_purge_engine
-  end
+        body = last_response.json_body
+        body.should have_key('errors')
 
-  describe 'GET /_ruote/errors' do
-
-    it 'lists errors (HTML)' do
-
-      get '/_ruote/errors'
-
-      last_response.status.should be(200)
-      last_response.should match(/nemo/)
-    end
-
-    it 'lists errors (JSON)' do
-
-      get '/_ruote/errors.json'
-
-      last_response.status.should be(200)
-
-      json = last_response.json_body
-
-      # global links
-
-      json['links'].should == [
-        { 'href' => '/_ruote',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#root'  },
-        { 'href' => '/_ruote/processes',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#processes' },
-        { 'href' => '/_ruote/workitems',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#workitems' },
-        { 'href' => '/_ruote/errors',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#errors' },
-        { 'href' => '/_ruote/participants',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#participants' },
-        { 'href' => '/_ruote/schedules',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#schedules' },
-        { 'href' => '/_ruote/history',
-          'rel' => 'http://ruote.rubyforge.org/rels.html#history' },
-        { 'href' => '/_ruote/errors',
-          'rel' => 'self' },
-        { 'href' => '/_ruote/errors',
-          'rel' => 'all' },
-        { 'href' => '/_ruote/errors?limit=100&skip=0',
-          'rel' => 'first' },
-        { 'href' => '/_ruote/errors?limit=100&skip=0',
-          'rel' => 'last' },
-        { 'href' => '/_ruote/errors?limit=100&skip=0',
-          'rel' => 'previous' },
-        { 'href' => '/_ruote/errors?limit=100&skip=0',
-          'rel' => 'next' } ]
-
-      # the error itself
-
-      json['errors'].size.should == 1
-      json['errors'].first['message'].should == "#<RuntimeError: unknown participant or subprocess 'nemo'>"
-
-      # the links for the error itself
-
-      json['errors'].first['links'].should == [
-        { 'href' => "/_ruote/errors/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
-          'rel' => 'self' },
-        { 'href' => "/_ruote/errors/#{@wfid}",
-          'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },
-        { 'href' => "/_ruote/processes/#{@wfid}",
-          'rel' => 'http://ruote.rubyforge.org/rels.html#process' }
-      ]
-
-      #puts Rufus::Json.pretty_encode(json)
+        body['errors'].should be_empty
+      end
     end
   end
 
-  describe 'GET /_ruote/errors/:wfid' do
+  describe 'with a running process that has an error' do
 
-    it 'lists process errors (HTML)' do
+    before(:each) do
 
-      get "/_ruote/errors/#{@wfid}"
+      prepare_engine
 
-      last_response.status.should be(200)
-      last_response.should match(/nemo/)
+      RuoteKit.engine.register_participant :alice, Ruote::StorageParticipant
+
+      @wfid = RuoteKit.engine.launch(
+        Ruote.process_definition(:name => 'test') do
+          sequence do
+            nemo
+            alice
+          end
+        end
+      )
+
+      RuoteKit.engine.wait_for(@wfid)
+
+      @error = RuoteKit.engine.process(@wfid).errors.first
+      @fei = @error.fei
     end
 
-    it 'lists process errors (JSON)' do
+    after(:each) do
 
-      get "/_ruote/errors/#{@wfid}.json"
-
-      last_response.status.should be(200)
-
-      json = last_response.json_body
-
-      json['errors'].size.should == 1
-      json['errors'].first['message'].should == "#<RuntimeError: unknown participant or subprocess 'nemo'>"
-
-      json['errors'].first['links'].should == [
-        { 'href' => "/_ruote/errors/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
-          'rel' => 'self' },
-        { 'href' => "/_ruote/errors/#{@wfid}",
-          'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },
-        { 'href' => "/_ruote/processes/#{@wfid}",
-          'rel' => 'http://ruote.rubyforge.org/rels.html#process' } ]
-    end
-  end
-
-  describe 'GET /_ruote/errors/:fei' do
-
-    it 'shows the error (HTML)' do
-
-      get "/_ruote/errors/0_0_0!!#{@wfid}"
-
-      last_response.status.should be(200)
-      last_response.should match(/nemo/)
+      shutdown_and_purge_engine
     end
 
-    it 'shows the error (JSON)' do
+    describe 'GET /_ruote/errors' do
 
-      get "/_ruote/errors/0_0_0!!#{@wfid}.json"
+      it 'lists errors (HTML)' do
 
-      last_response.status.should be(200)
+        get '/_ruote/errors'
 
-      json = last_response.json_body
+        last_response.status.should be(200)
+        last_response.should match(/nemo/)
+      end
 
-      #puts Rufus::Json.pretty_encode(json)
+      it 'lists errors (JSON)' do
+
+        get '/_ruote/errors.json'
+
+        last_response.status.should be(200)
+
+        json = last_response.json_body
+
+        # global links
+
+        json['links'].should == [
+          { 'href' => '/_ruote',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#root'  },
+          { 'href' => '/_ruote/processes',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#processes' },
+          { 'href' => '/_ruote/workitems',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#workitems' },
+          { 'href' => '/_ruote/errors',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#errors' },
+          { 'href' => '/_ruote/participants',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#participants' },
+          { 'href' => '/_ruote/schedules',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#schedules' },
+          { 'href' => '/_ruote/history',
+            'rel' => 'http://ruote.rubyforge.org/rels.html#history' },
+          { 'href' => '/_ruote/errors',
+            'rel' => 'self' },
+          { 'href' => '/_ruote/errors',
+            'rel' => 'all' },
+          { 'href' => '/_ruote/errors?limit=100&skip=0',
+            'rel' => 'first' },
+          { 'href' => '/_ruote/errors?limit=100&skip=0',
+            'rel' => 'last' },
+          { 'href' => '/_ruote/errors?limit=100&skip=0',
+            'rel' => 'previous' },
+          { 'href' => '/_ruote/errors?limit=100&skip=0',
+            'rel' => 'next' } ]
+
+        # the error itself
+
+        json['errors'].size.should == 1
+        json['errors'].first['message'].should == "#<RuntimeError: unknown participant or subprocess 'nemo'>"
+
+        # the links for the error itself
+
+        json['errors'].first['links'].should == [
+          { 'href' => "/_ruote/errors/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
+            'rel' => 'self' },
+          { 'href' => "/_ruote/errors/#{@wfid}",
+            'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },
+          { 'href' => "/_ruote/processes/#{@wfid}",
+            'rel' => 'http://ruote.rubyforge.org/rels.html#process' }
+        ]
+
+        #puts Rufus::Json.pretty_encode(json)
+      end
     end
-  end
 
-  describe 'DELETE /_ruote/errors/:fei' do
+    describe 'GET /_ruote/errors/:wfid' do
 
-    it 'replays errors (HTML)' do
+      it 'lists process errors (HTML)' do
 
-      RuoteKit.engine.register_participant :nemo, Ruote::StorageParticipant
+        get "/_ruote/errors/#{@wfid}"
 
-      delete "/_ruote/errors/#{@error.fei.sid}"
+        last_response.status.should be(200)
+        last_response.should match(/nemo/)
+      end
 
-      last_response.status.should be(302)
-      last_response['Location'].should == 'http://example.org/_ruote/errors'
+      it 'lists process errors (JSON)' do
 
-      RuoteKit.engine.wait_for(:nemo)
+        get "/_ruote/errors/#{@wfid}.json"
 
-      RuoteKit.engine.storage_participant.size.should == 1
+        last_response.status.should be(200)
 
-      wi = RuoteKit.engine.storage_participant.first
-      wi.participant_name.should == 'nemo'
+        json = last_response.json_body
 
-      RuoteKit.engine.process(@wfid).errors.size.should == 0
+        json['errors'].size.should == 1
+        json['errors'].first['message'].should == "#<RuntimeError: unknown participant or subprocess 'nemo'>"
+
+        json['errors'].first['links'].should == [
+          { 'href' => "/_ruote/errors/#{@fei.expid}!#{@fei.subid}!#{@wfid}",
+            'rel' => 'self' },
+          { 'href' => "/_ruote/errors/#{@wfid}",
+            'rel' => 'http://ruote.rubyforge.org/rels.html#process_errors' },
+          { 'href' => "/_ruote/processes/#{@wfid}",
+            'rel' => 'http://ruote.rubyforge.org/rels.html#process' } ]
+      end
     end
 
-    it 'replays errors (JSON)' do
+    describe 'GET /_ruote/errors/:fei' do
 
-      #RuoteKit.engine.noisy = true
+      it 'shows the error (HTML)' do
 
-      RuoteKit.engine.register_participant :nemo, Ruote::StorageParticipant
+        get "/_ruote/errors/0_0_0!!#{@wfid}"
 
-      delete "/_ruote/errors/#{@error.fei.sid}.json"
+        last_response.status.should be(200)
+        last_response.should match(/nemo/)
+      end
 
-      last_response.status.should be(200)
-      last_response.json_body['status'].should == 'ok'
+      it 'shows the error (JSON)' do
 
-      RuoteKit.engine.wait_for(:nemo)
+        get "/_ruote/errors/0_0_0!!#{@wfid}.json"
 
-      RuoteKit.engine.storage_participant.size.should == 1
+        last_response.status.should be(200)
 
-      wi = RuoteKit.engine.storage_participant.first
-      wi.participant_name.should == 'nemo'
+        json = last_response.json_body
 
-      RuoteKit.engine.process(@wfid).errors.size.should == 0
+        #puts Rufus::Json.pretty_encode(json)
+      end
+    end
+
+    describe 'DELETE /_ruote/errors/:fei' do
+
+      it 'replays errors (HTML)' do
+
+        RuoteKit.engine.register_participant :nemo, Ruote::StorageParticipant
+
+        delete "/_ruote/errors/#{@error.fei.sid}"
+
+        last_response.status.should be(302)
+        last_response['Location'].should == 'http://example.org/_ruote/errors'
+
+        RuoteKit.engine.wait_for(:nemo)
+
+        RuoteKit.engine.storage_participant.size.should == 1
+
+        wi = RuoteKit.engine.storage_participant.first
+        wi.participant_name.should == 'nemo'
+
+        RuoteKit.engine.process(@wfid).errors.size.should == 0
+      end
+
+      it 'replays errors (JSON)' do
+
+        #RuoteKit.engine.noisy = true
+
+        RuoteKit.engine.register_participant :nemo, Ruote::StorageParticipant
+
+        delete "/_ruote/errors/#{@error.fei.sid}.json"
+
+        last_response.status.should be(200)
+        last_response.json_body['status'].should == 'ok'
+
+        RuoteKit.engine.wait_for(:nemo)
+
+        RuoteKit.engine.storage_participant.size.should == 1
+
+        wi = RuoteKit.engine.storage_participant.first
+        wi.participant_name.should == 'nemo'
+
+        RuoteKit.engine.process(@wfid).errors.size.should == 0
+      end
     end
   end
 end

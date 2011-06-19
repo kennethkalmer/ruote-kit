@@ -32,7 +32,7 @@ describe 'GET /_ruote/expressions/wfid' do
     shutdown_and_purge_engine
   end
 
-  describe 'with running processes' do
+  context 'with running processes' do
 
     before(:each) do
       @wfid = launch_nada_process
@@ -57,7 +57,7 @@ describe 'GET /_ruote/expressions/wfid' do
     end
   end
 
-  describe 'without running processes' do
+  context 'without running processes' do
 
     it 'goes 404 correctly (HTML)' do
 
@@ -89,7 +89,7 @@ describe 'GET /_ruote/expressions/fei' do
     shutdown_and_purge_engine
   end
 
-  describe 'with running processes' do
+  context 'with running processes' do
 
     before(:each) do
 
@@ -142,7 +142,7 @@ describe 'GET /_ruote/expressions/fei' do
     end
   end
 
-  describe 'without running processes' do
+  context 'without running processes' do
 
     it 'goes 404 correctly (HTML)' do
 
@@ -161,7 +161,7 @@ describe 'GET /_ruote/expressions/fei' do
     end
   end
 
-  describe 'with an expression that has a schedule' do
+  context 'with an expression that has a schedule' do
 
     before(:each) do
 
@@ -212,7 +212,7 @@ describe 'DELETE /_ruote/expressions/fei' do
     shutdown_and_purge_engine
   end
 
-  describe 'with running processes' do
+  context 'with running processes' do
 
     before(:each) do
 
@@ -339,7 +339,7 @@ describe 'DELETE /_ruote/expressions/fei' do
     end
   end
 
-  describe 'without running processes' do
+  context 'without running processes' do
 
     it 'goes 404 correctly (HTML)' do
 

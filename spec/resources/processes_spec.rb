@@ -30,7 +30,7 @@ describe 'GET /_ruote/processes' do
     shutdown_and_purge_engine
   end
 
-  describe 'without any running processes' do
+  context 'without any running processes' do
 
     it 'gives no processes back (HTML)' do
 
@@ -57,7 +57,7 @@ describe 'GET /_ruote/processes' do
     end
   end
 
-  describe 'with running processes' do
+  context 'with running processes' do
 
     before(:each) do
       @wfid = launch_nada_process
@@ -125,7 +125,7 @@ describe 'GET /_ruote/processes/wfid' do
     shutdown_and_purge_engine
   end
 
-  describe 'with a running process' do
+  context 'with a running process' do
 
     before(:each) do
 
@@ -156,7 +156,7 @@ describe 'GET /_ruote/processes/wfid' do
     end
   end
 
-  describe 'without a running process' do
+  context 'without a running process' do
 
     it 'goes 404 correctly (HTML)' do
 

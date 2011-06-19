@@ -21,7 +21,7 @@ describe 'GET /_ruote/workitems' do
     shutdown_and_purge_engine
   end
 
-  describe 'without any workitems' do
+  context 'without any workitems' do
 
     it 'reports no workitems (HTML)' do
 
@@ -44,7 +44,7 @@ describe 'GET /_ruote/workitems' do
     end
   end
 
-  describe 'with workitems' do
+  context 'with workitems' do
 
     before(:each) do
 
@@ -98,7 +98,7 @@ describe 'GET /_ruote/workitems/wfid' do
     shutdown_and_purge_engine
   end
 
-  describe 'with workitems' do
+  context 'with workitems' do
 
     before(:each) do
 
@@ -138,7 +138,7 @@ describe 'GET /_ruote/workitems/wfid' do
     end
   end
 
-  describe 'without workitems' do
+  context 'without workitems' do
 
     it 'reports no workitems (HTML)' do
 
@@ -176,7 +176,7 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
     shutdown_and_purge_engine
   end
 
-  describe 'with a workitem' do
+  context 'with a workitem' do
 
     before(:each) do
 
@@ -245,7 +245,7 @@ describe 'GET /_ruote/workitems/expid!subid!wfid' do
     end
   end
 
-  describe 'without a workitem' do
+  context 'without a workitem' do
 
     it 'returns a 404 (HTML)' do
 
@@ -474,7 +474,7 @@ describe 'Filtering workitems' do
     shutdown_and_purge_engine
   end
 
-  describe 'on participants' do
+  context 'on participants' do
 
     it 'narrows results down to a single participant (JSON)' do
 
@@ -496,7 +496,7 @@ describe 'Filtering workitems' do
 
   end
 
-  describe 'on field values' do
+  context 'on field values' do
 
     it 'finds workitems with fields set to a given value (JSON)' do
 
