@@ -93,25 +93,19 @@ class RuoteKit::Application
 
   def fetch_re_apply_info
 
-    if request.content_type == 'application/json' then
+    if request.content_type == 'application/json'
 
       data = Rufus::Json.decode(request.body.read)
-      if exp = data['expression']; data = exp; end
 
-      OpenStruct.new(data)
-
+      OpenStruct.new(
+        data['expression'] ? data['expression'] : data
+      )
     else
 
-      o = OpenStruct.new
-
-      if fields = params[:fields]
-        o.fields = Rufus::Json.decode(fields)
-      end
-      if tree = params[:tree]
-        o.tree = Rufus::Json.decode(tree)
-      end
-
-      o
+      OpenStruct.new(
+        'fields' => params[:fields] ? Rufus::Json.decode(params[:fields]) : nil,
+        'tree' => params[:tree] ? Rufus::Json.decode(params[:tree]) : nil
+      )
     end
   end
 end
