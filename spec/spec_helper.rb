@@ -16,9 +16,7 @@ rescue LoadError
 end
 
 
-unless defined?(SPEC_ROOT)
-  SPEC_ROOT = File.expand_path("../", __FILE__)
-end
+SPEC_ROOT = File.expand_path('..', __FILE__) unless defined?(SPEC_ROOT)
 
 require File.join(SPEC_ROOT, '../lib/ruote-kit')
 require 'ruote/log/test_logger'
