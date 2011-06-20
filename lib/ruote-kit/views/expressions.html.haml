@@ -8,6 +8,7 @@
 %canvas#fluo
 
 %table.list{ :style => 'width: auto;', :onmouseout => "Fluo.highlight('fluo')" }
+
   %thead
     %td fei
     %td expid
@@ -19,7 +20,7 @@
   - @process.expressions.each do |expression|
     %tr{ :onmouseover => "Fluo.highlight('fluo', '#{expression.fei.expid}')" }
       %td
-        = alink(:expressions, expression.fei.sid)
+        = alink(:expressions, expression.fei.sid, :text => [ expression.fei.wfid, expression.fei.expid ].join(' '))
       %td
         &= expression.fei.expid
       %td
