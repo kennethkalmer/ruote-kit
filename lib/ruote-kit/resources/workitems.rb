@@ -19,7 +19,7 @@ class RuoteKit::Application
       @limit = @count
     end
 
-    query['offset'] = @skip
+    query['skip'] = @skip
     query['limit'] = @limit
 
     @workitems = RuoteKit.engine.storage_participant.query(query)
@@ -35,7 +35,6 @@ class RuoteKit::Application
 
     if @workitem
       etag @workitem.to_h['_rev']
-
       respond_with :workitem
     else
       respond_with :workitems

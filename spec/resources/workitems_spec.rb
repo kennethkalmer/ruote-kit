@@ -59,18 +59,20 @@ describe '/_ruote/workitems' do
         RuoteKit.engine.wait_for(1)
       end
 
-      it 'has a list of workitems (HTML)' do
+      it 'returns a list of workitems (HTML)' do
 
         get '/_ruote/workitems'
 
         last_response.should match(workitem_count(1, 1, 1))
+        last_response.should have_selector('td', :content => @wfid)
       end
 
-      it 'has a list of workitems (JSON)' do
+      it 'returns a list of workitems (JSON)' do
 
         get '/_ruote/workitems.json'
 
-        last_response.should be_ok
+        last_response.status.should == 200
+
         json = last_response.json_body
 
         json['workitems'].size.should == 1
@@ -81,6 +83,25 @@ describe '/_ruote/workitems' do
         wi['wfid'].should == @wfid
         wi['participant_name'].should == 'nada'
         wi['fields']['params']['activity'].should == 'Work your magic'
+      end
+
+      it 'respects skip and limit (HTML)' do
+
+        get '/_ruote/workitems?limit=100&skip=0'
+
+        last_response.should match(workitem_count(1, 1, 1))
+        last_response.should have_selector('td', :content => @wfid)
+      end
+
+      it 'respects skip and limit (JSON)' do
+
+        get '/_ruote/workitems.json?limit=100&skip=0'
+
+        last_response.status.should == 200
+
+        json = last_response.json_body
+
+        json['workitems'].size.should == 1
       end
     end
   end
