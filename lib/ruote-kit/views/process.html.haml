@@ -135,7 +135,10 @@
 :javascript
 
   var proc_rep = #{process_tree(@process)};
-  Fluo.renderFlow('fluo', proc_rep);
+  var pins = #{Rufus::Json.encode(@pins)};
+
+  Fluo.renderFlow('fluo', proc_rep, { 'pins': pins });
+
   Fluo.crop('fluo');
   Fluo.resizeForMaxWidth('fluo', $('body').width() / 2.1);
 

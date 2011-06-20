@@ -24,6 +24,17 @@ class RuoteKit::Application
 
     @process = RuoteKit.engine.process(params[:wfid])
 
+    @pins = @process.leaves.collect { |fexp|
+      label = if fexp.error
+        'er'
+      elsif fexp.class == Ruote::Exp::ParticipantExpression
+        'wi'
+      else
+        '-'
+      end
+      [ fexp.fei.expid, label ]
+    }
+
     return http_error(404) unless @process
 
     respond_with :process
