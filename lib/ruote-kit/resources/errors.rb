@@ -15,9 +15,14 @@ class RuoteKit::Application
 
   get '/_ruote/errors/:id' do
 
-    @error, @errors = fetch_e
+    @error, @errors = fetch_err
 
     return http_error(404) if @error.nil? && @errors.nil?
+
+    if @error and request.accept.find { |as| as.match(/html/) }
+      @process = RuoteKit.engine.process(@error.wfid)
+      @pins = [ [ @error.fei.expid, 'er' ] ]
+    end
 
     if @error
       respond_with :error
@@ -49,7 +54,7 @@ class RuoteKit::Application
 
   protected
 
-  def fetch_e
+  def fetch_err
 
     fei = params[:id].split('!')
     wfid = fei.last

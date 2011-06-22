@@ -1,7 +1,11 @@
 
 - # under the MIT license, see LICENSE.txt
 
+- @_uses_fluo = true
+
 %h1 error #{@error.fei.sid}
+
+%canvas#fluo
 
 %table.details
 
@@ -40,8 +44,8 @@
     %td
       GET
       = alink(:expressions, @error.fei.sid)
-      %span.explanation
-        you can re-apply the expression (and hopefully nuke the error) from there
+      -#%span.explanation
+      -#  you can re-apply the expression (and hopefully nuke the error) from there
   %tr
     %td
       process
@@ -50,7 +54,7 @@
       = alink(:processes, @error.wfid)
   %tr
     %td
-      errors of this process
+      process errors
     %td
       GET
       = alink(:errors, @error.wfid)
@@ -64,6 +68,16 @@
       %form{ :method => 'POST' }
         %input{ :type => 'hidden', :name => '_method', :value => 'DELETE' }
         %input{ :type => 'submit', :value => "DELETE /_ruote/errors/#{@error.fei.sid}", :title => 'replay at this error' }
-        %span.explanation
-          replay at this error
+        -#%span.explanation
+        -#  replay at this error
+
+:javascript
+
+  var proc_rep = #{process_tree(@process)};
+  var pins = #{Rufus::Json.encode(@pins)};
+
+  Fluo.renderFlow('fluo', proc_rep, { 'pins': pins });
+
+  Fluo.crop('fluo');
+  Fluo.resizeForMaxWidth('fluo', $('body').width() / 2.1);
 

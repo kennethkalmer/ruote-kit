@@ -4,6 +4,7 @@
 
 == ruote-kit - 2.2.1    not yet released
 
+- Error : actually showing where the error is (red pin)
 - Pause/resume expression (breakpoint too)
 - Pause/resume process instance
 - Upgraded to Haml 3.1.2
