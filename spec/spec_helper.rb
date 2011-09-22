@@ -19,7 +19,6 @@ end
 SPEC_ROOT = File.expand_path('..', __FILE__) unless defined?(SPEC_ROOT)
 
 require File.join(SPEC_ROOT, '../lib/ruote-kit')
-require 'ruote/log/test_logger'
 
 Dir[File.join(SPEC_ROOT, 'support/**/*.rb')].each { |f| require(f) }
 
