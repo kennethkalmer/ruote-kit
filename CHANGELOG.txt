@@ -4,6 +4,7 @@
 
 == ruote-kit - 2.2.1    not yet released
 
+- ruote-fluo adapted to FF7 (mozDrawText -> fillText)
 - Error : actually showing where the error is (red pin)
 - Pause/resume expression (breakpoint too)
 - Pause/resume process instance
