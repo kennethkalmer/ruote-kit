@@ -11,6 +11,7 @@
 
 == Contributors
 
+- Islam Amer - https://github.com/iamer
 - Chris Buben - https://github.com/cbuben
 - Joeri Samson - https://github.com/joerixaop
 - Simone Carletti - https://github.com/weppos
@@ -18,7 +19,6 @@
 
 == Feedback
 
-- Islam Amer - https://github.com/iamer - gone root_expression[.state]
 - Eric Smith (broken 2.2.0.2)
 - Nicolai Reuschling - https://github.com/codeblogger
 - Frédéric Vanclef - https://github.com/fvanclef
