@@ -44,13 +44,15 @@
           - else
             &= text
       %td
-        = process.root_expression.state
+        = process.root_expression_state
       %td
         &= process.tags.collect { |ta| ta.first }.join(', ')
       %td
-        = Time.parse(process.launched_time).localtime.strftime('%Y/%m/%d %H:%M:%S')
+        - if process.launched_time
+          = Time.parse(process.launched_time).localtime.strftime('%Y/%m/%d %H:%M:%S')
       %td
-        = Time.parse(process.last_active).localtime.strftime('%Y/%m/%d %H:%M:%S')
+        - if process.last_active
+          = Time.parse(process.last_active).localtime.strftime('%Y/%m/%d %H:%M:%S')
       %td.right{ :title => 'expressions' }
         = alink(:expressions, process.wfid, :text => process.expressions.size)
       %td.right{ :title => 'errors' }
