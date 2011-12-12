@@ -65,7 +65,7 @@
     %td
       root exp state
     %td
-      = @process.root_expression.state
+      = @process.root_expression_state
   %tr
     %td
       tags
@@ -79,7 +79,7 @@
     %td
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'PUT' }
-        - if @process.root_expression.state == 'paused'
+        - if @process.root_expression_state == 'paused'
           %input{ :type => 'hidden', :name => 'state', :value => 'resuming' }
           %input{ :type => 'submit', :value => 'resume', :onclick => 'return confirm("really resume process ?");' }
         - else
@@ -87,7 +87,7 @@
           %input{ :type => 'submit', :value => 'pause', :onclick => 'return confirm("really pause process ?");' }
     %td
       %span.description
-        - if @process.root_expression.state == 'paused'
+        - if @process.root_expression_state == 'paused'
           PUT /_ruote/processes/#{@process.wfid}?state=resuming
         - else
           PUT /_ruote/processes/#{@process.wfid}?state=paused

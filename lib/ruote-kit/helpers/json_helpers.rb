@@ -191,7 +191,8 @@ module Ruote
       h['errors'] = @errors.size
       h['stored_workitems'] = @stored_workitems.size
       h['workitems'] = workitems.size
-      h['root_expression_state'] = root_expression.state
+
+      h['root_expression_state'] = root_expression_state
 
       properties = %w[
         wfid
@@ -212,6 +213,11 @@ module Ruote
       }
 
       h
+    end
+
+    def root_expression_state
+
+      @root_expression ? @root_expression.state : '(no root expression)'
     end
   end
 

@@ -18,6 +18,7 @@
 
 == Feedback
 
+- Islam Amer - https://github.com/iamer - gone root_expression[.state]
 - Eric Smith (broken 2.2.0.2)
 - Nicolai Reuschling - https://github.com/codeblogger
 - Frédéric Vanclef - https://github.com/fvanclef
