@@ -1,3 +1,4 @@
+
 require 'spec_helper'
 
 undef :context if defined?(context)
@@ -24,7 +25,17 @@ describe RuoteKit do
 #    end
 #  end
 
-  describe 'bind_engine' do
+  describe 'direct engine setting' do
+
+    # stupid illustrative spec
+
+    it 'complies' do
+      RuoteKit.engine = Ruote::Engine.new(Ruote::HashStorage.new)
+      RuoteKit.engine.should_not == nil
+    end
+  end
+
+  describe '.bind_engine' do
 
     before(:each) do
       RuoteKit.bind_engine(Ruote::HashStorage.new)
@@ -43,13 +54,31 @@ describe RuoteKit do
     end
   end
 
-  describe 'direct engine setting' do
+  describe '.engine' do
 
-    # stupid illustrative spec
+    it 'returns the Dashboard' do
+      RuoteKit.engine.class.should == Ruote::Dashboard
+    end
+  end
 
-    it 'complies' do
-      RuoteKit.engine = Ruote::Engine.new(Ruote::HashStorage.new)
-      RuoteKit.engine.should_not == nil
+  describe '.dashboard' do
+
+    it 'returns the Dashboard' do
+      RuoteKit.dashboard.class.should == Ruote::Dashboard
+    end
+  end
+
+  describe '.storage_participant' do
+
+    it 'returns the StorageParticipant' do
+      RuoteKit.storage_participant.class.should == Ruote::StorageParticipant
+    end
+  end
+
+  describe '.worklist' do
+
+    it 'returns the StorageParticipant' do
+      RuoteKit.worklist.class.should == Ruote::StorageParticipant
     end
   end
 end

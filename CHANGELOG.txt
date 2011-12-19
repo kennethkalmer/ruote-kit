@@ -4,6 +4,8 @@
 
 == ruote-kit - 2.2.1    not yet released
 
+- RuoteKit.worklist (alias to RuoteKit.store_participant)
+- RuoteKit.dashboard (alias to RuoteKit.engine)
 - ruote-fluo adapted to FF7 (mozDrawText -> fillText)
 - Error : actually showing where the error is (red pin)
 - Pause/resume expression (breakpoint too)
