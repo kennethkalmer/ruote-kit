@@ -55,12 +55,14 @@
     %td
       launch time
     %td
-      = Time.parse(@process.launched_time).localtime.strftime('%Y/%m/%d %H:%M:%S')
+      - if @process.launched_time
+        = Time.parse(@process.launched_time).localtime.strftime('%Y/%m/%d %H:%M:%S')
   %tr
     %td
       last active
     %td
-      = Time.parse(@process.last_active).localtime.strftime('%Y/%m/%d %H:%M:%S')
+      - if @process.last_active
+        = Time.parse(@process.last_active).localtime.strftime('%Y/%m/%d %H:%M:%S')
   %tr
     %td
       root exp state
