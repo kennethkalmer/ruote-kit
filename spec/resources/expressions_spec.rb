@@ -1,6 +1,7 @@
 
 require 'spec_helper'
 
+
 describe '/_ruote/expressions' do
 
   before(:each) do
@@ -20,7 +21,7 @@ describe '/_ruote/expressions' do
     end
   end
 
-  describe 'GET /_ruote/expressions/wfid' do
+  describe 'GET /_ruote/expressions/:wfid' do
 
     context 'with running processes' do
 
@@ -67,7 +68,7 @@ describe '/_ruote/expressions' do
     end
   end
 
-  describe 'GET /_ruote/expressions/fei' do
+  describe 'GET /_ruote/expressions/:fei' do
 
     context 'with running processes' do
 
@@ -183,7 +184,7 @@ describe '/_ruote/expressions' do
     end
   end
 
-  describe 'DELETE /_ruote/expressions/fei' do
+  describe 'DELETE /_ruote/expressions/:fei' do
 
     context 'with running processes' do
 
@@ -332,7 +333,7 @@ describe '/_ruote/expressions' do
     end
   end
 
-  describe 'PUT /_ruote/expressions/fei' do
+  describe 'PUT /_ruote/expressions/:fei' do
 
     before(:each) do
 

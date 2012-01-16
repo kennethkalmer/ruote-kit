@@ -1,6 +1,7 @@
 
 require 'spec_helper'
 
+
 describe '/_ruote/processes' do
 
   before(:each) do
@@ -112,7 +113,7 @@ describe '/_ruote/processes' do
     end
   end
 
-  describe 'GET /_ruote/processes/wfid' do
+  describe 'GET /_ruote/processes/:wfid' do
 
     context 'with a running process' do
 
@@ -196,7 +197,7 @@ describe '/_ruote/processes' do
     end
   end
 
-  describe 'PUT /_ruote/processes/wfid' do
+  describe 'PUT /_ruote/processes/:wfid' do
 
     context 'without a valid process' do
 
@@ -430,7 +431,7 @@ describe '/_ruote/processes' do
 
   end
 
-  describe 'DELETE /_ruote/processes/wfid' do
+  describe 'DELETE /_ruote/processes/:wfid' do
 
     before(:each) do
 

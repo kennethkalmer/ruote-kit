@@ -1,4 +1,6 @@
+
 require 'spec_helper'
+
 
 describe '/_ruote/participants' do
 

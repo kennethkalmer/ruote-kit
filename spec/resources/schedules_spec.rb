@@ -1,6 +1,7 @@
 
 require 'spec_helper'
 
+
 describe '/_ruote/schedules' do
 
   before(:each) do
@@ -78,7 +79,7 @@ describe '/_ruote/schedules' do
     end
   end
 
-  describe 'GET /_ruote/schedules/wfid' do
+  describe 'GET /_ruote/schedules/:wfid' do
 
     before(:each) do
 

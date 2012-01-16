@@ -1,6 +1,7 @@
 
 require 'spec_helper'
 
+
 describe '/_ruote/errors' do
 
   context 'without any running processes' do

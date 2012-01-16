@@ -1,4 +1,6 @@
+
 require 'spec_helper'
+
 
 describe RuoteKit::Helpers::RenderHelpers do
 
@@ -235,7 +237,6 @@ describe RuoteKit::Helpers::RenderHelpers do
         'a', :rel => 'next')
       html.should_not have_selector(
         'a', :rel => 'last')
-
     end
 
     it 'paginates correctly (corner case 30 items, limit 10, skip 20)' do
@@ -250,7 +251,6 @@ describe RuoteKit::Helpers::RenderHelpers do
         'a', :rel => 'next')
       html.should_not have_selector(
         'a', :rel => 'last')
-
     end
 
     it 'does not show there is an item if there is none' do
@@ -273,7 +273,6 @@ describe RuoteKit::Helpers::RenderHelpers do
         'a', :rel => 'next')
       html.should_not have_selector(
         'a', :rel => 'last')
-
     end
 
     it 'ignores negative values for skip param' do
@@ -288,7 +287,6 @@ describe RuoteKit::Helpers::RenderHelpers do
 
       # perhaps a redirection to the same url but with a sane param would be
       # more appropriate?
-
     end
 
     it 'ignores values for the skip param larger than the number of items' do
@@ -303,19 +301,16 @@ describe RuoteKit::Helpers::RenderHelpers do
 
       # perhaps a redirection to the same url but with a sane param would be
       # more appropriate?
-
     end
-
   end
-
 
   private
 
-    # Simulates Sinatra::Helpers#uri.
-    def uri(addr = nil, absolute = true, add_script_name = true)
-      addr
-    end
-    alias :url :uri
-    alias :to :uri
-
+  # Simulates Sinatra::Helpers#uri.
+  def uri(addr = nil, absolute = true, add_script_name = true)
+    addr
+  end
+  alias :url :uri
+  alias :to :uri
 end
+

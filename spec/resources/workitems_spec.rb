@@ -1,6 +1,7 @@
 
 require 'spec_helper'
 
+
 describe '/_ruote/workitems' do
 
   before(:each) do
@@ -106,7 +107,7 @@ describe '/_ruote/workitems' do
     end
   end
 
-  describe 'GET /_ruote/workitems/wfid' do
+  describe 'GET /_ruote/workitems/:wfid' do
 
     context 'with workitems' do
 
@@ -267,7 +268,7 @@ describe '/_ruote/workitems' do
     end
   end
 
-  describe 'PUT /_ruote/workitems/fei' do
+  describe 'PUT /_ruote/workitems/:fei' do
 
     before(:each) do
 
