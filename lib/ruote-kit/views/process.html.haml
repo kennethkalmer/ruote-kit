@@ -57,12 +57,16 @@
     %td
       - if @process.launched_time
         = Time.parse(@process.launched_time).localtime.strftime('%Y/%m/%d %H:%M:%S')
+      - else
+        ?
   %tr
     %td
       last active
     %td
       - if @process.last_active
         = Time.parse(@process.last_active).localtime.strftime('%Y/%m/%d %H:%M:%S')
+      - else
+        ?
   %tr
     %td
       root exp state
@@ -72,7 +76,7 @@
     %td
       tags
     %td
-      &= @process.tags.collect { |ta| ta.first }.join(', ')
+      &= (@process.tags || []).collect { |ta| ta.first }.join(', ')
 
   %tr
     %td.no_border{ :colspan => 2 }

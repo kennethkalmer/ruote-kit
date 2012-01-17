@@ -24,7 +24,7 @@ class RuoteKit::Application
 
     @process = RuoteKit.engine.process(params[:wfid])
 
-    return http_error(404) unless @process
+    return http_error(404) if @process.nil? or @process.expressions.empty?
 
     @pins = @process.leaves.collect { |fexp|
       label = if fexp.error

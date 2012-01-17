@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/jmettraux/ruote.git
-  revision: 2fc23b0a32fc382ddb4bc359584cb9fa16b4a018
+  revision: 7c27d58a718cda9d800eb235589d4484a32e8fe2
   specs:
     ruote (2.3.0)
       parslet (= 1.2.3)

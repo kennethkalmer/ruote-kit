@@ -7,8 +7,6 @@ class RuoteKit::Application
 
     @process, @expression, fei = fetch_pef
 
-    return http_error(404) unless @process
-
     if fei
 
       return http_error(404) unless @expression
@@ -16,7 +14,10 @@ class RuoteKit::Application
       etag @expression.to_h['_rev']
 
       respond_with :expression
+
     else
+
+      return http_error(404) if @process.nil? or @process.expressions.empty?
 
       respond_with :expressions
     end
