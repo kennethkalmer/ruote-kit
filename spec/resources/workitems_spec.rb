@@ -218,9 +218,25 @@ describe '/_ruote/workitems' do
         }.should == %w[
           self
           http://ruote.rubyforge.org/rels.html#process
+          http://ruote.rubyforge.org/rels.html#expression
           http://ruote.rubyforge.org/rels.html#process_expressions
           http://ruote.rubyforge.org/rels.html#process_errors
         ]
+
+        link_for(
+          last_response.json_body['workitem']['links'], 'self'
+        ).should ==
+          "/_ruote/workitems/#{@fei.sid}"
+
+        link_for(
+          last_response.json_body['workitem']['links'], '#expression'
+        ).should ==
+          "/_ruote/expressions/#{@fei.sid}"
+
+        link_for(
+          last_response.json_body['workitem']['links'], '#process_expressions'
+        ).should ==
+          "/_ruote/expressions/#{@fei.wfid}"
       end
 
       it 'includes an etag header (HTML)' do

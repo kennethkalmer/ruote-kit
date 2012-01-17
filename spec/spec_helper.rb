@@ -40,6 +40,7 @@ RSpec.configure do |config|
 
   config.include RenderHelper
   config.include EngineHelper
+  config.include LinkHelper
 
   RuoteKit::Application.included_modules.each do |klass|
     config.include(klass) if klass.name =~ /RuoteKit::Helpers::\w+Helpers/

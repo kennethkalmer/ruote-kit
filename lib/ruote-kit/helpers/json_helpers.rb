@@ -72,8 +72,9 @@ module RuoteKit
         detailed = (@workitem != nil)
 
         links = [
-          hlink('expressions', workitem.fei.sid, :rel => 'self'),
+          hlink('workitems', workitem.fei.sid, :rel => 'self'),
           hlink('processes', workitem.fei.wfid, :rel => '#process'),
+          hlink('expressions', workitem.fei.sid, :rel => '#expression'),
           hlink('expressions', workitem.fei.wfid, :rel => '#process_expressions'),
           hlink('errors', workitem.fei.wfid, :rel => '#process_errors')
         ]

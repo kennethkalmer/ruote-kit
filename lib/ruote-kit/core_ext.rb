@@ -1,4 +1,6 @@
+
 unless :foo.respond_to?(:<=>)
+
   class Symbol
 
     # Compares self against other
@@ -9,6 +11,5 @@ unless :foo.respond_to?(:<=>)
     def <=>(other)
       to_s <=> other.to_s
     end
-
   end
 end
