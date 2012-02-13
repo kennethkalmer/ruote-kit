@@ -17,7 +17,7 @@
     = @count
     = res
 
-    - las = ((@count / lim.to_f).ceil - 1) * lim
+    - las = lim < 1 ? @count : ((@count / lim.to_f).ceil - 1) * lim
     - pre = [ 0, @skip - lim ].max
     - nex = [ @skip + lim, las ].min
 

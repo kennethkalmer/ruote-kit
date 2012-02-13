@@ -36,7 +36,33 @@ describe '/_ruote/errors' do
     end
   end
 
-  describe 'with a running process that has an error' do
+  context 'with a running process that has no errors' do
+
+    before(:each) do
+
+      prepare_engine
+
+      @wfid = RuoteKit.engine.launch(
+        Ruote.define do
+          stall # sit there and do nothing
+        end
+      )
+
+      RuoteKit.engine.wait_for(2)
+    end
+
+    describe 'GET /_ruote/errors/:wfid' do
+
+      it 'returns an empty list' do
+
+        get "/_ruote/errors/#{@wfid}"
+
+        last_response.status.should == 200
+      end
+    end
+  end
+
+  context 'with a running process that has an error' do
 
     before(:each) do
 
