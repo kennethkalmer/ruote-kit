@@ -16,7 +16,7 @@ PATH
   remote: .
   specs:
     ruote-kit (2.3.0)
-      haml (= 3.1.2)
+      haml (>= 3.1.2)
       rufus-json (>= 0.2.5)
       sinatra (~> 1.2.0)
       sinatra-respond_to (~> 0.7.0)
