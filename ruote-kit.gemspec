@@ -24,8 +24,11 @@ ruote workflow engine, wrapped in a loving rack embrace
     'lib/ruote-kit/public/**/*', 'lib/ruote-kit/views/**/*'
   ] - [ 'rails-template.rb' ]
 
-  s.add_runtime_dependency 'sinatra', '~> 1.2.0'
-  s.add_runtime_dependency 'sinatra-respond_to', '~> 0.7.0'
+  #s.add_runtime_dependency 'sinatra', '~> 1.2.0'
+  #s.add_runtime_dependency 'sinatra-respond_to', '~> 0.7.0'
+  s.add_runtime_dependency 'sinatra', '>= 1.2.0'
+  s.add_runtime_dependency 'sinatra-respond_to', '>= 0.7.0'
+
   s.add_runtime_dependency 'haml', '>= 3.1.2'
 
   s.add_runtime_dependency 'rufus-json', '>= 0.2.5'
