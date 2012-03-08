@@ -2,7 +2,7 @@
 = ruote-kit - CHANGELOG.txt
 
 
-== ruote-kit - 2.2.1    not yet released
+== ruote-kit - 2.3.0    not yet released
 
 - RuoteKit.worklist (alias to RuoteKit.store_participant)
 - RuoteKit.dashboard (alias to RuoteKit.engine)
