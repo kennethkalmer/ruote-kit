@@ -12,11 +12,8 @@ describe '/_ruote/workitems' do
   end
 
   def workitem_count(from, to, of)
-    [
-      from, 'to', to, 'of', of, 'workitems'
-    ].collect { |e|
-      e.to_s
-    }.join("\n                  ")
+
+    /\s#{from}\s+to\s+#{to}\s+of\s+#{of}\s/
   end
 
   describe 'GET /_ruote/workitems' do
@@ -490,7 +487,6 @@ describe '/_ruote/workitems' do
         get '/_ruote/workitems.json', :participant => 'jack'
 
         last_response.should be_ok
-
         last_response.json_body['workitems'].size.should == 1
       end
 
@@ -499,7 +495,6 @@ describe '/_ruote/workitems' do
         get '/_ruote/workitems', :participant => 'jack'
 
         last_response.should be_ok
-
         last_response.should match(workitem_count(1, 3, 3))
       end
 
@@ -512,7 +507,6 @@ describe '/_ruote/workitems' do
         get '/_ruote/workitems.json', :hinkypinky => 'honkytonky'
 
         last_response.should be_ok
-
         last_response.json_body['workitems'].size.should == 2
       end
 
@@ -528,7 +522,6 @@ describe '/_ruote/workitems' do
         get '/_ruote/workitems.json', :wands => 101
 
         last_response.should be_ok
-
         last_response.json_body['workitems'].size.should == 1
       end
 
@@ -544,7 +537,6 @@ describe '/_ruote/workitems' do
         get '/_ruote/workitems.json', :hinkypinky => 'honkytonky', :wands => 101
 
         last_response.should be_ok
-
         last_response.json_body['workitems'].size.should == 1
       end
 
