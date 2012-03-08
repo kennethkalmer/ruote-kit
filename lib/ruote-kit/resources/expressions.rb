@@ -65,10 +65,10 @@ class RuoteKit::Application
         RuoteKit.engine.resume(exp.fei)
       end
 
-      route = request.route
-      route = route + '.json' if request.media_type.match(/json/) # :-(
+      path = Rack::Utils.unescape(request.path_info)
+      path = path + '.json' if request.media_type.match(/json/) # :-(
 
-      redirect(url(route))
+      redirect(url(path))
 
     else
 
