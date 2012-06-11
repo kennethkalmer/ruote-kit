@@ -1,6 +1,6 @@
 # encoding: utf-8
-$:.push File.expand_path("../lib", __FILE__)
-require "ruote-kit/version"
+$:.push File.expand_path('../lib', __FILE__)
+require 'ruote-kit/version'
 
 Gem::Specification.new do |s|
 
@@ -24,8 +24,6 @@ ruote workflow engine, wrapped in a loving rack embrace
     'lib/ruote-kit/public/**/*', 'lib/ruote-kit/views/**/*'
   ] - [ 'rails-template.rb' ]
 
-  #s.add_runtime_dependency 'sinatra', '~> 1.2.0'
-  #s.add_runtime_dependency 'sinatra-respond_to', '~> 0.7.0'
   s.add_runtime_dependency 'sinatra', '>= 1.2.0'
   s.add_runtime_dependency 'sinatra-respond_to', '>= 0.7.0'
 
@@ -36,7 +34,7 @@ ruote workflow engine, wrapped in a loving rack embrace
   s.add_runtime_dependency('ruote', '>= 2.2.0') unless defined?(Bundler)
     # see Gemfile
 
-  s.add_development_dependency 'rspec', '~> 2.5.0'
+  s.add_development_dependency 'rspec', '>= 2.5.0'
   s.add_development_dependency 'rack-test', '0.5.7'
   s.add_development_dependency 'webrat', '0.7.3'
 
