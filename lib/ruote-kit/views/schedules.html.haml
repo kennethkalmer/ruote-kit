@@ -26,7 +26,7 @@
       %td
         %div
           = alink(:expressions, schedule['owner'].sid)
-        - if schedule['owner'] != schedule['target']
+        - if schedule['target'] && schedule['target'] != schedule['owner']
           %div
             = alink(:expressions, schedule['target'].sid)
       %td

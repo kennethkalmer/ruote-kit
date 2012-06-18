@@ -93,6 +93,12 @@ describe '/_ruote/schedules' do
       end)
 
       RuoteKit.engine.wait_for(:alpha)
+
+      @wfid2 = RuoteKit.engine.launch(Ruote.define do
+        bravo :timers => '1d: x, 2d: timeout'
+      end)
+
+      RuoteKit.engine.wait_for(:bravo)
     end
 
     it 'lists schedules (HTML)' do
@@ -111,6 +117,20 @@ describe '/_ruote/schedules' do
       #puts Rufus::Json.pretty_encode(last_response.json_body)
 
       last_response.json_body['schedules'].size.should == 1
+    end
+
+    it 'list schedules with timers (nil target) (HTML)' do
+
+      get "/_ruote/schedules/#{@wfid2}"
+
+      last_response.status.should be(200)
+    end
+
+    it 'list schedules with timers (nil target) (JSON)' do
+
+      get "/_ruote/schedules/#{@wfid2}.json"
+
+      last_response.status.should be(200)
     end
   end
 end

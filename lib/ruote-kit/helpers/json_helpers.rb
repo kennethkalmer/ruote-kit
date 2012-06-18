@@ -114,12 +114,16 @@ module RuoteKit
           target_fei = sched.delete('target')
 
           sched['owner'] = owner_fei.to_h
-          sched['target'] = target_fei.to_h
+          sched['target'] = target_fei ? target_fei.to_h : nil
 
-          sched['links'] = [
-            hlink('expressions', owner_fei.sid, :rel => '#schedule_owner'),
-            hlink('expressions', target_fei.sid, :rel => '#schedule_target')
-          ]
+          sched['links'] = []
+
+          sched['links'] << hlink(
+            'expressions', owner_fei.sid, :rel => '#schedule_owner'
+          )
+          sched['links'] << hlink(
+            'expressions', target_fei.sid, :rel => '#schedule_target'
+          ) if target_fei
         end
 
         @schedules
