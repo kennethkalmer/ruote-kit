@@ -40,9 +40,9 @@ Have a look at the Gemfile if you want to see the various dependencies.
     $ mkdir my-ruote-kit && cd my-ruote-kit
 * There are two files needed in that directory: Gemfile and config.ru
   * Gemfile
-      source :gemcutter
-      gem 'ruote', '~> 2.2.0'
-      gem 'ruote-kit', '~> 2.2.0'
+      source :rubygems
+      gem 'ruote', :git => 'git://github.com/jmettraux/ruote.git'
+      gem 'ruote-kit', :git => 'git://github.com/kennethkalmer/ruote.git'
   * config.ru
       begin
         # Try to require the preresolved locked set of gems.
