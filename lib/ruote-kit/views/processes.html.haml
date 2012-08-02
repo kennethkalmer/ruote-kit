@@ -46,7 +46,7 @@
       %td
         = process.root_expression_state
       %td
-        &= process.tags.collect { |ta| ta.first }.join(', ')
+        &= (process.tags || []).collect { |ta| ta.first }.join(', ')
       %td
         - if process.launched_time
           = Time.parse(process.launched_time).localtime.strftime('%Y/%m/%d %H:%M:%S')

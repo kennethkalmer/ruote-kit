@@ -19,6 +19,8 @@
 
 == Feedback
 
+- https://github.com/hallucynogenyc (documentation)
+- Gert van der Spoel (process.tags nil and /_ruote/processes)
 - Danny Fullerton (timers not rendering (target nil))
 - Eric Smith (broken 2.2.0.2)
 - Nicolai Reuschling - https://github.com/codeblogger
