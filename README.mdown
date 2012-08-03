@@ -1,212 +1,250 @@
 
-= ruote-kit (ruote on rack)
+# ruote-kit (ruote on rack)
 
-A wrapper around the ruote[http://ruote.rubyforge.org] workflow engine,
-built as a modular sinatra[http://www.sinatrarb.com/] application.
+A wrapper around the [ruote](http://ruote.rubyforge.org) workflow engine,
+built as a modular [Sinatra](http://www.sinatrarb.com/) application.
 
 Follow development:
 
-* #ruote on Freenode
-* http://groups.google.com/group/openwferu-users
-* http://opensourcery.co.za
-* @kennethkalmer on Twitter
+* \#ruote on Freenode
+* <http://groups.google.com/group/openwferu-users>
+* <http://opensourcery.co.za>
+* [@kennethkalmer](http://twitter.com/kennethkalmer) on Twitter
 
-== Dependencies
+## Dependencies
 
-ruote-kit uses Bundler[http://gembundler.com/] to setup and maintain its
+ruote-kit uses [Bundler](http://gembundler.com/) to setup and maintain its
 environment. Before running ruote-kit for the first time you need to install
 Bundler (gem install bundler) and then run:
 
-  $ bundle install
+    $ bundle install
 
 Bundler will download all the required gems and install them for you.
 
 Have a look at the Gemfile if you want to see the various dependencies.
 
-== Getting started quickly
+## Getting started quickly
 
-=== Using the source
+### Using the source
 
 * Get the source files using git
+
     $ git clone http://github.com/kennethkalmer/ruote-kit.git && cd ruote-kit
+
 * Make sure every dependency is resolved
+
     $ bundle install
+
 * Get going
+
     $ rackup
 
-=== Using the RubyGem / Bundler
+### Using the RubyGem / Bundler
 
 * You'll need an empty directory
+
     $ mkdir my-ruote-kit && cd my-ruote-kit
+
 * There are two files needed in that directory: Gemfile and config.ru
+
   * Gemfile
-      source :rubygems
-      gem 'ruote', :git => 'git://github.com/jmettraux/ruote.git'
-      gem 'ruote-kit', :git => 'git://github.com/kennethkalmer/ruote-kit.git'
+
+```ruby
+    source :rubygems
+    gem 'ruote', :git => 'git://github.com/jmettraux/ruote.git'
+    gem 'ruote-kit', :git => 'git://github.com/kennethkalmer/ruote-kit.git'
+```
+
   * config.ru
-      begin
-        # Try to require the preresolved locked set of gems.
-        require ::File.expand_path('.bundle/environment', __FILE__)
-      rescue LoadError
-        # Fall back on doing an unlocked resolve at runtime.
-        require "rubygems"
-        require "bundler"
-        Bundler.setup(:default)
-      end
 
-      # load json backend
-      require 'yajl-ruby'    # fastest, but uses a c module
-      # require 'json_pure'  # should work everywhere
+```ruby
+    begin
+      # Try to require the preresolved locked set of gems.
+      require ::File.expand_path('.bundle/environment', __FILE__)
+    rescue LoadError
+      # Fall back on doing an unlocked resolve at runtime.
+      require "rubygems"
+      require "bundler"
+      Bundler.setup(:default)
+    end
 
-      require 'ruote-kit'
+    # load json backend
+    require 'yajl-ruby'    # fastest, but uses a c module
+    #require 'json_pure'  # should work everywhere
 
-      RuoteKit.engine = Ruote::Engine.new(
-        Ruote::Worker.new(
-          Ruote::FsStorage.new('ruote_work')))
+    require 'ruote-kit'
 
-      RuoteKit.engine.register do
-        catchall
-      end
+    RuoteKit.engine = Ruote::Engine.new(
+      Ruote::Worker.new(
+        Ruote::FsStorage.new('ruote_work')))
 
-      use Rack::CommonLogger
-      use Rack::Lint
+    RuoteKit.engine.register do
+      catchall
+    end
 
-      run RuoteKit::Application
+    use Rack::CommonLogger
+    use Rack::Lint
+
+    run RuoteKit::Application
+```
+
 * Install all needed gems
+
     $ bundle install
+
 * Get going
+
     $ rackup
 
-=== Accessing the web interface
+### Accessing the web interface
 
 If ruote-kit starts up without any issues (ie missing dependencies), you can
-point your browser to 'http://localhost:9292/_ruote/' to get going.
+point your browser to <http://localhost:9292/_ruote/> to get going.
 By default ruote-kit binds to all IP addresses, so this works out the box
 remotely too.
 
-== Plugging ruote-kit into your rack-stack
+## Plugging ruote-kit into your rack-stack
 
 ruote-kit is fully self-sufficient piece of rack, but can be slotted into any
 rack middleware stack without issues.
 
 Example:
 
-  RuoteKit.engine = Ruote::Engine.new(
-    Ruote::Worker.new(
-      Ruote::FsStorage.new('ruote_work')))
+```ruby
+    RuoteKit.engine = Ruote::Engine.new(
+      Ruote::Worker.new(
+        Ruote::FsStorage.new('ruote_work')))
 
-  RuoteKit.engine.register do
-    catchall
-  end
+    RuoteKit.engine.register do
+      catchall
+    end
 
+    # Slot into the stack
+    use RuoteKit::Application
+```
 
-  # Slot into the stack
-  use RuoteKit::Application
-
-=== Notes for Rails
+### Notes for Rails
 
 ruote-kit ships with an application template for Ruby on Rails 3.
 
-==== Generate a new Rails app using ruote[-kit]
+#### Generate a new Rails app using ruote[-kit]
 
-*   install Rails
-        $ gem install rails
-*   create a new Rails app by running
-        $ rails new foo -m https://github.com/kennethkalmer/ruote-kit/raw/master/rails-template.rb
-*   cd into the new Rails dir
-        $ cd foo
-*   make sure all dependencies are met
-        $ bundle install
+* install Rails
 
-==== Update an existing Rails app to use ruote[-kit]
+    $ gem install rails
 
-*   in your Rails dir, apply the app template
-        $ rake rails:template LOCATION=https://github.com/kennethkalmer/ruote-kit/raw/master/rails-template.rb
+* create a new Rails app by running
 
-==== Configure your ruote-kit integration
+    $ rails new foo -m https://github.com/kennethkalmer/ruote-kit/raw/master/rails-template.rb
+
+* cd into the new Rails dir
+
+    $ cd foo
+
+* make sure all dependencies are met
+
+    $ bundle install
+
+#### Update an existing Rails app to use ruote[-kit]
+
+* in your Rails dir, apply the app template
+
+    $ rake rails:template LOCATION=https://github.com/kennethkalmer/ruote-kit/raw/master/rails-template.rb
+
+#### Configure your ruote-kit integration
 
 See config/initializers/ruote-kit.rb in your Rails app.
 
-==== Run
+#### Run
 
     $ rails server
 
-Browse to http://localhost:3000/_ruote and you'll see there are no running
-processes. You could change that using the "Launch process" link ;-)
+Browse to <http://localhost:3000/_ruote> and you'll see there are no running processes. You could change that using the "Launch process" link ;-)
 
-==== Using Ruote from within Rails
+#### Using Ruote from within Rails
 
 You can access Ruote's engine anywhere in your Rails code by calling
+
+```ruby
     RuoteKit.engine
+```
+
 So launching a workflow process is as easy as
-    RuoteKit.engine.launch your_process_definition
+
+```ruby
+    RuoteKit.engine.launch(your_process_definition)
+```
+
 The storage participant (used by the catchall participant) is available at
+
+```ruby
     RuoteKit.storage_participant
+```
 
-==== Example application
+#### Example application
 
-See https://github.com/tosch/ruote-on-rails for an example Rails app.
+See <https://github.com/tosch/ruote-on-rails> for an example Rails app.
 
-== Configuring ruote-kit & ruote
+## Configuring ruote-kit & ruote
 
 ruote-kit itself needs only little configuration, the only thing to do is to
 bind a ruote engine to use. That engine may be configured, see
-http://ruote.rubyforge.org/configuration.html for details.
+<http://ruote.rubyforge.org/configuration.html> for details.
 
-When using the source version, you'll have to edit the +config.ru+ file if you
+When using the source version, you'll have to edit the `config.ru` file if you
 want to change the engine configuration. It defaults to use file system
-persistence and runs a
-worker[http://ruote.rubyforge.org/configuration.html#worker] within the engine.
-The persistence files will be stored in a sub directory called
-"ruote_work_#{ENV}".
+persistence and runs a [worker](http://ruote.rubyforge.org/configuration.html#worker) within the engine.
+The persistence files will be stored in a sub directory called `ruote_work_#{ENV}`.
 
 When using the gem version or plugging ruote-kit into your rack stack, you'll
 have to bind the ruote engine to use yourself. See the examples above.
 
-=== Registration of participants
+### Registration of participants
 
 ruote participants may be registered using the register method of the engine.
-It expects a block containing of +participant+ and one or less +catchall+ calls.
+It expects a block containing of +participant+ and one or less _catchall_ calls.
 
-  require 'ruote/part/no_op_participant'
+```ruby
+    require 'ruote/part/no_op_participant'
 
-  RuoteKit.engine.register do
-    participant 'no-op', Ruote::NoOpParticipant
-    catchall
-  end
+    RuoteKit.engine.register do
+      participant 'no-op', Ruote::NoOpParticipant
+      catchall
+    end
+```
 
-Note that all +participant+ calls after a +catchall+ one are pretty useless:
+Note that all _participant_ calls after a _catchall_ one are pretty useless:
 The catchall will eat all their cookies.
 
 If you want to learn more about ruote's participants, have a look at
-http://ruote.rubyforge.org/participants.html .
+<http://ruote.rubyforge.org/participants.html>.
 
-== The +workitems+ resource
+## The _workitems_ resource
 
-The +workitems+ resource relies on the Ruote::StorageParticipant. You'll have to
+The _workitems_ resource relies on the Ruote::StorageParticipant. You'll have to
 register at least one Storage Participant if you ever want to see a workitem in
 the resource. Example:
 
-  require 'ruote/part/storage_participant'
-  RuoteKit.engine.register_participant :storage, Ruote::StorageParticipant
+```ruby
+    require 'ruote/part/storage_participant'
+    RuoteKit.engine.register_participant :storage, Ruote::StorageParticipant
+```
 
 You may also use the catchall participant provided by ruote. It's named '.+',
 so it will catch all workitems for any participant mentioned in your workflow
 definitions which are not already caught by another (previously) registered
 participant. So make sure to register the catchall after your own participants.
-The catchall participant may be registered by calling +catchall+ within the
+The catchall participant may be registered by calling _catchall_ within the
 block given to Ruote::Engine#register (this will use Ruote::StorageParticipant
 as participant implementation, you may use any options of
 Ruote::Engine#register_participant to overwrite that default -- see the example
 above).
 
-== Running workers
+## Running workers
 
-Always make sure to have a running ruote
-worker[http://ruote.rubyforge.org/configuration.html#worker] for your storage.
+Always make sure to have a running ruote [worker](http://ruote.rubyforge.org/configuration.html#worker) for your storage.
 The shipped config.ru takes care of that, but if you use the gem version or use
-ruote-kit as part of your rack stack, you'll need to make sure there is a
-running worker.
+ruote-kit as part of your rack stack, you'll need to make sure there is a running worker.
 
 Perhaps it's best to give some more explanations about the architecture of ruote
 here. Ruote's engine class is shallow, just a few methods that insert launch and
@@ -220,15 +258,16 @@ that you'll won't need more than one worker unless you are running hundreds of
 processes at the same time ).
 
 Ruote ships with one worker implementation (you won't need more) and various
-different storages. Have a look at
-http://ruote.rubyforge.org/configuration.html#storage for an overview.
+different storages. Have a look at <http://ruote.rubyforge.org/configuration.html#storage> for an overview.
 
 In the most examples above, the worker instance is bound to the engine which
 is given to RuoteKit.engine:
 
-  RuoteKit.engine = Ruote::Engine.new(
-    Ruote::Worker.new(
-      Ruote::FsStorage.new('ruote_work')))
+```ruby
+    RuoteKit.engine = Ruote::Engine.new(
+      Ruote::Worker.new(
+        Ruote::FsStorage.new('ruote_work')))
+```
 
 That is fine, especially when there is only one instance of the app running or
 the storage implementation supports multiple workers, because if there is more
@@ -240,24 +279,28 @@ workers (Ruote::FsStorage under Windows, for example), you should start a
 dedicated worker in its own instance. In config.ru (or whereever you configure
 the engine to be used by ruote-kit), instanciate the engine without a worker:
 
-  RuoteKit.engine = Ruote::Engine.new(
-    Ruote::FsStorage.new('ruote_work'))
+```ruby
+    RuoteKit.engine = Ruote::Engine.new(
+      Ruote::FsStorage.new('ruote_work'))
+```
 
 ruote-kit or your rack app will start with no problems, you may even launch
-processes, but they'll never show up under /_ruote/processes: There is no worker
-which processes the launch requests stored in the storage.
+processes, but they'll never show up under `/_ruote/processes`: There is no
+worker which processes the launch requests stored in the storage.
 
 To run a worker you need to setup a worker script similar to the rake task
 example below:
 
-  require 'rake'
-  require 'ruote-kit'
+```ruby
+    require 'rake'
+    require 'ruote-kit'
 
-  desc "Run a ruote-kit worker"
-  task :ruote_kit_worker do
+    desc "Run a ruote-kit worker"
+    task :ruote_kit_worker do
 
-    RuoteKit.run_worker(Ruote::FsStorage.new('ruote_work'))
-  end
+      RuoteKit.run_worker(Ruote::FsStorage.new('ruote_work'))
+    end
+```
 
 Make sure to configure the storage in the same way as in the rest of the
 application or you won't get what you expect ;-)
@@ -274,13 +317,13 @@ long time (Passenger 3 provides an option to ensure one instance of the app
 won't be killed) and make sure your storage implementation supports multiple
 workers.
 
-== Feedback & bug reports
+## Feedback & bug reports
 
-Feedback and bug reports are welcome on the mailing-list[http://groups.google.com/group/openwferu-users], or on the #ruote IRC channel at Freenode.net.
+Feedback and bug reports are welcome on the [mailing-list](http://groups.google.com/group/openwferu-users), or on the `#ruote` IRC channel at Freenode.net.
 
-Please do not hesitate to come back with *any* feedback.
+Please do not hesitate to come back with _any_ feedback.
 
-== License
+## License
 
 (The MIT License)
 
@@ -305,14 +348,14 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-== libraries used
+## libraries used
 
-- rack, http://rack.rubyforge.org/
-- sinatra, http://www.sinatrarb.com/
-- sinatra-respond_to, http://github.com/cehoffman/sinatra-respond_to
-- haml, http://haml-lang.com/
-- yajl-ruby, http://github.com/brianmario/yajl-ruby
-- jquery, http://jquery.com/
+- rack, <http://rack.rubyforge.org/>
+- sinatra, <http://www.sinatrarb.com/>
+- sinatra-respond_to, <http://github.com/cehoffman/sinatra-respond_to>
+- haml, <http://haml-lang.com/>
+- yajl-ruby, <http://github.com/brianmario/yajl-ruby>
+- jquery, <http://jquery.com/>
 
-many thanks to the authors and contributors
+Many thanks to the authors and contributors
 
