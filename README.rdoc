@@ -28,7 +28,7 @@ Have a look at the Gemfile if you want to see the various dependencies.
 === Using the source
 
 * Get the source files using git
-    $ git clone http://github.com/tosch/ruote-kit.git && cd ruote-kit
+    $ git clone http://github.com/kennethkalmer/ruote-kit.git && cd ruote-kit
 * Make sure every dependency is resolved
     $ bundle install
 * Get going
@@ -42,7 +42,7 @@ Have a look at the Gemfile if you want to see the various dependencies.
   * Gemfile
       source :rubygems
       gem 'ruote', :git => 'git://github.com/jmettraux/ruote.git'
-      gem 'ruote-kit', :git => 'git://github.com/kennethkalmer/ruote.git'
+      gem 'ruote-kit', :git => 'git://github.com/kennethkalmer/ruote-kit.git'
   * config.ru
       begin
         # Try to require the preresolved locked set of gems.
@@ -112,7 +112,7 @@ ruote-kit ships with an application template for Ruby on Rails 3.
 *   install Rails
         $ gem install rails
 *   create a new Rails app by running
-        $ rails new foo -m https://github.com/tosch/ruote-kit/raw/master/rails-template.rb
+        $ rails new foo -m https://github.com/kennethkalmer/ruote-kit/raw/master/rails-template.rb
 *   cd into the new Rails dir
         $ cd foo
 *   make sure all dependencies are met
@@ -121,7 +121,7 @@ ruote-kit ships with an application template for Ruby on Rails 3.
 ==== Update an existing Rails app to use ruote[-kit]
 
 *   in your Rails dir, apply the app template
-        $ rake rails:template LOCATION=https://github.com/tosch/ruote-kit/raw/master/rails-template.rb
+        $ rake rails:template LOCATION=https://github.com/kennethkalmer/ruote-kit/raw/master/rails-template.rb
 
 ==== Configure your ruote-kit integration
 

@@ -1,6 +1,6 @@
 
 gem 'ruote', :git => 'https://github.com/jmettraux/ruote.git'
-gem 'ruote-kit', :git => 'https://github.com/tosch/ruote-kit.git'
+gem 'ruote-kit', :git => 'https://github.com/kennethkalmer/ruote-kit.git'
 
 rakefile 'ruote.rake', <<-CODE
   namespace :ruote do
