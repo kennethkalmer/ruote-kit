@@ -1,10 +1,11 @@
+
 require 'rubygems'
 require 'rubygems/user_interaction' if Gem::RubyGemsVersion == '1.5.0'
 require 'bundler'
 
 require 'rake'
 require 'rake/clean'
-require 'rake/rdoctask'
+require 'rdoc/task'
 require 'rspec/core/rake_task'
 
 Bundler::GemHelper.install_tasks
@@ -60,5 +61,20 @@ task :upload_rdoc => [ :clean, :rdoc ] do
   webdir = '/var/www/gforge-projects/ruote'
 
   sh "rsync -azv -e ssh rdoc/#{GEMSPEC.name}_rdoc #{account}:#{webdir}/"
+end
+
+
+#
+# previewing the README
+
+desc %{
+  preview the README (requires http://johnmacfarlane.net/pandoc/)
+}
+task :readme do
+
+  exec(
+    'mkdir tmp; ' +
+    'pandoc -s README.mdown -o tmp/README.html; ' +
+    'open tmp/README.html')
 end
 

@@ -13,6 +13,8 @@ gem 'yajl-ruby', :require => 'yajl'
 #gem 'ruote', :path => '~/w/ruote/'
 gem 'ruote', :git => 'git://github.com/jmettraux/ruote.git'
 
+gem 'rake'
+
 #group :test do
 #  gem 'rspec', '2.4.0'
 #  gem 'rack-test'
