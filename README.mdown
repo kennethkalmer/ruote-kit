@@ -278,13 +278,12 @@ reply orders in the storage and read it when querying for process statuses. You
 see: The storage is important, it is used as communications backend between the
 various parts of ruote. The engine class and the storage are not enough, though.
 The real work is done by one or more workers which query the storage for things
-to do (note: it is unlikely that you will ever need more than one worker for one
-ruote instance; ruote isn't fast, but it's faster than most human processes, so
-that you'll won't need more than one worker unless you are running hundreds of
-processes at the same time ).
+to do.
 
-Ruote ships with one worker implementation (you won't need more) and various
-different storages. Have a look at <http://ruote.rubyforge.org/configuration.html#storage> for an overview.
+(note: compared to a flow hardcoded in a set of controllers, ruote is very slow. After all, it "interprets" its flows. When processes are uniquely composed of tiny services (no human participants) ruote will lose any time. When human participants are involved, flows are as slow as the slowest human participants)
+
+Ruote ships with one worker implementation and various storage implementations.
+Have a look at <http://ruote.rubyforge.org/configuration.html#storage> for an overview.
 
 In the most examples above, the worker instance is bound to the engine which
 is given to RuoteKit.engine:
