@@ -18,7 +18,7 @@ environment. Before running ruote-kit for the first time you need to install
 Bundler (gem install bundler) and then run:
 
 ```bash
-    $ bundle install
+$ bundle install
 ```
 
 Bundler will download all the required gems and install them for you.
@@ -204,16 +204,43 @@ ruote participants may be registered using the register method of the engine.
 It expects a block containing of participant and one or less _catchall_ calls.
 
 ```ruby
-require 'ruote/part/no_op_participant'
-
 RuoteKit.engine.register do
-  participant 'no-op', Ruote::NoOpParticipant
+  participant 'no_op', Ruote::NoOpParticipant
   catchall
 end
 ```
 
-Note that all _participant_ calls after a _catchall_ one are pretty useless:
-The catchall will eat all their cookies.
+This example binds the identifier "no_op" to the `Ruote::NoOpParticipant` implementation.
+
+The catchall is synonymous for
+
+```ruby
+participant /.+/, Ruote::StorageParticipant
+```
+
+With such a definition and since it comes last, it means that all the workitems that are not for participant "no_op" end up in the storage participant. Thus
+
+```ruby
+Ruote.define do
+  concurrence do
+    ceo
+    no_op
+    cto
+  end
+end
+```
+
+will route three concurrent workitems, one for "ceo" and one for "cto" to the storage participant (see the "workitems" tab in your ruote-kit interface) and one to "no_op", the no operation participant (which will reply immediately).
+
+When playing initially with ruote-kit it's probably better to leave the registration block to:
+
+```ruby
+RuoteKit.engine.register do
+  catchall
+end
+```
+
+So that all the workitems are placed in a storage participant.
 
 If you want to learn more about ruote's participants, have a look at
 <http://ruote.rubyforge.org/participants.html>.
