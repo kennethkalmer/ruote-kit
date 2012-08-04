@@ -6,21 +6,17 @@ require 'bundler/setup'
 
 
 # json
+
+# make sure you have an entry like:w
 #
-# try yajl-ruby first, and json after that
+#   gem 'yajl-ruby', :require => 'yajl'
+#
+# or
+#   gem 'json', :require => 'yajl'
+#
+# in your Gemfile
 
-begin
-  require 'yajl'
-rescue LoadError
-  begin
-    require 'json'
-  rescue LoadError
-    puts 'Please specify "gem {yajl-ruby|json_pure|json}" in the Gemfile'
-    exit
-  end
-end
-
-require 'rufus-json'
+require 'rufus-json/automatic'
 
 
 # ruote-kit
