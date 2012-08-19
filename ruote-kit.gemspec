@@ -25,7 +25,7 @@ ruote workflow engine, wrapped in a loving rack embrace
   ] - [ 'rails-template.rb' ]
 
   s.add_runtime_dependency 'sinatra', '>= 1.2.0'
-  s.add_runtime_dependency 'sinatra-respond_to', '>= 0.7.0'
+  s.add_runtime_dependency 'sinatra-respond_to', '>= 0.8.0'
 
   s.add_runtime_dependency 'haml', '>= 3.1.4'
 
