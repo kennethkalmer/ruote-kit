@@ -28,7 +28,7 @@ class RuoteKit::Application
       respond_with :error
     else
       @count = @errors.size
-      @skip = 0
+      @skip = (@count > 0)? 0 : nil
       @limit = @count
       respond_with :errors
     end
