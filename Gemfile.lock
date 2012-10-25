@@ -19,7 +19,7 @@ PATH
       haml (>= 3.1.4)
       rufus-json (>= 0.2.5)
       sinatra (>= 1.2.0)
-      sinatra-respond_to (>= 0.7.0)
+      sinatra-respond_to (>= 0.8.0)
 
 GEM
   remote: http://rubygems.org/
