@@ -45,7 +45,7 @@ $ bundle install
 * Get going
 
 ```bash
-$ rackup
+$ bundle exec rackup
 ```
 
 ### Using the RubyGem / Bundler
@@ -80,7 +80,7 @@ $ bundle install
 * Get going
 
 ```bash
-$ rackup
+$ bundle exec rackup
 ```
 
 ### Accessing the web interface
@@ -352,7 +352,7 @@ Please do not hesitate to come back with _any_ feedback.
 
 (The MIT License)
 
-Copyright (c) 2009-2012 Kenneth Kalmer (Internet Exchange CC, Clear Planet Information Solutions Pty Ltd)
+Copyright (c) 2009-2013 Kenneth Kalmer (Internet Exchange CC, Clear Planet Information Solutions Pty Ltd)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
