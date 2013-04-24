@@ -1,10 +1,11 @@
 
 #overlay
 #editor
-  %canvas#efluo
+  #efluo
   #fluo_editor
-  %a.ruote_button.ruote_go_button{ :title => 'close and use that definition', :href => '', :onclick => 'hideEditor(true); return false;' }
-  %a.ruote_button.ruote_cross_button{ :title => 'close', :href => '', :onclick => 'hideEditor(false); return false;' }
+  .editor_buttons
+    %a.ruote_button.ruote_go_button{ :title => 'close and use that definition', :href => '' }
+    %a.ruote_button.ruote_cross_button{ :title => 'close', :href => '' }
 
 :javascript
 
@@ -13,26 +14,33 @@
   $('#overlay').hide();
   $('#editor').hide();
 
-  function initEditor () {
+  $('.editor_buttons a.ruote_go_button').on('click', function() {
+    hideEditor(true);
+    return false;
+  });
+  $('.editor_buttons a.ruote_cross_button').on('click', function() {
+    hideEditor(false);
+    return false;
+  });
+
+  function initEditor() {
 
     var tree = tree || #{sample_process_tree};
     var def = $('#tree')[0].value;
     if (def.match(/\s*\[/)) tree = JSON.parse(def);
 
-    FluoEditor.renderFlow('fluo_editor', tree);
-    Fluo.renderFlow('efluo', tree);
-    Fluo.crop('efluo');
+    FluoEditor.render('fluo_editor', tree);
+    Fluo.render('efluo', tree);
 
     $('#fluo_editor')[0].onChange = function (tree) {
-      Fluo.renderFlow('efluo', tree);
-      Fluo.crop('efluo');
+      Fluo.render('efluo', tree);
     }
     $('#fluo_editor')[0].onOver = function (expid) {
       Fluo.highlight('efluo', expid);
     }
   }
 
-  function showEditor () {
+  function showEditor() {
 
     initEditor();
 
@@ -42,7 +50,7 @@
     $('#overlay').slideDown(function () { $('#editor').show(); });
   }
 
-  function hideEditor (use) {
+  function hideEditor(use) {
 
     $('#editor').hide();
     $('#overlay').hide();

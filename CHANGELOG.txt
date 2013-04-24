@@ -2,7 +2,12 @@
 = ruote-kit - CHANGELOG.txt
 
 
-== ruote-kit - 2.3.0    not yet released
+== ruote-kit - 2.3.1    not yet released
+
+- switch to new ruote-fluo (SVG based instead of Canvas based)
+
+
+== ruote-kit - 2.3.0    not released (thanks Bundler)
 
 - fix timers with nil target rendering (Thanks Danny Fullerton)
 - RuoteKit.worklist (alias to RuoteKit.store_participant)

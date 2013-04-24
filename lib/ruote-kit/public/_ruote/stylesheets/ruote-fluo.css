@@ -1,0 +1,52 @@
+
+svg rect.fluo {
+  fill: none;
+  stroke: black;
+  stroke-width: 1.1px;
+  /*
+  rx: 14;
+  ry: 14;
+  */
+}
+
+svg path.fluo {
+  stroke: black;
+  stroke-width: 0.7px;
+}
+
+svg text {
+  font-family: Helvetica Neue;
+  font-size: 12px;
+  /*
+  fill: blue;
+  */
+}
+svg text.text_exp {
+  font-size: 14px;
+}
+svg text.expname {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+svg rect.fluo_highlight {
+  stroke: #dedede;
+  stroke-width: 3px;
+  fill: none;
+}
+
+p.fluo.expname {
+  margin-bottom: 1em;
+}
+
+svg path.fluo_pin_workitem {
+  height: 30px;
+  width: 20px;
+  stroke: black;
+  stroke-width: 0.7px;
+  fill: yellow;
+}
+svg text.fluo_pin_workitem {
+  font-size: 12px;
+}
+

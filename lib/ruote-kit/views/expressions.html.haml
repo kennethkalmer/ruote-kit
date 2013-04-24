@@ -5,7 +5,7 @@
 
 %h1 expressions for #{@process.wfid}
 
-%canvas#fluo
+#fluo
 
 %table.list{ :style => 'width: auto;', :onmouseout => "Fluo.highlight('fluo')" }
 
@@ -33,7 +33,5 @@
 :javascript
 
   var proc_rep = #{process_tree(@process)};
-  Fluo.renderFlow('fluo', proc_rep);
-  Fluo.crop('fluo');
-  Fluo.resizeForMaxWidth('fluo', $('body').width() / 2.1);
+  Fluo.render('fluo', proc_rep);
 

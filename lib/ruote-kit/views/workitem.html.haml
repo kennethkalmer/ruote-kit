@@ -7,7 +7,7 @@
   workitem
   = @workitem.fei.sid
 
-%canvas#fluo
+#fluo
 
 %form{ :method => 'POST', :enctype => 'multipart/form-data', :accept_charset => 'UTF-8' }
 
@@ -92,7 +92,5 @@
 
   var proc_rep = #{process_tree(@workitem)};
 
-  Fluo.renderFlow('fluo', proc_rep, { 'workitems' : ['#{@workitem.fei.expid}'] });
-  Fluo.crop('fluo');
-  Fluo.resizeForMaxWidth('fluo', $('body').width() / 2.1);
+  Fluo.render('fluo', proc_rep, { 'workitems' : ['#{@workitem.fei.expid}'] });
 

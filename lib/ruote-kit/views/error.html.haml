@@ -5,7 +5,7 @@
 
 %h1 error #{@error.fei.sid}
 
-%canvas#fluo
+#fluo
 
 %table.details
 
@@ -76,8 +76,5 @@
   var proc_rep = #{process_tree(@process)};
   var pins = #{Rufus::Json.encode(@pins)};
 
-  Fluo.renderFlow('fluo', proc_rep, { 'pins': pins });
-
-  Fluo.crop('fluo');
-  Fluo.resizeForMaxWidth('fluo', $('body').width() / 2.1);
+  Fluo.render('fluo', proc_rep, { 'pins': pins });
 

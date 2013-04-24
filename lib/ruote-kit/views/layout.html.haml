@@ -16,8 +16,9 @@
     %script{ :type => 'text/javascript', :src => url('/_ruote/javascripts/rk.js') }
 
     - if @_uses_fluo
-      %script{ :type => 'text/javascript', :src => url('/_ruote/javascripts/ruote-fluo.js') }
-      %script{ :type => 'text/javascript', :src => url('/_ruote/javascripts/ruote-fluo-editor.js') }
+      %script{ :type => 'text/javascript', :src => url('/_ruote/javascripts/foolbox-all.min.js') }
+      %script{ :type => 'text/javascript', :src => url('/_ruote/javascripts/ruote-fluo-all.min.js') }
+      %link{ :type => 'text/css', :href => url('/_ruote/stylesheets/ruote-fluo.css'), :rel => 'stylesheet' }
       %link{ :type => 'text/css', :href => url('/_ruote/stylesheets/ruote-fluo-editor.css'), :rel => 'stylesheet' }
 
   %body
