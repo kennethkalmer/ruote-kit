@@ -29,14 +29,14 @@
     var def = $('#tree')[0].value;
     if (def.match(/\s*\[/)) tree = JSON.parse(def);
 
-    FluoEditor.render('fluo_editor', tree);
-    Fluo.render('efluo', tree);
+    RuoteFluoEditor.render('#fluo_editor', tree);
+    RuoteFluo.render('#efluo', tree);
 
-    $('#fluo_editor')[0].onChange = function (tree) {
-      Fluo.render('efluo', tree);
+    $('#fluo_editor')[0].onChange = function(tree) {
+      RuoteFluo.render('#efluo', tree);
     }
-    $('#fluo_editor')[0].onOver = function (expid) {
-      Fluo.highlight('efluo', expid);
+    $('#fluo_editor')[0].onOver = function(expid) {
+      RuoteFluo.highlight('#efluo', expid);
     }
   }
 
@@ -44,10 +44,8 @@
 
     initEditor();
 
-    document.getElementById('overlay').style.height =
-      '' + window.outerHeight + 'px';
-
-    $('#overlay').slideDown(function () { $('#editor').show(); });
+    $('#overlay').css('height', '' + window.outerHeight + 'px');
+    $('#overlay').slideDown(function() { $('#editor').show(); });
   }
 
   function hideEditor(use) {
@@ -55,6 +53,6 @@
     $('#editor').hide();
     $('#overlay').hide();
 
-    if (use) $('#tree')[0].value = FluoEditor.asJson('fluo_editor');
+    if (use) $('#tree')[0].value = RuoteFluoEditor.asJson('#fluo_editor');
   }
 
