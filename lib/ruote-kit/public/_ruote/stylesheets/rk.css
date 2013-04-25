@@ -299,7 +299,7 @@ a.ruote_button {
   margin-right: 1px;
   width: 12px;
   height: 12px;
-  background: transparent url(../images/ruote_buttons.png) no-repeat;
+  background: transparent url(../images/ruote-buttons.png) no-repeat;
 }
 a.ruote_plus_button {
   background-position: 0 0;
