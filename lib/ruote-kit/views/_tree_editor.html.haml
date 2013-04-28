@@ -1,7 +1,7 @@
 
 #overlay
 #editor
-  #efluo
+  #fluo
   #fluo_editor
   .editor_buttons
     %a.ruote_button.ruote_go_button{ :title => 'close and use that definition', :href => '' }
@@ -26,17 +26,17 @@
   function initEditor() {
 
     var tree = tree || #{sample_process_tree};
-    var def = $('#tree')[0].value;
+    var def = $('#tree').val();
     if (def.match(/\s*\[/)) tree = JSON.parse(def);
 
     RuoteFluoEditor.render('#fluo_editor', tree);
-    RuoteFluo.render('#efluo', tree);
+    RuoteFluo.render('#fluo', tree);
 
     $('#fluo_editor')[0].onChange = function(tree) {
-      RuoteFluo.render('#efluo', tree);
+      RuoteFluo.render('#fluo', tree);
     }
     $('#fluo_editor')[0].onOver = function(expid) {
-      RuoteFluo.highlight('#efluo', expid);
+      RuoteFluo.highlight('#fluo', expid);
     }
   }
 
@@ -44,7 +44,7 @@
 
     initEditor();
 
-    $('#overlay').css('height', '' + window.outerHeight + 'px');
+    $('#overlay').css('height', '' + $(document).height() + 'px');
     $('#overlay').slideDown(function() { $('#editor').show(); });
   }
 
@@ -53,6 +53,6 @@
     $('#editor').hide();
     $('#overlay').hide();
 
-    if (use) $('#tree')[0].value = RuoteFluoEditor.asJson('#fluo_editor');
+    if (use) $('#tree').val(RuoteFluoEditor.asJson('#fluo_editor'));
   }
 
