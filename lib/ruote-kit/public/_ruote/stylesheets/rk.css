@@ -244,7 +244,7 @@ div.trace {
 
 /* overlay */
 
-div#overlay {
+#overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -265,7 +265,7 @@ div#overlay {
 
 /* editor */
 
-div#editor {
+#editor {
   position: absolute;
   top: 10%;
   left: 10%;
@@ -282,12 +282,12 @@ div#editor {
   -webkit-box-shadow: 0 1px 12px #000;
   -moz-box-shadow: 0 1px 12px #000;
 }
-div#fluo_editor {
+#fluo_editor {
 }
-div#editor > a.ruote_go_button {
+#editor > a.ruote_go_button {
   margin-left: 4px;
 }
-#efluo {
+#fluo {
   margin: -3px -3px;
   float: right;
 }
