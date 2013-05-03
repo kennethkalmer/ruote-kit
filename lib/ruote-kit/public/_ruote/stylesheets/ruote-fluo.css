@@ -1,4 +1,8 @@
 
+svg.ruote_fluo {
+  padding: 10px;
+}
+
 svg rect.fluo {
   fill: none;
   stroke: black;
@@ -39,14 +43,20 @@ p.fluo.expname {
   margin-bottom: 1em;
 }
 
-svg path.fluo_pin_workitem {
+svg path.fluo_pin {
   height: 30px;
   width: 20px;
   stroke: black;
   stroke-width: 0.7px;
+  fill: blue;
+}
+svg text.fluo_pin {
+  font-size: 12px;
+}
+svg path.fluo_pin_workitem {
   fill: yellow;
 }
-svg text.fluo_pin_workitem {
-  font-size: 12px;
+svg path.fluo_pin_error {
+  fill: red;
 }
 

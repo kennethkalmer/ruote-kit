@@ -21,7 +21,7 @@ class RuoteKit::Application
 
     if @error and request.accept.find { |as| as.match(/html/) }
       @process = RuoteKit.engine.process(@error.wfid)
-      @pins = [ [ @error.fei.expid, 'er' ] ]
+      @pins = [ [ @error.fei.expid, 'error', 'er' ] ]
     end
 
     if @error

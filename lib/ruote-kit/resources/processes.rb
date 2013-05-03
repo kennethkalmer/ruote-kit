@@ -26,16 +26,18 @@ class RuoteKit::Application
 
     return http_error(404) if @process.nil? or @process.expressions.empty?
 
-    @pins = @process.leaves.collect { |fexp|
-      label = if fexp.error
-        'er'
-      elsif fexp.class == Ruote::Exp::ParticipantExpression
-        'wi'
-      else
-        '-'
-      end
-      [ fexp.fei.expid, label ]
-    }
+    @pins =
+      @process.leaves.collect { |fexp|
+        pin =
+          if fexp.error
+            [ 'error', 'er' ]
+          elsif fexp.class == Ruote::Exp::ParticipantExpression
+            [ 'workitem', 'wi' ]
+          else
+            [ 'other', '-' ]
+          end
+        [ fexp.fei.expid, *pin ]
+      }
 
     respond_with :process
   end

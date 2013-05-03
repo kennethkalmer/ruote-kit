@@ -143,5 +143,9 @@
   var proc_rep = #{process_tree(@process)};
   var pins = #{Rufus::Json.encode(@pins)};
 
-  Fluo.render('fluo', proc_rep, { 'pins': pins });
+  RuoteFluo.render('#fluo', proc_rep)
+
+  pins.forEach(function(pin) {
+    RuoteFluo.pin('#fluo', pin[0], pin[1], pin[2])
+  });
 
