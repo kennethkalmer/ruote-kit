@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/jmettraux/ruote.git
-  revision: 86fe481a50bbd1012c9c96295e5f3432d1fc5fbd
+  revision: f532b2d535f822ca23dcd5f7dcd6da748674a44e
   specs:
     ruote (2.3.1)
       blankslate (= 2.1.2.4)
@@ -76,7 +76,7 @@ GEM
       ruby_parser (>= 2.0.5)
       sexp_processor (>= 3.0.5)
     tilt (1.3.7)
-    tins (0.7.2)
+    tins (0.7.4)
     tzinfo (0.3.37)
     webrat (0.7.3)
       nokogiri (>= 1.2.0)

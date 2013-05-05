@@ -66,7 +66,7 @@ class RuoteKit::Application
       @wfid = RuoteKit.engine.launch(
         @info.definition, @info.fields || {}, @info.variables || {})
 
-    rescue Exception => e
+    rescue => e
       return http_error(400, e)
     end
 
@@ -94,9 +94,21 @@ class RuoteKit::Application
 
   protected
 
+  class LaunchInfo
+
+    attr_accessor :definition, :fields, :variables
+
+    def initialize(h={})
+
+      @definition = h['definition']
+      @fields = h['fields']
+      @variables = h['variables']
+    end
+  end
+
   def fetch_put_info
 
-    if request.content_type == 'application/json'
+    if request.content_type.match(/^application\/json(;.+)?$/)
       Rufus::Json.decode(request.body.read)
     else
       params
@@ -107,11 +119,12 @@ class RuoteKit::Application
 
     if request.content_type == 'application/json' then
 
-      OpenStruct.new(Rufus::Json.decode(request.body.read))
+      #OpenStruct.new(Rufus::Json.decode(request.body.read))
+      LaunchInfo.new(Rufus::Json.decode(request.body.read))
 
     else
 
-      info = OpenStruct.new('definition' => params[:definition])
+      info = LaunchInfo.new('definition' => params[:definition])
 
       fields = params[:fields] || ''
       fields = '{}' if fields.empty?

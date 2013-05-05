@@ -323,6 +323,32 @@ describe '/_ruote/processes' do
       engine.processes.should_not be_empty
     end
 
+    it 'launches a process definition (radial) (JSON)' do
+
+      params = {
+        :definition => %q{
+          define 'my process'
+            wait '1m'
+        }
+      }
+
+      post(
+        '/_ruote/processes.json',
+        Rufus::Json.encode(params),
+        { 'CONTENT_TYPE' => 'application/json' })
+
+      last_response.status.should == 201
+
+      last_response.json_body['launched'].should match(/[0-9a-z\-]+/)
+
+      sleep 0.4
+
+      engine.processes.should_not be_empty
+
+      engine.processes.first.expressions.last.should be_a(
+        Ruote::Exp::WaitExpression)
+    end
+
     it 'launches a valid process definition with fields (JSON)' do
 
       params = {
@@ -364,6 +390,27 @@ describe '/_ruote/processes' do
       sleep 0.4
 
       engine.processes.should_not be_empty
+
+      engine.processes.first.expressions.last.should be_a(
+        Ruote::Exp::WaitExpression)
+    end
+
+    it 'launches a process definition (radial and CRLF) (HTML)' do
+
+      params = {
+        :definition => "define 'my process'\r\n  wait '1m'\r\n"
+      }
+
+      post '/_ruote/processes', params
+
+      last_response.status.should == 201
+
+      sleep 0.4
+
+      engine.processes.should_not be_empty
+
+      engine.processes.first.expressions.last.should be_a(
+        Ruote::Exp::WaitExpression)
     end
 
     it 'launches a process definition with fields (HTML)' do
