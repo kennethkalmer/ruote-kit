@@ -159,16 +159,21 @@
 
 :javascript
 
-  var proc_rep = #{process_tree(@process)};
-  Fluo.render('fluo', proc_rep);
-  Fluo.highlight('fluo', '#{@expression.fei.expid}');
+  $(document).ready(function() {
 
-  $('.re_apply').hide();
+    Rk.fitFluo($('table.details'));
 
-  function showReApply(elt) {
-    $(elt).hide();
-    $('.re_apply').show();
-  }
+    var proc_rep = #{process_tree(@process)};
+    RuoteFluo.render('fluo', proc_rep, { fit: 'down' });
+    RuoteFluo.highlight('fluo', '#{@expression.fei.expid}');
+
+    $('.re_apply').hide();
+
+    function showReApply(elt) {
+      $(elt).hide();
+      $('.re_apply').show();
+    }
+  });
 
   function confirmPut(message) {
 

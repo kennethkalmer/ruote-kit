@@ -32,6 +32,11 @@
 
 :javascript
 
-  var proc_rep = #{process_tree(@process)};
-  Fluo.render('fluo', proc_rep);
+  $(document).ready(function() {
+
+    Rk.fitFluo();
+
+    var proc_rep = #{process_tree(@process)};
+    RuoteFluo.render('fluo', proc_rep, { fit: 'down' });
+  });
 

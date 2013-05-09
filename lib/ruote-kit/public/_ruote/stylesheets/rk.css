@@ -260,7 +260,9 @@ div.trace {
 /* fluo */
 
 #fluo {
+  margin: -3px -3px;
   float: right;
+  text-align: center;
 }
 
 /* editor */
@@ -286,10 +288,6 @@ div.trace {
 }
 #editor > a.ruote_go_button {
   margin-left: 4px;
-}
-#fluo {
-  margin: -3px -3px;
-  float: right;
 }
 
 /* buttons +-^vx... */

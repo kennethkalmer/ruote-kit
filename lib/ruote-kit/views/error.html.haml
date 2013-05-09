@@ -73,12 +73,17 @@
 
 :javascript
 
-  var proc_rep = #{process_tree(@process)};
-  var pins = #{Rufus::Json.encode(@pins)};
+  $(document).ready(function() {
 
-  RuoteFluo.render('fluo', proc_rep);
+    Rk.fitFluo();
 
-  pins.forEach(function(pin) {
-    RuoteFluo.pin('#fluo', pin[0], pin[1], pin[2])
+    var proc_rep = #{process_tree(@process)};
+    var pins = #{Rufus::Json.encode(@pins)};
+
+    RuoteFluo.render('fluo', proc_rep, { fit: 'down' });
+
+    pins.forEach(function(pin) {
+      RuoteFluo.pin('#fluo', pin[0], pin[1], pin[2])
+    });
   });
 

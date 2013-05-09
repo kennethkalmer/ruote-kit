@@ -90,7 +90,13 @@
 
 :javascript
 
-  var proc_rep = #{process_tree(@workitem)};
+  $(document).ready(function() {
 
-  Fluo.render('fluo', proc_rep, { 'workitems' : ['#{@workitem.fei.expid}'] });
+    Rk.fitFluo($('table.details'));
+
+    var proc_rep = #{process_tree(@workitem)};
+
+    RuoteFluo.render('fluo', proc_rep, { 'fit' : 'down' });
+    RuoteFluo.pin('#fluo', '#{@workitem.fei.expid}', 'workitem');
+  });
 
