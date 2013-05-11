@@ -148,6 +148,7 @@
     var pins = #{Rufus::Json.encode(@pins)};
 
     RuoteFluo.render('#fluo', proc_rep, { fit: 'down' });
+    Rk.onClickZoom('#fluo');
 
     pins.forEach(function(pin) {
       RuoteFluo.pin('#fluo', pin[0], pin[1], pin[2])

@@ -164,8 +164,10 @@
     Rk.fitFluo($('table.details'));
 
     var proc_rep = #{process_tree(@process)};
-    RuoteFluo.render('fluo', proc_rep, { fit: 'down' });
-    RuoteFluo.highlight('fluo', '#{@expression.fei.expid}');
+    RuoteFluo.render('#fluo', proc_rep, { fit: 'down' });
+    RuoteFluo.highlight('#fluo', '#{@expression.fei.expid}');
+
+    Rk.onClickZoom('#fluo');
 
     $('.re_apply').hide();
 

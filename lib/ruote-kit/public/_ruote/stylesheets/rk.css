@@ -257,6 +257,27 @@ div.trace {
   z-index: 99;
 }
 
+#zoom {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  width: 80%;
+  /*
+  height: auto;
+  */
+  min-height: 50px;
+  background: #ffffff;
+  z-index: 999;
+  padding: 14px;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  box-shadow: 0 1px 12px #000;
+  -webkit-box-shadow: 0 1px 12px #000;
+  -moz-box-shadow: 0 1px 12px #000;
+}
+
 /* fluo */
 
 #fluo {
