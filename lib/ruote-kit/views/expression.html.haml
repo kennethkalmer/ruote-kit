@@ -50,9 +50,9 @@
           - ruby = Ruote::Reader.to_ruby(@expression.original_tree)
           - rubyline = ruby.split("\n").first
           - json = Rufus::Json.pretty_encode(@expression.original_tree)
-          %pre.pdef{ :onclick => 'Rk.toggleNext(this);' } #{rubyline}
-          %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{ruby}
-          %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{json}
+          %pre.pdef #{rubyline}
+          %pre.pdef{ :style => 'display: none;' } #{ruby}
+          %pre.pdef{ :style => 'display: none;' } #{json}
     %tr
       %td
         tree
@@ -60,9 +60,9 @@
         - ruby = Ruote::Reader.to_ruby(@expression.tree)
         - rubyline = ruby.split("\n").first
         - json = Rufus::Json.pretty_encode(@expression.tree)
-        %pre.pdef{ :onclick => 'Rk.toggleNext(this);' } #{rubyline}
-        %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{ruby}
-        %pre.pdef{ :onclick => 'Rk.toggleNext(this);', :style => 'display: none;' } #{json}
+        %pre.pdef #{rubyline}
+        %pre.pdef{ :style => 'display: none;' } #{ruby}
+        %pre.pdef{ :style => 'display: none;' } #{json}
 
     - if sched = @process.schedules.find { |s| s['owner'] == @expression.fei }
       %tr
@@ -160,6 +160,8 @@
 :javascript
 
   $(document).ready(function() {
+
+    $('pre.pdef').on('click', Rk.toggleNext);
 
     Rk.fitFluo($('table.details'));
 
