@@ -242,6 +242,16 @@ div.trace {
   cursor: pointer;
 }
 
+/* error details */
+
+pre.details {
+  font-family: "Menlo Regular", "Monaco", courier, monospace;
+  font-size: 10px;
+  margin-top: 7px;
+  margin-bottom: 5px;
+  line-height: 11px;
+}
+
 /* overlay */
 
 #overlay {

@@ -13,7 +13,13 @@
     %td
       id
     %td
-      = @error.fei.sid
+      &= @error.fei.sid
+
+  %tr
+    %td
+      at
+    %td
+      &= @error.at
 
   %tr
     %td
@@ -33,6 +39,17 @@
     %td
       %pre.trace #{h(@error.trace[0, 80] + '...')}
       %pre.trace{ :style => 'display: none;' } #{h(@error.trace)}
+
+  %tr
+    %td
+      details
+    %td
+      - if @error.details.nil?
+        %pre.details nil
+      - else
+        - details = Ruote.pps(@error.details)
+        %pre.details #{h(details[0, 80] + '...')}
+        %pre.details{ :style => 'display: none;' } #{h(details)}
 
   %tr
     %td.no_border{ :colspan => 2 }
@@ -76,6 +93,7 @@
   $(document).ready(function() {
 
     $('pre.trace').on('click', Rk.toggleNext);
+    $('pre.details').on('click', Rk.toggleNext);
 
     Rk.fitFluo();
 

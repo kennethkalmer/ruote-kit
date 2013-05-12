@@ -188,21 +188,26 @@ describe '/_ruote/errors' do
 
       it 'shows the error (HTML)' do
 
-        get "/_ruote/errors/0_0_0!!#{@wfid}"
+        get "/_ruote/errors/#{@error.fei.sid}"
 
         last_response.status.should be(200)
         last_response.should match(/nemo/)
+        last_response.should match(/details/)
       end
 
       it 'shows the error (JSON)' do
 
-        get "/_ruote/errors/0_0_0!!#{@wfid}.json"
+        get "/_ruote/errors/#{@error.fei.sid}.json"
 
         last_response.status.should be(200)
 
         json = last_response.json_body
 
-        #puts Rufus::Json.pretty_encode(json)
+        #pp json
+
+        json.should have_key('error')
+        json['error'].should have_key('at')
+        json['error'].should have_key('details')
       end
     end
 

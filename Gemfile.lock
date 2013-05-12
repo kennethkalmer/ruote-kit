@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/jmettraux/ruote.git
-  revision: f532b2d535f822ca23dcd5f7dcd6da748674a44e
+  revision: b7700f8718b53645fc7f8ad6ea92331ee607f2aa
   specs:
     ruote (2.3.1)
       blankslate (= 2.1.2.4)
@@ -59,7 +59,7 @@ GEM
     rufus-dollar (1.0.4)
     rufus-json (1.0.4)
     rufus-mnemo (1.2.3)
-    rufus-scheduler (2.0.18)
+    rufus-scheduler (2.0.19)
       tzinfo (>= 0.3.23)
     rufus-treechecker (1.0.8)
       ruby_parser (>= 2.0.5)
@@ -76,7 +76,7 @@ GEM
       ruby_parser (>= 2.0.5)
       sexp_processor (>= 3.0.5)
     tilt (1.3.7)
-    tins (0.7.4)
+    tins (0.8.0)
     tzinfo (0.3.37)
     webrat (0.7.3)
       nokogiri (>= 1.2.0)
