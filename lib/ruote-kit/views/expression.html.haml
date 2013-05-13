@@ -144,7 +144,7 @@
     %tr.re_apply
       %td
         tree
-        %a.ruote_button.ruote_go_button{ :title => 'open process definition editor', :href => '', :onclick => 'showEditor(); return false;' }
+        %a.ruote_button.ruote_go_button{ :title => 'open process definition editor', :href => '' }
       %td.no_padding
         - tree = @expression.tree
         - tree = Rufus::Json.pretty_encode(tree)
@@ -176,6 +176,11 @@
     $('#show_re_apply').on('click', function(ev) {
       $(ev.target).hide();
       $('.re_apply').show();
+    });
+
+    $('a.ruote_go_button').on('click', function(ev) {
+      showEditor();
+      return false;
     });
 
     function confirmPut(message) {
