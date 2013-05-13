@@ -104,9 +104,9 @@
     %tr
       %td
         - if @expression.state == 'paused'
-          %input{ :type => 'submit', :value => 'resume', :onclick => 'return confirmPut("really resume expression ?");' }
+          %input{ :type => 'submit', :value => 'resume' }
         - else
-          %input{ :type => 'submit', :value => 'pause', :onclick => 'return confirmPut("really pause expression ?");' }
+          %input{ :type => 'submit', :value => 'pause' }
           %input{ :type => 'checkbox', :name => 'breakpoint' }
           breakpoint
       %td
@@ -118,12 +118,12 @@
 
     %tr
       %td
-        %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really cancel expression?");' }
+        %input{ :type => 'submit', :value => 'cancel' }
       %td
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}
     %tr
       %td
-        %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really kill expression ?");' }
+        %input{ :type => 'submit', :value => 'kill' }
       %td
         %span.description DELETE /_ruote/expressions/#{@expression.fei.sid}?_kill=1
 
@@ -131,7 +131,7 @@
       %td.no_border{ :colspan => 2 }
         &nbsp;
 
-    %tr{ :style => 'cursor: pointer;', :onclick => 'showReApply(this);' }
+    %tr#show_re_apply{ :style => 'cursor: pointer;' }
       %td{ :colspan => 2 }
         re-apply
     %tr.re_apply
@@ -153,7 +153,7 @@
     %tr.re_apply
       %td
       %td
-        %input{ :type => 'submit', :value => 're-apply', :onclick => 'return confirmPut("really re_apply ?");' }
+        %input{ :type => 'submit', :value => 're-apply' }
         %span.description PUT /_ruote/expressions/#{@expression.fei.sid}
 
 
@@ -173,28 +173,46 @@
 
     $('.re_apply').hide();
 
-    function showReApply(elt) {
-      $(elt).hide();
+    $('#show_re_apply').on('click', function(ev) {
+      $(ev.target).hide();
       $('.re_apply').show();
-    }
-  });
+    });
 
-  function confirmPut(message) {
+    function confirmPut(message) {
 
-    var r = confirm(message);
-    if (r) {
-      $('#_method')[0].value = 'PUT';
-      if (message.match(/pause/)) {
-        $('#state')[0].value = 'paused';
-      } else if (message.match(/resume/)) {
-        $('#state')[0].value = 'resuming';
-      } else {
-        $('#state').detach();
+      var r = confirm(message);
+
+      if (r) {
+        $('#_method')[0].value = 'PUT';
+        if (message.match(/pause/)) {
+          $('#state')[0].value = 'paused';
+        } else if (message.match(/resume/)) {
+          $('#state')[0].value = 'resuming';
+        } else {
+          $('#state').detach();
+        }
       }
+
+      return r;
     }
 
-    return r;
-  }
+    $('input[type="submit"][value="pause"]').on('click', function(ev) {
+      return confirmPut("really pause expression?");
+    });
+    $('input[type="submit"][value="resume"]').on('click', function(ev) {
+      return confirmPut("really resume expression?");
+    });
+    $('input[type="submit"][value="re-apply"]').on('click', function(ev) {
+      return confirmPut("really re_apply?");
+    });
+
+    $('input[type="submit"][value="cancel"]').on('click', function(ev) {
+      return confirm("really cancel expression?");
+    });
+    $('input[type="submit"][value="kill"]').on('click', function(ev) {
+      return confirm("really kill expression?");
+    });
+  });
 
   var tree = #{Rufus::Json.encode(@expression.tree)};
 
