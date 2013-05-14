@@ -23,7 +23,7 @@
       - @process.position.each do |pos|
         - text = "#{pos[1]} #{pos[2]['task']}"
         - expid = pos.first.split('!').first
-        %span{ :onmouseover => "Fluo.highlight('fluo', '#{expid}');", :onmouseout => "Fluo.highlight('fluo');" }
+        %span.position{ 'data-rk-expid' => expid }
           - if @process.stored_workitems.find { |wi| wi.fei.sid == pos.first }
             = alink(:workitems, pos.first, :text => text)
           - else
@@ -87,10 +87,10 @@
         %input{ :type => 'hidden', :name => '_method', :value => 'PUT' }
         - if @process.root_expression_state == 'paused'
           %input{ :type => 'hidden', :name => 'state', :value => 'resuming' }
-          %input{ :type => 'submit', :value => 'resume', :onclick => 'return confirm("really resume process ?");' }
+          %input{ :type => 'submit', :value => 'resume' }
         - else
           %input{ :type => 'hidden', :name => 'state', :value => 'paused' }
-          %input{ :type => 'submit', :value => 'pause', :onclick => 'return confirm("really pause process ?");' }
+          %input{ :type => 'submit', :value => 'pause' }
     %td
       %span.description
         - if @process.root_expression_state == 'paused'
@@ -102,7 +102,7 @@
     %td
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'DELETE' }
-        %input{ :type => 'submit', :value => 'cancel', :onclick => 'return confirm("really cancel process ?");' }
+        %input{ :type => 'submit', :value => 'cancel' }
     %td
       %span.description DELETE /_ruote/processes/#{@process.wfid}
   %tr
@@ -110,7 +110,7 @@
       %form{ :method => 'post' }
         %input{ :type => 'hidden', :name => '_method', :value => 'DELETE' }
         %input{ :type => 'hidden', :name => '_kill', :value => '1' }
-        %input{ :type => 'submit', :value => 'kill', :onclick => 'return confirm("really kill process ?");' }
+        %input{ :type => 'submit', :value => 'kill' }
     %td
       %span.description DELETE /_ruote/processes/#{@process.wfid}?_kill=1
   %tr
@@ -142,6 +142,16 @@
 
   $(document).ready(function() {
 
+    //
+    // confirmation dialogs
+
+    $('input[type="submit"]').on('click', function(ev) {
+      return confirm("really " + ev.target.value + " process?");
+    });
+
+    //
+    // fluo
+
     Rk.fitFluo();
 
     var proc_rep = #{process_tree(@process)};
@@ -152,6 +162,16 @@
 
     pins.forEach(function(pin) {
       RuoteFluo.pin('#fluo', pin[0], pin[1], pin[2])
+    });
+
+    // onmouseover for "positions"
+
+    $('span.position').on('mouseover', function(ev) {
+      var $span = $(ev.target).closest('span');
+      Fluo.highlight('#fluo', $span.attr('data-rk-expid'));
+    });
+    $('span.position').on('mouseout', function(ev) {
+      Fluo.highlight('#fluo');
     });
   });
 
