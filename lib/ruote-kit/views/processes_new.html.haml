@@ -13,7 +13,7 @@
   %div
     %label
       process definition
-      %a.ruote_button.ruote_go_button{ :title => 'open process definition editor', :href => '', :onclick => 'showEditor(); return false;' }
+      %a.ruote_button.ruote_go_button{ :title => 'open process definition editor' }
 
     %textarea#tree{ :name => 'definition', :cols => 80, :rows => 10 } #{sample_process}
 
@@ -23,7 +23,7 @@
     %textarea{ :name => 'fields', :cols => 80, :rows => 3 }
 
   %div
-    %label.togglable{ :onclick => 'Rk.toggle(this, $("textarea.variables")[0], "(process variables)", "process variables");' }
+    %label.togglable
       (process variables)
     %textarea.variables{ :name => 'variables', :cols => 80, :rows => 3 }
 
@@ -31,6 +31,23 @@
     %input{ :type => 'submit', 'value' => 'launch' }
     or
     %a{ :href => '/_ruote/processes' } cancel
+
+:javascript
+
+  $('label.togglable').on('click', function(ev) {
+
+    Rk.toggle(
+      ev.target,
+      $("textarea.variables")[0],
+      "(process variables)",
+      "process variables");
+  });
+
+  $('a.ruote_go_button').on('click', function(ev) {
+
+    RkEditor.show();
+    return false;
+  });
 
 = haml :_tree_editor, :layout => false
 
