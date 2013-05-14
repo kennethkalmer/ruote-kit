@@ -201,21 +201,15 @@
       return r;
     }
 
-    $('input[type="submit"][value="pause"]').on('click', function(ev) {
-      return confirmPut("really pause expression?");
-    });
-    $('input[type="submit"][value="resume"]').on('click', function(ev) {
-      return confirmPut("really resume expression?");
-    });
-    $('input[type="submit"][value="re-apply"]').on('click', function(ev) {
-      return confirmPut("really re_apply?");
-    });
+    $('input[type="submit"]').on('click', function(ev) {
 
-    $('input[type="submit"][value="cancel"]').on('click', function(ev) {
-      return confirm("really cancel expression?");
-    });
-    $('input[type="submit"][value="kill"]').on('click', function(ev) {
-      return confirm("really kill expression?");
+      var val = ev.target.value;
+      var msg = "really " + val + " expression?";
+
+      if (val === 'cancel' || val === 'kill') {
+        return confirm(msg);
+      }
+      return confirmPut(msg);
     });
   });
 
