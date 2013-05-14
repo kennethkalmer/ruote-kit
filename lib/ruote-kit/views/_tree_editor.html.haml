@@ -46,10 +46,12 @@
 
     this.show = function() {
 
-      RkEditor.init();
-
       $('#overlay').css('height', '' + $(document).height() + 'px');
-      $('#overlay').slideDown(function() { $('#editor').show(); });
+
+      $('#overlay').slideDown(function() {
+        $('#editor').show();
+        RkEditor.init()
+      });
     }
 
     this.hide = function(use) {

@@ -297,6 +297,7 @@ pre.details {
   margin: -3px -3px;
   float: right;
   text-align: center;
+  width: auto;
 }
 
 /* editor */
