@@ -7,7 +7,7 @@
 
 #fluo
 
-%table.list{ :style => 'width: auto;', :onmouseout => "Fluo.highlight('fluo')" }
+%table.list.expressions
 
   %thead
     %td fei
@@ -18,7 +18,7 @@
 
 
   - @process.expressions.each do |expression|
-    %tr{ :onmouseover => "Fluo.highlight('fluo', '#{expression.fei.expid}')" }
+    %tr{ 'data-rk-expid' => expression.fei.expid }
       %td
         = alink(:expressions, expression.fei.sid, :text => [ expression.fei.wfid, expression.fei.expid ].join(' '))
       %td
@@ -38,5 +38,13 @@
 
     var proc_rep = #{process_tree(@process)};
     RuoteFluo.render('fluo', proc_rep, { fit: 'down' });
+
+    $('table.list').on('mouseout', function(ev) {
+      RuoteFluo.highlight('#fluo');
+    });
+    $('tr').on('mouseover', function(ev) {
+      $tr = $(ev.target).closest('tr');
+      RuoteFluo.highlight('#fluo', $tr.attr('data-rk-expid'));
+    });
   });
 
