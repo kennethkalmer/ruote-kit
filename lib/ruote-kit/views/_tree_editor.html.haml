@@ -4,8 +4,10 @@
   #fluo
   #fluo_editor
   .editor_buttons
-    %a.ruote_button.ruote_go_button{ :title => 'close and use that definition', :href => '' }
-    %a.ruote_button.ruote_cross_button{ :title => 'close', :href => '' }
+    %button.use{ :value => 'Ruby' } use (Ruby)
+    %button.use{ :value => 'Json' } use (JSON)
+    %button.use{ :value => 'Radial' } use (Radial)
+    %button.discard{ :title => 'close' } discard
 
 :javascript
 
@@ -14,12 +16,16 @@
   $('#overlay').hide();
   $('#editor').hide();
 
-  $('.editor_buttons a.ruote_go_button').on('click', function() {
-    Editor.hide(true);
+  $('button.use').each(function(i, e) {
+    $(e).attr('title', 'close and use this definition as ' + e.value);
+  });
+
+  $('button.use').on('click', function(ev) {
+    RkEditor.hide(ev.target.value);
     return false;
   });
-  $('.editor_buttons a.ruote_cross_button').on('click', function() {
-    Editor.hide(false);
+  $('button.discard').on('click', function() {
+    RkEditor.hide(false);
     return false;
   });
 
@@ -59,7 +65,7 @@
       $('#editor').hide();
       $('#overlay').hide();
 
-      if (use) $('#tree').val(RuoteFluoEditor.asJson('#fluo_editor'));
+      if (use) $('#tree').val(RuoteFluoEditor['as' + use]('#fluo_editor'));
     }
 
     return this;

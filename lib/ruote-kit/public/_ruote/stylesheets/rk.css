@@ -321,9 +321,38 @@ pre.details {
 }
 #fluo_editor {
 }
+/*
 #editor > a.ruote_go_button {
   margin-left: 4px;
 }
+*/
+
+.editor_buttons {
+  margin-top: 1.0em;
+  margin-bottom: 0.2em;
+}
+.editor_buttons button.discard {
+  margin-left: 0.7em;
+}
+
+/* badge a la Bootstrap (keep in the fridge for now) */
+/*
+.ruote_badge {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  display: inline-block;
+  padding: 2px 4px;
+  font-size: 11.844px;
+  font-weight: bold;
+  line-height: 14px;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  vertical-align: baseline;
+  background-color: #999999;
+}
+*/
 
 /* buttons +-^vx... */
 
