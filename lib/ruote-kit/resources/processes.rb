@@ -67,6 +67,10 @@ class RuoteKit::Application
         @info.definition, @info.fields || {}, @info.variables || {})
 
     rescue => e
+      #p e
+      #p e.ruby
+      #puts e.ruby.backtrace
+      #puts e.backtrace
       return http_error(400, e)
     end
 
@@ -100,9 +104,13 @@ class RuoteKit::Application
 
     def initialize(h={})
 
-      @definition = h['definition']
+      @definition = h['definition'].strip
       @fields = h['fields']
       @variables = h['variables']
+
+      if @definition.match(/^define /) && @definition.match(/\bend$/)
+        @definition = 'Ruote.' + @definition
+      end
     end
   end
 
@@ -119,7 +127,6 @@ class RuoteKit::Application
 
     if request.content_type == 'application/json' then
 
-      #OpenStruct.new(Rufus::Json.decode(request.body.read))
       LaunchInfo.new(Rufus::Json.decode(request.body.read))
 
     else

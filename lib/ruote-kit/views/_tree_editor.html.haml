@@ -29,6 +29,17 @@
     return false;
   });
 
+  // disable "save as Ruby" for now
+  //
+  var $ruby = $('button.use[value="Ruby"]');
+  $ruby.attr(
+    'disabled',
+    'disabled');
+  $ruby.attr(
+    'title',
+    $(ruby).attr('title') +
+    ' (disabled for now, Radial and JSON are sufficient)');
+
   var RkEditor = (function() {
 
     var self = this;
