@@ -46,7 +46,7 @@
 
     this.init = function() {
 
-      var tree = tree || #{sample_process_tree};
+      var tree = window.tree || #{sample_process_tree};
       var def = $('#tree').val();
       if (def.match(/\s*\[/)) tree = JSON.parse(def);
 

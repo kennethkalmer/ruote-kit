@@ -7,7 +7,7 @@
   expression
   = @expression.fei.sid
 
-#fluo
+#exp_fluo
 
 %form{ :method => 'POST', :enctype => 'multipart/form-data', :accept_charset => 'UTF-8' }
 
@@ -163,13 +163,13 @@
 
     $('pre.pdef').on('click', Rk.toggleNext);
 
-    Rk.fitFluo($('table.details'));
+    Rk.fitFluo($('#exp_fluo'), $('table.details'));
 
     var proc_rep = #{process_tree(@process)};
-    RuoteFluo.render('#fluo', proc_rep, { fit: 'down' });
-    RuoteFluo.highlight('#fluo', '#{@expression.fei.expid}');
+    RuoteFluo.render('#exp_fluo', proc_rep, { fit: 'down' });
+    RuoteFluo.highlight('#exp_fluo', '#{@expression.fei.expid}');
 
-    Rk.onClickZoom('#fluo');
+    Rk.onClickZoom('#exp_fluo');
 
     $('.re_apply').hide();
 
@@ -213,7 +213,7 @@
     });
   });
 
-  var tree = #{Rufus::Json.encode(@expression.tree)};
+  window.tree = #{Rufus::Json.encode(@expression.tree)};
 
 = haml :_tree_editor, :layout => false
 

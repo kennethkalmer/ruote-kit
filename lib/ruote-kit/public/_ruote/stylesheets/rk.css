@@ -299,6 +299,13 @@ pre.details {
   text-align: center;
   width: auto;
 }
+#exp_fluo {
+  margin: -3px -3px;
+  float: right;
+  text-align: center;
+  width: auto;
+}
+/* TODO: have a fluo_svg or something class instead of this double def */
 
 /* editor */
 
