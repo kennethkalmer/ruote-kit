@@ -4,6 +4,9 @@
 
 == ruote-kit - 2.3.1    not yet released
 
+
+== ruote-kit - 2.3.0.2    released 2013/07/22
+
 - switch to new ruote-fluo (SVG based instead of Canvas based)
 
 
