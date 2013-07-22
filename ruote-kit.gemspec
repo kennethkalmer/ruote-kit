@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.authors = [ 'Kenneth Kalmer', 'Torsten Schoenebaum', 'John Mettraux' ]
   s.email = [ 'kenneth.kalmer@gmail.com' ]
-  s.homepage = 'http://github.com/tosch/ruote-kit'
+  s.homepage = 'http://github.com/kennethkalmer/ruote-kit'
   s.rubyforge_project = 'ruote'
   s.summary = 'ruote workflow engine, wrapped in a loving rack embrace'
   s.description = %q{
