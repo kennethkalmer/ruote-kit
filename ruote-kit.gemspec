@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.description = %q{
 ruote workflow engine, wrapped in a loving rack embrace
   }
+  s.license = 'MIT'
 
   #s.files = `git ls-files`.split("\n")
   s.files = Dir[
