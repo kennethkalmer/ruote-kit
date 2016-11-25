@@ -18,7 +18,7 @@ class RuoteKit::Application
     @schedules = RuoteKit.engine.schedules(params[:wfid])
 
     @count = @schedules.size
-    @skip = 0
+    @skip = (@count > 0)? 0 : nil
     @limit = @count
 
     respond_with :schedules
