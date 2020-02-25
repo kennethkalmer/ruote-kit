@@ -32,7 +32,9 @@ GEM
       tins (~> 0.5)
     haml (4.0.3)
       tilt
-    nokogiri (1.5.9)
+    mini_portile2 (2.4.0)
+    nokogiri (1.10.8)
+      mini_portile2 (~> 2.4.0)
     parslet (1.4.0)
       blankslate (~> 2.0)
     rack (1.5.2)
