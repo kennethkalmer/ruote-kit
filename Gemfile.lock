@@ -40,7 +40,7 @@ GEM
       rack
     rack-test (0.5.7)
       rack (>= 1.0)
-    rake (10.0.4)
+    rake (13.0.1)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
